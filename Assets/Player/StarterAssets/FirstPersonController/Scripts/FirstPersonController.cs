@@ -55,8 +55,11 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
-		// cinemachine
-		private float _cinemachineTargetPitch;
+        [Header("Interaction with objects")]
+        public float TakeDistance = 3f;
+
+        // cinemachine
+        private float _cinemachineTargetPitch;
 
 		// player
 		private float _speed;
@@ -76,6 +79,7 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
+		private GameObject _transform;
 
 		private const float _threshold = 0.01f;
 
@@ -121,6 +125,8 @@ namespace StarterAssets
 			GroundedCheck();
 			Move();
 			Stealth();
+			PickUp(); 
+			Interact();
         }
 
 		private void LateUpdate()
@@ -274,6 +280,30 @@ namespace StarterAssets
             }
         }
 
+		private void PickUp()
+		{
+            if (_input.pickUp)
+			{
+                Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, TakeDistance))
+                {
+					if (!hit.collider.gameObject.isStatic)
+					{
+                        Destroy(hit.collider.gameObject);
+                    }
+                }
+            }
+        }
+
+        private void Interact()
+        {
+            if (_input.interact)
+            {
+				Debug.Log("Удар");
+            }
+        }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 		{
