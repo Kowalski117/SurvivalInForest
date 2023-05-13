@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+using XEntity.InventoryItemSystem;
 #endif
 
 namespace StarterAssets
@@ -58,6 +60,9 @@ namespace StarterAssets
         [Header("Interaction with objects")]
         public float TakeDistance = 3f;
 
+		[SerializeField] private ItemContainer _itemContainer;
+		[SerializeField] private Interactor _interactor;
+
         // cinemachine
         private float _cinemachineTargetPitch;
 
@@ -72,6 +77,7 @@ namespace StarterAssets
 		private float _fallTimeoutDelta;
 
         private bool _isSquatting;
+		private bool _isOpenInventary = false;
 
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput _playerInput;
@@ -79,9 +85,10 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
-		private GameObject _transform;
 
 		private const float _threshold = 0.01f;
+
+		public event UnityAction Selected;
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -127,6 +134,7 @@ namespace StarterAssets
 			Stealth();
 			PickUp(); 
 			Interact();
+			Inventory();
         }
 
 		private void LateUpdate()
@@ -144,7 +152,7 @@ namespace StarterAssets
 		private void CameraRotation()
 		{
 			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold)
+			if (_input.look.sqrMagnitude >= _threshold && !_isOpenInventary)
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
@@ -284,15 +292,29 @@ namespace StarterAssets
 		{
             if (_input.pickUp)
 			{
-                Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
+				_interactor.InitInteraction();
+            }
+        }
 
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, TakeDistance))
+        private void Inventory()
+        {
+            if (_input.inventory )
+            {
+                if (!_isOpenInventary) // если инвентарь закрыт
                 {
-					if (!hit.collider.gameObject.isStatic)
-					{
-                        Destroy(hit.collider.gameObject);
-                    }
+                    _itemContainer.CheckForUIToggleInput();
+                    _isOpenInventary = true;
+                    Cursor.visible = true; // включаем курсор
+                    Cursor.lockState = CursorLockMode.None;
+                }
+            }
+            else
+            {
+                if (_isOpenInventary) // если инвентарь открыт
+                {
+                    _isOpenInventary = false;
+                    Cursor.visible = false; // выключаем курсор
+                    Cursor.lockState = CursorLockMode.Locked;
                 }
             }
         }

@@ -15,6 +15,7 @@ namespace StarterAssets
         public bool stealth;
         public bool pickUp;
         public bool interact;
+        public bool inventory;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -61,6 +62,11 @@ namespace StarterAssets
         {
             InteractInput(value.isPressed);
         }
+
+        public void OnInventory(InputValue value)
+        {
+            InventoryInput(value.isPressed);
+        }
 #endif
 
         public void MoveInput(Vector2 newMoveDirection)
@@ -96,6 +102,11 @@ namespace StarterAssets
 		public void InteractInput(bool newInteractState)
         {
             interact = newInteractState;
+        }
+
+		public void InventoryInput(bool newInventoryState)
+        {
+            inventory = newInventoryState;
         }
 
         private void OnApplicationFocus(bool hasFocus)
