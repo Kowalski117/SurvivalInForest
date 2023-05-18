@@ -13,7 +13,6 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
         public bool stealth;
-        public bool pickUp;
         public bool interact;
         public bool inventory;
 
@@ -53,19 +52,9 @@ namespace StarterAssets
             StealthInput(value.isPressed);
         }
 
-        public void OnPickUp(InputValue value)
-        {
-            PickUpInput(value.isPressed);
-        } 
-
 		public void OnInteract(InputValue value)
         {
             InteractInput(value.isPressed);
-        }
-
-        public void OnInventory(InputValue value)
-        {
-            InventoryInput(value.isPressed);
         }
 #endif
 
@@ -94,19 +83,9 @@ namespace StarterAssets
             stealth = newStealthState;
         }
 
-        public void PickUpInput(bool newPickUpState)
-        {
-            pickUp = newPickUpState;
-        }
-
 		public void InteractInput(bool newInteractState)
         {
             interact = newInteractState;
-        }
-
-		public void InventoryInput(bool newInventoryState)
-        {
-            inventory = newInventoryState;
         }
 
         private void OnApplicationFocus(bool hasFocus)
@@ -114,7 +93,7 @@ namespace StarterAssets
 			SetCursorState(cursorLocked);
 		}
 
-		private void SetCursorState(bool newState)
+		public void SetCursorState(bool newState)
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}

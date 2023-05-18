@@ -2,14 +2,13 @@
 using UnityEngine.Events;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-using XEntity.InventoryItemSystem;
 #endif
 
 namespace StarterAssets
 {
 	[RequireComponent(typeof(CharacterController))]
 #if ENABLE_INPUT_SYSTEM
-	[RequireComponent(typeof(PlayerInput))]
+	[RequireComponent(typeof(UnityEngine.InputSystem.PlayerInput))]
 #endif
 	public class FirstPersonController : MonoBehaviour
 	{
@@ -60,9 +59,6 @@ namespace StarterAssets
         [Header("Interaction with objects")]
         public float TakeDistance = 3f;
 
-		[SerializeField] private ItemContainer _itemContainer;
-		[SerializeField] private Interactor _interactor;
-
         // cinemachine
         private float _cinemachineTargetPitch;
 
@@ -77,10 +73,9 @@ namespace StarterAssets
 		private float _fallTimeoutDelta;
 
         private bool _isSquatting;
-		private bool _isOpenInventary = false;
 
 #if ENABLE_INPUT_SYSTEM
-        private PlayerInput _playerInput;
+        private UnityEngine.InputSystem.PlayerInput _playerInput;
 #endif
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
@@ -116,7 +111,7 @@ namespace StarterAssets
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM
-			_playerInput = GetComponent<PlayerInput>();
+            _playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
@@ -132,9 +127,6 @@ namespace StarterAssets
 			GroundedCheck();
 			Move();
 			Stealth();
-			PickUp(); 
-			Interact();
-			Inventory();
         }
 
 		private void LateUpdate()
@@ -152,7 +144,7 @@ namespace StarterAssets
 		private void CameraRotation()
 		{
 			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold && !_isOpenInventary)
+			if (_input.look.sqrMagnitude >= _threshold)
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
@@ -284,46 +276,6 @@ namespace StarterAssets
                 _isSquatting = false;
                 _speed = _input.sprint ? SprintSpeed : MoveSpeed;
                 transform.localScale = new Vector3(1, 1, 1);
-
-            }
-        }
-
-		private void PickUp()
-		{
-            if (_input.pickUp)
-			{
-				_interactor.InitInteraction();
-            }
-        }
-
-        private void Inventory()
-        {
-            if (_input.inventory )
-            {
-                if (!_isOpenInventary) // если инвентарь закрыт
-                {
-                    _itemContainer.CheckForUIToggleInput();
-                    _isOpenInventary = true;
-                    Cursor.visible = true; // включаем курсор
-                    Cursor.lockState = CursorLockMode.None;
-                }
-            }
-            else
-            {
-                if (_isOpenInventary) // если инвентарь открыт
-                {
-                    _isOpenInventary = false;
-                    Cursor.visible = false; // выключаем курсор
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
-            }
-        }
-
-        private void Interact()
-        {
-            if (_input.interact)
-            {
-				Debug.Log("Удар");
             }
         }
 
