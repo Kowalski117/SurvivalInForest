@@ -1,14 +1,28 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GetNearbyObject<TNearbyObject, TSharedNearbyObject> : Conditional where TNearbyObject : Component where TSharedNearbyObject : SharedVariable<TNearbyObject>
 {
     public SharedFloat Radius;
     public TSharedNearbyObject NearbyObjectReturn;
+    public AnimalsMovement AnimalsMovement;
 
     private readonly Collider[] _overlapColliders = new Collider[256];
 
+    public override void OnStart()
+    {
+        if (AnimalsMovement.DetectionRadius <= 0)
+        {
+            Radius = 1;
+        }
+        else
+        {
+            Radius = AnimalsMovement.DetectionRadius;
+        }
+    }
+    
     public override TaskStatus OnUpdate()
     {
         int overlapCount = Physics.OverlapSphereNonAlloc(transform.position, Radius.Value, _overlapColliders);

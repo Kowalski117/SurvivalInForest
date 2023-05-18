@@ -14,6 +14,15 @@ public class FleeFromDanger : Action
     public override void OnStart()
     {
         _navMeshPath = new NavMeshPath();
+        
+        if (SelfMob.Value.FleeRadius <= 0)
+        {
+            RandomPointRadius = 1;
+        }
+        else
+        {
+            RandomPointRadius = SelfMob.Value.FleeRadius;
+        }
     }
 
     public override TaskStatus OnUpdate()

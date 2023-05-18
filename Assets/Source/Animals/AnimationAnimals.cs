@@ -10,7 +10,8 @@ public class AnimationAnimals : MonoBehaviour
     private string _eat = "Eat";
     private string _sleep = "Sleep";
     private string _sit = "Sit";
-    private string[] _attacks = new string[]{"Attack1","Attack2","Attack3"};
+    private string _attacks ="Attack";
+    private static int _maxAttacksAnimation = 3;
 
 
     private void Awake()
@@ -47,11 +48,12 @@ public class AnimationAnimals : MonoBehaviour
     public void Attack()
     {
         TurnOffAnimations();
-        string attack = _attacks[Random.Range(0,_attacks.Length-1)];
+        string attack = _attacks + Random.Range(1,_maxAttacksAnimation);
+        Debug.Log(attack);
         _animator.SetTrigger(attack);
     }
 
-    private void Death()
+    public void Death()
     {
         TurnOffAnimations();
         _animator.SetBool(_death, true);
