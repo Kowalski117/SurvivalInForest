@@ -47,15 +47,15 @@ public class InventorySlot
         _stackSize = amount;
     }
 
-    public bool RoomLeftInStack(int amountToAdd, out int amountRemaining)
+    public bool EnoughRoomLeftInStack(int amountToAdd, out int amountRemaining)
     {
         amountRemaining = ItemData.MaxStackSize - _stackSize; 
-        return RoomLeftInStack(amountToAdd);
+        return EnoughRoomLeftInStack(amountToAdd);
     }
 
-    public bool RoomLeftInStack(int amountToAdd)
+    public bool EnoughRoomLeftInStack(int amountToAdd)
     {
-        if(_stackSize + amountToAdd <= _itemData.MaxStackSize)
+        if(_itemData != null || _itemData != null && _stackSize + amountToAdd <= _itemData.MaxStackSize)
             return true;
         else
             return false;
@@ -69,5 +69,20 @@ public class InventorySlot
     public void RemoveFromStack(int amount)
     {
         _stackSize -= amount;
+    }
+
+    public bool SplitStack(out InventorySlot splitSlot)
+    {
+        if(_stackSize <= 1)
+        {
+            splitSlot = null;
+            return false;
+        }
+
+        int halfStack = Mathf.RoundToInt(_stackSize / 2);
+        RemoveFromStack(halfStack);
+
+        splitSlot = new InventorySlot(_itemData, halfStack);
+        return true;
     }
 }
