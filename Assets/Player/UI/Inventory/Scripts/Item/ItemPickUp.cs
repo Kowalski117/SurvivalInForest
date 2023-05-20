@@ -31,12 +31,12 @@ public class ItemPickUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out InventoryHolder inventory))
+        if (other.TryGetComponent(out PlayerInventoryHolder inventory))
         {
             if (!inventory)
                 return;
 
-            if (inventory.InventorySystem.AddToInventory(_itemData, 1))
+            if (inventory.AddToInventory(_itemData, 1))
             {
                 Destroy(this.gameObject); // переделать для оптимизации
             }

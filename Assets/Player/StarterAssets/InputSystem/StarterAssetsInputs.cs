@@ -10,7 +10,6 @@ namespace StarterAssets
         [Header("Character Input Values")]
         public Vector2 move;
         public Vector2 look;
-        public bool jump;
         public bool sprint;
         public bool stealth;
         public bool interact;
@@ -34,11 +33,6 @@ namespace StarterAssets
             {
                 LookInput(value.Get<Vector2>());
             }
-        }
-
-        public void OnJump(InputValue value)
-        {
-            JumpInput(value.isPressed);
         }
 
         public void OnSprint(InputValue value)
@@ -65,11 +59,6 @@ namespace StarterAssets
         public void LookInput(Vector2 newLookDirection)
         {
             look = newLookDirection;
-        }
-
-        public void JumpInput(bool newJumpState)
-        {
-            jump = newJumpState;
         }
 
         public void SprintInput(bool newSprintState)
