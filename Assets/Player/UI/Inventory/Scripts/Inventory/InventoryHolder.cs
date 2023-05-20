@@ -8,7 +8,7 @@ public class InventoryHolder : MonoBehaviour
     [SerializeField] private int _inventorySize;
     [SerializeField] protected InventorySystem _inventorySystem;
 
-    public static event UnityAction<InventorySystem> OnDinamicInventoryDispleyRequested;
+    public static UnityAction<InventorySystem> OnDinamicInventoryDispleyRequested;
 
     public InventorySystem InventorySystem => _inventorySystem;
 

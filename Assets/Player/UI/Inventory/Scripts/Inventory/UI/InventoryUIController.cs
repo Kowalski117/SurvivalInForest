@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InventoryUIController : MonoBehaviour
 {
@@ -23,25 +24,29 @@ public class InventoryUIController : MonoBehaviour
         _inventoryPlayerInput.SwitchInventory -= OpenDisplay;
     }
 
+    private void Update()
+    {
+        if (_inventoryPanel.gameObject.activeInHierarchy && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            _inventoryPanel.gameObject.SetActive(false);
+            _cursorController.SetCursorVisible(false);
+        }
+
+    }
+
     public void DisplayInventory(InventorySystem inventoryDislay)
     {
+        _inventoryPanel.gameObject.SetActive(true);
+        _cursorController.SetCursorVisible(true);
         _inventoryPanel.RefreshDynamicInventory(inventoryDislay);
     }
 
     public void OpenDisplay()
     {
-        DisplayInventory(new InventorySystem(10));
         if(_inventoryPanel.gameObject.activeInHierarchy)
         {
             _inventoryPanel.gameObject.SetActive(false);
             _cursorController.SetCursorVisible(false);
-            return;
-        }
-        else
-        {
-            _inventoryPanel.gameObject.SetActive(true);
-            _cursorController.SetCursorVisible(true);
-            return;
         }
     }
 }

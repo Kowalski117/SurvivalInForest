@@ -13,14 +13,14 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     public void RefreshDynamicInventory(InventorySystem inventoryToSystem)
     {
-        CleanSlots();
+        ClearSlots();
         inventorySystem = inventoryToSystem;
         AssingSlot(inventoryToSystem);
     }
 
     public override void AssingSlot(InventorySystem inventoryToDisplay)
     {
-        CleanSlots();
+        ClearSlots();
 
         slotDictionary = new Dictionary<InventorySlotUI, InventorySlot>();
 
@@ -36,7 +36,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
         }
     }
 
-    private void CleanSlots()
+    private void ClearSlots()
     {
         foreach (var item in transform.Cast<Transform>())
         {

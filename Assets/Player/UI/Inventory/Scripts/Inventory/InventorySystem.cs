@@ -33,7 +33,6 @@ public class InventorySystem
                 {
                     slot.AddToStack(amountToAdd);
                     OnInventorySlotChanged?.Invoke(slot);
-                    Debug.Log(slot);
                     return true;
                 }
             }
