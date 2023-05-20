@@ -36,6 +36,7 @@ public class InventorySystem
                     return true;
                 }
             }
+            Debug.Log("dfs");
         }
         
         if(HasFreeSlot(out InventorySlot freeSlot))

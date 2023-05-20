@@ -31,10 +31,10 @@ public class ItemPickUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var inventory = other.GetComponent<InventoryHolder>();
+        //var inventory = other.GetComponent<InventoryHolder>();
 
-        //if(other.TryGetComponent(out InventoryHolder inventory))
-        //{
+        if (other.TryGetComponent(out InventoryHolder inventory))
+        {
             if (!inventory)
                 return;
 
@@ -43,7 +43,7 @@ public class ItemPickUp : MonoBehaviour
                 Destroy(this.gameObject);
             }
             _currentInventoryHolder = inventory;
-        //}
+        }
     }
 
     private void PickUp()

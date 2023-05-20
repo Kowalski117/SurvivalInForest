@@ -8,7 +8,6 @@ public class InventoryPlayerInput : MonoBehaviour
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
 
     private PlayerInput _playerInput;
-    private bool _isOpenInventary = false;
 
     public event UnityAction SwitchInventory;
 
