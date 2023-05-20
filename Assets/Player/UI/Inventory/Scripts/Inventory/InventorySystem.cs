@@ -33,10 +33,10 @@ public class InventorySystem
                 {
                     slot.AddToStack(amountToAdd);
                     OnInventorySlotChanged?.Invoke(slot);
+                    Debug.Log(slot);
                     return true;
                 }
             }
-            Debug.Log("dfs");
         }
         
         if(HasFreeSlot(out InventorySlot freeSlot))

@@ -31,8 +31,6 @@ public class ItemPickUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //var inventory = other.GetComponent<InventoryHolder>();
-
         if (other.TryGetComponent(out InventoryHolder inventory))
         {
             if (!inventory)
@@ -40,7 +38,7 @@ public class ItemPickUp : MonoBehaviour
 
             if (inventory.InventorySystem.AddToInventory(_itemData, 1))
             {
-                Destroy(this.gameObject);
+                Destroy(this.gameObject); // переделать для оптимизации
             }
             _currentInventoryHolder = inventory;
         }

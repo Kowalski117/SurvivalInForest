@@ -55,7 +55,7 @@ public class InventorySlot
 
     public bool EnoughRoomLeftInStack(int amountToAdd)
     {
-        if(_itemData != null || _itemData != null && _stackSize + amountToAdd <= _itemData.MaxStackSize)
+        if(_itemData == null || _itemData != null && _stackSize + amountToAdd <= _itemData.MaxStackSize)
             return true;
         else
             return false;
