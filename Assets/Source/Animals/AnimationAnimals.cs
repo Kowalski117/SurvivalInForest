@@ -11,6 +11,7 @@ public class AnimationAnimals : MonoBehaviour
     private string _sleep = "Sleep";
     private string _sit = "Sit";
     private string _attacks ="Attack";
+    private string _howl = "Howl";
     private static int _maxAttacksAnimation = 3;
 
 
@@ -39,6 +40,12 @@ public class AnimationAnimals : MonoBehaviour
         
     }
 
+    public void Howl()
+    {
+        TurnOffAnimations();
+        _animator.SetTrigger(_howl);
+    }
+
     public void Eat()
     {
         TurnOffAnimations();
@@ -48,7 +55,7 @@ public class AnimationAnimals : MonoBehaviour
     public void Attack()
     {
         TurnOffAnimations();
-        string attack = _attacks + Random.Range(1,_maxAttacksAnimation);
+        string attack = _attacks + Random.Range(1,_maxAttacksAnimation+1);
         Debug.Log(attack);
         _animator.SetTrigger(attack);
     }

@@ -2,12 +2,11 @@ using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public class GoToSpawnPoint : Action
 {
     public AnimalsMovement Animals;
     public float RandomPointRadius;
-    
+
     private NavMeshPath _navMeshPath;
     private Vector3 _randomPoint;
 
@@ -39,7 +38,7 @@ public class GoToSpawnPoint : Action
                 Animals.Agent.CalculatePath(_randomPoint, _navMeshPath);
                 if (_navMeshPath.status == NavMeshPathStatus.PathComplete) isCorrectPoint = true;
             }
-            
+
             Animals.Walk(_randomPoint);
             return TaskStatus.Inactive;
         }
