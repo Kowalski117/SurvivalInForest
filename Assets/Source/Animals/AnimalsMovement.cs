@@ -11,12 +11,12 @@ public abstract class AnimalsMovement : MonoBehaviour
     [SerializeField] private float _detectionRadius;
     [SerializeField] private float _fleeRadius;
     [SerializeField] private float _spawnPointRadius;
-    [SerializeField] private float _attackRadius;
 
     private NavMeshAgent _agent;
     private Vector3 _spawnPoint;
     private bool _isRuning = false;
-    private AnimationAnimals _animationAnimals;
+
+    protected AnimationAnimals AnimationAnimals;
 
     public NavMeshAgent Agent => _agent;
     public Vector3 SpawnPoint => _spawnPoint;
@@ -24,11 +24,11 @@ public abstract class AnimalsMovement : MonoBehaviour
     public float DetectionRadius => _detectionRadius;
     public float FleeRadius => _fleeRadius;
     public float SpawnPointRadius => _spawnPointRadius;
-    
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _animationAnimals = GetComponent<AnimationAnimals>();
+        AnimationAnimals = GetComponent<AnimationAnimals>();
         _spawnPoint = transform.position;
     }
 
@@ -56,23 +56,23 @@ public abstract class AnimalsMovement : MonoBehaviour
         _agent.SetDestination(point);
     }
 
+    public void Howl()
+    {
+        AnimationAnimals.Howl();
+    }
+
     public void Eat()
     {
-        _animationAnimals.Eat();
+        AnimationAnimals.Eat();
     }
 
     public void Sit()
     {
-        _animationAnimals.Sit();
-    }
-
-    public void Attack()
-    {
-        _animationAnimals.Attack();
+        AnimationAnimals.Sit();
     }
 
     public void Death()
     {
-        _animationAnimals.Death();
+        AnimationAnimals.Death();
     }
 }

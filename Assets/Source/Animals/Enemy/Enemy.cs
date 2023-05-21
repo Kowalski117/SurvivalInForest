@@ -7,7 +7,7 @@ public class Enemy : Animals
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<IDamagable>() != null)
+        if (other.GetComponent<IDamagable>() != null && other.GetComponent<Enemy>() == null)
         {
             other.GetComponent<IDamagable>().TakeDamage(_attack);
         }
