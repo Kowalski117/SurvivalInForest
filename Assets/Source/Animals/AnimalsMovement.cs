@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 [RequireComponent(typeof(AnimationAnimals))]
 [RequireComponent(typeof(NavMeshAgent))]

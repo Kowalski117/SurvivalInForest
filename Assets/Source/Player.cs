@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Character : MonoBehaviour, IDamagable
+public class Player : MonoBehaviour, IDamagable
 {
     [SerializeField] private float _health;
     public void TakeDamage(float damage)
