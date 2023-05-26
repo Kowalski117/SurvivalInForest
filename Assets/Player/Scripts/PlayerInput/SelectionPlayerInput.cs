@@ -27,5 +27,6 @@ public class SelectionPlayerInput : MonoBehaviour
     private void OnPerformed()
     {
         PickUp?.Invoke();
+        return;
     }
 }

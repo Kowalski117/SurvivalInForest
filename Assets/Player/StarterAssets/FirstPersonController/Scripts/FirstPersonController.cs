@@ -23,6 +23,8 @@ namespace StarterAssets
         public float SpeedChangeRate = 10.0f;
 
         [Space(10)]
+        [Header("Player Stealth")]
+        public float DefaultHeight = 1.3f;
         public float SquatHeight = 0.75f;
         public float SquatSpeed = 1f;
 
@@ -87,6 +89,7 @@ namespace StarterAssets
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+            CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
         }
 
         private void Start()
@@ -198,7 +201,7 @@ namespace StarterAssets
             {
                 _isSquatting = true;
                 _speed = SquatSpeed;
-                transform.localScale = new Vector3(1, SquatHeight, 1);
+                CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, SquatHeight, CinemachineCameraTarget.transform.localPosition.z);
             }
 
             // Check for input to stop squatting
@@ -206,7 +209,7 @@ namespace StarterAssets
             {
                 _isSquatting = false;
                 _speed = _input.sprint ? SprintSpeed : MoveSpeed;
-                transform.localScale = new Vector3(1, 1, 1);
+                CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
             }
         }
 
