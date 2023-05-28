@@ -48,7 +48,7 @@ public class InventorySlotUI : MonoBehaviour
         {
             _imageSprite.sprite = slot.ItemData.Icon;
             _imageSprite.color = Color.white;
-            if(slot.StackSize > 1)
+            if(slot.StackSize >= 1)
                 _itemCount.text = slot.StackSize.ToString();
         }
         else
