@@ -57,7 +57,7 @@ public class Interactor : MonoBehaviour
         IsInteraction = true;
     }
 
-    private void EndInreraction()
+    public void CompleteInteraction(IInteractable interactable)
     {
         IsInteraction = false;
     }

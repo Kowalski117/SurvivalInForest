@@ -62,7 +62,7 @@ public abstract class InventoryDisplay : MonoBehaviour
         {
             bool isSameItem = clickedUISlot.AssignedInventorySlot.ItemData == _mouseInventoryItem.AssignedInventorySlot.ItemData;
 
-            if (isSameItem && clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(_mouseInventoryItem.AssignedInventorySlot.StackSize))
+            if (isSameItem && clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(_mouseInventoryItem.AssignedInventorySlot.Size))
             {
                 clickedUISlot.AssignedInventorySlot.AssignItem(_mouseInventoryItem.AssignedInventorySlot);
                 clickedUISlot.UpdateUiSlot();
@@ -70,7 +70,7 @@ public abstract class InventoryDisplay : MonoBehaviour
                 _mouseInventoryItem.CleanSlot();
                 return;
             }
-            else if(isSameItem && !clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(_mouseInventoryItem.AssignedInventorySlot.StackSize, out int leftInStack))
+            else if(isSameItem && !clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(_mouseInventoryItem.AssignedInventorySlot.Size, out int leftInStack))
             {
                 if (leftInStack < 1)
                 {
@@ -78,7 +78,7 @@ public abstract class InventoryDisplay : MonoBehaviour
                 }
                 else
                 {
-                    int remainingOnMouse = _mouseInventoryItem.AssignedInventorySlot.StackSize - leftInStack;
+                    int remainingOnMouse = _mouseInventoryItem.AssignedInventorySlot.Size - leftInStack;
                     clickedUISlot.AssignedInventorySlot.AddToStack(leftInStack);
                     clickedUISlot.UpdateUiSlot();
 
@@ -98,7 +98,7 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     private void SwapSlots(InventorySlotUI clickedUISlot)
     {
-        var clonedSlot = new InventorySlot(_mouseInventoryItem.AssignedInventorySlot.ItemData, _mouseInventoryItem.AssignedInventorySlot.StackSize);
+        var clonedSlot = new InventorySlot(_mouseInventoryItem.AssignedInventorySlot.ItemData, _mouseInventoryItem.AssignedInventorySlot.Size);
         _mouseInventoryItem.CleanSlot();
 
         _mouseInventoryItem.UpdateMouseSlot(clickedUISlot.AssignedInventorySlot);

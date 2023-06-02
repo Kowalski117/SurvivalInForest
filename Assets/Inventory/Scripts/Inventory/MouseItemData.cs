@@ -35,7 +35,7 @@ public class MouseItemData : MonoBehaviour
             {
                 Instantiate(_assignedInventorySlot.ItemData.ItemPrefab, _playerTransform.position + _playerTransform.forward * _dropOffset, Quaternion.identity); //оепедекюрэ
                 
-                if(_assignedInventorySlot.StackSize > 1)
+                if(_assignedInventorySlot.Size > 1)
                 {
                     _assignedInventorySlot.AddToStack(-1);
                     UpdateMouseSlot();
@@ -50,7 +50,7 @@ public class MouseItemData : MonoBehaviour
 
     public void CleanSlot()
     {
-        _assignedInventorySlot.CleanSlot();
+        _assignedInventorySlot.ClearSlot();
         _itemSprite.sprite = null;
         _itemSprite.color = Color.clear;
         _itemCount.text = "";
@@ -67,7 +67,7 @@ public class MouseItemData : MonoBehaviour
     {
         _itemSprite.sprite = _assignedInventorySlot.ItemData.Icon;
         _itemSprite.color = Color.white;
-        _itemCount.text = _assignedInventorySlot.StackSize.ToString();
+        _itemCount.text = _assignedInventorySlot.Size.ToString();
     }
 
     public static bool IsPointerOverUIObject()

@@ -48,8 +48,8 @@ public class InventorySlotUI : MonoBehaviour
         {
             _imageSprite.sprite = slot.ItemData.Icon;
             _imageSprite.color = Color.white;
-            if(slot.StackSize >= 1)
-                _itemCount.text = slot.StackSize.ToString();
+            if(slot.Size >= 1)
+                _itemCount.text = slot.Size.ToString();
         }
         else
         {
@@ -66,7 +66,7 @@ public class InventorySlotUI : MonoBehaviour
 
     public void CleanSlot()
     {
-        _assignedInventorySlot?.CleanSlot();
+        _assignedInventorySlot?.ClearSlot();
         _imageSprite.sprite = null;
         _imageSprite.color = Color.clear;
         _itemCount.text = "";
