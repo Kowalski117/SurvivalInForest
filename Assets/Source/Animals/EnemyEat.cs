@@ -1,24 +1,21 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
-using UnityEngine;
 
-public class Howl : Action
+public class EnemyEat : Action
 {
     public SharedEnemy Enemy;
-    public SharedBool IsAttacking;
-
+    public SharedMob Mob;
+    
     public override TaskStatus OnUpdate()
     {
-        Debug.Log(IsAttacking.Value);
-        if (IsAttacking.Value == false)
+        if (Mob.Value.GetComponent<Animals>().IsDead)
         {
-            Enemy.Value.Howl();
+            Enemy.Value.Eat();
             return TaskStatus.Failure;
         }
         else
         {
             return TaskStatus.Success;
         }
-        
     }
 }

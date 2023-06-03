@@ -10,6 +10,9 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private BehaviorTree _behaviorTree;
     private MeshCollider _collider;
     private NavMeshAgent _agent;
+    private bool _isDead = false;
+
+    public bool IsDead => _isDead;
 
     public event Action Died;
 
@@ -34,7 +37,8 @@ public abstract class Animals : MonoBehaviour, IDamagable
 
     public void Die()
     {
-        _collider.enabled = false;
+        _isDead = true;
+       // _collider.enabled = false;
         _behaviorTree.enabled = false;
         _agent.enabled = false;
         Died?.Invoke();
