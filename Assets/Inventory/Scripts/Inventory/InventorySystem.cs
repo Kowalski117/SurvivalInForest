@@ -1,0 +1,158 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using System.Linq;
+using System;
+
+[System.Serializable]
+public class InventorySystem
+{
+    [SerializeField] private List<InventorySlot> _inventorySlots;
+    [SerializeField] private int _gold;
+
+    public event UnityAction<InventorySlot> OnInventorySlotChanged;
+
+    public List<InventorySlot> InventorySlots => _inventorySlots;
+    public int InventorySize => _inventorySlots.Count;
+    public int Gold => _gold;
+
+    public InventorySystem(int size)
+    {
+        CreateInventory(size);
+        _gold = 0;
+    }
+
+    public InventorySystem(int size, int gold)
+    {
+        CreateInventory(size);
+        _gold = gold;
+    }
+
+    public bool AddToInventory(InventoryItemData itemToAdd, int amountToAdd)
+    {
+        if(ContainsItem(itemToAdd, out List<InventorySlot> inventorySlots))
+        {
+            foreach (var slot in inventorySlots)
+            {
+                if (slot.EnoughRoomLeftInStack(amountToAdd))
+                {
+                    slot.AddToStack(amountToAdd);
+                    OnInventorySlotChanged?.Invoke(slot);
+                    return true;
+                }
+            }
+        }
+        
+        if(HasFreeSlot(out InventorySlot freeSlot))
+        {
+            if (freeSlot.EnoughRoomLeftInStack(amountToAdd))
+            {
+                freeSlot.UpdateInventorySlot(itemToAdd, amountToAdd);
+                OnInventorySlotChanged?.Invoke(freeSlot);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool RemoveItemsInventory(InventoryItemData data, int amount)
+    {
+        if (ContainsItem(data, out List<InventorySlot> inventorySlots))
+        {
+            int totalAmount = inventorySlots.Sum(slot => slot.Size);
+
+            if (totalAmount >= amount)
+            {
+                int remainingAmount = amount;
+
+                foreach (var slot in inventorySlots)
+                {
+                    int stackSize = slot.Size;
+
+                    if (stackSize >= remainingAmount)
+                    {
+                        slot.RemoveFromStack(remainingAmount);
+                        OnInventorySlotChanged?.Invoke(slot);
+                        return true;
+                    }
+                    else if (stackSize > 0)
+                    {
+                        slot.RemoveFromStack(stackSize);
+                        remainingAmount -= stackSize;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+
+    public bool ContainsItem(InventoryItemData itemToAdd, out List<InventorySlot> inventorySlots)
+    {
+        inventorySlots = _inventorySlots.Where(i => i.ItemData == itemToAdd).ToList();
+        return inventorySlots == null ? false : true;
+    }
+
+    public bool HasFreeSlot(out InventorySlot freeSlot)
+    {
+        freeSlot = _inventorySlots.FirstOrDefault(i => i.ItemData == null);
+        return freeSlot == null ? false : true;
+    }
+
+    public bool CheckInventoryRemaining(Dictionary<InventoryItemData, int> shoppingCart)
+    {
+        var clonedSystem = new InventorySystem(this.InventorySize);
+
+        for (int i = 0; i < InventorySize; i++)
+        {
+            clonedSystem.InventorySlots[i].AssignItem(this.InventorySlots[i].ItemData, this.InventorySlots[i].Size);
+
+        }
+
+        foreach (var item in shoppingCart)
+        {
+            for (int i = 0; i < item.Value; i++)
+            {
+                if (!clonedSystem.AddToInventory(item.Key, 1))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void SpendGold(int basketTotal)
+    {
+        _gold -= basketTotal;
+    }
+
+    private void CreateInventory(int size)
+    {
+        _inventorySlots = new List<InventorySlot>(size);
+
+        for (int i = 0; i < size; i++)
+        {
+            _inventorySlots.Add(new InventorySlot());
+        }
+    }
+
+    public Dictionary<InventoryItemData, int> GetAllItemsHeld()
+    {
+        var distinctItems = new Dictionary<InventoryItemData, int>();
+
+        foreach (var item in _inventorySlots)
+        {
+            if (item.ItemData == null)
+                continue;
+
+            if (!distinctItems.ContainsKey(item.ItemData))
+                distinctItems.Add(item.ItemData, item.Size);
+            else
+                distinctItems[item.ItemData] += item.Size;
+        }
+
+        return distinctItems;
+    }
+}
