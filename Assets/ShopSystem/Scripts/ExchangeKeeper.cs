@@ -26,7 +26,6 @@ public class ExchangeKeeper : MonoBehaviour, IInteractable
         else
         {
             interactSuccessfull = false;
-            Debug.LogError("Player inventory not found");
         }
     }
 }

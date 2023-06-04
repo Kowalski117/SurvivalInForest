@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIHandler : MonoBehaviour
 {
@@ -18,6 +19,14 @@ public class UIHandler : MonoBehaviour
     private void OnDisable()
     {
         _shopKeeper.OnInteractionComplete -= DisplayShopWindow;
+    }
+
+    private void Update()
+    {
+        if(_shopKeeperDisplay.gameObject.activeInHierarchy && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            _shopKeeperDisplay.gameObject.SetActive(false);
+        }
     }
 
     private void DisplayShopWindow(IInteractable interactor)

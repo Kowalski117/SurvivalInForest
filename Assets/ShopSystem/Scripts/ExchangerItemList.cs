@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Shop System/Shop Item List", order = 51)]
+[CreateAssetMenu(menuName = "Inventory System/Exchanger Item List", order = 51)]
 public class ExchangerItemList : ScriptableObject
 {
     [SerializeField] private List<ShopInventoryItem> _items;
