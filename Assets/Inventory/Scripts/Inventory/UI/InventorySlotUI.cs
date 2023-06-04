@@ -32,14 +32,10 @@ public class InventorySlotUI : MonoBehaviour
         _button.onClick.RemoveListener(OnUISlotClick);
     }
 
-    private void Update()
-    {
-        UpdateUiSlot();
-    }
-
     public void Init(InventorySlot slot)
     {
         _assignedInventorySlot = slot;
+        UpdateUiSlot();
     }
 
     public void UpdateUISlot(InventorySlot slot)
@@ -48,13 +44,16 @@ public class InventorySlotUI : MonoBehaviour
         {
             _imageSprite.sprite = slot.ItemData.Icon;
             _imageSprite.color = Color.white;
-            if(slot.Size >= 1)
-                _itemCount.text = slot.Size.ToString();
         }
         else
         {
             CleanSlot();
         }
+
+        if (slot.Size > 1)
+            _itemCount.text = slot.Size.ToString();
+        else
+            _itemCount.text = "";
     }
 
     public void UpdateUiSlot()

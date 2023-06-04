@@ -11,8 +11,14 @@ public class Interactor : MonoBehaviour
     [SerializeField] private CursorController _cursorController;
 
     private Collider[] _colliders;
+    public PlayerInventoryHolder PlayerInventoryHolder { get; private set; }
 
     public bool IsInteraction { get; private set; }
+
+    private void Awake()
+    {
+        PlayerInventoryHolder = GetComponent<PlayerInventoryHolder>();
+    }
 
     private void Update()
     {

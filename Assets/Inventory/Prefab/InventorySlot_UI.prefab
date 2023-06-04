@@ -131,8 +131,9 @@ MonoBehaviour:
   _imageSprite: {fileID: 3367388875197575451}
   _itemCount: {fileID: 5488023411845749030}
   _assignedInventorySlot:
-    _itemData: {fileID: 0}
-    _stackSize: -1
+    InventoryItemData: {fileID: 0}
+    ItemId: -1
+    StackSize: -1
 --- !u!222 &4606137864258492920
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -174,10 +175,10 @@ RectTransform:
   m_Father: {fileID: 2358059324619160191}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 85, y: 85}
+  m_SizeDelta: {x: -15, y: -15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8550055933763611144
 CanvasRenderer:
