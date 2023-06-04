@@ -5,14 +5,8 @@ using UnityEngine;
 public class ExchangerItemList : ScriptableObject
 {
     [SerializeField] private List<ShopInventoryItem> _items;
-    [SerializeField] private int _maxAllowedGold;
-    [SerializeField] private float _sellMarkUp;
-    [SerializeField] private float _buyMarkUp;
 
     public List<ShopInventoryItem> Items => _items;
-    public int MaxAllowedGold => _maxAllowedGold;
-    public float SellMarkUp => _sellMarkUp;
-    public float BuyMarkUp => _buyMarkUp;
 }
 
 [System.Serializable]

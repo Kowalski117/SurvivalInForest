@@ -12,7 +12,7 @@ public class ExchangeHandler : MonoBehaviour
 
     [SerializeField] private Dictionary<InventoryItemData, int> _itemsHeld;
 
-    public void Init()
+    public void CreateSlots(/*ExchangeKeeper exchangeKeeper*/)
     {
         foreach (Transform child in _containerForSlot)
         {
@@ -20,7 +20,6 @@ public class ExchangeHandler : MonoBehaviour
         }
 
         _itemsHeld = _inventoryHolder.InventorySystem.GetAllItemsHeld();
-        Debug.Log(_itemsHeld.Count);
 
         foreach (var item in _itemsHeld)
         {
