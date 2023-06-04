@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using BehaviorDesigner.Runtime;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,7 +9,6 @@ public abstract class Animals : MonoBehaviour, IDamagable
     [SerializeField] private float _healh;
     [SerializeField] private float _armor;
     private BehaviorTree _behaviorTree;
-    private MeshCollider _collider;
     private NavMeshAgent _agent;
     private bool _isDead = false;
 
@@ -19,7 +19,6 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private void Start()
     {
         _behaviorTree = GetComponent<BehaviorTree>();
-        _collider = GetComponent<MeshCollider>();
         _agent = GetComponent<NavMeshAgent>();
     }
     
@@ -38,9 +37,15 @@ public abstract class Animals : MonoBehaviour, IDamagable
     public void Die()
     {
         _isDead = true;
-       // _collider.enabled = false;
         _behaviorTree.enabled = false;
         _agent.enabled = false;
         Died?.Invoke();
+        StartCoroutine(Precipice());
+    }
+
+    IEnumerator Precipice()
+    {
+        yield return new WaitForSeconds(30f);
+        Destroy(gameObject);
     }
 }
