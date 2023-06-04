@@ -364,7 +364,7 @@ Transform:
   m_GameObject: {fileID: 2438967882976369583}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.546982, y: 0.5, z: 11.1789055}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2435861310629510993}
@@ -469,16 +469,16 @@ NavMeshAgent:
   m_GameObject: {fileID: 2438967882976369583}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.01
+  m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 50
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.02
+  m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -524,6 +524,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2e3560257f2854fb18a1cbf719d3aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _loots:
+  - {fileID: 1057562948454648, guid: 936b6197990da6741b80aa4446553ae7, type: 3}
+  - {fileID: 1057562948454648, guid: 936b6197990da6741b80aa4446553ae7, type: 3}
   _healh: 100
   _armor: 0
 --- !u!114 &5156387951003520814

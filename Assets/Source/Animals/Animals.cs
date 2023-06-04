@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using BehaviorDesigner.Runtime;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class Animals : MonoBehaviour, IDamagable
 {
+    [SerializeField] private List<GameObject> _loots;
     [SerializeField] private float _healh;
     [SerializeField] private float _armor;
+    
     private BehaviorTree _behaviorTree;
     private NavMeshAgent _agent;
     private bool _isDead = false;
@@ -39,6 +42,12 @@ public abstract class Animals : MonoBehaviour, IDamagable
         _isDead = true;
         _behaviorTree.enabled = false;
         _agent.enabled = false;
+        
+        foreach (var loot in _loots)
+        {
+           GameObject ffg = Instantiate(loot);
+           ffg.transform.position = transform.position;
+        }
         Died?.Invoke();
         StartCoroutine(Precipice());
     }
