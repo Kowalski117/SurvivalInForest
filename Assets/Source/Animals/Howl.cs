@@ -1,15 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
+using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine;
 
 public class Howl : Action
 {
     public SharedEnemy Enemy;
-    
+    public SharedBool IsAttacking;
+
     public override TaskStatus OnUpdate()
     {
-        Enemy.Value.Howl();
-        return TaskStatus.Inactive;
+        Debug.Log(IsAttacking.Value);
+        if (IsAttacking.Value == false)
+        {
+            Enemy.Value.Howl();
+            return TaskStatus.Failure;
+        }
+        else
+        {
+            return TaskStatus.Success;
+        }
+        
     }
 }

@@ -56,7 +56,6 @@ public class AnimationAnimals : MonoBehaviour
     {
         TurnOffAnimations();
         string attack = _attacks + Random.Range(1,_maxAttacksAnimation+1);
-        Debug.Log(attack);
         _animator.SetTrigger(attack);
     }
 
