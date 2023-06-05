@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,13 +21,13 @@ public class CraftSlotView : MonoBehaviour
     private void OnEnable()
     {
         _craftedButton.onClick.AddListener(OnCreateRecipeButton);
-        _inventoryHolder.InventorySystem.OnInventorySlotChanged += UpdateRecipe;
+        //_inventoryHolder.InventorySystem.OnInventorySlotChanged += UpdateRecipe;
     }
 
     private void OnDisable()
     {
         _craftedButton.onClick.RemoveListener(OnCreateRecipeButton);
-        _inventoryHolder.InventorySystem.OnInventorySlotChanged -= UpdateRecipe;
+        //_inventoryHolder.InventorySystem.OnInventorySlotChanged -= UpdateRecipe;
     }
 
     public void Init(PlayerInventoryHolder playerInventory, CraftRecipe craftRecipe)
@@ -52,7 +51,7 @@ public class CraftSlotView : MonoBehaviour
         OnCreateRecipeButtonClick?.Invoke(_recipe, _inventoryHolder);
     }
 
-    private void UpdateRecipe(InventorySlot slot)
+    public void UpdateRecipe()
     {
         foreach (var ingridient in ingridientSlots)
         {

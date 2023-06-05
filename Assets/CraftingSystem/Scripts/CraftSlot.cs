@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CraftSlotView))]
 public class CraftSlot : MonoBehaviour
 {
     private CraftSlotView _slotView;
+
+    public static UnityAction OnCraftSlotUpdate;
 
     private void Awake()
     {
@@ -31,6 +34,7 @@ public class CraftSlot : MonoBehaviour
             }
 
             playerInventoryHolder.AddToInventory(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, true);
+            OnCraftSlotUpdate?.Invoke();
         }
     }
 

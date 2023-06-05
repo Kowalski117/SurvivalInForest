@@ -9,6 +9,17 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private CraftSlotView _craftSlotPrefab;
 
     private CraftBench _craftBench;
+    private List<CraftSlotView> _craftSlotViews = new List<CraftSlotView>();
+
+    private void OnEnable()
+    {
+        CraftSlot.OnCraftSlotUpdate += UpdateSlot;
+    }
+
+    private void OnDisable()
+    {
+        CraftSlot.OnCraftSlotUpdate -= UpdateSlot;
+    }
 
     public void DisplayCraftingWindow(CraftBench craftBench)
     {
@@ -22,7 +33,16 @@ public class CraftingHandler : MonoBehaviour
         foreach (var item in _craftBench.RecipeItemList.Items)
         {
             CraftSlotView craftSlot = Instantiate(_craftSlotPrefab, _containerForSlot);
+            _craftSlotViews.Add(craftSlot);
             craftSlot.Init(_inventoryHolder, item);
+        }
+    }
+
+    private void UpdateSlot()
+    {
+        foreach (var slot in _craftSlotViews)
+        {
+            slot.UpdateRecipe();
         }
     }
 }
