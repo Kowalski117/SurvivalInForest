@@ -20,47 +20,33 @@ public class Interactor : MonoBehaviour
         PlayerInventoryHolder = GetComponent<PlayerInventoryHolder>();
     }
 
+    private void OnEnable()
+    {
+        _inventoryPlayerInput.InteractKeyPressed += StartInteractable;
+    }
+
+    private void OnDisable()
+    {
+        _inventoryPlayerInput.InteractKeyPressed -= StartInteractable;
+    }
+
     private void Update()
     {
         _colliders = Physics.OverlapSphere(_iteractionPoint.position, _interactionPointRadius, _interactionLayer);
+    }
 
-        if (Keyboard.current.eKey.wasPressedThisFrame)
+    private void StartInteractable()
+    {
+        if(_colliders.Length > 0)
         {
             for (int i = 0; i < _colliders.Length; i++)
             {
                 var interactable = _colliders[i].GetComponent<IInteractable>();
 
                 if (interactable != null)
-                    StartInteractable(interactable);
+                    interactable.Interact(this, out bool interactSuccessful);
             }
         }
-    }
-
-    //private void OnEnable()
-    //{
-    //    _inventoryPlayerInput.SwitchInventory += Open;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    _inventoryPlayerInput.SwitchInventory -= Open;
-    //}
-
-    //private void Open()
-    //{
-    //    for (int i = 0; i < _colliders.Length; i++)
-    //    {
-    //        var interactable = _colliders[i].GetComponent<IInteractable>();
-
-    //        if (interactable != null)
-    //            StartInteractable(interactable);
-    //    }
-    //}
-
-    private void StartInteractable(IInteractable interactable)
-    {
-        interactable.Interact(this, out bool interactSuccessful);
-        IsInteraction = true;
     }
 
     public void CompleteInteraction(IInteractable interactable)

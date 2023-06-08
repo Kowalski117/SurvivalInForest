@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class InventorySlotUI : MonoBehaviour
 {
     [SerializeField] private Image _imageSprite;
     [SerializeField] private TMP_Text _itemCount;
+    [SerializeField] private GameObject _slotHighlight;
     [SerializeField] private InventorySlot _assignedInventorySlot;
 
     private Button _button;
@@ -74,5 +76,10 @@ public class InventorySlotUI : MonoBehaviour
     public void OnUISlotClick()
     {
         ParentDisplay?.SlotClicked(this);
+    }
+
+    public void ToggleHighlight()
+    {
+        _slotHighlight.SetActive(!_slotHighlight.activeInHierarchy);
     }
 }

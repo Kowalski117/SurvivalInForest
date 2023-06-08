@@ -12,12 +12,6 @@ public class PlayerInventoryHolder : InventoryHolder
         SaveGameHandler.Data._playerInventory = new InventorySaveData(PrimaryInventorySystem); // поменять
     }
 
-    private void Update()
-    {
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-            OnPlayerInventoryDispleyRequested?.Invoke(PrimaryInventorySystem, Offset);
-    }
-
     public bool AddToInventory(InventoryItemData data, int amount, bool spawnItemOnFail = false)
     {
         if (PrimaryInventorySystem.AddToInventory(data, amount))
@@ -29,6 +23,11 @@ public class PlayerInventoryHolder : InventoryHolder
             Instantiate(data.ItemPrefab, transform.position + transform.forward, Quaternion.identity);
 
         return false;
+    }
+
+    public void ToggleInventory()
+    {
+        OnPlayerInventoryDispleyRequested?.Invoke(PrimaryInventorySystem, Offset);
     }
 
     protected override void LoadInventory(SaveData data)
