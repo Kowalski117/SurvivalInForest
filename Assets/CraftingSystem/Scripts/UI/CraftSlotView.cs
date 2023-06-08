@@ -21,13 +21,11 @@ public class CraftSlotView : MonoBehaviour
     private void OnEnable()
     {
         _craftedButton.onClick.AddListener(OnCreateRecipeButton);
-        //_inventoryHolder.InventorySystem.OnInventorySlotChanged += UpdateRecipe;
     }
 
     private void OnDisable()
     {
         _craftedButton.onClick.RemoveListener(OnCreateRecipeButton);
-        //_inventoryHolder.InventorySystem.OnInventorySlotChanged -= UpdateRecipe;
     }
 
     public void Init(PlayerInventoryHolder playerInventory, CraftRecipe craftRecipe)

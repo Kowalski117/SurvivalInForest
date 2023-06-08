@@ -3,14 +3,14 @@ using UnityEngine.Events;
 
 public class CraftBench : MonoBehaviour, IInteractable
 {
-    [SerializeField] private RecipeItemList _recipeItemList;
+    [SerializeField] private CraftingÑategory _craftingÑategory;
 
     private PlayerInventoryHolder _playerInventoryHolder;
 
-    public static UnityAction<CraftBench> OnCraftingDisplayRequested;
+    public static UnityAction<CraftingÑategory> OnCraftingDisplayRequested;
     public UnityAction<IInteractable> OnInteractionComplete { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public RecipeItemList RecipeItemList => _recipeItemList;
+    public CraftingÑategory CraftingÑategory => _craftingÑategory;
 
     public void EndInteraction()
     {
@@ -19,12 +19,11 @@ public class CraftBench : MonoBehaviour, IInteractable
 
     public void Interact(Interactor interactor, out bool interactSuccessfull)
     {
-        OnCraftingDisplayRequested?.Invoke(this);
-
         _playerInventoryHolder = interactor.PlayerInventoryHolder;
 
         if (_playerInventoryHolder != null)
         {
+            OnCraftingDisplayRequested?.Invoke(_craftingÑategory);
             EndInteraction();
             interactSuccessfull = true;
         }
