@@ -4,6 +4,7 @@ using UnityEngine;
 public class InventoryItemData : ScriptableObject
 {
     [SerializeField] private int _id = -1;
+    [SerializeField] private ItemType _type;
     [SerializeField] private string _displayName;
     [TextArea(4,4)]
     [SerializeField] private string _description;
@@ -12,11 +13,14 @@ public class InventoryItemData : ScriptableObject
     [SerializeField] private GameObject _itemPrefab;
 
     public int Id => _id;
+    public ItemType Type => _type;
     public string DisplayName => _displayName;
     public string Description => _description;
     public Sprite Icon => _icon;
     public int MaxStackSize => _maxStackSize;
-    public GameObject ItemPrefab => _itemPrefab;    
+    public GameObject ItemPrefab => _itemPrefab;
+
+
 
     public void SetId(int id)
     {
@@ -28,3 +32,12 @@ public class InventoryItemData : ScriptableObject
         Debug.Log("использовать");
     }
 }
+
+public enum ItemType
+{
+    Weapon,
+    Food,
+    Decor,
+    Clothing
+}
+

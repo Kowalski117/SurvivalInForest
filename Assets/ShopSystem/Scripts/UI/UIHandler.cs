@@ -10,7 +10,6 @@ public class UIHandler : MonoBehaviour
 
     [SerializeField] private ExchangeHandler _shopKeeperDisplay;
     [SerializeField] private CraftingHandler _craftingHandler;
-    [SerializeField] private CraftingHandler _craftingPlayerHandler;
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
@@ -25,13 +24,13 @@ public class UIHandler : MonoBehaviour
 
         _shopKeeperDisplay.gameObject.SetActive(false);
         _craftingHandler.gameObject.SetActive(false);
-        _craftingPlayerHandler.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         InventoryHolder.OnDinamicInventoryDispleyRequested += DisplayInventory;
         _inventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
+
         _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
 
         CraftBench.OnCraftingDisplayRequested += DisplayCraftWindow;
@@ -101,29 +100,25 @@ public class UIHandler : MonoBehaviour
 
         if (_isCraftOpen)
         {
-            _craftingHandler.gameObject.SetActive(true);
             _craftingHandler.DisplayCraftingWindow(craftingÑategory);
-        }
-        else
-        {
-            _craftingHandler.gameObject.SetActive(false);
         }
     }
 
     private void DisplayCraftPlayerWindow(CraftingÑategory craftingÑategory)
     {
-        if(!_isCraftOpen && !_isShopOpen && !_isChestOpen)
+        if (!_isShopOpen && !_isChestOpen)
         {
             _isCraftPlayerOpen = !_isCraftPlayerOpen;
 
             if (_isCraftPlayerOpen)
             {
-                _craftingPlayerHandler.gameObject.SetActive(true);
-                _craftingPlayerHandler.DisplayCraftingWindow(craftingÑategory);
+                _craftingHandler.gameObject.SetActive(true);
+                if(!_isCraftOpen)
+                    _craftingHandler.DisplayCraftingWindow(craftingÑategory);
             }
             else
             {
-                _craftingPlayerHandler.gameObject.SetActive(false);
+                _craftingHandler.gameObject.SetActive(false);
             }
         }
     }

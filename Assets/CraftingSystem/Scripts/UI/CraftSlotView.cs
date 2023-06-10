@@ -18,6 +18,8 @@ public class CraftSlotView : MonoBehaviour
 
     public event UnityAction<CraftRecipe, PlayerInventoryHolder> OnCreateRecipeButtonClick;
 
+    public CraftRecipe Recipe => _recipe;
+
     private void OnEnable()
     {
         _craftedButton.onClick.AddListener(OnCreateRecipeButton);

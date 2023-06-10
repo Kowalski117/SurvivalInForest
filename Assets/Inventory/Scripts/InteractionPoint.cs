@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InteractionPoint : MonoBehaviour
 {
-    [SerializeField] private PlayerInventoryHolder _inventoryHolder;
+    private SphereCollider _collider;
 
-    public PlayerInventoryHolder InventoryHolder => _inventoryHolder;
+
 }

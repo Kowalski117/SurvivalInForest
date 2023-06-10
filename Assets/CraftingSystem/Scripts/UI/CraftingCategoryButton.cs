@@ -1,13 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CraftingCategoryButton : MonoBehaviour
 {
-    [SerializeField] private Transform _containerForSlots;
+    [SerializeField] private CraftingHandler _craftingHandler;
+    [SerializeField] private ItemType _itemType;
+    [SerializeField] private Crafting—ategory _crafting—ategory;
 
+    private List<CraftSlotView> _craftSlotViews = new List<CraftSlotView>();
     private Button _button;
-
-    public Transform ContainerForSlots => _containerForSlots;
 
     private void Awake()
     {
@@ -26,6 +28,6 @@ public class CraftingCategoryButton : MonoBehaviour
 
     private void OpenCategory()
     {
-        _containerForSlots.gameObject.SetActive(true);
+        _craftSlotViews = _craftingHandler.GetItemsByType(_itemType);
     }
 }
