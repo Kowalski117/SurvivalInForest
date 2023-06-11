@@ -64,12 +64,12 @@ public class ItemPickUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out InventoryHolder inventory))
+        if (other.TryGetComponent(out Interactor interactor))
         {
-            if (!inventory)
+            if (!interactor)
                 return;
 
-            _currentInventoryHolder = inventory;
+            _currentInventoryHolder = interactor.PlayerInventoryHolder;
         }
     }
 

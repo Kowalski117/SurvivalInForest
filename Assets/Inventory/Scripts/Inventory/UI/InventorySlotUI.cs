@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class InventorySlotUI : MonoBehaviour
 {
     [SerializeField] private Image _imageSprite;
     [SerializeField] private TMP_Text _itemCount;
+    [SerializeField] private GameObject _slotHighlight;
     [SerializeField] private InventorySlot _assignedInventorySlot;
 
     private Button _button;
@@ -32,14 +34,10 @@ public class InventorySlotUI : MonoBehaviour
         _button.onClick.RemoveListener(OnUISlotClick);
     }
 
-    private void Update()
-    {
-        UpdateUiSlot();
-    }
-
     public void Init(InventorySlot slot)
     {
         _assignedInventorySlot = slot;
+        UpdateUiSlot();
     }
 
     public void UpdateUISlot(InventorySlot slot)
@@ -48,13 +46,16 @@ public class InventorySlotUI : MonoBehaviour
         {
             _imageSprite.sprite = slot.ItemData.Icon;
             _imageSprite.color = Color.white;
-            if(slot.Size >= 1)
-                _itemCount.text = slot.Size.ToString();
         }
         else
         {
             CleanSlot();
         }
+
+        if (slot.Size > 1)
+            _itemCount.text = slot.Size.ToString();
+        else
+            _itemCount.text = "";
     }
 
     public void UpdateUiSlot()
@@ -75,5 +76,10 @@ public class InventorySlotUI : MonoBehaviour
     public void OnUISlotClick()
     {
         ParentDisplay?.SlotClicked(this);
+    }
+
+    public void ToggleHighlight()
+    {
+        _slotHighlight.SetActive(!_slotHighlight.activeInHierarchy);
     }
 }

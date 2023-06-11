@@ -1,73 +1,120 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InventoryUIController : MonoBehaviour
 {
-    [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
-    [SerializeField] private CursorController _cursorController;
-    [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
-    [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
+    //[SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
+    //[SerializeField] private CursorController _cursorController;
 
-    private void Awake()
-    {
-        _inventoryPanel.gameObject.SetActive(false);
-        _playerBackpackPanel.gameObject.SetActive(false);
-    }
+    //[SerializeField] private DynamicInventoryDisplay _inventoryPanel;
+    //[SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
 
-    private void OnEnable()
-    {
-        InventoryHolder.OnDinamicInventoryDispleyRequested += DisplayInventory;
-        PlayerInventoryHolder.OnPlayerInventoryDispleyRequested += DisplayPlayerInventory;
-        _inventoryPlayerInput.SwitchInventory += OpenDisplay;
-    }
+    //[SerializeField] private ExchangeHandler _shopKeeperDisplay;
+    //[SerializeField] private ExchangeKeeper _shopKeeper;
+    //[SerializeField] private CraftingHandler _craftingHandler;
 
-    private void OnDisable()
-    {
-        InventoryHolder.OnDinamicInventoryDispleyRequested -= DisplayInventory;
-        PlayerInventoryHolder.OnPlayerInventoryDispleyRequested -= DisplayPlayerInventory;
-        _inventoryPlayerInput.SwitchInventory -= OpenDisplay;
-    }
+    //private bool _isInventoryOpen = false;
+    //private bool _isChestOpen = false;
+    //private bool _isShopOpen = false;
+    //private bool _isCraftOpen = false;
 
-    private void Update()
-    {
-        if (_inventoryPanel.gameObject.activeInHierarchy && Keyboard.current.escapeKey.wasPressedThisFrame) // ïîìåíÿòü
-        {
-            _inventoryPanel.gameObject.SetActive(false);
-            _cursorController.SetCursorVisible(false);
-        }
+    //private void Awake()
+    //{
+    //    _inventoryPanel.gameObject.SetActive(false);
+    //    _playerBackpackPanel.gameObject.SetActive(false);
 
-        if (_playerBackpackPanel.gameObject.activeInHierarchy && Keyboard.current.escapeKey.wasPressedThisFrame) // ïîìåíÿòü
-        {
-            _playerBackpackPanel.gameObject.SetActive(false);
-            _cursorController.SetCursorVisible(false);
-        }
+    //    _shopKeeperDisplay.gameObject.SetActive(false);
+    //    _craftingHandler.gameObject.SetActive(false);
+    //}
 
-    }
+    //private void OnEnable()
+    //{
+    //    InventoryHolder.OnDinamicInventoryDispleyRequested += DisplayInventory;
+    //    _inventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
 
-    public void DisplayInventory(InventorySystem inventoryDislay, int offSet)
-    {
-        //_playerBackpackPanel.gameObject.SetActive(true);
-        _inventoryPanel.gameObject.SetActive(true);
-        _cursorController.SetCursorVisible(true);
-        _inventoryPanel.RefreshDynamicInventory(inventoryDislay, offSet);
-        //_playerBackpackPanel.RefreshDynamicInventory(inventoryDislay, offSet);
-    }
+    //    CraftBench.OnCraftingDisplayRequested += DisplayCraftWindow;
+    //    ExchangeKeeper.OnExchangeDisplayRequested += DisplayShopWindow;
+    //}
 
-    public void DisplayPlayerInventory(InventorySystem inventoryDislay, int offSet)
-    {
-        _playerBackpackPanel.gameObject.SetActive(true);
-        //_inventoryPanel.gameObject.SetActive(true);
-        _cursorController.SetCursorVisible(true);
-        //_inventoryPanel.RefreshDynamicInventory(inventoryDislay, offSet);
-        _playerBackpackPanel.RefreshDynamicInventory(inventoryDislay, offSet);
-    }
+    //private void OnDisable()
+    //{
+    //    InventoryHolder.OnDinamicInventoryDispleyRequested -= DisplayInventory;
+    //    _inventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
 
-    public void OpenDisplay()
-    {
-        if(_inventoryPanel.gameObject.activeInHierarchy)
-        {
-            _inventoryPanel.gameObject.SetActive(false);
-            _cursorController.SetCursorVisible(false);
-        }
-    }
+    //    CraftBench.OnCraftingDisplayRequested -= DisplayCraftWindow;
+    //    ExchangeKeeper.OnExchangeDisplayRequested -= DisplayShopWindow;
+    //}
+
+    //public void DisplayInventory(InventorySystem inventoryDislay, int offSet)
+    //{
+    //    _isChestOpen = !_isChestOpen;
+
+    //    if (_isChestOpen)
+    //    {
+    //        _inventoryPanel.gameObject.SetActive(true);
+    //        _cursorController.SetCursorVisible(true);
+    //        _inventoryPanel.RefreshDynamicInventory(inventoryDislay, offSet);
+    //    }
+    //    else
+    //    {
+    //        CloseChest();
+    //    }
+    //}
+
+    //public void DisplayPlayerInventory(InventorySystem inventoryDislay, int offSet)
+    //{
+    //    _isInventoryOpen = !_isInventoryOpen;
+
+    //    if (_isInventoryOpen)
+    //    {
+    //        _playerBackpackPanel.gameObject.SetActive(true);
+    //        _cursorController.SetCursorVisible(true);
+    //        _playerBackpackPanel.RefreshDynamicInventory(inventoryDislay, offSet);
+    //    }
+    //    else
+    //    {
+    //        CloseInventory();
+    //    }
+    //}
+
+    //private void DisplayShopWindow(ExchangeKeeper exchangeKeeper)
+    //{
+    //    _isShopOpen = !_isShopOpen;
+
+    //    if (_isShopOpen)
+    //    {
+    //        _shopKeeperDisplay.gameObject.SetActive(true);
+    //        _shopKeeperDisplay.CreateSlots();
+    //    }
+    //    else
+    //    {
+    //        _shopKeeperDisplay.gameObject.SetActive(false);
+    //    }
+    //}
+
+    //private void DisplayCraftWindow(CraftBench craftBench)
+    //{
+    //    _isCraftOpen = !_isCraftOpen;
+
+    //    if (_isCraftOpen)
+    //    {
+    //        _craftingHandler.gameObject.SetActive(true);
+    //        _craftingHandler.DisplayCraftingWindow(craftBench.CraftingÑategory);
+    //    }
+    //    else
+    //    {
+    //        _craftingHandler.gameObject.SetActive(false);
+    //    }
+    //}
+
+    //private void CloseChest()
+    //{
+    //    _inventoryPanel.gameObject.SetActive(false);
+    //    _cursorController.SetCursorVisible(false);
+    //}
+
+    //private void CloseInventory()
+    //{
+    //    _playerBackpackPanel.gameObject.SetActive(false);
+    //    _cursorController.SetCursorVisible(false);
+    //}
 }

@@ -83,7 +83,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Interact"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""37bf509c-c7fc-4bca-85b9-de8af496527b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -92,7 +92,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Inventory"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""a4025534-216a-4df2-b993-74cb79ac4c94"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -303,7 +303,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""ee6014f8-929a-468e-8b4f-51fbd50da8c3"",
                     ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""PickUp"",
@@ -314,7 +314,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""ba3973d2-92fe-4c3f-9132-4cd0c42fd51c"",
                     ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""PickUp"",
@@ -324,8 +324,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f959c2a1-5483-46d4-9346-882fd9c3f26c"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""Interact"",
@@ -336,7 +336,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""bd1cfd0e-1542-4d82-a467-e27e9467faac"",
                     ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interact"",
@@ -347,7 +347,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""ce711ecb-6aee-4b1a-b307-f6e307e937cb"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""Inventory"",
@@ -358,10 +358,178 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""95e35ed2-97a3-4789-be58-04532fe35a62"",
                     ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Inventory"",
+            ""id"": ""87e0910c-26c9-4778-8284-1f6445400735"",
+            ""actions"": [
+                {
+                    ""name"": ""Hotbar 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc76a0b1-e2b1-4b83-bf07-ba4311c6e16a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hotbar 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""f96fb712-6318-4e6f-a702-dff029fe3cc4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hotbar 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""003072c6-8abe-403f-a38e-e4eb4bf37767"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hotbar 4"",
+                    ""type"": ""Button"",
+                    ""id"": ""0917b6cd-5988-4c9c-8f59-6aee6d464526"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hotbar 5"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab37f07b-9a87-4d3c-88a7-6f50f1ea9c6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hotbar 6"",
+                    ""type"": ""Button"",
+                    ""id"": ""210d7c25-6997-4e54-bc41-61e14057c5c0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseWheel"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""8cdbde8d-0486-4ae9-8e0c-12bed9ba831b"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Use Item"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad452f41-c82c-4467-b181-d9b3dcec3b12"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4f2c0e50-4d6e-4a3a-b878-9e8b664c539f"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Hotbar 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""072aa3b8-eead-4af0-82b1-4dcbde7631e6"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Hotbar 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbe8ad69-5bbf-4971-9b47-533321255d67"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Hotbar 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ec7e15c-3eff-45f4-98e0-377024270425"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Hotbar 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e8f6261-4c73-4dc7-aaa7-1695e2c9b698"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Hotbar 5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad86b060-b357-4bf2-83c4-f768b6f0cb41"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Hotbar 6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0eb5f5e5-d7ba-422a-8c94-77300bd8ee4b"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""MouseWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06b707a1-c3aa-4e59-a778-75c6b2acef90"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Use Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -428,6 +596,16 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        // Inventory
+        m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
+        m_Inventory_Hotbar1 = m_Inventory.FindAction("Hotbar 1", throwIfNotFound: true);
+        m_Inventory_Hotbar2 = m_Inventory.FindAction("Hotbar 2", throwIfNotFound: true);
+        m_Inventory_Hotbar3 = m_Inventory.FindAction("Hotbar 3", throwIfNotFound: true);
+        m_Inventory_Hotbar4 = m_Inventory.FindAction("Hotbar 4", throwIfNotFound: true);
+        m_Inventory_Hotbar5 = m_Inventory.FindAction("Hotbar 5", throwIfNotFound: true);
+        m_Inventory_Hotbar6 = m_Inventory.FindAction("Hotbar 6", throwIfNotFound: true);
+        m_Inventory_MouseWheel = m_Inventory.FindAction("MouseWheel", throwIfNotFound: true);
+        m_Inventory_UseItem = m_Inventory.FindAction("Use Item", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -572,6 +750,95 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Inventory
+    private readonly InputActionMap m_Inventory;
+    private IInventoryActions m_InventoryActionsCallbackInterface;
+    private readonly InputAction m_Inventory_Hotbar1;
+    private readonly InputAction m_Inventory_Hotbar2;
+    private readonly InputAction m_Inventory_Hotbar3;
+    private readonly InputAction m_Inventory_Hotbar4;
+    private readonly InputAction m_Inventory_Hotbar5;
+    private readonly InputAction m_Inventory_Hotbar6;
+    private readonly InputAction m_Inventory_MouseWheel;
+    private readonly InputAction m_Inventory_UseItem;
+    public struct InventoryActions
+    {
+        private @PlayerInput m_Wrapper;
+        public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Hotbar1 => m_Wrapper.m_Inventory_Hotbar1;
+        public InputAction @Hotbar2 => m_Wrapper.m_Inventory_Hotbar2;
+        public InputAction @Hotbar3 => m_Wrapper.m_Inventory_Hotbar3;
+        public InputAction @Hotbar4 => m_Wrapper.m_Inventory_Hotbar4;
+        public InputAction @Hotbar5 => m_Wrapper.m_Inventory_Hotbar5;
+        public InputAction @Hotbar6 => m_Wrapper.m_Inventory_Hotbar6;
+        public InputAction @MouseWheel => m_Wrapper.m_Inventory_MouseWheel;
+        public InputAction @UseItem => m_Wrapper.m_Inventory_UseItem;
+        public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
+        public void SetCallbacks(IInventoryActions instance)
+        {
+            if (m_Wrapper.m_InventoryActionsCallbackInterface != null)
+            {
+                @Hotbar1.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar1;
+                @Hotbar1.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar1;
+                @Hotbar1.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar1;
+                @Hotbar2.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar2;
+                @Hotbar2.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar2;
+                @Hotbar2.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar2;
+                @Hotbar3.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar3;
+                @Hotbar3.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar3;
+                @Hotbar3.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar3;
+                @Hotbar4.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar4;
+                @Hotbar4.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar4;
+                @Hotbar4.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar4;
+                @Hotbar5.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar5;
+                @Hotbar5.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar5;
+                @Hotbar5.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar5;
+                @Hotbar6.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar6;
+                @Hotbar6.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar6;
+                @Hotbar6.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnHotbar6;
+                @MouseWheel.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnMouseWheel;
+                @MouseWheel.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnMouseWheel;
+                @MouseWheel.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnMouseWheel;
+                @UseItem.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnUseItem;
+                @UseItem.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnUseItem;
+                @UseItem.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnUseItem;
+            }
+            m_Wrapper.m_InventoryActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Hotbar1.started += instance.OnHotbar1;
+                @Hotbar1.performed += instance.OnHotbar1;
+                @Hotbar1.canceled += instance.OnHotbar1;
+                @Hotbar2.started += instance.OnHotbar2;
+                @Hotbar2.performed += instance.OnHotbar2;
+                @Hotbar2.canceled += instance.OnHotbar2;
+                @Hotbar3.started += instance.OnHotbar3;
+                @Hotbar3.performed += instance.OnHotbar3;
+                @Hotbar3.canceled += instance.OnHotbar3;
+                @Hotbar4.started += instance.OnHotbar4;
+                @Hotbar4.performed += instance.OnHotbar4;
+                @Hotbar4.canceled += instance.OnHotbar4;
+                @Hotbar5.started += instance.OnHotbar5;
+                @Hotbar5.performed += instance.OnHotbar5;
+                @Hotbar5.canceled += instance.OnHotbar5;
+                @Hotbar6.started += instance.OnHotbar6;
+                @Hotbar6.performed += instance.OnHotbar6;
+                @Hotbar6.canceled += instance.OnHotbar6;
+                @MouseWheel.started += instance.OnMouseWheel;
+                @MouseWheel.performed += instance.OnMouseWheel;
+                @MouseWheel.canceled += instance.OnMouseWheel;
+                @UseItem.started += instance.OnUseItem;
+                @UseItem.performed += instance.OnUseItem;
+                @UseItem.canceled += instance.OnUseItem;
+            }
+        }
+    }
+    public InventoryActions @Inventory => new InventoryActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -618,5 +885,16 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnPickUp(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+    }
+    public interface IInventoryActions
+    {
+        void OnHotbar1(InputAction.CallbackContext context);
+        void OnHotbar2(InputAction.CallbackContext context);
+        void OnHotbar3(InputAction.CallbackContext context);
+        void OnHotbar4(InputAction.CallbackContext context);
+        void OnHotbar5(InputAction.CallbackContext context);
+        void OnHotbar6(InputAction.CallbackContext context);
+        void OnMouseWheel(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
     }
 }

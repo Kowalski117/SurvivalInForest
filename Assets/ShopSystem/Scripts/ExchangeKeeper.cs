@@ -4,9 +4,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(UniqueID))]
 public class ExchangeKeeper : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ExchangerItemList _shopItemsHeld;
-    [SerializeField] private ExchangeSystem _shopSystem;
-
+    public static UnityAction<ExchangeKeeper> OnExchangeDisplayRequested;
     public UnityAction<IInteractable> OnInteractionComplete { get; set; }
 
     public void EndInteraction()
@@ -16,17 +14,16 @@ public class ExchangeKeeper : MonoBehaviour, IInteractable
 
     public void Interact(Interactor interactor, out bool interactSuccessfull)
     {
-        var playerInventory = interactor.GetComponent<PlayerInventoryHolder>();
+        var playerInventory = interactor.PlayerInventoryHolder;
 
         if (playerInventory != null)
         {
-            OnInteractionComplete?.Invoke(this);
+            OnExchangeDisplayRequested?.Invoke(this);
             interactSuccessfull = true;
         }
         else
         {
             interactSuccessfull = false;
-            Debug.LogError("Player inventory not found");
         }
     }
 }

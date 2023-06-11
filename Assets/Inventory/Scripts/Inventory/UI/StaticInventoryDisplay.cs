@@ -7,18 +7,19 @@ public class StaticInventoryDisplay : InventoryDisplay
     [SerializeField] private InventoryHolder _inventoryHolder;
     [SerializeField] private InventorySlotUI[] _slots;
 
+    public InventorySlotUI[] Slots => _slots;
+
     protected override void Start()
     {
-        base.Start();
         RefreshStaticDisplay();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         PlayerInventoryHolder.OnPlayerInventoryChanged += RefreshStaticDisplay;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         PlayerInventoryHolder.OnPlayerInventoryChanged -= RefreshStaticDisplay;
     }
