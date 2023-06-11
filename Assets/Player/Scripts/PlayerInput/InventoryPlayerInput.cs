@@ -12,7 +12,7 @@ public class InventoryPlayerInput : MonoBehaviour
     private PlayerInput _playerInput;
 
     public event UnityAction<InventorySystem, int> SwitchInventory;
-    public event UnityAction<CraftingÑategory> OnCraftPlayerWindow;
+    public event UnityAction<CraftingÑategory, bool> OnCraftPlayerWindow;
 
     public event UnityAction InteractKeyPressed;
 
@@ -45,6 +45,6 @@ public class InventoryPlayerInput : MonoBehaviour
     private void InteractCrafting() 
     {
         SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
-        OnCraftPlayerWindow?.Invoke(_manualWorkbench.CraftingÑategory);
+        OnCraftPlayerWindow?.Invoke(_manualWorkbench.CraftingÑategory, true);
     }
 }

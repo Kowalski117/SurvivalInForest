@@ -14,7 +14,6 @@ public class UIHandler : MonoBehaviour
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
     private bool _isShopOpen = false;
-    private bool _isCraftOpen = false;
     private bool _isCraftPlayerOpen = false;
 
     private void Awake()
@@ -23,31 +22,26 @@ public class UIHandler : MonoBehaviour
         _playerBackpackPanel.gameObject.SetActive(false);
 
         _shopKeeperDisplay.gameObject.SetActive(false);
-        _craftingHandler.gameObject.SetActive(false);
+        _craftingHandler.CraftingWindow.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
-        InventoryHolder.OnDinamicInventoryDispleyRequested += DisplayInventory;
+        InventoryHolder.OnDinamicInventoryDisplayRequested += DisplayInventory;
         _inventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
-
-        _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
-
-        CraftBench.OnCraftingDisplayRequested += DisplayCraftWindow;
         ExchangeKeeper.OnExchangeDisplayRequested += DisplayShopWindow;
+        _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
     }
 
     private void OnDisable()
     {
-        InventoryHolder.OnDinamicInventoryDispleyRequested -= DisplayInventory;
+        InventoryHolder.OnDinamicInventoryDisplayRequested -= DisplayInventory;
         _inventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
-        _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
-
-        CraftBench.OnCraftingDisplayRequested -= DisplayCraftWindow;
         ExchangeKeeper.OnExchangeDisplayRequested -= DisplayShopWindow;
+        _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
     }
 
-    public void DisplayInventory(InventorySystem inventoryDislay, int offSet)
+    public void DisplayInventory(InventorySystem inventoryDisplay, int offset)
     {
         _isChestOpen = !_isChestOpen;
 
@@ -55,7 +49,7 @@ public class UIHandler : MonoBehaviour
         {
             _inventoryPanel.gameObject.SetActive(true);
             _cursorController.SetCursorVisible(true);
-            _inventoryPanel.RefreshDynamicInventory(inventoryDislay, offSet);
+            _inventoryPanel.RefreshDynamicInventory(inventoryDisplay, offset);
         }
         else
         {
@@ -63,7 +57,7 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    public void DisplayPlayerInventory(InventorySystem inventoryDislay, int offSet)
+    public void DisplayPlayerInventory(InventorySystem inventoryDisplay, int offset)
     {
         _isInventoryOpen = !_isInventoryOpen;
 
@@ -71,7 +65,7 @@ public class UIHandler : MonoBehaviour
         {
             _playerBackpackPanel.gameObject.SetActive(true);
             _cursorController.SetCursorVisible(true);
-            _playerBackpackPanel.RefreshDynamicInventory(inventoryDislay, offSet);
+            _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
         }
         else
         {
@@ -94,32 +88,18 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    private void DisplayCraftWindow(CraftingÑategory craftingÑategory)
+    private void DisplayCraftPlayerWindow(CraftingÑategory craftingCategory, bool playerInRange)
     {
-        _isCraftOpen = !_isCraftOpen;
+        _isCraftPlayerOpen = !_isCraftPlayerOpen;
 
-        if (_isCraftOpen)
+        if (_isCraftPlayerOpen)
         {
-            _craftingHandler.DisplayCraftingWindow(craftingÑategory);
+            _craftingHandler.CraftingWindow.gameObject.SetActive(true);
+            _craftingHandler.UpdateSlot();
         }
-    }
-
-    private void DisplayCraftPlayerWindow(CraftingÑategory craftingÑategory)
-    {
-        if (!_isShopOpen && !_isChestOpen)
+        else
         {
-            _isCraftPlayerOpen = !_isCraftPlayerOpen;
-
-            if (_isCraftPlayerOpen)
-            {
-                _craftingHandler.gameObject.SetActive(true);
-                if(!_isCraftOpen)
-                    _craftingHandler.DisplayCraftingWindow(craftingÑategory);
-            }
-            else
-            {
-                _craftingHandler.gameObject.SetActive(false);
-            }
+            _craftingHandler.CraftingWindow.gameObject.SetActive(false);
         }
     }
 

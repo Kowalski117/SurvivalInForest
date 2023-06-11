@@ -4,78 +4,55 @@ using UnityEngine;
 public class CraftingHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
+    [SerializeField] private ItemType _defoultType = ItemType.Weapon;
     [SerializeField] private CraftSlotView _craftSlotPrefab;
     [SerializeField] private Transform _containerForSlots;
     [SerializeField] private CraftingÑategory[] _craftingÑategories;
+    [SerializeField] private ManualWorkbench _manualWorkbench;
+    [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
+    [SerializeField] private Transform _craftingWindow;
 
-    private CraftingÑategory _craftingÑategory;
     private List<CraftSlotView> _craftSlotViews = new List<CraftSlotView>();
+    private CraftingÑategory _currentCategory;
+    public Transform CraftingWindow => _craftingWindow;
 
     private void OnEnable()
     {
         CraftSlot.OnCraftSlotUpdate += UpdateSlot;
+        MouseItemData.OnUpdatedSlots += UpdateSlot;
     }
 
     private void OnDisable()
     {
         CraftSlot.OnCraftSlotUpdate -= UpdateSlot;
+        MouseItemData.OnUpdatedSlots -= UpdateSlot;
     }
 
     private void Start()
     {
-        foreach (var craftingÑategory in _craftingÑategories) 
+        foreach (var craftingCategory in _craftingÑategories)
         {
-            CreateCraftSlot(craftingÑategory);
-        }
-    }
-
-    public void DisplayCraftingWindow(CraftingÑategory craftingÑategory)
-    {
-        _craftingÑategory = craftingÑategory;
-
-        for (int i = 0; i < _craftingÑategory.RecipeItemLists.Count; i++)
-        {
-            foreach (var item in _craftingÑategory.RecipeItemLists[i].Items)
-            {
-                EnableSlot(item);
-            }
-        }
-    }
-
-    public List<CraftSlotView> GetItemsByType(ItemType itemType)
-    {
-        List<CraftSlotView> items = new List<CraftSlotView>();
-
-        foreach (var item in _craftSlotViews)
-        {
-            if (item.Recipe.CraftedItem.Type == itemType)
-            {
-                items.Add(item);
-                item.gameObject.SetActive(true);
-            }
-            else
-            {
-                item.gameObject.SetActive(false);
-            }
+            CreateCraftSlots(craftingCategory);
         }
 
-        return items;
+        DisplayCraftWindow(_manualWorkbench.CraftingÑategory);
     }
 
-    private void CreateCraftSlot(CraftingÑategory craftingÑategory)
+    private void CreateCraftSlots(CraftingÑategory craftingCategory)
     {
-        for (int i = 0; i < craftingÑategory.RecipeItemLists.Count; i++)
+        foreach (var recipeList in craftingCategory.RecipeItemLists)
         {
-            foreach (var item in craftingÑategory.RecipeItemLists[i].Items)
+            foreach (var recipe in recipeList.Items)
             {
                 CraftSlotView craftSlot = Instantiate(_craftSlotPrefab, _containerForSlots);
                 _craftSlotViews.Add(craftSlot);
-                craftSlot.Init(_inventoryHolder, item);
+                craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
+                craftSlot.CloseForCrafting();
             }
         }
     }
 
-    private void UpdateSlot()
+    public void UpdateSlot()
     {
         foreach (var slot in _craftSlotViews)
         {
@@ -83,18 +60,43 @@ public class CraftingHandler : MonoBehaviour
         }
     }
 
-    private void EnableSlot(CraftRecipe craftRecipe)
+    public void SwitchCraftingCategory(ItemType itemType)
     {
-        foreach (var item in _craftSlotViews)
+        foreach (var slot in _craftSlotViews)
         {
-            if(item.Recipe == craftRecipe)
+            if (slot.Recipe.CraftedItem.Type == itemType && _currentCategory == slot.Category)
             {
-                item.gameObject.SetActive(true);
+                slot.OpenForCrafting();
             }
             else
             {
-                item.gameObject.SetActive(false);
+                slot.CloseForCrafting();
             }
         }
+    }
+
+    public void DisplayCraftWindow(CraftingÑategory craftingCategory)
+    {
+        _currentCategory = craftingCategory;
+
+        foreach (var recipeList in _currentCategory.RecipeItemLists)
+        {
+            foreach (var recipe in recipeList.Items)
+            {
+                foreach (var slot in _craftSlotViews)
+                {
+                    if (slot.Recipe == recipe && craftingCategory == slot.Category)
+                    {
+                        slot.OpenForCrafting();
+                    }
+                    else
+                    {
+                        slot.CloseForCrafting();
+                    }
+                }
+            }   
+        }
+
+        SwitchCraftingCategory(_defoultType);
     }
 }
