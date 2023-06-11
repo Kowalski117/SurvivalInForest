@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -13,6 +14,8 @@ public class MouseItemData : MonoBehaviour
     [SerializeField] private float _dropOffset = 0.5f;
 
     private Transform _playerTransform;
+
+    public static UnityAction OnUpdatedSlots;
 
     public InventorySlot AssignedInventorySlot => _assignedInventorySlot;
 
@@ -54,13 +57,14 @@ public class MouseItemData : MonoBehaviour
         _itemSprite.sprite = null;
         _itemSprite.color = Color.clear;
         _itemCount.text = "";
-
+        OnUpdatedSlots?.Invoke();
     }
 
     public void UpdateMouseSlot(InventorySlot inventorySlot)
     {
         _assignedInventorySlot.AssignItem(inventorySlot);
         UpdateMouseSlot();
+        OnUpdatedSlots?.Invoke();   
     }
 
     public void UpdateMouseSlot()
