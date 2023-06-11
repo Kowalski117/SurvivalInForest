@@ -8,7 +8,6 @@ public class Interactor : MonoBehaviour
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
 
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
-    [SerializeField] private CursorController _cursorController;
 
     private Collider[] _colliders;
 

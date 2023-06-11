@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -15,10 +16,12 @@ public class CraftSlotView : MonoBehaviour
     private List<IngridientSlotView> ingridientSlots = new List<IngridientSlotView>();
     private PlayerInventoryHolder _inventoryHolder;
     private CraftRecipe _recipe;
+    private Crafting—ategory _Òategory;
 
     public event UnityAction<CraftRecipe, PlayerInventoryHolder> OnCreateRecipeButtonClick;
 
     public CraftRecipe Recipe => _recipe;
+    public Crafting—ategory Category => _Òategory;
 
     private void OnEnable()
     {
@@ -30,10 +33,12 @@ public class CraftSlotView : MonoBehaviour
         _craftedButton.onClick.RemoveListener(OnCreateRecipeButton);
     }
 
-    public void Init(PlayerInventoryHolder playerInventory, CraftRecipe craftRecipe)
+    public void Init(PlayerInventoryHolder playerInventory, CraftRecipe craftRecipe, Crafting—ategory Òategory)
     {
         _recipe = craftRecipe;
         _inventoryHolder = playerInventory;
+
+        _Òategory = Òategory;
 
         _craftedItemIcon.sprite = craftRecipe.CraftedItem.Icon;
         _craftedItemName.text = craftRecipe.CraftedItem.DisplayName;
@@ -48,7 +53,7 @@ public class CraftSlotView : MonoBehaviour
 
     public void OnCreateRecipeButton()
     {
-        OnCreateRecipeButtonClick?.Invoke(_recipe, _inventoryHolder);
+            OnCreateRecipeButtonClick?.Invoke(_recipe, _inventoryHolder);
     }
 
     public void UpdateRecipe()
@@ -58,4 +63,15 @@ public class CraftSlotView : MonoBehaviour
             ingridient.UpdateAmount(_inventoryHolder);
         }
     }
+
+    public void CloseForCrafting()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void OpenForCrafting()
+    {
+        gameObject.SetActive(true);
+    }
 }
+

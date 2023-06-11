@@ -21,7 +21,7 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     public void Interact(Interactor interactor, out bool interactSuccessfull)
     {
-        OnDinamicInventoryDispleyRequested?.Invoke(PrimaryInventorySystem, 0);
+        OnDinamicInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, 0);
         interactSuccessfull = true;
     }
 
