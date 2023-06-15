@@ -38,4 +38,9 @@ public class SaveGameHandler : MonoBehaviour
     {
         SaveLoad.Load();
     }
+
+    private void OnDestroy()
+    {
+        SaveLoad.OnLoadData -= LoadData;
+    }
 }
