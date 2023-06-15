@@ -12,7 +12,8 @@ public class InventoryPlayerInput : MonoBehaviour
     private PlayerInput _playerInput;
 
     public event UnityAction<InventorySystem, int> SwitchInventory;
-    public event UnityAction<CraftingÑategory, bool> OnCraftPlayerWindow;
+    public event UnityAction<CraftingÑategory> OnCraftPlayerWindow;
+    public event UnityAction OnBuildingWindow;
 
     public event UnityAction InteractKeyPressed;
 
@@ -24,27 +25,27 @@ public class InventoryPlayerInput : MonoBehaviour
     private void OnEnable()
     {
         _playerInput.Enable();
-        //_playerInput.Player.Interact.performed += ctx => InteractInventory();
         _playerInput.Player.Inventory.performed += ctx => InteractCrafting();
+        _playerInput.Player.Build.performed += ctx => InteractBuildingMenu();
         _playerInput.Player.Interact.performed += ctx => InteractKeyPressed?.Invoke();
     }
 
     private void OnDisable()
     {
-        //_playerInput.Player.Interact.performed -= ctx => InteractInventory();
         _playerInput.Player.Inventory.performed -= ctx => InteractCrafting();
+        _playerInput.Player.Build.performed -= ctx => InteractBuildingMenu();
         _playerInput.Player.Interact.performed -= ctx => InteractKeyPressed?.Invoke();
         _playerInput.Disable();
     }
 
-    private void InteractInventory()
+    private void InteractBuildingMenu()
     {
-        SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
+        OnBuildingWindow?.Invoke();
     }
 
     private void InteractCrafting() 
     {
         SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
-        OnCraftPlayerWindow?.Invoke(_manualWorkbench.CraftingÑategory, true);
+        OnCraftPlayerWindow?.Invoke(_manualWorkbench.CraftingÑategory);
     }
 }
