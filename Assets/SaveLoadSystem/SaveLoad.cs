@@ -10,7 +10,7 @@ public static class SaveLoad
     public static UnityAction OnSaveGame;
     public static UnityAction<SaveData> OnLoadData;
 
-    public static bool Save(SaveData data)
+    public static void Save(SaveData data)
     {
         OnSaveGame?.Invoke();
 
@@ -27,8 +27,6 @@ public static class SaveLoad
         GUIUtility.systemCopyBuffer = directory;
 
         Debug.Log("Saving game");
-
-        return true;
     }
 
     public static SaveData Load()
