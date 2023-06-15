@@ -30,7 +30,6 @@ public class CraftSlot : MonoBehaviour
             foreach (var ingredient in craftRecipe.CraftingIngridients)
             {
                 playerInventoryHolder.InventorySystem.RemoveItemsInventory(ingredient.ItemRequired, ingredient.AmountRequured);
-                Debug.Log(ingredient.ItemRequired);
             }
 
             playerInventoryHolder.AddToInventory(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, true);
