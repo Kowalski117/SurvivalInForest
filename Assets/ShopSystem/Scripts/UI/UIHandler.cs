@@ -11,6 +11,8 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private ExchangeHandler _shopKeeperDisplay;
     [SerializeField] private CraftingHandler _craftingHandler;
 
+    [SerializeField] private BuildingPanelUI _buildingPanel;
+
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
     private bool _isShopOpen = false;
@@ -23,6 +25,8 @@ public class UIHandler : MonoBehaviour
 
         _shopKeeperDisplay.gameObject.SetActive(false);
         _craftingHandler.CraftingWindow.gameObject.SetActive(false);
+
+        _buildingPanel.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -31,6 +35,7 @@ public class UIHandler : MonoBehaviour
         _inventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
         ExchangeKeeper.OnExchangeDisplayRequested += DisplayShopWindow;
         _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
+        _inventoryPlayerInput.OnBuildingWindow += DisplayBuldingWindow;
     }
 
     private void OnDisable()
@@ -39,6 +44,7 @@ public class UIHandler : MonoBehaviour
         _inventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
         ExchangeKeeper.OnExchangeDisplayRequested -= DisplayShopWindow;
         _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
+        _inventoryPlayerInput.OnBuildingWindow -= DisplayBuldingWindow;
     }
 
     public void DisplayInventory(InventorySystem inventoryDisplay, int offset)
@@ -88,7 +94,7 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    private void DisplayCraftPlayerWindow(Crafting—ategory craftingCategory, bool playerInRange)
+    private void DisplayCraftPlayerWindow(Crafting—ategory craftingCategory)
     {
         _isCraftPlayerOpen = !_isCraftPlayerOpen;
 
@@ -101,6 +107,15 @@ public class UIHandler : MonoBehaviour
         {
             _craftingHandler.CraftingWindow.gameObject.SetActive(false);
         }
+    }
+
+    private void DisplayBuldingWindow()
+    {
+        _buildingPanel.gameObject.SetActive(!_buildingPanel.gameObject.activeInHierarchy);
+        _cursorController.SetCursorVisible(_buildingPanel.gameObject.activeInHierarchy);
+
+        if (_buildingPanel.gameObject.activeInHierarchy)
+            _buildingPanel.PopulateButtons();
     }
 
     private void CloseChest()
