@@ -22,7 +22,7 @@ public class MouseItemData : MonoBehaviour
         _itemSprite.color = Color.clear;
         _itemCount.text = "";
 
-        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform; //ÏÅÐÅÄÅËÀÒÜ
+        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform; //ÐŸÐ•Ð Ð•Ð”Ð•Ð›ÐÐ¢Ð¬
     }
 
     private void Update()
@@ -33,7 +33,7 @@ public class MouseItemData : MonoBehaviour
 
             if(Mouse.current.leftButton.wasPressedThisFrame && !IsPointerOverUIObject())
             {
-                Instantiate(_assignedInventorySlot.ItemData.ItemPrefab, _playerTransform.position + _playerTransform.forward * _dropOffset, Quaternion.identity); //ÏÅÐÅÄÅËÀÒÜ
+                Instantiate(_assignedInventorySlot.ItemData.ItemPrefab, _playerTransform.position + _playerTransform.forward * _dropOffset, Quaternion.identity); //ÐŸÐ•Ð Ð•Ð”Ð•Ð›ÐÐ¢Ð¬
                 
                 if(_assignedInventorySlot.Size > 1)
                 {

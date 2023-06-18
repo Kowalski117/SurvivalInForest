@@ -39,19 +39,7 @@ public class AnimationAnimals : MonoBehaviour
     {
         
     }
-
-    public void Howl()
-    {
-        TurnOffAnimations();
-        _animator.SetTrigger(_howl);
-    }
-
-    public void Eat()
-    {
-        TurnOffAnimations();
-        _animator.SetBool(_eat,true);
-    }
-
+    
     public void Attack()
     {
         TurnOffAnimations();
@@ -67,9 +55,9 @@ public class AnimationAnimals : MonoBehaviour
 
     private void TurnOffAnimations()
     {
-        _animator.SetBool(_eat,false);
         _animator.SetBool(_sit,false);
         _animator.SetBool(_sleep, false);
+        _animator.SetBool(_eat, false);
     }
 
 }
