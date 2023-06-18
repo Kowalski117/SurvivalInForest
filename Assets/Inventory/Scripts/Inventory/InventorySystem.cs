@@ -87,8 +87,6 @@ public class InventorySystem
         return false;
     }
 
-
-
     public bool ContainsItem(InventoryItemData itemToAdd, out List<InventorySlot> inventorySlots)
     {
         inventorySlots = _inventorySlots.Where(i => i.ItemData == itemToAdd).ToList();
@@ -154,5 +152,20 @@ public class InventorySystem
         }
 
         return distinctItems;
+    }
+
+    public int GetItemCount(InventoryItemData item)
+    {
+        int count = 0;
+
+        foreach (var slot in _inventorySlots)
+        {
+            if (slot.ItemData == item)
+            {
+                count += slot.Size;
+            }
+        }
+
+        return count;
     }
 }
