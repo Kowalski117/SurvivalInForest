@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: e2b165c4bd730614bb52d1ba852495e6
 ModelImporter:
-  serializedVersion: 20300
+  serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -1929462820953197112
@@ -20,6 +20,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -90,7 +91,35 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.05136098
+        functionName: StepPlay
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 1c1fad78596c4144ab873d3d0e1fa3e2, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.46551725
+        functionName: StepPlay
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 1c1fad78596c4144ab873d3d0e1fa3e2, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5691108
+        functionName: StepPlay
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 1c1fad78596c4144ab873d3d0e1fa3e2, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8815257
+        functionName: StepPlay
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 1c1fad78596c4144ab873d3d0e1fa3e2, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -107,6 +136,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -118,6 +148,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

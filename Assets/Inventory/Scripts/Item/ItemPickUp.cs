@@ -46,13 +46,13 @@ public class ItemPickUp : MonoBehaviour
     public void PicUp()
     {
         SaveGameHandler.Data.CollectedItems.Add(_id);
-        Destroy(this.gameObject); // переделать для оптимизации
+        Destroy(this.gameObject); // РїРµСЂРµРґРµР»Р°С‚СЊ РґР»СЏ РѕРїС‚РёРјРёР·Р°С†РёРё
     }
 
     private void LoadGame(SaveData data)
     {
         if (data.CollectedItems.Contains(_id))
-            Destroy(this.gameObject);  //переделать для оптимизации
+            Destroy(this.gameObject);  //РїРµСЂРµРґРµР»Р°С‚СЊ РґР»СЏ РѕРїС‚РёРјРёР·Р°С†РёРё
     }
 
     private void OnDestroy()

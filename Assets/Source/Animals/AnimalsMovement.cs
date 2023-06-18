@@ -57,16 +57,6 @@ public abstract class AnimalsMovement : MonoBehaviour
         _agent.SetDestination(point);
     }
 
-    public void Howl()
-    {
-        AnimationAnimals.Howl();
-    }
-
-    public void Eat()
-    {
-        AnimationAnimals.Eat();
-    }
-
     public void Sit()
     {
         AnimationAnimals.Sit();
