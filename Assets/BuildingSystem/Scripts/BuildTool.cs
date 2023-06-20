@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class BuildTool : MonoBehaviour
 {
+    [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private float _rotateSnapAngle = 45f;
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
@@ -11,12 +13,16 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private Transform _rayOrigin;
     [SerializeField] private Material _buildingMatPositive;
     [SerializeField] private Material _buildingMatNegative;
+    [SerializeField] private Transform _containerBuildings;
 
     private bool _deleteModeEnabled;
     private Camera _camera;
     private Building _spawnBuilding;
     private Building _targetBuilding;
     private Quaternion _lastRotation;
+
+    public event UnityAction OnCreateBuild;
+    public event UnityAction OnCompletedBuild;
 
     private void Awake()
     {
@@ -25,12 +31,27 @@ public class BuildTool : MonoBehaviour
 
     private void OnEnable()
     {
-        BuildingPanelUI.OnPartChosen += ChoosePart;
+        CrafBuildSlot.OnCreateRecipeButtonClick += ChoosePart;
+
+        _buildPlayerInput.OnPutBuilding += PutBuilding;
+        _buildPlayerInput.OnRotateBuilding += RotateBuilding;
+        _buildPlayerInput.OnDeleteModeBuilding += DeleteMobeBuilding;
+        _buildPlayerInput.OnDeleteBuilding += DeleteBuilding;
     }
 
     private void OnDisable()
     {
-        BuildingPanelUI.OnPartChosen -= ChoosePart;
+        CrafBuildSlot.OnCreateRecipeButtonClick -= ChoosePart;
+
+        _buildPlayerInput.OnPutBuilding -= PutBuilding;
+        _buildPlayerInput.OnRotateBuilding -= RotateBuilding;
+        _buildPlayerInput.OnDeleteModeBuilding -= DeleteMobeBuilding;
+        _buildPlayerInput.OnDeleteBuilding -= DeleteBuilding;
+    }
+
+    public void SetDeleteModeEnabled(bool deleteMode)
+    {
+        _deleteModeEnabled = deleteMode;
     }
 
     private void ChoosePart(BuildingData data) 
@@ -48,32 +69,21 @@ public class BuildTool : MonoBehaviour
 
         DeleteObjectPreview();
 
-        GameObject gameObject = new GameObject
-        {
-            layer = _defoultLayerInt, 
-            name = "Build Preview"
-        };
-
-        _spawnBuilding = gameObject.AddComponent<Building>();
+        _spawnBuilding = Instantiate(data.Prefab, _containerBuildings);
         _spawnBuilding.Init(data);
         _spawnBuilding.transform.rotation = _lastRotation;
+        OnCreateBuild?.Invoke();
     }
 
     private void Update()
     {
-        if(_spawnBuilding && Keyboard.current.escapeKey.wasPressedThisFrame)
-            DeleteObjectPreview();
-
-        if (Keyboard.current.qKey.wasPressedThisFrame)
-            _deleteModeEnabled = !_deleteModeEnabled;
-
         if (_deleteModeEnabled)
             DeleteModeLogic();
         else
             BuildModeLogic();
     }
 
-    private void DeleteObjectPreview()
+    public void DeleteObjectPreview()
     {
         if (_spawnBuilding != null)
         {
@@ -135,26 +145,47 @@ public class BuildTool : MonoBehaviour
 
     private void PositionBuildingPreview()
     {
-        _spawnBuilding.UpdateMaterial(_spawnBuilding.IsOverlappig ? _buildingMatNegative : _buildingMatPositive);
+        _spawnBuilding.UpdateMaterial(_spawnBuilding.IsOverlapping ? _buildingMatNegative : _buildingMatPositive);
 
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            _spawnBuilding.transform.Rotate(0, _rotateSnapAngle, 0);
-            _lastRotation = _spawnBuilding.transform.rotation;
-        }
 
         if (IsRayHittingSomething(_buildModeLayerMask, out RaycastHit hitInfo))
         {
             Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitInfo.point, 1f);
             _spawnBuilding.transform.position = gridPosition;
-
-            if (Mouse.current.leftButton.wasPressedThisFrame && !_spawnBuilding.IsOverlappig)
-            {
-                _spawnBuilding.PlaceBuilding();
-                BuildingData dataCopy = _spawnBuilding.AssignedData;
-                _spawnBuilding = null;
-                ChoosePart(dataCopy);
-            }
         }
+    }
+
+    private void PutBuilding()
+    {
+        if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
+        {
+            _spawnBuilding.PlaceBuilding();
+            //BuildingData dataCopy = _spawnBuilding.AssignedData;
+            _spawnBuilding = null;
+            //ChoosePart(dataCopy);
+            OnCompletedBuild?.Invoke();
+        }
+    }
+
+    private void RotateBuilding()
+    {
+        if (_spawnBuilding != null)
+        {
+            _spawnBuilding.transform.Rotate(0, _rotateSnapAngle, 0);
+            _lastRotation = _spawnBuilding.transform.rotation;
+        }
+    }
+
+    private void DeleteMobeBuilding()
+    {
+        DeleteObjectPreview();
+        _deleteModeEnabled = !_deleteModeEnabled;
+        OnCompletedBuild?.Invoke();
+
+    }
+
+    private void DeleteBuilding()
+    {
+        DeleteObjectPreview();
     }
 }

@@ -8,12 +8,13 @@ public class Building : MonoBehaviour
 
     private BuildingData _assignedData;
     private BoxCollider _boxCollider;
-    private GameObject _graphic;
+    private Rigidbody _rigidbody;
+    private Building _graphic;
     private Transform _colliders;
-    private bool _isOverlappig;
+    private bool _isOverlapping;
 
-    private Renderer _renderer;
-    private Material _defoultMaterial;
+    private Renderer[] _renderers;
+    private Material[] _defoultMaterial;
 
     private bool _flaggedForDelete;
 
@@ -21,11 +22,20 @@ public class Building : MonoBehaviour
 
     public BuildingData AssignedData => _assignedData;
     public bool FlaggedForDelete => _flaggedForDelete;
-    public bool IsOverlappig => _isOverlappig;
+    public bool IsOverlapping => _isOverlapping;
 
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _boxCollider.isTrigger = true;
+        _rigidbody.isKinematic = true;
+        _renderers = transform.GetComponentsInChildren<Renderer>();
+        _defoultMaterial = new Material[_renderers.Length];
+        for (int i = 0; i < _renderers.Length; i++)
+        {
+            _defoultMaterial[i] = _renderers[i].material;
+        }
     }
 
     public void Init(BuildingData data, BuildingSaveData saveData = null)
@@ -33,16 +43,8 @@ public class Building : MonoBehaviour
         _assignedData = data;
         _boxCollider.size = _assignedData.BuildingSize;
         _boxCollider.center = new Vector3(0, (_assignedData.BuildingSize.y + 0.2f) * 0.5f, 0);
-        _boxCollider.isTrigger = true;
 
-        Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
-        rigidbody.isKinematic = true;
-
-        _graphic = Instantiate(data.Prefab, transform);
-        _renderer = _graphic.GetComponentInChildren<Renderer>();   
-        _defoultMaterial = _renderer.material;
-
-        _colliders = _graphic.transform.Find("Colliders");
+        _colliders = transform.Find("Colliders");
 
         if(_colliders != null )
             _colliders.gameObject.SetActive(false);
@@ -58,7 +60,8 @@ public class Building : MonoBehaviour
         if(_colliders != null)
             _colliders.gameObject.SetActive(true);
 
-        UpdateMaterial(_defoultMaterial);
+        UpdateMaterials(_defoultMaterial);
+
         gameObject.layer = _defoultLayerInt;
         gameObject.name = _assignedData.DisplayName + " - " + transform.position;
 
@@ -72,10 +75,21 @@ public class Building : MonoBehaviour
 
     public void UpdateMaterial(Material newMaterial)
     {
-        if (_renderer == null)
-            return;
-        if(_renderer.material != newMaterial)
-            _renderer.material = newMaterial;
+        foreach (var renderer in _renderers)
+        {
+            if (renderer != null && renderer.material != newMaterial)
+            {
+                renderer.material = newMaterial;
+            }
+        }
+    }
+
+    public void UpdateMaterials(Material[] newMaterials)
+    {
+        for (int i = 0; i < _renderers.Length; i++)
+        {
+            _renderers[i].material = newMaterials[i];
+        }
     }
 
     public void FlagForDelete(Material deleteMaterial)
@@ -86,18 +100,18 @@ public class Building : MonoBehaviour
 
     public void RemoveDeleteFlag()
     {
-        UpdateMaterial(_defoultMaterial);
+        UpdateMaterials(_defoultMaterial);
         _flaggedForDelete = false;
     }
 
     private void OnTriggerStay(Collider other)
     {
-        _isOverlappig = true;
+        _isOverlapping = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _isOverlappig = false;
+        _isOverlapping = false;
     }
 
     private void OnDestroy()
