@@ -98,15 +98,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Build"",
-                    ""type"": ""Button"",
-                    ""id"": ""254c931d-1010-449b-ac2b-b84867ecbd2a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -373,28 +364,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""46e5d84a-7c30-4788-ac2e-1f85f9c80811"",
-                    ""path"": ""<Keyboard>/g"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Build"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bdedc986-14cd-4e8b-94b0-eb5c1530587d"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Build"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -565,6 +534,94 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""BuildSystem"",
+            ""id"": ""98d18cfb-4e1d-4b09-8b01-3bcc575e1776"",
+            ""actions"": [
+                {
+                    ""name"": ""PutBuilding"",
+                    ""type"": ""Button"",
+                    ""id"": ""746faf93-364a-4565-807f-dd075c3dae99"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateBuilding"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd0bb7cc-6f54-4c62-96ac-9e69b814b963"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeleteModeBuilding"",
+                    ""type"": ""Button"",
+                    ""id"": ""89987dad-a477-44a8-92d0-908e659fd7fa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeleteBuilding"",
+                    ""type"": ""Button"",
+                    ""id"": ""f38090b0-46ed-4afa-8885-106854914e33"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""22696530-4ddf-48e3-9e63-64721314f2c8"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PutBuilding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""698abcc2-200c-4a5d-acfe-5a7d16ef05da"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""RotateBuilding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""284f1d11-b791-476a-9335-73cacfa261e6"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeleteModeBuilding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""892cfc30-7c43-4939-b5f1-50b4edbcd76a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeleteBuilding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -627,7 +684,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
-        m_Player_Build = m_Player.FindAction("Build", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Hotbar1 = m_Inventory.FindAction("Hotbar 1", throwIfNotFound: true);
@@ -638,6 +694,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Inventory_Hotbar6 = m_Inventory.FindAction("Hotbar 6", throwIfNotFound: true);
         m_Inventory_MouseWheel = m_Inventory.FindAction("MouseWheel", throwIfNotFound: true);
         m_Inventory_UseItem = m_Inventory.FindAction("Use Item", throwIfNotFound: true);
+        // BuildSystem
+        m_BuildSystem = asset.FindActionMap("BuildSystem", throwIfNotFound: true);
+        m_BuildSystem_PutBuilding = m_BuildSystem.FindAction("PutBuilding", throwIfNotFound: true);
+        m_BuildSystem_RotateBuilding = m_BuildSystem.FindAction("RotateBuilding", throwIfNotFound: true);
+        m_BuildSystem_DeleteModeBuilding = m_BuildSystem.FindAction("DeleteModeBuilding", throwIfNotFound: true);
+        m_BuildSystem_DeleteBuilding = m_BuildSystem.FindAction("DeleteBuilding", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -705,7 +767,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PickUp;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Inventory;
-    private readonly InputAction m_Player_Build;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -718,7 +779,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @PickUp => m_Wrapper.m_Player_PickUp;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
-        public InputAction @Build => m_Wrapper.m_Player_Build;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -752,9 +812,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
-                @Build.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBuild;
-                @Build.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBuild;
-                @Build.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBuild;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -783,9 +840,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
-                @Build.started += instance.OnBuild;
-                @Build.performed += instance.OnBuild;
-                @Build.canceled += instance.OnBuild;
             }
         }
     }
@@ -879,6 +933,63 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public InventoryActions @Inventory => new InventoryActions(this);
+
+    // BuildSystem
+    private readonly InputActionMap m_BuildSystem;
+    private IBuildSystemActions m_BuildSystemActionsCallbackInterface;
+    private readonly InputAction m_BuildSystem_PutBuilding;
+    private readonly InputAction m_BuildSystem_RotateBuilding;
+    private readonly InputAction m_BuildSystem_DeleteModeBuilding;
+    private readonly InputAction m_BuildSystem_DeleteBuilding;
+    public struct BuildSystemActions
+    {
+        private @PlayerInput m_Wrapper;
+        public BuildSystemActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PutBuilding => m_Wrapper.m_BuildSystem_PutBuilding;
+        public InputAction @RotateBuilding => m_Wrapper.m_BuildSystem_RotateBuilding;
+        public InputAction @DeleteModeBuilding => m_Wrapper.m_BuildSystem_DeleteModeBuilding;
+        public InputAction @DeleteBuilding => m_Wrapper.m_BuildSystem_DeleteBuilding;
+        public InputActionMap Get() { return m_Wrapper.m_BuildSystem; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BuildSystemActions set) { return set.Get(); }
+        public void SetCallbacks(IBuildSystemActions instance)
+        {
+            if (m_Wrapper.m_BuildSystemActionsCallbackInterface != null)
+            {
+                @PutBuilding.started -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnPutBuilding;
+                @PutBuilding.performed -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnPutBuilding;
+                @PutBuilding.canceled -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnPutBuilding;
+                @RotateBuilding.started -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnRotateBuilding;
+                @RotateBuilding.performed -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnRotateBuilding;
+                @RotateBuilding.canceled -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnRotateBuilding;
+                @DeleteModeBuilding.started -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnDeleteModeBuilding;
+                @DeleteModeBuilding.performed -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnDeleteModeBuilding;
+                @DeleteModeBuilding.canceled -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnDeleteModeBuilding;
+                @DeleteBuilding.started -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnDeleteBuilding;
+                @DeleteBuilding.performed -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnDeleteBuilding;
+                @DeleteBuilding.canceled -= m_Wrapper.m_BuildSystemActionsCallbackInterface.OnDeleteBuilding;
+            }
+            m_Wrapper.m_BuildSystemActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PutBuilding.started += instance.OnPutBuilding;
+                @PutBuilding.performed += instance.OnPutBuilding;
+                @PutBuilding.canceled += instance.OnPutBuilding;
+                @RotateBuilding.started += instance.OnRotateBuilding;
+                @RotateBuilding.performed += instance.OnRotateBuilding;
+                @RotateBuilding.canceled += instance.OnRotateBuilding;
+                @DeleteModeBuilding.started += instance.OnDeleteModeBuilding;
+                @DeleteModeBuilding.performed += instance.OnDeleteModeBuilding;
+                @DeleteModeBuilding.canceled += instance.OnDeleteModeBuilding;
+                @DeleteBuilding.started += instance.OnDeleteBuilding;
+                @DeleteBuilding.performed += instance.OnDeleteBuilding;
+                @DeleteBuilding.canceled += instance.OnDeleteBuilding;
+            }
+        }
+    }
+    public BuildSystemActions @BuildSystem => new BuildSystemActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -925,7 +1036,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnPickUp(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
-        void OnBuild(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {
@@ -937,5 +1047,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnHotbar6(InputAction.CallbackContext context);
         void OnMouseWheel(InputAction.CallbackContext context);
         void OnUseItem(InputAction.CallbackContext context);
+    }
+    public interface IBuildSystemActions
+    {
+        void OnPutBuilding(InputAction.CallbackContext context);
+        void OnRotateBuilding(InputAction.CallbackContext context);
+        void OnDeleteModeBuilding(InputAction.CallbackContext context);
+        void OnDeleteBuilding(InputAction.CallbackContext context);
     }
 }
