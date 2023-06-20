@@ -481,10 +481,10 @@ GameObject:
   - component: {fileID: 5236127489880737139}
   - component: {fileID: 5236127489880737137}
   - component: {fileID: 5236127489880737138}
-  - component: {fileID: 5236127489880737136}
+  - component: {fileID: 6676100618199396729}
   - component: {fileID: 8504392397348378521}
   m_Layer: 5
-  m_Name: CraftSlot
+  m_Name: CraftItemSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5236127489880737136
+--- !u!114 &6676100618199396729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -561,16 +561,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5236127489880737148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b97eebe3234e05049bbb892903d0e6ee, type: 3}
+  m_Script: {fileID: 11500000, guid: ce0c9821b89d46e4c911286dd1dc25dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _craftedItemIcon: {fileID: 4839904584920151736}
-  _craftedItemName: {fileID: 5236127489643674787}
-  _slotIngridientPrefab: {fileID: 3076235167267609850, guid: 80b8f3df733368e4da9656650dfe4257, type: 3}
-  _ingridientsContainer: {fileID: 5236127490026790526}
-  _craftedButton: {fileID: 5236127489691337708}
-  _castleImage: {fileID: 2074786157430286869}
-  _isOpenCrafting: 0
+  CraftedIcon: {fileID: 4839904584920151736}
+  CraftedName: {fileID: 5236127489643674787}
+  SlotIngridientPrefab: {fileID: 3076235167267609850, guid: 80b8f3df733368e4da9656650dfe4257, type: 3}
+  IngridientsContainer: {fileID: 5236127490026790526}
+  CraftedButton: {fileID: 5236127489691337708}
 --- !u!114 &8504392397348378521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,7 +578,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5236127489880737148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6601d3d8903fcc642b2bfe6a1c6544b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 3be7e554f096289498b7edb1de856ce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5236127490026790527
