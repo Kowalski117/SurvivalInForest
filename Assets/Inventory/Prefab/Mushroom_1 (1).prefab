@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3141352870045393530}
-  - component: {fileID: 3141352870045393531}
   - component: {fileID: 3141352870045393524}
   - component: {fileID: 3141352870045393529}
-  m_Layer: 0
+  - component: {fileID: 8192624659639256503}
+  m_Layer: 6
   m_Name: Mushroom_1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3141352870045393525}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.0081387, y: 0.5, z: -19.247293}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -35,19 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3141352870045393531
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141352870045393525}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3141352870045393524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104e8bc82b0e0b45b841a9aa6ba6c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpRadius: 1
+  pickUpRadius: 0.2
   _itemData: {fileID: 11400000, guid: a80dc382bbf8613409c41098bb8cd7a4, type: 2}
   _itemSaveData:
     _itemData: {fileID: 0}
@@ -78,7 +65,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 33a6c2cb-0dfe-4946-aa74-837ecbd8078a
+  _id: b09fc713-c783-4772-a671-04b294781a54
+--- !u!65 &8192624659639256503
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141352870045393525}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!1001 &3141352870347256962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89,6 +89,10 @@ PrefabInstance:
     - target: {fileID: 1512047962991020, guid: 75cf081ee4bb4be45b9d65b006a5a90e, type: 3}
       propertyPath: m_Name
       value: Mushroom_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1512047962991020, guid: 75cf081ee4bb4be45b9d65b006a5a90e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4313667000924998, guid: 75cf081ee4bb4be45b9d65b006a5a90e, type: 3}
       propertyPath: m_RootOrder
@@ -153,3 +157,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4313667000924998, guid: 75cf081ee4bb4be45b9d65b006a5a90e, type: 3}
   m_PrefabInstance: {fileID: 3141352870347256962}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3142682381354540334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1512047962991020, guid: 75cf081ee4bb4be45b9d65b006a5a90e, type: 3}
+  m_PrefabInstance: {fileID: 3141352870347256962}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &5875481044774849709
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3142682381354540334}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: a7be1a7335336e84f9e330a3b398a03b, type: 3}

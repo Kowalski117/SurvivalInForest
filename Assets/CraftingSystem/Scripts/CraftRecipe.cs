@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Inventory System/Craft Recipe", order = 51)]
 public class CraftRecipe : ScriptableObject
 {
     [SerializeField] private List<CraftingIngridient> _craftingIngridients;
-    [SerializeField] private InventoryItemData _craftedItem;
+
     [SerializeField] private int _craftingAmout = 1;
 
     public List<CraftingIngridient> CraftingIngridients => _craftingIngridients;
-    public InventoryItemData CraftedItem => _craftedItem;
     public int CraftingAmount => _craftingAmout;
 }
 

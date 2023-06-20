@@ -1,4 +1,3 @@
-using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -37,5 +36,10 @@ public class SaveGameHandler : MonoBehaviour
     public static void TryLoadData()
     {
         SaveLoad.Load();
+    }
+
+    private void OnDestroy()
+    {
+        SaveLoad.OnLoadData -= LoadData;
     }
 }
