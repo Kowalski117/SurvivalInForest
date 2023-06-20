@@ -26,11 +26,6 @@ public class InventoryItemData : ScriptableObject
     {
         _id = id;
     }
-
-    public void UseItem()
-    {
-        Debug.Log("использовать");
-    }
 }
 
 public enum ItemType

@@ -30,15 +30,16 @@ public class MouseItemData : MonoBehaviour
 
     private void Update()
     {
-        if(_assignedInventorySlot.ItemData !=  null)
+        if (_assignedInventorySlot.ItemData != null)
         {
             transform.position = Mouse.current.position.ReadValue();
 
-            if(Mouse.current.leftButton.wasPressedThisFrame && !IsPointerOverUIObject())
+            if (Mouse.current.leftButton.isPressed && !IsPointerOverUIObject())
             {
+                // Действия при зажатии левой кнопки мыши
                 Instantiate(_assignedInventorySlot.ItemData.ItemPrefab, _playerTransform.position + _playerTransform.forward * _dropOffset, Quaternion.identity); //ПЕРЕДЕЛАТЬ
-                
-                if(_assignedInventorySlot.Size > 1)
+
+                if (_assignedInventorySlot.Size > 1)
                 {
                     _assignedInventorySlot.AddToStack(-1);
                     UpdateMouseSlot();
@@ -50,6 +51,7 @@ public class MouseItemData : MonoBehaviour
             }
         }
     }
+
 
     public void CleanSlot()
     {

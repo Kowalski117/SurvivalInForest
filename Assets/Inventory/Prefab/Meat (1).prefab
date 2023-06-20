@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 304865757237572170}
   - component: {fileID: 304865757237572167}
   - component: {fileID: 4087449732087766353}
+  - component: {fileID: 1343771579}
   m_Layer: 6
   m_Name: Meat (1)
   m_TagString: Untagged
@@ -65,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: e5bc8b88-64f1-42f6-8f70-1b8429fe8c7f
+  _id: 80df36f1-38c4-4a3b-930a-c84bb8c00c3b
 --- !u!65 &4087449732087766353
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79,6 +80,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.1, z: 0.15}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1343771579
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304865757237572171}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &304865755186779780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,22 +162,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4327422452307326, guid: 936b6197990da6741b80aa4446553ae7, type: 3}
   m_PrefabInstance: {fileID: 304865755186779780}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &304230551194705532 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1057562948454648, guid: 936b6197990da6741b80aa4446553ae7, type: 3}
-  m_PrefabInstance: {fileID: 304865755186779780}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &4137423729242129087
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 304230551194705532}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 45524efaedad6224ab0207861e0a468e, type: 3}
