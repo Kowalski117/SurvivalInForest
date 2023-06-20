@@ -1,18 +1,10 @@
-using UnityEngine;
-
-public class Player : MonoBehaviour, IDamagable
+public class Player : SurvivalAttribute, IDamagable
 {
-    [SerializeField] private float _health;
     public void TakeDamage(float damage)
     {
-        _health -= damage;
-        if (_health <= 0)
-        {
-            Die();
-        }
+        ReplenishValue(damage); 
     }
     
-
     public void Die()
     {
         Destroy(gameObject);
