@@ -11,7 +11,7 @@ public class Player : MonoBehaviour, IDamagable
             Die();
         }
     }
-    
+
 
     public void Die()
     {
