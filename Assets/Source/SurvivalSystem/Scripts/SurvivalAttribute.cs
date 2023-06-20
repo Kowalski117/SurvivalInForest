@@ -43,4 +43,14 @@ public class SurvivalAttribute : MonoBehaviour
 
         OnValueChanged?.Invoke(CurrentValue);
     }
+
+    public void LowerValue(float value)
+    {
+        CurrentValue -= value;
+
+        if (CurrentValue <= 0)
+            CurrentValue = 0;
+
+        OnValueChanged?.Invoke(CurrentValue);
+    }
 }
