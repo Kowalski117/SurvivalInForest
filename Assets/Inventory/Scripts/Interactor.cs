@@ -1,126 +1,63 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
+    [SerializeField] private float _rayDistance;
+    [SerializeField] private Transform _rayOrigin;
     [SerializeField] private LayerMask _interactionLayer;
-    [SerializeField] private float _interactionPointRadius = 1.0f;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
-
+    [SerializeField] private SelectionPlayerInput _selectionPlayerInput;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
 
-    private Collider[] _colliders;
-
-    public bool IsInteraction { get; private set; }
+    private Camera _camera;
 
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
 
+    private void Awake()
+    {
+        _camera = Camera.main;
+    }
+
     private void OnEnable()
     {
+        _selectionPlayerInput.PickUp += PickUp;
         _inventoryPlayerInput.InteractKeyPressed += StartInteractable;
     }
 
     private void OnDisable()
     {
+        _selectionPlayerInput.PickUp -= PickUp;
         _inventoryPlayerInput.InteractKeyPressed -= StartInteractable;
-    }
-
-    private void Update()
-    {
-        _colliders = Physics.OverlapSphere(transform.position, _interactionPointRadius, _interactionLayer);
     }
 
     private void StartInteractable()
     {
-        if (_colliders.Length > 0)
+        if (IsRayHittingSomething(_interactionLayer, out RaycastHit hitInfo))
         {
-            for (int i = 0; i < _colliders.Length; i++)
+            if(hitInfo.collider.TryGetComponent(out IInteractable interactable))
             {
-                var interactable = _colliders[i].GetComponent<IInteractable>();
-
-                if (interactable != null)
-                    interactable.Interact(this, out bool interactSuccessful);
+                interactable.Interact(this, out bool interactSuccessful);
             }
         }
     }
 
-    public void CompleteInteraction(IInteractable interactable)
+    private void PickUp()
     {
-        IsInteraction = false;
+        if (IsRayHittingSomething(_interactionLayer, out RaycastHit hitInfo))
+        {
+            if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
+            {
+                if (_playerInventoryHolder.InventorySystem.AddToInventory(itemPickUp.ItemData, 1))
+                {
+                    itemPickUp.PicUp();
+                }
+            }
+        }
+    }
+
+    private bool IsRayHittingSomething(LayerMask layerMask, out RaycastHit hitInfo)
+    {
+        var ray = new Ray(_rayOrigin.position, _camera.transform.forward * _rayDistance);
+        return Physics.Raycast(ray, out hitInfo, _rayDistance, layerMask);
     }
 }
-//public class Interactor : MonoBehaviour
-//{
-//    //[SerializeField] private Transform _iteractionPoint;
-//    //[SerializeField] private LayerMask _interactionLayer;
-//    [SerializeField] private float _interactionPointRadius = 1.0f;
-//    [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
-//    [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
-
-//    private SphereCollider _collider;
-//    private List<IInteractable> _interactables = new List<IInteractable>();
-
-//    public bool IsInteraction { get; private set; }
-
-//    public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
-
-//    private void Awake()
-//    {
-//        _collider = GetComponent<SphereCollider>();
-//        _collider.radius = _interactionPointRadius;
-//    }
-
-//    private void OnEnable()
-//    {
-//        _inventoryPlayerInput.InteractKeyPressed += StartInteractable;
-//    }
-
-//    private void OnDisable()
-//    {
-//        _inventoryPlayerInput.InteractKeyPressed -= StartInteractable;
-//    }
-
-//    //private void Update()
-//    //{
-//    //    _colliders = Physics.OverlapSphere(_iteractionPoint.position, _interactionPointRadius, _interactionLayer);
-//    //}
-
-//    private void StartInteractable()
-//    {
-//        if(_interactables.Count > 0)
-//        {
-//            for (int i = 0; i < _interactables.Count; i++)
-//            {
-//                if (_interactables[i] != null)
-//                    _interactables[i].Interact(this, out bool interactSuccessful);
-//            }
-//        }
-//    }
-
-//    public void CompleteInteraction(IInteractable interactable)
-//    {
-//        IsInteraction = false;
-//    }
-
-//    private void OnTriggerEnter(Collider other)
-//    {
-//        if (other.TryGetComponent(out ExchangeKeeper interactable))
-//        {
-//            if (interactable != null)
-//            {
-//                _interactables.Add(interactable);
-//            }
-//        }
-//    }
-
-//    private void OnTriggerExit(Collider other)
-//    {
-//        if (other.TryGetComponent(out ExchangeKeeper interactable))
-//        {
-//            if (interactable != null)
-//            {
-//                _interactables.Remove(interactable);
-//            }
-//        }
-//    }
-//}

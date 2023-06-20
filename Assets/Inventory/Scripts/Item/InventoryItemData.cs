@@ -35,6 +35,7 @@ public class InventoryItemData : ScriptableObject
 
 public enum ItemType
 {
+    Build,
     Weapon,
     Food,
     Decor,
