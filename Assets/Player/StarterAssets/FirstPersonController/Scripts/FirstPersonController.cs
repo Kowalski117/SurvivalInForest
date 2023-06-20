@@ -28,6 +28,18 @@ namespace StarterAssets
         public float SquatHeight = 0.75f;
         public float SquatSpeed = 1f;
 
+        [Space(10)]
+        [Tooltip("The height the player can jump")]
+        public float JumpHeight = 1.2f;
+        [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
+        public float Gravity = -15.0f;
+
+        [Space(10)]
+        [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
+        public float JumpTimeout = 0.1f;
+        [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
+        public float FallTimeout = 0.15f;
+
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
         public bool Grounded = true;
@@ -56,6 +68,11 @@ namespace StarterAssets
         private float _speed;
         private float _rotationVelocity;
         private float _verticalVelocity;
+        private float _terminalVelocity = 53.0f;
+
+        // timeout deltatime
+        private float _jumpTimeoutDelta;
+        private float _fallTimeoutDelta;
 
         private bool _isSquatting;
 
@@ -113,6 +130,7 @@ namespace StarterAssets
             GroundedCheck();
             Move();
             Stealth();
+            JumpAndGravity();
         }
 
         private void LateUpdate()
@@ -146,6 +164,54 @@ namespace StarterAssets
 
                 // rotate the player left and right
                 transform.Rotate(Vector3.up * _rotationVelocity);
+            }
+        }
+
+        private void JumpAndGravity()
+        {
+            if (Grounded)
+            {
+                // reset the fall timeout timer
+                _fallTimeoutDelta = FallTimeout;
+
+                // stop our velocity dropping infinitely when grounded
+                if (_verticalVelocity < 0.0f)
+                {
+                    _verticalVelocity = -2f;
+                }
+
+                // Jump
+                if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+                {
+                    // the square root of H * -2 * G = how much velocity needed to reach desired height
+                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                }
+
+                // jump timeout
+                if (_jumpTimeoutDelta >= 0.0f)
+                {
+                    _jumpTimeoutDelta -= Time.deltaTime;
+                }
+            }
+            else
+            {
+                // reset the jump timeout timer
+                _jumpTimeoutDelta = JumpTimeout;
+
+                // fall timeout
+                if (_fallTimeoutDelta >= 0.0f)
+                {
+                    _fallTimeoutDelta -= Time.deltaTime;
+                }
+
+                // if we are not grounded, do not jump
+                _input.jump = false;
+            }
+
+            // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+            if (_verticalVelocity < _terminalVelocity)
+            {
+                _verticalVelocity += Gravity * Time.deltaTime;
             }
         }
 
