@@ -76,15 +76,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Build",
-                    "type": "Button",
-                    "id": "254c931d-1010-449b-ac2b-b84867ecbd2a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -351,28 +342,6 @@
                     "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "46e5d84a-7c30-4788-ac2e-1f85f9c80811",
-                    "path": "<Keyboard>/g",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Build",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bdedc986-14cd-4e8b-94b0-eb5c1530587d",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Build",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -539,6 +508,94 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Use Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "BuildSystem",
+            "id": "98d18cfb-4e1d-4b09-8b01-3bcc575e1776",
+            "actions": [
+                {
+                    "name": "PutBuilding",
+                    "type": "Button",
+                    "id": "746faf93-364a-4565-807f-dd075c3dae99",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateBuilding",
+                    "type": "Button",
+                    "id": "dd0bb7cc-6f54-4c62-96ac-9e69b814b963",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeleteModeBuilding",
+                    "type": "Button",
+                    "id": "89987dad-a477-44a8-92d0-908e659fd7fa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeleteBuilding",
+                    "type": "Button",
+                    "id": "f38090b0-46ed-4afa-8885-106854914e33",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "22696530-4ddf-48e3-9e63-64721314f2c8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PutBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "698abcc2-200c-4a5d-acfe-5a7d16ef05da",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "RotateBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "284f1d11-b791-476a-9335-73cacfa261e6",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteModeBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "892cfc30-7c43-4939-b5f1-50b4edbcd76a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteBuilding",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

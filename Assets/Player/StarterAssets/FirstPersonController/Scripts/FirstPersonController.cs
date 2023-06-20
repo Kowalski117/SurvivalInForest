@@ -59,6 +59,8 @@ namespace StarterAssets
 
         private bool _isSquatting;
 
+        private SurvivalHandler _survivalHandler;
+
 #if ENABLE_INPUT_SYSTEM
         private UnityEngine.InputSystem.PlayerInput _playerInput;
 #endif
@@ -90,6 +92,8 @@ namespace StarterAssets
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
             CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
+
+            _survivalHandler = GetComponent<SurvivalHandler>();
         }
 
         private void Start()
@@ -148,7 +152,7 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed = _input.sprint && _survivalHandler.Stamina.IsNotEmpty ? SprintSpeed : MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 

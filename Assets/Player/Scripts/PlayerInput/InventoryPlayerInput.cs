@@ -26,21 +26,14 @@ public class InventoryPlayerInput : MonoBehaviour
     {
         _playerInput.Enable();
         _playerInput.Player.Inventory.performed += ctx => InteractCrafting();
-        _playerInput.Player.Build.performed += ctx => InteractBuildingMenu();
         _playerInput.Player.Interact.performed += ctx => InteractKeyPressed?.Invoke();
     }
 
     private void OnDisable()
     {
         _playerInput.Player.Inventory.performed -= ctx => InteractCrafting();
-        _playerInput.Player.Build.performed -= ctx => InteractBuildingMenu();
         _playerInput.Player.Interact.performed -= ctx => InteractKeyPressed?.Invoke();
         _playerInput.Disable();
-    }
-
-    private void InteractBuildingMenu()
-    {
-        OnBuildingWindow?.Invoke();
     }
 
     private void InteractCrafting() 
