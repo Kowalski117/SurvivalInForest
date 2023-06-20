@@ -1,16 +1,16 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(CraftSlotView))]
-public class CraftSlot : MonoBehaviour
+[RequireComponent(typeof(CraftItemSlotView))]
+public class CraftItemSlot : CraftSlot
 {
-    private CraftSlotView _slotView;
+    private CraftItemSlotView _slotView;
 
     public static UnityAction OnCraftSlotUpdate;
 
     private void Awake()
     {
-        _slotView = GetComponent<CraftSlotView>();
+        _slotView = GetComponent<CraftItemSlotView>();
     }
 
     private void OnEnable()
@@ -23,7 +23,7 @@ public class CraftSlot : MonoBehaviour
         _slotView.OnCreateRecipeButtonClick -= CraftingItem;
     }
 
-    private void CraftingItem(CraftRecipe craftRecipe, PlayerInventoryHolder playerInventoryHolder)
+    private void CraftingItem(ItemRecipe craftRecipe, PlayerInventoryHolder playerInventoryHolder)
     {
         if (CheckIfCanCraft(craftRecipe, playerInventoryHolder))
         {
@@ -35,21 +35,5 @@ public class CraftSlot : MonoBehaviour
             playerInventoryHolder.AddToInventory(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, true);
             OnCraftSlotUpdate?.Invoke();
         }
-    }
-
-    private bool CheckIfCanCraft(CraftRecipe craftRecipe, PlayerInventoryHolder playerInventoryHolder)
-    {
-        var itemsHeld = playerInventoryHolder.InventorySystem.GetAllItemsHeld();
-
-        foreach (var ingredient in craftRecipe.CraftingIngridients)
-        {
-            if (!itemsHeld.TryGetValue(ingredient.ItemRequired, out int amountHeld))
-                return false;
-
-            if (amountHeld < ingredient.AmountRequured)
-                return false;
-        }
-
-        return true;
     }
 }
