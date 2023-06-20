@@ -1,2 +1,2 @@
 
-public class GetNearbyPlayer : GetNearbyObject<Player, SharedPlayer> {}
+public class GetNearbyPlayer : GetNearbyObject<Health, SharedPlayer> {}

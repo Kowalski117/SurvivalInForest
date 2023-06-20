@@ -1,4 +1,4 @@
-public class Player : SurvivalAttribute, IDamagable
+public class Health : SurvivalAttribute, IDamagable
 {
     public void TakeDamage(float damage)
     {
