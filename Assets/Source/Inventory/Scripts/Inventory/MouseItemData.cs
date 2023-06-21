@@ -12,16 +12,20 @@ public class MouseItemData : MonoBehaviour
     [SerializeField] private TMP_Text _itemCount;
     [SerializeField] private InventorySlot _assignedInventorySlot;
     [SerializeField] private float _dropOffset = 0.5f;
+    [SerializeField] private LayerMask _interactionLayer;
     [SerializeField] private InventoryPlayerInput _playerInput;
 
     private Transform _playerTransform;
+    private Camera _camera;
 
     public static UnityAction OnUpdatedSlots;
+    public event UnityAction<InventorySlot> OnInteractItem;
 
     public InventorySlot AssignedInventorySlot => _assignedInventorySlot;
 
     private void Awake()
     {
+        _camera = Camera.main;
         _itemSprite.preserveAspect = true;
         _itemSprite.color = Color.clear;
         _itemCount.text = "";
@@ -45,7 +49,6 @@ public class MouseItemData : MonoBehaviour
     private void OnDisable()
     {
         _playerInput.OnSelectInventoryItem -= MouseClick;
-
     }
 
     public void MouseClick()
@@ -103,4 +106,10 @@ public class MouseItemData : MonoBehaviour
         EventSystem.current.RaycastAll(eventDataCurrentPosition, result);
         return result.Count > 0;
     }
+
+    //private bool IsRayHittingSomething(LayerMask layerMask, out RaycastHit hitInfo)
+    //{
+    //    Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+    //    return Physics.Raycast(ray, out hitInfo, layerMask);
+    //}
 }

@@ -15,6 +15,7 @@ public class InventoryPlayerInput : MonoBehaviour
     public event UnityAction<CraftingÑategory> OnCraftPlayerWindow;
     public event UnityAction OnBuildingWindow;
     public event UnityAction OnSelectInventoryItem;
+    public event UnityAction OnInteractInventoryItem;
 
     public event UnityAction InteractKeyPressed;
 
@@ -28,6 +29,7 @@ public class InventoryPlayerInput : MonoBehaviour
         _playerInput.Enable();
         _playerInput.Player.Inventory.performed += ctx => InteractCrafting();
         _playerInput.Inventory.SelectInventoryItem.started += ctx => OnSelectInventoryItem?.Invoke();
+        _playerInput.Inventory.InteractItem.started += ctx => OnInteractInventoryItem?.Invoke();
         _playerInput.Player.Interact.performed += ctx => InteractKeyPressed?.Invoke();
     }
 
@@ -35,6 +37,7 @@ public class InventoryPlayerInput : MonoBehaviour
     {
         _playerInput.Player.Inventory.performed -= ctx => InteractCrafting();
         _playerInput.Inventory.SelectInventoryItem.started -= ctx => OnSelectInventoryItem?.Invoke();
+        _playerInput.Inventory.InteractItem.started -= ctx => OnInteractInventoryItem?.Invoke();
         _playerInput.Player.Interact.performed -= ctx => InteractKeyPressed?.Invoke();
         _playerInput.Disable();
     }

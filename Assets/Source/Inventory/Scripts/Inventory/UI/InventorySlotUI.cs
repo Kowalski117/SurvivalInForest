@@ -1,10 +1,12 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class InventorySlotUI : MonoBehaviour
+public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image _imageSprite;
     [SerializeField] private TMP_Text _itemCount;
@@ -14,6 +16,9 @@ public class InventorySlotUI : MonoBehaviour
     private Button _button;
 
     public InventoryDisplay ParentDisplay { get; private set; }
+
+    public static UnityAction<InventorySlot> OnInteract;
+
     public InventorySlot AssignedInventorySlot => _assignedInventorySlot;
 
     private void Awake()
@@ -81,5 +86,18 @@ public class InventorySlotUI : MonoBehaviour
     public void ToggleHighlight()
     {
         _slotHighlight.SetActive(!_slotHighlight.activeInHierarchy);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // Обработка клика правой кнопкой мыши
+            if(_assignedInventorySlot.ItemData != null)
+            {
+                OnInteract?.Invoke(_assignedInventorySlot);
+                Debug.Log("Right mouse button clicked");
+            }
+        }
     }
 }

@@ -429,6 +429,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InteractItem",
+                    "type": "Button",
+                    "id": "06be1997-3cb1-4744-a839-dec16b3fb82a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -528,6 +537,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "SelectInventoryItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2e6abb42-663e-437c-962a-3dd87a00b4f6",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "InteractItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
