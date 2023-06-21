@@ -420,6 +420,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SelectInventoryItem",
+                    "type": "PassThrough",
+                    "id": "10ffe489-ecca-4617-a495-d97531e80b1a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -508,6 +517,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Use Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ff118eda-bbc5-4ac6-93e5-15c4425fda0a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SelectInventoryItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

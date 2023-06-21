@@ -442,6 +442,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectInventoryItem"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""10ffe489-ecca-4617-a495-d97531e80b1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -530,6 +539,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""Use Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff118eda-bbc5-4ac6-93e5-15c4425fda0a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SelectInventoryItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -694,6 +714,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Inventory_Hotbar6 = m_Inventory.FindAction("Hotbar 6", throwIfNotFound: true);
         m_Inventory_MouseWheel = m_Inventory.FindAction("MouseWheel", throwIfNotFound: true);
         m_Inventory_UseItem = m_Inventory.FindAction("Use Item", throwIfNotFound: true);
+        m_Inventory_SelectInventoryItem = m_Inventory.FindAction("SelectInventoryItem", throwIfNotFound: true);
         // BuildSystem
         m_BuildSystem = asset.FindActionMap("BuildSystem", throwIfNotFound: true);
         m_BuildSystem_PutBuilding = m_BuildSystem.FindAction("PutBuilding", throwIfNotFound: true);
@@ -856,6 +877,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_Hotbar6;
     private readonly InputAction m_Inventory_MouseWheel;
     private readonly InputAction m_Inventory_UseItem;
+    private readonly InputAction m_Inventory_SelectInventoryItem;
     public struct InventoryActions
     {
         private @PlayerInput m_Wrapper;
@@ -868,6 +890,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Hotbar6 => m_Wrapper.m_Inventory_Hotbar6;
         public InputAction @MouseWheel => m_Wrapper.m_Inventory_MouseWheel;
         public InputAction @UseItem => m_Wrapper.m_Inventory_UseItem;
+        public InputAction @SelectInventoryItem => m_Wrapper.m_Inventory_SelectInventoryItem;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -901,6 +924,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @UseItem.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnUseItem;
                 @UseItem.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnUseItem;
                 @UseItem.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnUseItem;
+                @SelectInventoryItem.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnSelectInventoryItem;
+                @SelectInventoryItem.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnSelectInventoryItem;
+                @SelectInventoryItem.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnSelectInventoryItem;
             }
             m_Wrapper.m_InventoryActionsCallbackInterface = instance;
             if (instance != null)
@@ -929,6 +955,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @UseItem.started += instance.OnUseItem;
                 @UseItem.performed += instance.OnUseItem;
                 @UseItem.canceled += instance.OnUseItem;
+                @SelectInventoryItem.started += instance.OnSelectInventoryItem;
+                @SelectInventoryItem.performed += instance.OnSelectInventoryItem;
+                @SelectInventoryItem.canceled += instance.OnSelectInventoryItem;
             }
         }
     }
@@ -1047,6 +1076,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnHotbar6(InputAction.CallbackContext context);
         void OnMouseWheel(InputAction.CallbackContext context);
         void OnUseItem(InputAction.CallbackContext context);
+        void OnSelectInventoryItem(InputAction.CallbackContext context);
     }
     public interface IBuildSystemActions
     {

@@ -12,6 +12,7 @@ public class MouseItemData : MonoBehaviour
     [SerializeField] private TMP_Text _itemCount;
     [SerializeField] private InventorySlot _assignedInventorySlot;
     [SerializeField] private float _dropOffset = 0.5f;
+    [SerializeField] private InventoryPlayerInput _playerInput;
 
     private Transform _playerTransform;
 
@@ -33,8 +34,27 @@ public class MouseItemData : MonoBehaviour
         if (_assignedInventorySlot.ItemData != null)
         {
             transform.position = Mouse.current.position.ReadValue();
+        }
+    }
 
-            if (Mouse.current.leftButton.isPressed && !IsPointerOverUIObject())
+    private void OnEnable()
+    {
+        _playerInput.OnSelectInventoryItem += MouseClick;
+    }
+
+    private void OnDisable()
+    {
+        _playerInput.OnSelectInventoryItem -= MouseClick;
+
+    }
+
+    public void MouseClick()
+    {
+        if (_assignedInventorySlot.ItemData != null)
+        {
+            transform.position = Mouse.current.position.ReadValue();
+
+            if (!IsPointerOverUIObject())
             {
                 // Действия при зажатии левой кнопки мыши
                 Instantiate(_assignedInventorySlot.ItemData.ItemPrefab, _playerTransform.position + _playerTransform.forward * _dropOffset, Quaternion.identity); //ПЕРЕДЕЛАТЬ
@@ -51,7 +71,6 @@ public class MouseItemData : MonoBehaviour
             }
         }
     }
-
 
     public void CleanSlot()
     {

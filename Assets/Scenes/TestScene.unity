@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2325,6 +2325,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5754956864751029863, guid: cf33ee7d76fa1be4b9e5f5fe9101b589, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -428
+      objectReference: {fileID: 0}
     - target: {fileID: 7366031901037708963, guid: cf33ee7d76fa1be4b9e5f5fe9101b589, type: 3}
       propertyPath: _slots.Array.size
       value: 6
@@ -2357,6 +2361,10 @@ PrefabInstance:
       propertyPath: _slots.Array.data[5]
       value: 
       objectReference: {fileID: 1560666571}
+    - target: {fileID: 7735819074652892957, guid: cf33ee7d76fa1be4b9e5f5fe9101b589, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8025350149412749540, guid: cf33ee7d76fa1be4b9e5f5fe9101b589, type: 3}
       propertyPath: _containerBuildings
       value: 
@@ -2932,6 +2940,7 @@ MonoBehaviour:
     ItemId: -1
     StackSize: -1
   _dropOffset: 5
+  _playerInput: {fileID: 630011241}
 --- !u!1001 &634395510
 PrefabInstance:
   m_ObjectHideFlags: 0
