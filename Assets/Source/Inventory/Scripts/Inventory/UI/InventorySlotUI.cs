@@ -92,11 +92,9 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // Обработка клика правой кнопкой мыши
             if(_assignedInventorySlot.ItemData != null)
             {
                 OnInteract?.Invoke(_assignedInventorySlot);
-                Debug.Log("Right mouse button clicked");
             }
         }
     }
