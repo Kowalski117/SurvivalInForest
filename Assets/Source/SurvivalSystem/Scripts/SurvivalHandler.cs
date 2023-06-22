@@ -7,6 +7,8 @@ public class SurvivalHandler : MonoBehaviour
     [SerializeField] private SurvivalAttribute _thirst;
     [SerializeField] private StaminaAttribute _stamina;
 
+    public SurvivalAttribute Hunger => _hunger;
+    public SurvivalAttribute Thirst => _thirst;
     public StaminaAttribute Stamina => _stamina;
 
     private void Update()
