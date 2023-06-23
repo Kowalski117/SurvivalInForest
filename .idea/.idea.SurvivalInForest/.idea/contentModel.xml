@@ -680,6 +680,33 @@
             </e>
           </e>
         </e>
+        <e p="BuildSystem" t="Include" />
+        <e p="CraftingSystem" t="Include">
+          <e p="CraftingCategory" t="Include" />
+          <e p="CraftingItemList" t="Include">
+            <e p="CraftBench" t="Include" />
+            <e p="Fire" t="Include" />
+            <e p="PlayerCraft" t="Include" />
+          </e>
+          <e p="CraftRecipe" t="Include" />
+          <e p="Prefabs" t="Include" />
+          <e p="Scripts" t="Include">
+            <e p="CraftingHandler.cs" t="Include" />
+            <e p="CraftingСategory.cs" t="Include" />
+            <e p="CraftObject.cs" t="Include" />
+            <e p="CraftRecipe.cs" t="Include" />
+            <e p="CraftSlot.cs" t="Include" />
+            <e p="CraftWorkbench.cs" t="Include" />
+            <e p="ManualWorkbench.cs" t="Include" />
+            <e p="RecipeItemList.cs" t="Include" />
+            <e p="UI" t="Include">
+              <e p="CraftDisplay.cs" t="Include" />
+              <e p="CraftingCategoryButton.cs" t="Include" />
+              <e p="CraftSlotView.cs" t="Include" />
+              <e p="IngridientSlotView.cs" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="Editor" t="Include">
           <e p="ReadOnlyDrawer.cs" t="Include" />
         </e>
@@ -1013,10 +1040,11 @@
           <e p="Food" t="Include" />
         </e>
         <e p="Inventory" t="Include">
-          <e p="Items" t="Include" />
           <e p="Materials" t="Include" />
           <e p="Prefab" t="Include" />
-          <e p="ScriptableObject" t="Include" />
+          <e p="Resources" t="Include">
+            <e p="ItemData" t="Include" />
+          </e>
           <e p="Scripts" t="Include">
             <e p="InteractionPoint.cs" t="Include" />
             <e p="Interactor.cs" t="Include" />
@@ -1043,9 +1071,9 @@
               <e p="InventoryItemData.cs" t="Include" />
               <e p="ItemPickUp.cs" t="Include" />
               <e p="ItemSlot.cs" t="Include" />
-              <e p="Resources" t="Include">
-                <e p="ItemData" t="Include" />
-              </e>
+            </e>
+            <e p="PlayerInput" t="Include">
+              <e p="HotbarDisplay.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -1066,6 +1094,26 @@
             <e p="NavMeshModifierVolume.cs" t="Include" />
             <e p="NavMeshSurface.cs" t="Include" />
           </e>
+        </e>
+        <e p="Painted UI" t="Include">
+          <e p="Character &amp; Inventory" t="Include" />
+          <e p="HUD" t="Include">
+            <e p="Action Bar" t="Include" />
+            <e p="Announcement" t="Include" />
+            <e p="Menu" t="Include" />
+            <e p="Minimap" t="Include" />
+            <e p="Party Frame" t="Include" />
+            <e p="Player Bars" t="Include" />
+            <e p="Target Frame" t="Include" />
+          </e>
+          <e p="Icons" t="Include">
+            <e p="Materials" t="Include" />
+          </e>
+          <e p="Loading Bars" t="Include" />
+          <e p="Main Buttons" t="Include" />
+          <e p="Main Windows" t="Include" />
+          <e p="Radio Buttons" t="Include" />
+          <e p="Sliders" t="Include" />
         </e>
         <e p="Player" t="Include">
           <e p="Animation" t="Include" />
@@ -1293,6 +1341,7 @@
           </e>
           <e p="Player.cs" t="Include" />
         </e>
+        <e p="Terrain" t="Include" />
         <e p="TestButton.cs" t="Include" />
         <e p="TextMesh Pro" t="Include">
           <e p="Documentation" t="Include" />
