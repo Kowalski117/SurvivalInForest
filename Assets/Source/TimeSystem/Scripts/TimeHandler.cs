@@ -21,6 +21,8 @@ public class TimeHandler : MonoBehaviour
     private TimeSpan _sunsetTime;
 
     public event UnityAction<DateTime> OnTimeUpdate;
+    public DateTime StartTime => _currentTime.Date + TimeSpan.FromHours(_startHour);
+    public float TimeMultiplier => _timeMultiplier;
 
     private void Start()
     {
