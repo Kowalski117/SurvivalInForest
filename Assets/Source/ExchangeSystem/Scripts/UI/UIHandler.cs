@@ -10,6 +10,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
 
+    [SerializeField] private SleepPanel _sleepPanel;
     [SerializeField] private ExchangeHandler _shopKeeperDisplay;
     [SerializeField] private CraftingHandler _craftingHandler;
 
@@ -17,6 +18,7 @@ public class UIHandler : MonoBehaviour
     private bool _isChestOpen = false;
     private bool _isShopOpen = false;
     private bool _isCraftPlayerOpen = false;
+    private bool _isSleepWindowOpen = false;
     private bool _isTurnOffWindows = false;
 
     private void Awake()
@@ -24,6 +26,7 @@ public class UIHandler : MonoBehaviour
         _inventoryPanel.gameObject.SetActive(false);
         _playerBackpackPanel.gameObject.SetActive(false);
 
+        _sleepPanel.SleepWindow.gameObject.SetActive(false);
         _shopKeeperDisplay.gameObject.SetActive(false);
         _craftingHandler.CraftingWindow.gameObject.SetActive(false);
     }
@@ -32,6 +35,7 @@ public class UIHandler : MonoBehaviour
     {
         InventoryHolder.OnDinamicInventoryDisplayRequested += DisplayInventory;
         ExchangeKeeper.OnExchangeDisplayRequested += DisplayShopWindow;
+        SleepingPlace.OnInteractionSleepingPlace += DisplaySleepWindow;
 
         _inventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
         _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
@@ -46,6 +50,7 @@ public class UIHandler : MonoBehaviour
     {
         InventoryHolder.OnDinamicInventoryDisplayRequested -= DisplayInventory;
         ExchangeKeeper.OnExchangeDisplayRequested -= DisplayShopWindow;
+        SleepingPlace.OnInteractionSleepingPlace -= DisplaySleepWindow;
 
         _inventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
         _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
@@ -58,75 +63,80 @@ public class UIHandler : MonoBehaviour
 
     public void DisplayInventory(InventorySystem inventoryDisplay, int offset)
     {
-        //if (!_isTurnOffWindows)
-        {
-            _isChestOpen = !_isChestOpen;
+        _isChestOpen = !_isChestOpen;
 
-            if (_isChestOpen)
-            {
-                _inventoryPanel.gameObject.SetActive(true);
-                _inventoryPanel.RefreshDynamicInventory(inventoryDisplay, offset);
-            }
-            else
-            {
-                CloseChest();
-            }
+        if (_isChestOpen)
+        {
+            _inventoryPanel.gameObject.SetActive(true);
+            _inventoryPanel.RefreshDynamicInventory(inventoryDisplay, offset);
+        }
+        else
+        {
+            CloseChest();
         }
     }
 
     public void DisplayPlayerInventory(InventorySystem inventoryDisplay, int offset)
     {
-        //if (!_isTurnOffWindows)
-        {
-            _isInventoryOpen = !_isInventoryOpen;
+        _isInventoryOpen = !_isInventoryOpen;
 
-            if (_isInventoryOpen)
-            {
-                _buildPlayerInput.enabled = false;
-                _playerBackpackPanel.gameObject.SetActive(true);
-                _cursorController.SetCursorVisible(true);
-                _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
-            }
-            else
-            {
-                CloseInventory();
-            }
+        if (_isInventoryOpen)
+        {
+            _buildPlayerInput.enabled = false;
+            _playerBackpackPanel.gameObject.SetActive(true);
+            _cursorController.SetCursorVisible(true);
+            _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
+        }
+        else
+        {
+            CloseInventory();
         }
     }
 
     private void DisplayShopWindow(ExchangeKeeper exchangeKeeper)
     {
-        //if (!_isTurnOffWindows)
-        {
-            _isShopOpen = !_isShopOpen;
+        _isShopOpen = !_isShopOpen;
 
-            if (_isShopOpen)
-            {
-                _shopKeeperDisplay.gameObject.SetActive(true);
-                _shopKeeperDisplay.CreateSlots();
-            }
-            else
-            {
-                _shopKeeperDisplay.gameObject.SetActive(false);
-            }
+        if (_isShopOpen)
+        {
+            _shopKeeperDisplay.gameObject.SetActive(true);
+            _shopKeeperDisplay.CreateSlots();
+        }
+        else
+        {
+            _shopKeeperDisplay.gameObject.SetActive(false);
         }
     }
 
     private void DisplayCraftPlayerWindow(Crafting—ategory craftingCategory)
     {
-        //if (!_isTurnOffWindows)
-        {
-            _isCraftPlayerOpen = !_isCraftPlayerOpen;
+        _isCraftPlayerOpen = !_isCraftPlayerOpen;
 
-            if (_isCraftPlayerOpen)
-            {
-                _craftingHandler.CraftingWindow.gameObject.SetActive(true);
-                _craftingHandler.UpdateSlot();
-            }
-            else
-            {
-                _craftingHandler.CraftingWindow.gameObject.SetActive(false);
-            }
+        if (_isCraftPlayerOpen)
+        {
+            _craftingHandler.CraftingWindow.gameObject.SetActive(true);
+            _craftingHandler.UpdateSlot();
+        }
+        else
+        {
+            _craftingHandler.CraftingWindow.gameObject.SetActive(false);
+        }
+    }
+
+    private void DisplaySleepWindow()
+    {
+        _isSleepWindowOpen = !_isSleepWindowOpen;
+
+        if (_isSleepWindowOpen)
+        {
+            _cursorController.SetCursorVisible(_isSleepWindowOpen);
+            _sleepPanel.OpenWindow();
+            _craftingHandler.UpdateSlot();
+        }
+        else
+        {
+            _cursorController.SetCursorVisible(_isSleepWindowOpen);
+            _sleepPanel.SleepWindow.gameObject.SetActive(false);
         }
     }
 
@@ -134,7 +144,7 @@ public class UIHandler : MonoBehaviour
     {
         _isTurnOffWindows = !_isTurnOffWindows;
 
-        if(_isTurnOffWindows)
+        if (_isTurnOffWindows)
         {
             CloseWindow(_isCraftPlayerOpen, _craftingHandler.CraftingWindow.gameObject);
             CloseWindow(_isShopOpen, _shopKeeperDisplay.gameObject);

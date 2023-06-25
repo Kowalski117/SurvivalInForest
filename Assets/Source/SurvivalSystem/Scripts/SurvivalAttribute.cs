@@ -8,11 +8,13 @@ public class SurvivalAttribute : MonoBehaviour
 
     protected float CurrentValue;
     private float _hourInSeconds = 3600;
+    private float _maxValue => MaxValue * _hourInSeconds;
 
     public event UnityAction<float> OnValueChanged;
     public event UnityAction OnZeroValueReached;
 
-    public float ValuePercent => CurrentValue / (MaxValue * _hourInSeconds);
+    public float MissingValue => _maxValue - CurrentValue;
+    public float ValuePercent => CurrentValue / _maxValue;
 
     private void Start()
     {
@@ -35,10 +37,12 @@ public class SurvivalAttribute : MonoBehaviour
 
     public void ReplenishValue(float value)
     {
+        Debug.Log(CurrentValue);
+        Debug.Log(value);
         CurrentValue += value;
-
-        if(CurrentValue > MaxValue)
-            CurrentValue = MaxValue;
+        Debug.Log(CurrentValue);
+        if(CurrentValue > _maxValue)
+            CurrentValue = _maxValue;
 
         OnValueChanged?.Invoke(ValuePercent);
     }

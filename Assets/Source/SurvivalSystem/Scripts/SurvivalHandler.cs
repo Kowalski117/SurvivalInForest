@@ -11,6 +11,8 @@ public class SurvivalHandler : MonoBehaviour
     public SurvivalAttribute Hunger => _hunger;
     public SurvivalAttribute Thirst => _thirst;
     public StaminaAttribute Stamina => _stamina;
+    public SurvivalAttribute Sleep => _sleep;
+    public TimeHandler TimeHandler => _timeHandler;
 
     private void Update()
     {
