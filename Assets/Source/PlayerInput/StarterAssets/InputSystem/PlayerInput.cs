@@ -107,6 +107,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractionConstruction"",
+                    ""type"": ""Button"",
+                    ""id"": ""bef15890-04ef-4044-a249-30a72ec89ebe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -382,6 +391,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""Hit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a7a7226-0286-4b8a-971a-c21733fc249a"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""InteractionConstruction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -745,6 +765,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Hit = m_Player.FindAction("Hit", throwIfNotFound: true);
+        m_Player_InteractionConstruction = m_Player.FindAction("InteractionConstruction", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Hotbar1 = m_Inventory.FindAction("Hotbar 1", throwIfNotFound: true);
@@ -831,6 +852,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Hit;
+    private readonly InputAction m_Player_InteractionConstruction;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -844,6 +866,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Hit => m_Wrapper.m_Player_Hit;
+        public InputAction @InteractionConstruction => m_Wrapper.m_Player_InteractionConstruction;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -880,6 +903,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Hit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHit;
                 @Hit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHit;
                 @Hit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHit;
+                @InteractionConstruction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractionConstruction;
+                @InteractionConstruction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractionConstruction;
+                @InteractionConstruction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractionConstruction;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -911,6 +937,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Hit.started += instance.OnHit;
                 @Hit.performed += instance.OnHit;
                 @Hit.canceled += instance.OnHit;
+                @InteractionConstruction.started += instance.OnInteractionConstruction;
+                @InteractionConstruction.performed += instance.OnInteractionConstruction;
+                @InteractionConstruction.canceled += instance.OnInteractionConstruction;
             }
         }
     }
@@ -1124,6 +1153,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnHit(InputAction.CallbackContext context);
+        void OnInteractionConstruction(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {
