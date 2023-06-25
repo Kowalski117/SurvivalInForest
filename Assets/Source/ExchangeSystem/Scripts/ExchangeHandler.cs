@@ -12,7 +12,7 @@ public class ExchangeHandler : MonoBehaviour
 
     [SerializeField] private Dictionary<InventoryItemData, int> _itemsHeld;
 
-    public void CreateSlots(/*ExchangeKeeper exchangeKeeper*/)
+    public void CreateSlots()
     {
         foreach (Transform child in _containerForSlot)
         {
