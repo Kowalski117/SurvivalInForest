@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 4744550521748953316}
   - component: {fileID: 6000132402885055681}
   - component: {fileID: 6624447250843599896}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4744550521748953316
 Transform:
   m_ObjectHideFlags: 0
@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383126181761843000}
   m_RootOrder: 6
@@ -51,10 +52,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -79,6 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &966752893160874811
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,7 +94,7 @@ GameObject:
   - component: {fileID: 8940319151337849773}
   - component: {fileID: 1639554712739333431}
   - component: {fileID: 5323498123356240296}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01_Branches_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,6 +111,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383126181761843000}
   m_RootOrder: 0
@@ -130,10 +135,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -158,6 +165,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1016392496237815170
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,8 +176,8 @@ GameObject:
   m_Component:
   - component: {fileID: 383126181761843000}
   - component: {fileID: 4831021626736658505}
-  - component: {fileID: -4339156269641720879}
-  m_Layer: 0
+  - component: {fileID: 3093647107019328905}
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,6 +194,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8940319151337849773}
   - {fileID: 6444975826769427614}
@@ -205,34 +214,30 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016392496237815170}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.062836885, y: 4.2141232, z: -0.044025898}
-  m_Size: 10.563714
-  m_FadeMode: 1
+  m_LocalReferencePoint: {x: 0.03716266, y: 4.1168365, z: -0.058243513}
+  m_Size: 10.248522
+  m_FadeMode: 2
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.3579773
+  - screenRelativeHeight: 0.3008042
     fadeTransitionWidth: 0.1
     renderers:
     - renderer: {fileID: 5323498123356240296}
     - renderer: {fileID: 2566390969373441375}
-  - screenRelativeHeight: 0.15628241
+  - screenRelativeHeight: 0.14513683
     fadeTransitionWidth: 0.1
     renderers:
     - renderer: {fileID: 838854759801347483}
     - renderer: {fileID: 7908217688414028847}
-  - screenRelativeHeight: 0.049122527
+  - screenRelativeHeight: 0.0972028
     fadeTransitionWidth: 0.1
     renderers:
     - renderer: {fileID: 6760613946231160988}
     - renderer: {fileID: 5668985735737174969}
-  - screenRelativeHeight: 0.0066422643
-    fadeTransitionWidth: 0.1
-    renderers:
-    - renderer: {fileID: 6624447250843599896}
   m_Enabled: 1
---- !u!64 &-4339156269641720879
-MeshCollider:
+--- !u!136 &3093647107019328905
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -241,10 +246,10 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3840309992061723930, guid: 57deee02a9b004e4d991f4e4481d561a, type: 3}
+  m_Radius: 0.17500454
+  m_Height: 4.0794296
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.96, z: 0}
 --- !u!1 &1784691249123472905
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +261,7 @@ GameObject:
   - component: {fileID: 2826004325020961928}
   - component: {fileID: 4428022116087391272}
   - component: {fileID: 6760613946231160988}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01_Branches_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,6 +278,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383126181761843000}
   m_RootOrder: 2
@@ -296,10 +302,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -324,6 +332,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5562143400894397307
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +344,7 @@ GameObject:
   - component: {fileID: 6444975826769427614}
   - component: {fileID: 241953982815594261}
   - component: {fileID: 838854759801347483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01_Branches_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,6 +361,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383126181761843000}
   m_RootOrder: 1
@@ -375,10 +385,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -403,6 +415,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6653199916494029092
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +427,7 @@ GameObject:
   - component: {fileID: 7110465316532317599}
   - component: {fileID: 6294339240022247122}
   - component: {fileID: 7908217688414028847}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,6 +444,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383126181761843000}
   m_RootOrder: 4
@@ -454,10 +468,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -482,6 +498,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7246181940861367145
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +510,7 @@ GameObject:
   - component: {fileID: 2026361835422714880}
   - component: {fileID: 3113422485765415932}
   - component: {fileID: 5668985735737174969}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -510,6 +527,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383126181761843000}
   m_RootOrder: 5
@@ -533,10 +551,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -561,6 +581,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7364416885262474807
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +593,7 @@ GameObject:
   - component: {fileID: 5214091288264072485}
   - component: {fileID: 1539343906223105340}
   - component: {fileID: 2566390969373441375}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SM_Env_Tree_Birch_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,6 +610,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 383126181761843000}
   m_RootOrder: 3
@@ -612,10 +634,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -640,3 +664,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
