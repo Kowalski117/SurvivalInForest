@@ -37,7 +37,6 @@ public enum ItemType
 {
     Build,
     Weapon,
-    Tool,
     Food,
     Decor,
     Clothing

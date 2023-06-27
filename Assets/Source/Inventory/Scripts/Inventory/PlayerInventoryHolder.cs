@@ -25,22 +25,6 @@ public class PlayerInventoryHolder : InventoryHolder
         return false;
     }
 
-    public bool CheckIfCanCraft(CraftRecipe craftRecipe)
-    {
-        var itemsHeld = InventorySystem.GetAllItemsHeld();
-
-        foreach (var ingredient in craftRecipe.CraftingIngridients)
-        {
-            if (!itemsHeld.TryGetValue(ingredient.ItemRequired, out int amountHeld))
-                return false;
-
-            if (amountHeld < ingredient.AmountRequured)
-                return false;
-        }
-
-        return true;
-    }
-
     public void ToggleInventory()
     {
         OnPlayerInventoryDispleyRequested?.Invoke(PrimaryInventorySystem, Offset);

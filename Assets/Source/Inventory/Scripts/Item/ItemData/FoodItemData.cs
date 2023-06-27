@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Inventory System/Item Data/Food", order = 51)]
+[CreateAssetMenu(menuName = "Inventory System/Food", order = 51)]
 public class FoodItemData : InventoryItemData
 {
     [SerializeField] private int _amountWater;

@@ -56,11 +56,6 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Disable();
     }
 
-    public InventorySlotUI GetInventorySlotUI()
-    {
-        return Slots[_currentIndex];
-    }
-
     private void ChangeIndex(int direction)
     {
         Slots[_currentIndex].ToggleHighlight();
