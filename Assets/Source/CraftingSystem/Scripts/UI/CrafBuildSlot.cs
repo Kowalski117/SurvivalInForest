@@ -6,8 +6,7 @@ public class CrafBuildSlot : CraftSlot
 {
     private CraftBuildSlotView _slotView;
 
-    public static UnityAction<BuildingData> OnCreateRecipeButtonClick;
-    public static UnityAction OnCraftSlotUpdate;
+    public static UnityAction<BuildingRecipe> OnCreateRecipeButtonClick;
 
     private void Awake()
     {
@@ -24,17 +23,9 @@ public class CrafBuildSlot : CraftSlot
         _slotView.OnCreateRecipeButtonClick -= CraftingItem;
     }
 
-    private void CraftingItem(BuildingRecipe craftRecipe, PlayerInventoryHolder playerInventoryHolder)
+    private void CraftingItem(BuildingRecipe craftRecipe)
     {
-        if (CheckIfCanCraft(craftRecipe, playerInventoryHolder))
-        {
-            foreach (var ingredient in craftRecipe.CraftingIngridients)
-            {
-                playerInventoryHolder.InventorySystem.RemoveItemsInventory(ingredient.ItemRequired, ingredient.AmountRequured);
-            }
-
-            OnCreateRecipeButtonClick?.Invoke(craftRecipe.BuildingData);
-            OnCraftSlotUpdate?.Invoke();
-        }
+        LoadingWindow.Instance.ShowLoadingWindow(10);
+        OnCreateRecipeButtonClick?.Invoke(craftRecipe);
     }
 }
