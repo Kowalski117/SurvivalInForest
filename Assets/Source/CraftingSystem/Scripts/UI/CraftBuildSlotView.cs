@@ -4,7 +4,7 @@ public class CraftBuildSlotView : CraftSlotView
 {
     private BuildingRecipe _recipe;
 
-    public event UnityAction<BuildingRecipe, PlayerInventoryHolder> OnCreateRecipeButtonClick;
+    public event UnityAction<BuildingRecipe> OnCreateRecipeButtonClick;
 
     public BuildingRecipe Recipe => _recipe;
 
@@ -38,6 +38,6 @@ public class CraftBuildSlotView : CraftSlotView
 
     public void OnCreateRecipeButton()
     {
-        OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
+        OnCreateRecipeButtonClick?.Invoke(_recipe);
     }
 }

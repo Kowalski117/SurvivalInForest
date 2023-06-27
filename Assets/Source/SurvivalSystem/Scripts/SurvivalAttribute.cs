@@ -37,10 +37,8 @@ public class SurvivalAttribute : MonoBehaviour
 
     public void ReplenishValue(float value)
     {
-        Debug.Log(CurrentValue);
-        Debug.Log(value);
         CurrentValue += value;
-        Debug.Log(CurrentValue);
+
         if(CurrentValue > _maxValue)
             CurrentValue = _maxValue;
 

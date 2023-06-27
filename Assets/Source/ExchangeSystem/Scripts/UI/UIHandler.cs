@@ -4,7 +4,7 @@ public class UIHandler : MonoBehaviour
 {
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
-    [SerializeField] private CursorController _cursorController;
+    [SerializeField] private PlayerInputHandler _cursorController;
     [SerializeField] private BuildTool _buildTool;
 
     [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
@@ -16,32 +16,22 @@ public class UIHandler : MonoBehaviour
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
-    private bool _isShopOpen = false;
-    private bool _isCraftPlayerOpen = false;
-    private bool _isSleepWindowOpen = false;
+
     private bool _isTurnOffWindows = false;
 
     private void Awake()
     {
         _inventoryPanel.gameObject.SetActive(false);
         _playerBackpackPanel.gameObject.SetActive(false);
-
-        _sleepPanel.SleepWindow.gameObject.SetActive(false);
-        _shopKeeperDisplay.gameObject.SetActive(false);
         _craftingHandler.CraftingWindow.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         InventoryHolder.OnDinamicInventoryDisplayRequested += DisplayInventory;
-        ExchangeKeeper.OnExchangeDisplayRequested += DisplayShopWindow;
-        SleepingPlace.OnInteractionSleepingPlace += DisplaySleepWindow;
-
         _inventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
-        _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
 
         _buildPlayerInput.OnDeleteBuilding += EnableWindows;
-
         _buildTool.OnCreateBuild += TurnOffWindows;
         _buildTool.OnCompletedBuild += EnableWindows;
     }
@@ -49,14 +39,9 @@ public class UIHandler : MonoBehaviour
     private void OnDisable()
     {
         InventoryHolder.OnDinamicInventoryDisplayRequested -= DisplayInventory;
-        ExchangeKeeper.OnExchangeDisplayRequested -= DisplayShopWindow;
-        SleepingPlace.OnInteractionSleepingPlace -= DisplaySleepWindow;
-
         _inventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
-        _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
 
         _buildPlayerInput.OnDeleteBuilding -= EnableWindows;
-
         _buildTool.OnCreateBuild -= TurnOffWindows;
         _buildTool.OnCompletedBuild -= EnableWindows;
     }
@@ -72,7 +57,7 @@ public class UIHandler : MonoBehaviour
         }
         else
         {
-            CloseChest();
+            _inventoryPanel.gameObject.SetActive(false);
         }
     }
 
@@ -93,66 +78,16 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    private void DisplayShopWindow(ExchangeKeeper exchangeKeeper)
-    {
-        _isShopOpen = !_isShopOpen;
-
-        if (_isShopOpen)
-        {
-            _shopKeeperDisplay.gameObject.SetActive(true);
-            _shopKeeperDisplay.CreateSlots();
-        }
-        else
-        {
-            _shopKeeperDisplay.gameObject.SetActive(false);
-        }
-    }
-
-    private void DisplayCraftPlayerWindow(Crafting—ategory craftingCategory)
-    {
-        _isCraftPlayerOpen = !_isCraftPlayerOpen;
-
-        if (_isCraftPlayerOpen)
-        {
-            _craftingHandler.CraftingWindow.gameObject.SetActive(true);
-            _craftingHandler.UpdateSlot();
-        }
-        else
-        {
-            _craftingHandler.CraftingWindow.gameObject.SetActive(false);
-        }
-    }
-
-    private void DisplaySleepWindow()
-    {
-        _isSleepWindowOpen = !_isSleepWindowOpen;
-
-        if (_isSleepWindowOpen)
-        {
-            _cursorController.SetCursorVisible(_isSleepWindowOpen);
-            _sleepPanel.OpenWindow();
-            _craftingHandler.UpdateSlot();
-        }
-        else
-        {
-            _cursorController.SetCursorVisible(_isSleepWindowOpen);
-            _sleepPanel.SleepWindow.gameObject.SetActive(false);
-        }
-    }
-
     private void TurnOffWindows()
     {
         _isTurnOffWindows = !_isTurnOffWindows;
 
         if (_isTurnOffWindows)
         {
-            CloseWindow(_isCraftPlayerOpen, _craftingHandler.CraftingWindow.gameObject);
-            CloseWindow(_isShopOpen, _shopKeeperDisplay.gameObject);
-            CloseWindow(_isInventoryOpen, _playerBackpackPanel.gameObject);
-            CloseWindow(_isChestOpen, _inventoryPanel.gameObject);
+            _cursorController.ToggleInventoryPanels(false);
             _cursorController.SetCursorVisible(false);
-            _buildPlayerInput.enabled = true;
-            _inventoryPlayerInput.enabled = false;
+            _cursorController.ToggleBuildPlayerInput(true);
+            _cursorController.ToggleInventoryInput(false);
             _buildTool.SetDeleteModeEnabled(false);
         }
     }
@@ -161,38 +96,11 @@ public class UIHandler : MonoBehaviour
     {
         if (_isTurnOffWindows)
         {
-            OpenWindow(_isCraftPlayerOpen, _craftingHandler.CraftingWindow.gameObject);
-            OpenWindow(_isShopOpen, _shopKeeperDisplay.gameObject);
-            OpenWindow(_isInventoryOpen, _playerBackpackPanel.gameObject);
-            OpenWindow(_isChestOpen, _inventoryPanel.gameObject);
             _cursorController.SetCursorVisible(true);
+            _cursorController.ToggleInventoryPanels(true);
+            _cursorController.ToggleBuildPlayerInput(false);
+            _cursorController.ToggleInventoryInput(true);
             _isTurnOffWindows = false;
-            _inventoryPlayerInput.enabled = true;
-            _buildPlayerInput.enabled = false;
-        }
-    }
-
-    private void CloseChest()
-    {
-        if (!_isChestOpen)
-        {
-            _inventoryPanel.gameObject.SetActive(false);
-        }
-    }
-
-    private void CloseWindow(bool isActive, GameObject window)
-    {
-        if (isActive)
-        {
-            window.gameObject.SetActive(false);
-        }
-    }
-
-    private void OpenWindow(bool isActive, GameObject window)
-    {
-        if (isActive)
-        {
-            window.gameObject.SetActive(true);
         }
     }
 

@@ -6,6 +6,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private ManualWorkbench _manualWorkbench;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
+    [SerializeField] private BuildTool _buildTool;
 
     [SerializeField] private CraftingÑategory[] _craftingÑategories;
     [SerializeField] private Transform _containerForSlots;
@@ -19,19 +20,24 @@ public class CraftingHandler : MonoBehaviour
     private List<CraftBuildSlotView> _craftBuildSlots = new List<CraftBuildSlotView>();
 
     private CraftingÑategory _currentCategory;
+    private bool _isCraftPlayerOpen = false;
     public Transform CraftingWindow => _craftingWindow;
 
     private void OnEnable()
     {
+        _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
+
+        _buildTool.OnCompletedBuild += UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate += UpdateSlot;
-        CrafBuildSlot.OnCraftSlotUpdate += UpdateSlot;
         MouseItemData.OnUpdatedSlots += UpdateSlot;
     }
 
     private void OnDisable()
     {
+        _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
+
+        _buildTool.OnCompletedBuild -= UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate -= UpdateSlot;
-        CrafBuildSlot.OnCraftSlotUpdate -= UpdateSlot;
         MouseItemData.OnUpdatedSlots -= UpdateSlot;
     }
 
@@ -143,5 +149,20 @@ public class CraftingHandler : MonoBehaviour
         }
 
         SwitchCraftingCategory(_defoultType);
+    }
+
+    private void DisplayCraftPlayerWindow(CraftingÑategory craftingCategory)
+    {
+        _isCraftPlayerOpen = !_isCraftPlayerOpen;
+
+        if (_isCraftPlayerOpen)
+        {
+            _craftingWindow.gameObject.SetActive(true);
+            UpdateSlot();
+        }
+        else
+        {
+            _craftingWindow.gameObject.SetActive(false);
+        }
     }
 }
