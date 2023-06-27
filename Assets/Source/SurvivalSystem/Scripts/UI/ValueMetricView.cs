@@ -6,8 +6,18 @@ public class ValueMetricView : MonoBehaviour
     [SerializeField] private SurvivalAttribute _survivalAttribute;
     [SerializeField] private Image _image;
 
-    private void FixedUpdate()
+    private void OnEnable()
     {
-        _image.fillAmount = _survivalAttribute.ValuePercent;
+        _survivalAttribute.OnValueChanged += UpdateFillAmount;
+    }
+
+    private void OnDisable()
+    {
+        _survivalAttribute.OnValueChanged += UpdateFillAmount;
+    }
+
+    private void UpdateFillAmount(float amount)
+    {
+        _image.fillAmount = amount;
     }
 }
