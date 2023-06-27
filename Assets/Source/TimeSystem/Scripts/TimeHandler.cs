@@ -39,6 +39,12 @@ public class TimeHandler : MonoBehaviour
         UpdateLightSettings();
     }
 
+    public void AddTime(float time)
+    {
+        _currentTime = _currentTime.AddSeconds(time);
+        OnTimeUpdate?.Invoke(_currentTime);
+    }
+
     private void UpdateTimeDay()
     {
         _currentTime = _currentTime.AddSeconds(Time.deltaTime * _timeMultiplier);

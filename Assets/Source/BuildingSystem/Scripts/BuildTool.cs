@@ -4,12 +4,13 @@ using UnityEngine.InputSystem;
 
 public class BuildTool : MonoBehaviour
 {
+    [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private float _rotateSnapAngle = 45f;
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
     [SerializeField] private LayerMask _deleteModeLayerMask;
-    [SerializeField] private int _defoultLayerInt = 9;
+    [SerializeField] private int _defoultLayerInt = 11;
     [SerializeField] private Transform _rayOrigin;
     [SerializeField] private Material _buildingMatPositive;
     [SerializeField] private Material _buildingMatNegative;
@@ -17,6 +18,7 @@ public class BuildTool : MonoBehaviour
 
     private bool _deleteModeEnabled;
     private Camera _camera;
+    private BuildingRecipe _recipe;
     private Building _spawnBuilding;
     private Building _targetBuilding;
     private Quaternion _lastRotation;
@@ -54,7 +56,7 @@ public class BuildTool : MonoBehaviour
         _deleteModeEnabled = deleteMode;
     }
 
-    private void ChoosePart(BuildingData data) 
+    private void ChoosePart(BuildingRecipe buildingRecipe) 
     { 
         if(_deleteModeEnabled)
         {
@@ -69,8 +71,9 @@ public class BuildTool : MonoBehaviour
 
         DeleteObjectPreview();
 
-        _spawnBuilding = Instantiate(data.Prefab, _containerBuildings);
-        _spawnBuilding.Init(data);
+        _recipe = buildingRecipe;
+        _spawnBuilding = Instantiate(buildingRecipe.BuildingData.Prefab, _containerBuildings);
+        _spawnBuilding.Init(buildingRecipe.BuildingData);
         _spawnBuilding.transform.rotation = _lastRotation;
         OnCreateBuild?.Invoke();
     }
@@ -150,7 +153,21 @@ public class BuildTool : MonoBehaviour
 
         if (IsRayHittingSomething(_buildModeLayerMask, out RaycastHit hitInfo))
         {
-            Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitInfo.point, 1f);
+            Vector3 hitPoint = hitInfo.point;
+            Vector3 terrainNormal = hitInfo.normal;
+
+            // Перемещение точки столкновения немного выше, чтобы постройка не находилась полностью внутри террейна
+            hitPoint += terrainNormal * 0.1f;
+
+            // Подстройка постройки под поверхность террейна
+            Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
+
+            // Получение высоты террейна в заданной точке
+            float terrainHeight = Terrain.activeTerrain.SampleHeight(hitPoint);
+
+            // Корректировка позиции постройки по вертикали, чтобы она соответствовала высоте террейна
+            gridPosition.y = terrainHeight;
+
             _spawnBuilding.transform.position = gridPosition;
         }
     }
@@ -159,10 +176,9 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
         {
+            CraftingItem(_recipe);
             _spawnBuilding.PlaceBuilding();
-            //BuildingData dataCopy = _spawnBuilding.AssignedData;
             _spawnBuilding = null;
-            //ChoosePart(dataCopy);
             OnCompletedBuild?.Invoke();
         }
     }
@@ -187,5 +203,16 @@ public class BuildTool : MonoBehaviour
     private void DeleteBuilding()
     {
         DeleteObjectPreview();
+    }
+
+    private void CraftingItem(BuildingRecipe craftRecipe)
+    {
+        if (_inventoryHolder.CheckIfCanCraft(craftRecipe))
+        {
+            foreach (var ingredient in craftRecipe.CraftingIngridients)
+            {
+                _inventoryHolder.InventorySystem.RemoveItemsInventory(ingredient.ItemRequired, ingredient.AmountRequured);
+            }
+        }
     }
 }
