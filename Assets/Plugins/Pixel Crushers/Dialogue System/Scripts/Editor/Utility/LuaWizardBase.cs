@@ -182,12 +182,17 @@ namespace PixelCrushers.DialogueSystem
             List<FieldType> typeList = new List<FieldType>();
             if (database != null)
             {
-                database.variables.ForEach(variable => 
+                // Add (New Variable) item to popup list:
+                nameList.Add(string.Empty);
+                typeList.Add(FieldType.Text);
+                popupNameList.Add("(New)");
+                // Add all variables:
+                database.variables.ForEach(variable =>
                 {
                     var variableName = variable.Name;
                     nameList.Add(variableName);
                     popupNameList.Add(variableName.Replace(".", "/"));
-                    typeList.Add(variable.Type); 
+                    typeList.Add(variable.Type);
                 });
             }
             variableNames = nameList.ToArray();
@@ -353,6 +358,20 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        protected CustomFieldType GetCustomFieldType<T>(List<T> assets, int assetIndex, int fieldIndex) where T : Asset
+        {
+            if (0 <= assetIndex && assetIndex < assets.Count)
+            {
+                var asset = assets[assetIndex];
+                if (asset != null && 0 <= fieldIndex && fieldIndex < asset.fields.Count)
+                {
+                    var field = asset.fields[fieldIndex];
+                    return CustomFieldTypeService.GetFieldCustomType(field.typeString);
+                }
+            }
+            return null;
+        }
+
         public void FindAllCustomLuaFuncs(bool findConditionFuncs, out CustomLuaFunctionInfoRecord[] customLuaFuncs, out string[] customLuaFuncNames)
         {
             var recordList = new List<CustomLuaFunctionInfoRecord>();
@@ -399,10 +418,36 @@ namespace PixelCrushers.DialogueSystem
                     case CustomLuaParameterType.Quest:
                     case CustomLuaParameterType.QuestEntry:
                     case CustomLuaParameterType.Variable:
+                    case CustomLuaParameterType.VariableName:
                     case CustomLuaParameterType.Item:
                         customParamValues[i] = (int)0;
                         break;
                 }
+            }
+        }
+
+        public void AddNewVariable(string newVariableName, FieldType newVariableType)
+        {
+            if (database == null) return;
+            if (database.GetVariable(newVariableName) != null) return;
+            var template = Template.FromDefault();
+            var newVariableID = template.GetNextVariableID(database);
+            var newVariable = template.CreateVariable(newVariableID, newVariableName, GetDefaultNewVariableValue(newVariableType), newVariableType);
+            database.variables.Add(newVariable);
+        }
+
+        protected string GetDefaultNewVariableValue(FieldType fieldType)
+        {
+            switch (fieldType)
+            {
+                case FieldType.Boolean:
+                    return "false";
+                case FieldType.Actor:
+                case FieldType.Item:
+                case FieldType.Location:
+                    return "0";
+                default:
+                    return string.Empty;
             }
         }
 

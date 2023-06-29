@@ -6,6 +6,8 @@ using UnityEngine;
 namespace PixelCrushers.DialogueSystem
 {
 
+    public enum BarkGroupQueueLimitMode { NoLimit, StopAtLimit, DropOldestAtLimit }
+
     /// <summary>
     /// Manages bark groups specified by BarkGroupMember.
     /// Adds itself to the Dialogue Manager.
@@ -13,6 +15,11 @@ namespace PixelCrushers.DialogueSystem
     [AddComponentMenu("")] // Added automatically at runtime.
     public class BarkGroupManager : MonoBehaviour
     {
+
+        public BarkGroupQueueLimitMode queueLimitMode = BarkGroupQueueLimitMode.NoLimit;
+
+        [Tooltip("Only used if mode is Stop At Limit or Drop Oldest At Limit")]
+        public int queueLimit = 256;
 
         private static bool s_applicationIsQuitting = false;
         private static BarkGroupManager s_instance = null;
@@ -33,11 +40,12 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
             s_applicationIsQuitting = false;
+            s_instance = null;
         }
 #endif
 
@@ -124,11 +132,30 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Hides all bark members' bark UIs and clears any queued barks.
+        /// </summary>
+        public void CancelAllBarks()
+        {
+            foreach (var queue in queues.Values)
+            {
+                queue.Clear();
+            }
+            foreach (var group in groups.Values)
+            {
+                foreach (var member in group)
+                {
+                    if (member != null) member.CancelBark();
+                }
+            }
+        }
+
+        /// <summary>
         /// Hides other members' barks if they're playing.
+        /// Pass null to hide all members' barks.
         /// </summary>
         public void MutexBark(string groupId, BarkGroupMember member)
         {
-            if (string.IsNullOrEmpty(groupId) || member == null) return;
+            if (string.IsNullOrEmpty(groupId)) return;
             if (!groups.ContainsKey(groupId)) return;
             foreach (var other in groups[groupId])
             {
@@ -184,6 +211,17 @@ namespace PixelCrushers.DialogueSystem
             var groupId = member.currentIdValue;
             if (!queues.ContainsKey(groupId)) queues.Add(groupId, new Queue<BarkRequest>());
             var queue = queues[groupId];
+            if (queueLimitMode != BarkGroupQueueLimitMode.NoLimit && queue.Count > queueLimit)
+            {
+                switch (queueLimitMode)
+                {
+                    case BarkGroupQueueLimitMode.StopAtLimit:
+                        return;
+                    case BarkGroupQueueLimitMode.DropOldestAtLimit:
+                        queue.Dequeue();
+                        break;
+                }
+            }
             queue.Enqueue(barkRequest);
             if (queue.Count == 1) barkRequest.delayTime = 0; // Play immediately.
         }

@@ -181,6 +181,7 @@ namespace PixelCrushers.DialogueSystem
             ReplaceLuaTags(ref text);
             string variableInputPrompt = ExtractVariableInputPrompt(ref text);
             ReplaceVarTags(ref text);
+            ReplaceAutocaseTags(ref text);
             ReplacePipes(ref text); // Was: ExtractTag("|", ref text);
             int pic = FormattedText.NoPicOverride;
             int pica = FormattedText.NoPicOverride;
@@ -228,6 +229,8 @@ namespace PixelCrushers.DialogueSystem
             if (text.Contains("|")) text = text.Replace("|", "\n");
         }
 
+        private static Regex LuaRegex = new Regex(@"\[lua\((?!lua).*\)\]");
+
         /// <summary>
         /// Replaces the [lua(xxx)] tags with the result of running xxx through Lua. For brevity,
         /// xxx can omit the return statement; this method will add it.
@@ -241,7 +244,6 @@ namespace PixelCrushers.DialogueSystem
             const int maxReplacements = 100;
             if (text.Contains(luaTagStart))
             {
-                Regex regex = new Regex(@"\[lua\((?!lua).*\)\]"); //---Was: new Regex(@"\[lua\(.*\)\]");
                 int endPosition = text.Length - 1;
                 int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
                 while ((endPosition >= 0) && (numReplacements < maxReplacements))
@@ -253,7 +255,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         string firstPart = text.Substring(0, luaTagPosition);
                         string secondPart = text.Substring(luaTagPosition);
-                        string secondPartLuaReplaced = regex.Replace(secondPart, delegate (Match match)
+                        string secondPartLuaReplaced = LuaRegex.Replace(secondPart, delegate (Match match)
                         {
                             string luaCode = match.Value.Substring(5, match.Value.Length - 7).Trim(); // Remove "[lua(" and ")]"
                             if (!luaCode.StartsWith("return ")) luaCode = "return " + luaCode;
@@ -273,6 +275,8 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        private static Regex VarRegex = new Regex(@"\[var=[^\]]*\]");
+
         /// <summary>
         /// Replaces the [var=varName] tags with the value of the Lua variable varName.
         /// </summary>
@@ -286,7 +290,6 @@ namespace PixelCrushers.DialogueSystem
             if (text.Contains(varTagStart))
             {
                 // Match "[var=" and then anything up to "]":
-                Regex regex = new Regex(@"\[var=[^\]]*\]");
                 int endPosition = text.Length - 1;
                 int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
                 while ((endPosition >= 0) && (numReplacements < maxReplacements))
@@ -298,7 +301,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         string firstPart = text.Substring(0, varTagPosition);
                         string secondPart = text.Substring(varTagPosition);
-                        string secondPartVarReplaced = regex.Replace(secondPart, delegate (Match match)
+                        string secondPartVarReplaced = VarRegex.Replace(secondPart, delegate (Match match)
                         {
                             string varName = match.Value.Substring(5, match.Value.Length - 6).Trim(); // Remove "[var=" and "]"
                             try
@@ -317,6 +320,94 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        private static Regex AutocaseRegex = new Regex(@"\[autocase=[^\]]*\]");
+
+        /// <summary>
+        /// Replaces the [autocase=varName] tags with the value of the Lua variable varName, 
+        /// capitalized if at the beginning of the string or after end-of-sentence punctuation
+        /// and optional whitespace; lowercase otherwise.
+        /// </summary>
+        /// <param name='text'>
+        /// Text with autocase tags replaced.
+        /// </param>
+        private static void ReplaceAutocaseTags(ref string text)
+        {
+            const string autocaseTagStart = "[autocase=";
+            const int maxReplacements = 100;
+            if (text.Contains(autocaseTagStart))
+            {
+                // Match "[autocase=" and then anything up to "]":
+                int endPosition = text.Length - 1;
+                int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
+                while ((endPosition >= 0) && (numReplacements < maxReplacements))
+                {
+                    numReplacements++;
+                    int varTagPosition = text.LastIndexOf(autocaseTagStart, endPosition, System.StringComparison.OrdinalIgnoreCase);
+                    endPosition = varTagPosition - 1;
+                    if (varTagPosition >= 0)
+                    {
+                        string firstPart = text.Substring(0, varTagPosition);
+                        bool capitalize = ShouldCapitalizeNextChar(firstPart);
+                        string secondPart = text.Substring(varTagPosition);
+                        string secondPartVarReplaced = AutocaseRegex.Replace(secondPart, delegate (Match match)
+                        {
+                            string varName = match.Value.Substring(10, match.Value.Length - 11).Trim(); // Remove "[autocase=" and "]"
+                            try
+                            {
+                                var variableValue = DialogueLua.GetVariable(varName).asString;
+                                if (variableValue.Length > 0)
+                                {
+                                    variableValue = SetCapitalization(capitalize, variableValue);
+                                }
+                                return variableValue;
+                            }
+                            catch (System.Exception)
+                            {
+                                if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Failed to get variable: '{1}'", new System.Object[] { DialogueDebug.Prefix, varName }));
+                                return string.Empty;
+                            }
+                        });
+                        text = firstPart + secondPartVarReplaced;
+                    }
+                }
+            }
+        }
+
+        private static bool ShouldCapitalizeNextChar(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return true;
+            for (int i = s.Length - 1; i >= 0; i--)
+            {
+                var c = s[i];
+                if (c == ' ' || c == '\n') continue;
+                return (c == '.' || c == '!' || c == '?');
+            }
+            return true;
+        }
+
+        private static string SetCapitalization(bool capitalize, string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
+            else if (capitalize) return FirstLetterToUpper(s);
+            else return FirstLetterToLower(s);
+        }
+
+        private static string FirstLetterToUpper(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
+            if (s.Length == 1) return s.ToUpper();
+            else return char.ToUpper(s[0]) + s.Substring(1);
+        }
+
+        private static string FirstLetterToLower(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
+            if (s.Length == 1) return s.ToUpper();
+            else return char.ToLower(s[0]) + s.Substring(1);
+        }
+
+        private static Regex VarInputRegex = new Regex(@"\[var=\?.*\]");
+
         /// <summary>
         /// Extracts a [var=?varName] tag if it exists, and returns the varName.
         /// </summary>
@@ -330,8 +421,6 @@ namespace PixelCrushers.DialogueSystem
             string varName = string.Empty;
             if (text.Contains(varTagStart))
             {
-
-                Regex regex = new Regex(@"\[var=\?.*\]");
                 int endPosition = text.Length - 1;
                 int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
                 while ((endPosition >= 0) && (numReplacements < maxReplacements))
@@ -343,7 +432,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         string firstPart = text.Substring(0, varTagPosition);
                         string secondPart = text.Substring(varTagPosition);
-                        string secondPartVarReplaced = regex.Replace(secondPart, delegate (Match match)
+                        string secondPartVarReplaced = VarInputRegex.Replace(secondPart, delegate (Match match)
                         {
                             varName = match.Value.Substring(6, match.Value.Length - 7).Trim(); // Remove "[var=?" and "]"
                             return string.Empty;
@@ -374,6 +463,9 @@ namespace PixelCrushers.DialogueSystem
             return found;
         }
 
+        private static Regex PositionSpaceRegex = new Regex(@"\[position\s+[0-9]+\]");
+        private static Regex PositionRegex = new Regex(@"\[position=[0-9]+\]");
+
         /// <summary>
         /// Extracts a [position #] or [position=#] tag from a string. Removes all position tags and returns the value of the last one.
         /// </summary>
@@ -388,8 +480,7 @@ namespace PixelCrushers.DialogueSystem
             int position = FormattedText.NoAssignedPosition;
             if (text.Contains("[position "))
             {
-                Regex regex = new Regex(@"\[position\s+[0-9]+\]");
-                text = regex.Replace(text, delegate (Match match)
+                text = PositionSpaceRegex.Replace(text, delegate (Match match)
                 {
                     string positionString = match.Value.Substring(10, match.Value.Length - 11); // Remove "[position " and "]"
                     int.TryParse(positionString, out position);
@@ -398,8 +489,7 @@ namespace PixelCrushers.DialogueSystem
             }
             if (text.Contains("[position="))
             {
-                Regex regex = new Regex(@"\[position=[0-9]+\]");
-                text = regex.Replace(text, delegate (Match match)
+                text = PositionRegex.Replace(text, delegate (Match match)
                 {
                     string positionString = match.Value.Substring(10, match.Value.Length - 11); // Remove "[position=" and "]"
                     int.TryParse(positionString, out position);
@@ -408,6 +498,8 @@ namespace PixelCrushers.DialogueSystem
             }
             return position;
         }
+
+        private static Regex PanelRegex = new Regex(@"\[panel=[0-9]+\]");
 
         /// <summary>
         /// Extracts a [panel=#] tag from a string. Removes all panel tags and returns the value of the last one.
@@ -423,8 +515,7 @@ namespace PixelCrushers.DialogueSystem
             int panelNumber = -1;
             if (text.Contains("[panel="))
             {
-                Regex regex = new Regex(@"\[panel=[0-9]+\]");
-                text = regex.Replace(text, delegate (Match match)
+                text = PanelRegex.Replace(text, delegate (Match match)
                 {
                     string s = match.Value.Substring(7, match.Value.Length - 8); // Remove "[panel=" and "]"
                     int.TryParse(s, out panelNumber);
@@ -516,13 +607,29 @@ namespace PixelCrushers.DialogueSystem
                     string closeTag = string.Format("[/em{0}]", new System.Object[] { i + 1 });
                     if (text.Contains(openTag))
                     {
-                        string openRichText = string.Format("{0}{1}<color={2}>",
-                            new System.Object[] { emphasisSettings[i].bold ? "<b>" : string.Empty,
-                            emphasisSettings[i].italic ? "<i>" : string.Empty,
-                            Tools.ToWebColor(emphasisSettings[i].color) });
-                        string closeRichText = string.Format("</color>{0}{1}",
-                            new System.Object[] { emphasisSettings[i].italic ? "</i>" : string.Empty,
-                            emphasisSettings[i].bold ? "</b>" : string.Empty });
+                        string openRichText = string.Format("{0}{1}{2}<color={3}>",
+                            new System.Object[]
+                            {
+                                emphasisSettings[i].bold ? "<b>" : string.Empty,
+                                emphasisSettings[i].italic ? "<i>" : string.Empty,
+#if TMP_PRESENT || USE_STM
+                                emphasisSettings[i].underline ? "<u>" : string.Empty,
+#else
+                                string.Empty,
+#endif
+                                Tools.ToWebColor(emphasisSettings[i].color)
+                            });
+                        string closeRichText = string.Format("</color>{0}{1}{2}",
+                            new System.Object[]
+                            {
+#if TMP_PRESENT || USE_STM
+                                emphasisSettings[i].underline? "</u>" : string.Empty,
+#else
+                                string.Empty,
+#endif
+                                emphasisSettings[i].italic ? "</i>" : string.Empty,
+                                emphasisSettings[i].bold ? "</b>" : string.Empty
+                            });
                         text = text.Replace(openTag, openRichText).Replace(closeTag, closeRichText);
                     }
                 }

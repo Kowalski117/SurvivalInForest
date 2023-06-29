@@ -44,14 +44,20 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Optional audio source through which to play the clip.")]
         public AudioSource audioSource = null;
 
+        [Tooltip("Use AudioSource.PlayOneShot instead of Play. Slightly heavier performance but produces different effect.")]
+        public bool usePlayOneShot = false;
+
         /// <summary>
         /// If audio clip is still playing from previous character, stop and restart it when typing next character.
         /// </summary>
         [Tooltip("If audio clip is still playing from previous character, stop and restart it when typing next character.")]
         public bool interruptAudioClip = false;
 
-        [Tooltip("Use AudioSource.PlayOneShot instead of Play. Slightly heavier performance but produces different effect.")]
-        public bool usePlayOneShot = false;
+        [Tooltip("Stop audio when typing any of the Silent Characters specified below.")]
+        public bool stopAudioOnSilentCharacters = false;
+
+        [Tooltip("Stop audio when upon reaching a pause code.")]
+        public bool stopAudioOnPauseCodes = false;
 
         /// <summary>
         /// Don't play audio on these characters.
@@ -127,7 +133,10 @@ namespace PixelCrushers.DialogueSystem
             this.charactersPerSecond = charactersPerSecond;
         }
 
-        public abstract void Awake();
+        public virtual void Awake()
+        {
+            PreprocessPauseCharacters();
+        }
 
         public abstract void Start();
 
@@ -164,17 +173,26 @@ namespace PixelCrushers.DialogueSystem
             return UITools.StripRPGMakerCodes(s);
         }
 
-        protected bool IsFullPauseCharacter(char c)
+        /// <summary>
+        /// Process anything special in full/quarterPauseCharacters, such as \n to newlines.
+        /// </summary>
+        protected virtual void PreprocessPauseCharacters()
+        {
+            fullPauseCharacters = fullPauseCharacters.Replace("\\n", "\n");
+            quarterPauseCharacters = quarterPauseCharacters.Replace("\\n", "\n");
+        }
+
+        protected virtual bool IsFullPauseCharacter(char c)
         {
             return IsCharacterInString(c, fullPauseCharacters);
         }
 
-        protected bool IsQuarterPauseCharacter(char c)
+        protected virtual bool IsQuarterPauseCharacter(char c)
         {
             return IsCharacterInString(c, quarterPauseCharacters);
         }
 
-        protected bool IsSilentCharacter(char c)
+        protected virtual bool IsSilentCharacter(char c)
         {
             return IsCharacterInString(c, silentCharacters);
         }
@@ -187,6 +205,11 @@ namespace PixelCrushers.DialogueSystem
                 if (s[i] == c) return true;
             }
             return false;
+        }
+
+        public virtual void StopCharacterAudio()
+        {
+            if (audioSource != null) audioSource.Stop();
         }
 
         protected virtual void PlayCharacterAudio(char c)
@@ -234,9 +257,10 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        protected IEnumerator PauseForDuration(float duration)
+        protected virtual IEnumerator PauseForDuration(float duration)
         {
             paused = true;
+            if (stopAudioOnPauseCodes && audioSource != null) audioSource.Stop();
             var continueTime = DialogueTime.time + duration;
             int pauseSafeguard = 0;
             while (DialogueTime.time < continueTime && pauseSafeguard < 999)

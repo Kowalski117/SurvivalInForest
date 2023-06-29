@@ -30,7 +30,6 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void BuildLanguageListFromFields(List<Field> fields)
         {
-            languages.Clear();
             for (int i = 0; i < fields.Count; i++)
             {
                 var field = fields[i];
@@ -66,12 +65,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void DrawLocalizedVersions(List<Field> fields, string titleFormat, bool alwaysAdd, FieldType fieldType)
+        private void DrawLocalizedVersions(Asset asset, List<Field> fields, string titleFormat, bool alwaysAdd, FieldType fieldType, bool useSequenceEditor = false)
         {
-            DrawLocalizedVersions(fields, titleFormat, alwaysAdd, fieldType, null);
+            DrawLocalizedVersions(asset, null, fields, titleFormat, alwaysAdd, fieldType, null, useSequenceEditor);
         }
 
-        private void DrawLocalizedVersions(List<Field> fields, string titleFormat, bool alwaysAdd, FieldType fieldType, List<Field> alreadyDrawn)
+        private void DrawLocalizedVersions(DialogueEntry entry, List<Field> fields, string titleFormat, bool alwaysAdd, FieldType fieldType, bool useSequenceEditor = false)
+        {
+            DrawLocalizedVersions(null, entry, fields, titleFormat, alwaysAdd, fieldType, null, useSequenceEditor);
+        }
+
+        private void DrawLocalizedVersions(Asset asset, DialogueEntry entry, List<Field> fields, string titleFormat, bool alwaysAdd, FieldType fieldType, List<Field> alreadyDrawn, bool useSequenceEditor = false)
         {
             bool indented = false;
             foreach (var language in languages)
@@ -90,8 +94,23 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         indented = true;
                         EditorWindowTools.StartIndentedSection();
                     }
-                    EditorGUILayout.LabelField(localizedTitle);
-                    field.value = EditorGUILayout.TextArea(field.value);
+                    //[TODO] Resolve menu callback issue.
+                    //if (useSequenceEditor)
+                    //{
+                    //    field.value = SequenceEditorTools.DrawLayout(new GUIContent(localizedTitle), field.value, ref sequenceRect, ref sequenceSyntaxState);
+                    //}
+                    //else
+                    if (useSequenceEditor)
+                    {
+                        EditorGUILayout.LabelField(localizedTitle);
+                        field.value = EditorGUILayout.TextArea(field.value);
+                    }
+                    else
+                    {
+                        //[AI] EditorGUILayout.LabelField(localizedTitle);
+                        //field.value = EditorGUILayout.TextArea(field.value);
+                        DrawLocalizableTextAreaField(new GUIContent(localizedTitle), asset, entry, field);
+                    }
                     if (alreadyDrawn != null) alreadyDrawn.Add(field);
                 }
             }

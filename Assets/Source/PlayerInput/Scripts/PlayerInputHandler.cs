@@ -12,6 +12,11 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private Transform _inventoryPanels;
 
+    private void Start()
+    {
+        SetCursorVisible(false);
+    }
+
     public void SetCursorVisible(bool visible)
     {
         _firstPersonController.enabled = !visible;

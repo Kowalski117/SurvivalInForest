@@ -1,11 +1,11 @@
-// Recompile at 27.06.2023 20:10:27
-// Copyright (c) Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -28,7 +28,8 @@ namespace PixelCrushers.DialogueSystem
             [Tooltip("Automatically scroll to bottom of scroll rect. Useful for long text. Works best with left justification.")]
             public bool autoScrollEnabled = false;
             public UnityEngine.UI.ScrollRect scrollRect = null;
-            public UnityUIScrollbarEnabler scrollbarEnabler = null;
+            [Tooltip("Optional. Add a UIScrollBarEnabler to main dialogue panel, assign UI elements, then assign it here to automatically enable scrollbar if content is taller than viewport.")]
+            public UIScrollbarEnabler scrollbarEnabler = null;
         }
 
         /// <summary>
@@ -78,6 +79,20 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        protected LayoutElement m_layoutElement = null;
+        protected LayoutElement layoutElement
+        {
+            get
+            {
+                if (m_layoutElement == null)
+                {
+                    m_layoutElement = GetComponent<LayoutElement>();
+                    if (m_layoutElement == null) m_layoutElement = gameObject.AddComponent<LayoutElement>();
+                }
+                return m_layoutElement;
+            }
+        }
+
         protected AudioSource runtimeAudioSource
         {
             get
@@ -100,7 +115,7 @@ namespace PixelCrushers.DialogueSystem
 
         public override void Awake()
         {
-
+            base.Awake();
             if (removeDuplicateTypewriterEffects) RemoveIfDuplicate();
         }
 
@@ -149,7 +164,7 @@ namespace PixelCrushers.DialogueSystem
 
         public override void OnDisable()
         {
-            base.OnEnable();
+            base.OnDisable();
             Stop();
         }
 
@@ -204,7 +219,7 @@ namespace PixelCrushers.DialogueSystem
             StartTypewriterCoroutine(fromIndex);
         }
 
-        protected void StartTypewriterCoroutine(int fromIndex)
+        protected virtual void StartTypewriterCoroutine(int fromIndex)
         {
             if (coroutineController == null || !coroutineController.gameObject.activeInHierarchy)
             {
@@ -225,6 +240,7 @@ namespace PixelCrushers.DialogueSystem
             if ((textComponent != null) && (charactersPerSecond > 0))
             {
                 if (waitOneFrameBeforeStarting) yield return null;
+                textComponent.text = textComponent.text.Replace("<br>", "\n");
                 fromIndex = StripRPGMakerCodes(Tools.StripTextMeshProTags(textComponent.text)).Substring(0, fromIndex).Length;
                 ProcessRPGMakerCodes();
                 if (runtimeAudioSource != null) runtimeAudioSource.clip = audioClip;
@@ -261,10 +277,10 @@ namespace PixelCrushers.DialogueSystem
                                     switch (token)
                                     {
                                         case RPGMakerTokenType.QuarterPause:
-                                            yield return DialogueTime.WaitForSeconds(quarterPauseDuration);
+                                            yield return PauseForDuration(quarterPauseDuration);
                                             break;
                                         case RPGMakerTokenType.FullPause:
-                                            yield return DialogueTime.WaitForSeconds(fullPauseDuration);
+                                            yield return PauseForDuration(fullPauseDuration);
                                             break;
                                         case RPGMakerTokenType.SkipToEnd:
                                             charactersTyped = totalVisibleCharacters - 1;
@@ -285,7 +301,17 @@ namespace PixelCrushers.DialogueSystem
                                 }
                             }
                             var typedCharacter = (0 <= charactersTyped && charactersTyped < parsedText.Length) ? parsedText[charactersTyped] : ' ';
-                            if (charactersTyped < totalVisibleCharacters && !IsSilentCharacter(typedCharacter)) PlayCharacterAudio(typedCharacter);
+                            if (charactersTyped < totalVisibleCharacters)
+                            {
+                                if (IsSilentCharacter(typedCharacter))
+                                {
+                                    if (stopAudioOnSilentCharacters) StopCharacterAudio();
+                                }
+                                else
+                                {
+                                    PlayCharacterAudio(typedCharacter);
+                                }
+                            }
                             onCharacter.Invoke();
                             charactersTyped++;
                             textComponent.maxVisibleCharacters = charactersTyped;
@@ -295,6 +321,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     textComponent.maxVisibleCharacters = charactersTyped;
                     HandleAutoScroll();
+                    textComponent.ForceMeshUpdate(); // Must force every time in case something is animating TMPro (e.g., scale).
                     //---Uncomment the line below to debug: 
                     //Debug.Log(textComponent.text.Substring(0, charactersTyped).Replace("<", "[").Replace(">", "]") + " (typed=" + charactersTyped + ")");
                     lastTime = DialogueTime.time;
@@ -399,20 +426,26 @@ namespace PixelCrushers.DialogueSystem
                 Sequencer.Message(SequencerMessages.Typed);
             }
             StopTypewriterCoroutine();
-            if (textComponent != null) textComponent.maxVisibleCharacters = textComponent.textInfo.characterCount;
+            if (textComponent != null) 
+            {
+                textComponent.maxVisibleCharacters = textComponent.textInfo.characterCount;
+                textComponent.ForceMeshUpdate();
+            }
             HandleAutoScroll();
         }
 
-        protected void HandleAutoScroll()
+        protected virtual void HandleAutoScroll()
         {
             if (!autoScrollSettings.autoScrollEnabled) return;
+
+            layoutElement.preferredHeight = Mathf.Max(0, textComponent.textBounds.size.y);
             if (autoScrollSettings.scrollRect != null)
             {
                 autoScrollSettings.scrollRect.normalizedPosition = new Vector2(0, 0);
             }
             if (autoScrollSettings.scrollbarEnabler != null)
             {
-                autoScrollSettings.scrollbarEnabler.CheckScrollbar();
+                autoScrollSettings.scrollbarEnabler.CheckScrollbarWithResetValue(0);
             }
         }
 

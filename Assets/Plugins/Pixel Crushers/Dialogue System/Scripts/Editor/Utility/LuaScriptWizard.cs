@@ -52,6 +52,8 @@ namespace PixelCrushers.DialogueSystem
             public NetSetMode netSetMode = NetSetMode.Set;
             public string[] scriptQuestEntryNames = new string[0];
             public object[] customParamValues = null;
+            public string newVariableName = string.Empty;
+            public FieldType newVariableType = FieldType.Boolean;
 
             public ScriptItem()
             {
@@ -86,7 +88,8 @@ namespace PixelCrushers.DialogueSystem
         {
             if (database == null) return 0;
             if (!isOpen) return EditorGUIUtility.singleLineHeight;
-            return 4 + ((3 + scriptItems.Count) * (EditorGUIUtility.singleLineHeight + 2f));
+            var height = Mathf.Max(3, scriptItems.Count + 3) * (EditorGUIUtility.singleLineHeight + 2f);
+            return height;
         }
 
         public string Draw(GUIContent guiContent, string luaCode)
@@ -109,7 +112,7 @@ namespace PixelCrushers.DialogueSystem
                 luaCode = DrawScriptWizard(luaCode);
             }
 
-            luaCode = EditorGUILayout.TextArea(luaCode);
+            luaCode = EditorGUILayout.TextArea(luaCode, EditorTools.textAreaGuiStyle);
 
             return luaCode;
         }
@@ -158,15 +161,15 @@ namespace PixelCrushers.DialogueSystem
             }
 
             GUILayout.FlexibleSpace();
-            append = EditorGUILayout.ToggleLeft("Append", append, GUILayout.Width(60));
+            append = EditorGUILayout.ToggleLeft("Append", append, EditorTools.GUILayoutToggleWidth("Append"));
 
             if (EditorGUI.EndChangeCheck()) ApplyScriptWizard();
 
-            if (GUILayout.Button(new GUIContent("Revert", "Cancel these settings."), EditorStyles.miniButton, GUILayout.Width(52)))
+            if (GUILayout.Button(new GUIContent("Revert", "Cancel these settings."), EditorStyles.miniButton, EditorTools.GUILayoutButtonWidth("Revert")))
             {
                 luaCode = CancelScriptWizard();
             }
-            if (GUILayout.Button(new GUIContent("Apply", "Apply these settings"), EditorStyles.miniButton, GUILayout.Width(52)))
+            if (GUILayout.Button(new GUIContent("Apply", "Apply these settings"), EditorStyles.miniButton, EditorTools.GUILayoutButtonWidth("Apply")))
             {
                 luaCode = AcceptScriptWizard();
             }
@@ -184,17 +187,17 @@ namespace PixelCrushers.DialogueSystem
 #if USE_UNET
             if (item.resourceType == ScriptWizardResourceType.Quest || item.resourceType == ScriptWizardResourceType.QuestEntry || item.resourceType == ScriptWizardResourceType.Variable)
             {
-                item.netSetMode = (NetSetMode)EditorGUILayout.EnumPopup(item.netSetMode, GUILayout.Width(36));
+                item.netSetMode = (NetSetMode)EditorGUILayout.EnumPopup(item.netSetMode, EditorTools.GUILayoutPopupWidth(item.netSetMode));
             }
             else
             {
                 item.netSetMode = NetSetMode.Set;
-                EditorGUILayout.LabelField("Set", GUILayout.Width(32));
+                EditorGUILayout.LabelField("Set", EditorTools.GUILayoutLabelWidth("Set"));
             }
 #else
-            EditorGUILayout.LabelField("Set", GUILayout.Width(32));
+            EditorGUILayout.LabelField("Set", EditorTools.GUILayoutLabelWidth("Set"));
 #endif
-            ScriptWizardResourceType newResourceType = (ScriptWizardResourceType)EditorGUILayout.EnumPopup(item.resourceType, GUILayout.Width(96));
+            ScriptWizardResourceType newResourceType = (ScriptWizardResourceType)EditorGUILayout.EnumPopup(item.resourceType, EditorTools.GUILayoutPopupWidth(item.resourceType));
             if (newResourceType != item.resourceType)
             {
                 item.resourceType = newResourceType;
@@ -207,7 +210,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 // Quest:
                 item.questNamesIndex = EditorGUILayout.Popup(item.questNamesIndex, questNames);
-                EditorGUILayout.LabelField("to", GUILayout.Width(22));
+                EditorGUILayout.LabelField("to", EditorTools.GUILayoutLabelWidth("to"));
                 item.questState = QuestStateDrawer.LayoutQuestStatePopup(item.questState, 96);
 
                 s_lastQuestNamesIndex = item.questNamesIndex;
@@ -226,7 +229,7 @@ namespace PixelCrushers.DialogueSystem
                     item.scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
                 }
                 item.questEntryIndex = EditorGUILayout.Popup(item.questEntryIndex, item.scriptQuestEntryNames);
-                EditorGUILayout.LabelField("to", GUILayout.Width(22));
+                EditorGUILayout.LabelField("to", EditorTools.GUILayoutLabelWidth("to"));
                 item.questState = QuestStateDrawer.LayoutQuestStatePopup(item.questState, 96);
 
                 s_lastQuestNamesIndex = item.questNamesIndex;
@@ -236,7 +239,19 @@ namespace PixelCrushers.DialogueSystem
             {
                 // Variable:
                 item.variableNamesIndex = EditorGUILayout.Popup(item.variableNamesIndex, variablePopupNames);
-                var variableType = GetWizardVariableType(item.variableNamesIndex);
+                FieldType variableType;
+                if (item.variableNamesIndex == 0)
+                {
+                    // New variable:
+                    item.newVariableName = EditorGUILayout.TextField(item.newVariableName);
+                    item.newVariableType = (FieldType)EditorGUILayout.EnumPopup(item.newVariableType);
+                    variableType = item.newVariableType;
+                }
+                else
+                {
+                    // Existing variable:
+                    variableType = GetWizardVariableType(item.variableNamesIndex);
+                }
                 DrawValueSetMode(item, variableType);
                 switch (variableType)
                 {
@@ -269,7 +284,9 @@ namespace PixelCrushers.DialogueSystem
                         item.floatValue = EditorGUILayout.FloatField(item.floatValue);
                         break;
                     default:
-                        item.stringValue = EditorGUILayout.TextField(item.stringValue);
+                        CustomFieldType customFieldType = GetCustomFieldType(database.actors, item.actorNamesIndex, item.actorFieldIndex);
+                        if (customFieldType != null) item.stringValue = customFieldType.Draw(item.stringValue, database);
+                        else item.stringValue = EditorGUILayout.TextField(item.stringValue);
                         break;
                 }
 
@@ -292,7 +309,9 @@ namespace PixelCrushers.DialogueSystem
                         item.floatValue = EditorGUILayout.FloatField(item.floatValue);
                         break;
                     default:
-                        item.stringValue = EditorGUILayout.TextField(item.stringValue);
+                        CustomFieldType customFieldType = GetCustomFieldType(database.items, item.itemNamesIndex, item.itemFieldIndex);
+                        if (customFieldType != null) item.stringValue = customFieldType.Draw(item.stringValue, database);
+                        else item.stringValue = EditorGUILayout.TextField(item.stringValue);
                         break;
                 }
 
@@ -315,7 +334,9 @@ namespace PixelCrushers.DialogueSystem
                         item.floatValue = EditorGUILayout.FloatField(item.floatValue);
                         break;
                     default:
-                        item.stringValue = EditorGUILayout.TextField(item.stringValue);
+                        CustomFieldType customFieldType = GetCustomFieldType(database.locations, item.locationNamesIndex, item.locationNamesIndex);
+                        if (customFieldType != null) item.stringValue = customFieldType.Draw(item.stringValue, database);
+                        else item.stringValue = EditorGUILayout.TextField(item.stringValue);
                         break;
                 }
 
@@ -378,6 +399,7 @@ namespace PixelCrushers.DialogueSystem
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], item.scriptQuestEntryNames);
                                 break;
                             case CustomLuaParameterType.Variable:
+                            case CustomLuaParameterType.VariableName:
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], variablePopupNames);
                                 break;
                             case CustomLuaParameterType.Item:
@@ -411,11 +433,11 @@ namespace PixelCrushers.DialogueSystem
         {
             if (fieldType == FieldType.Number)
             {
-                item.valueSetMode = (ValueSetMode)EditorGUILayout.EnumPopup(item.valueSetMode, GUILayout.Width(40));
+                item.valueSetMode = (ValueSetMode)EditorGUILayout.EnumPopup(item.valueSetMode, EditorTools.GUILayoutPopupWidth(item.valueSetMode));
             }
             else
             {
-                EditorGUILayout.LabelField("to", GUILayout.Width(22));
+                EditorGUILayout.LabelField("to", EditorTools.GUILayoutLabelWidth("to"));
             }
         }
 
@@ -428,7 +450,19 @@ namespace PixelCrushers.DialogueSystem
         public string AcceptScriptWizard()
         {
             isOpen = false;
+            AddNewVariables();
             return ApplyScriptWizard();
+        }
+
+        private void AddNewVariables()
+        {
+            foreach (var item in scriptItems)
+            {
+                if (item.resourceType == ScriptWizardResourceType.Variable && item.variableNamesIndex == 0)
+                {
+                    AddNewVariable(item.newVariableName, item.newVariableType);
+                }
+            }
         }
 
         private string ApplyScriptWizard()
@@ -436,7 +470,17 @@ namespace PixelCrushers.DialogueSystem
             try
             {
                 StringBuilder sb = new StringBuilder();
-                if (append && !string.IsNullOrEmpty(savedLuaCode)) sb.AppendFormat("{0};\n", savedLuaCode);
+                if (append && !string.IsNullOrEmpty(savedLuaCode))
+                {
+                    if (savedLuaCode.TrimEnd().EndsWith(";"))
+                    {
+                        sb.AppendFormat("{0}\n", savedLuaCode);
+                    }
+                    else
+                    {
+                        sb.AppendFormat("{0};\n", savedLuaCode);
+                    }
+                }
                 string endText = (scriptItems.Count > 1) ? ";\n" : string.Empty;
                 for (int i = 0; i < scriptItems.Count; i++)
                 {
@@ -468,8 +512,19 @@ namespace PixelCrushers.DialogueSystem
                     {
 
                         // Variable:
-                        string variableName = (0 <= item.variableNamesIndex && item.variableNamesIndex < variableNames.Length) ? variableNames[item.variableNamesIndex] : "Alert";
-                        switch (GetWizardVariableType(item.variableNamesIndex))
+                        string variableName;
+                        FieldType variableType;
+                        if (item.variableNamesIndex == 0)
+                        {
+                            variableName = item.newVariableName;
+                            variableType = item.newVariableType;
+                        }
+                        else
+                        {
+                            variableName = (0 <= item.variableNamesIndex && item.variableNamesIndex < variableNames.Length) ? variableNames[item.variableNamesIndex] : "Alert";
+                            variableType = GetWizardVariableType(item.variableNamesIndex);
+                        }
+                        switch (variableType)
                         {
                             case FieldType.Boolean:
                                 if (item.netSetMode == NetSetMode.NetSet)
@@ -607,7 +662,7 @@ namespace PixelCrushers.DialogueSystem
                         if (0 <= item.customLuaFuncIndex && item.customLuaFuncIndex < customLuaFuncs.Length)
                         {
                             var luaFuncRecord = customLuaFuncs[item.customLuaFuncIndex];
-                            sb.Append(luaFuncRecord.functionName + "(");
+                            sb.Append(Tools.GetAllAfterSlashes(luaFuncRecord.functionName) + "(");
                             for (int p = 0; p < luaFuncRecord.parameters.Length; p++)
                             {
                                 if (p > 0) sb.Append(", ");
@@ -635,7 +690,11 @@ namespace PixelCrushers.DialogueSystem
                                         break;
                                     case CustomLuaParameterType.Variable:
                                         var variableIndex = (int)item.customParamValues[p];
-                                        sb.Append((0 <= variableIndex && variableIndex < variableNames.Length) ? ("Variable[\"" + variableNames[variableIndex] + "\"]") : "\"\"");
+                                        sb.Append((0 <= variableIndex && variableIndex < variableNames.Length) ? ("Variable[\"" + DialogueLua.StringToTableIndex(variableNames[variableIndex]) + "\"]") : "\"\"");
+                                        break;
+                                    case CustomLuaParameterType.VariableName:
+                                        var variableNameIndex = (int)item.customParamValues[p];
+                                        sb.Append((0 <= variableNameIndex && variableNameIndex < variableNames.Length) ? ("\"" + variableNames[variableNameIndex] + "\"") : "\"\"");
                                         break;
                                     case CustomLuaParameterType.Item:
                                         var itemIndex = (int)item.customParamValues[p];
@@ -678,7 +737,7 @@ namespace PixelCrushers.DialogueSystem
                     sb.AppendFormat("{0}[\"{1}\"].{2} = {3}",
                                     tableName,
                                     DialogueLua.StringToTableIndex(elementName),
-                                    DialogueLua.StringToTableIndex(fieldName),
+                                    DialogueLua.StringToFieldName(fieldName),
                                     (item.booleanValue == BooleanType.True) ? "true" : "false");
                     break;
                 case FieldType.Number:
@@ -688,21 +747,21 @@ namespace PixelCrushers.DialogueSystem
                             sb.AppendFormat("{0}[\"{1}\"].{2} = {3}",
                                             tableName,
                                             DialogueLua.StringToTableIndex(elementName),
-                                            DialogueLua.StringToTableIndex(fieldName),
+                                            DialogueLua.StringToFieldName(fieldName),
                                             item.floatValue);
                             break;
                         case ValueSetMode.Add:
                             sb.AppendFormat("{0}[\"{1}\"].{2} = {0}[\"{1}\"].{2} + {3}",
                                             tableName,
                                             DialogueLua.StringToTableIndex(elementName),
-                                            DialogueLua.StringToTableIndex(fieldName),
+                                            DialogueLua.StringToFieldName(fieldName),
                                             item.floatValue);
                             break;
                         case ValueSetMode.Subtract:
                             sb.AppendFormat("{0}[\"{1}\"].{2} = {0}[\"{1}\"].{2} - {3}",
                                             tableName,
                                             DialogueLua.StringToTableIndex(elementName),
-                                            DialogueLua.StringToTableIndex(fieldName),
+                                            DialogueLua.StringToFieldName(fieldName),
                                             item.floatValue);
                             break;
                     }
@@ -711,7 +770,7 @@ namespace PixelCrushers.DialogueSystem
                     sb.AppendFormat("{0}[\"{1}\"].{2} = \"{3}\"",
                                     tableName,
                                     DialogueLua.StringToTableIndex(elementName),
-                                    DialogueLua.StringToTableIndex(fieldName),
+                                    DialogueLua.StringToFieldName(fieldName),
                                     item.stringValue);
                     break;
             }
@@ -785,12 +844,12 @@ namespace PixelCrushers.DialogueSystem
             if (EditorGUI.EndChangeCheck()) ApplyScriptWizard();
 
             EditorGUI.BeginDisabledGroup(scriptItems.Count <= 0);
-            rect = new Rect(position.x + position.width - 48 - 4 - 48, y, 48, EditorGUIUtility.singleLineHeight);
+            rect = new Rect(position.x + position.width - 52 - 4 - 56, y, 56, EditorGUIUtility.singleLineHeight);
             if (GUI.Button(rect, new GUIContent("Revert", "Cancel these settings."), EditorStyles.miniButton))
             {
                 luaCode = CancelScriptWizard();
             }
-            rect = new Rect(position.x + position.width - 48, y, 48, EditorGUIUtility.singleLineHeight);
+            rect = new Rect(position.x + position.width - 52, y, 52, EditorGUIUtility.singleLineHeight);
             GUI.Box(rect, GUIContent.none);
             if (GUI.Button(rect, new GUIContent("Apply", "Apply these settings"), EditorStyles.miniButton))
             {
@@ -1070,6 +1129,7 @@ namespace PixelCrushers.DialogueSystem
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], item.scriptQuestEntryNames);
                                 break;
                             case CustomLuaParameterType.Variable:
+                            case CustomLuaParameterType.VariableName:
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], variablePopupNames);
                                 break;
                             case CustomLuaParameterType.Item:
