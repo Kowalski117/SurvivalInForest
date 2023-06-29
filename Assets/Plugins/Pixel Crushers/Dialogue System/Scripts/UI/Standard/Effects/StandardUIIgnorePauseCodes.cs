@@ -1,5 +1,4 @@
-// Recompile at 27.06.2023 20:10:27
-// Copyright (c) Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;

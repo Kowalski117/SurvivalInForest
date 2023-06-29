@@ -101,6 +101,8 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public Rect canvasRect = new Rect(0, 0, CanvasRectWidth, CanvasRectHeight);
 
+        public const string SceneEventGuidFieldName = "EventGuid";
+
         /// <summary>
         /// Gets or sets the ID of the line's actor (speaker).
         /// </summary>
@@ -337,6 +339,16 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Gets or sets the guid corresponding to an entry in the current scene's
+        /// DialogueSystemSceneEvents list, or blank if none.
+        /// </summary>
+        public string sceneEventGuid
+        {
+            get { return Field.LookupValue(fields, SceneEventGuidFieldName); }
+            set { SetTextField(SceneEventGuidFieldName, value); }
+        }
+
+        /// <summary>
         /// Sets the sequence field, adding it if it doesn't already exist.
         /// </summary>
         /// <param name='title'>
@@ -510,7 +522,7 @@ namespace PixelCrushers.DialogueSystem
                 //--- Removed in Chat Mapper 1.7: conversationID = chatMapperDialogEntry.ConversationID;
                 isRoot = chatMapperDialogEntry.IsRoot;
                 isGroup = chatMapperDialogEntry.IsGroup;
-                if (isGroup) currentSequence = "Continue()";
+                if (isGroup) Sequence = ""; //"Continue()";
                 nodeColor = chatMapperDialogEntry.NodeColor;
                 delaySimStatus = chatMapperDialogEntry.DelaySimStatus;
                 falseConditionAction = chatMapperDialogEntry.FalseCondtionAction;

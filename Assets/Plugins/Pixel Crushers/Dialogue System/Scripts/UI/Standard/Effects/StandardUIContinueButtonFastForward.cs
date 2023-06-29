@@ -20,13 +20,24 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Typewriter effect to fast forward if it's not done playing.")]
         public AbstractTypewriterEffect typewriterEffect;
 
+#if USE_STM
+        [Tooltip("If using SuperTextMesh, assign this instead of typewriter effect.")]
+        public SuperTextMesh superTextMesh;
+#endif
+
         [Tooltip("Hide the continue button when continuing.")]
         public bool hideContinueButtonOnContinue = false;
 
-        private UnityEngine.UI.Button continueButton;
+        [Tooltip("If subtitle is displaying, continue past it.")]
+        public bool continueSubtitlePanel = true;
 
-        private AbstractDialogueUI m_runtimeDialogueUI;
-        private AbstractDialogueUI runtimeDialogueUI
+        [Tooltip("If alert is displaying, continue past it.")]
+        public bool continueAlertPanel = true;
+
+        protected UnityEngine.UI.Button continueButton;
+
+        protected AbstractDialogueUI m_runtimeDialogueUI;
+        protected virtual AbstractDialogueUI runtimeDialogueUI
         {
             get
             {
@@ -61,10 +72,21 @@ namespace PixelCrushers.DialogueSystem
             {
                 typewriterEffect.Stop();
             }
+#if USE_STM
+            else if (superTextMesh != null && superTextMesh.reading)
+            {
+                superTextMesh.SkipToEnd();
+            }
+#endif
             else
             {
                 if (hideContinueButtonOnContinue && continueButton != null) continueButton.gameObject.SetActive(false);
-                if (runtimeDialogueUI != null) runtimeDialogueUI.OnContinue();
+                if (runtimeDialogueUI != null)
+                {
+                    if (continueSubtitlePanel && continueAlertPanel) runtimeDialogueUI.OnContinue();
+                    else if (continueSubtitlePanel) runtimeDialogueUI.OnContinueConversation();
+                    else if (continueAlertPanel) runtimeDialogueUI.OnContinueAlert();
+                }
             }
         }
 

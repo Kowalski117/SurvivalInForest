@@ -12,13 +12,20 @@ namespace PixelCrushers
 
         public override float GetHeight()
         {
-            var helpBoxAttribute = attribute as HelpBoxAttribute;
-            if (helpBoxAttribute == null) return base.GetHeight();
+            try
+            {
+                var helpBoxAttribute = attribute as HelpBoxAttribute;
+                if (helpBoxAttribute == null) return base.GetHeight();
 
-            var helpBoxStyle = (GUI.skin != null) ? GUI.skin.GetStyle("helpbox") : null;
-            if (helpBoxStyle == null) return base.GetHeight();
+                var helpBoxStyle = (GUI.skin != null) ? GUI.skin.GetStyle("helpbox") : null;
+                if (helpBoxStyle == null) return base.GetHeight();
 
-            return Mathf.Max(40f, helpBoxStyle.CalcHeight(new GUIContent(helpBoxAttribute.text), EditorGUIUtility.currentViewWidth) + 4);
+                return Mathf.Max(40f, helpBoxStyle.CalcHeight(new GUIContent(helpBoxAttribute.text), EditorGUIUtility.currentViewWidth) + 4);
+            }
+            catch (System.ArgumentException) // Handles IMGUI->UITK bug in Unity 2022.2.
+            {
+                return 3 * EditorGUIUtility.singleLineHeight;
+            }
         }
 
         public override void OnGUI(Rect position)

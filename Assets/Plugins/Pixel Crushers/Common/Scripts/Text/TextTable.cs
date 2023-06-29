@@ -607,7 +607,30 @@ namespace PixelCrushers
 
         #endregion
 
+        #region Merge
+
+        public void ImportOtherTextTable(TextTable other)
+        {
+            if (other == null || other == this) return;
+            foreach (var language in other.languages.Keys)
+            {
+                if (!HasLanguage(language)) AddLanguage(language);
+            }
+            foreach (var field in other.fields.Values)
+            {
+                AddField(field.fieldName);
+                foreach (var language in other.languages.Keys)
+                {
+                    SetFieldTextForLanguage(field.fieldName, language, other.GetFieldTextForLanguage(field.fieldName, language));
+                }
+            }
+        }
+
+        #endregion
+
     }
+
+    #region TextTableField
 
     /// <summary>
     /// A field in a TextTable.
@@ -668,7 +691,7 @@ namespace PixelCrushers
 
         public bool HasTextForLanguage(int languageID)
         {
-            return texts.ContainsKey(languageID);
+            return texts.ContainsKey(languageID) && !string.IsNullOrEmpty(texts[languageID]);
         }
 
         public string GetTextForLanguage(int languageID)
@@ -694,5 +717,7 @@ namespace PixelCrushers
         }
 
     }
+
+    #endregion
 
 }

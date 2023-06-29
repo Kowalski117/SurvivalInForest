@@ -49,7 +49,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void CheckNodeArrangement()
         {
             if (startEntry == null) return;
-            if ((startEntry.canvasRect.x == 0) && (startEntry.canvasRect.y == 0)) AutoArrangeNodes(addNewNodesToRight);
+            if ((startEntry.canvasRect.x == 0) && (startEntry.canvasRect.y == 0)) AutoArrangeNodes(!addNewNodesToRight);
         }
 
         private void ConfirmAndAutoArrangeNodes()
@@ -125,14 +125,27 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             if (vertically)
             {
-                float treeWidth = GetTreeWidth(tree);
-                float x = AutoStartX;
-                if (orphans.Count > 0) x += canvasRectWidth + AutoWidthBetweenNodes;
-                float y = AutoStartY;
-                for (int level = 0; level < tree.Count; level++)
+                if (currentConversation == null || currentConversation.dialogueEntries == null || currentConversation.dialogueEntries.Count == 0) return;
+                if (multinodeSelection != null && multinodeSelection.nodes.Count > 1)
                 {
-                    ArrangeLevel(tree[level], x, y, treeWidth, 0, vertically);
-                    y += canvasRectHeight + AutoHeightBetweenNodes;
+                    float treeWidth = GetTreeWidth(tree);
+                    float x = AutoStartX;
+                    if (orphans.Count > 0) x += canvasRectWidth + AutoWidthBetweenNodes;
+                    float y = AutoStartY;
+                    for (int level = 0; level < tree.Count; level++)
+                    {
+                        ArrangeLevel(tree[level], x, y, treeWidth, 0, vertically);
+                        y += canvasRectHeight + AutoHeightBetweenNodes;
+                    }
+                }
+                else
+                {
+                    // Using new algorithm provided by digiwombat [Fairmoon Museum]:
+                    currentConversation.dialogueEntries[0].canvasRect = new Rect(2500, 1 * (canvasRectHeight + 24), canvasRectWidth, canvasRectHeight);
+                    HandleChildren(currentConversation.dialogueEntries[0].outgoingLinks, currentConversation.dialogueEntries[0], 2);
+                    MoveNodesToLeftSide();
+                    nodeGridDict.Clear();
+                    arrangedNodes.Clear();
                 }
             }
             else
@@ -145,6 +158,116 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     ArrangeLevel(tree[level], x, y, 0, treeHeight, vertically);
                     x += canvasRectWidth + AutoWidthBetweenNodes;
+                }
+            }
+        }
+
+        private List<DialogueEntry> arrangedNodes = new List<DialogueEntry>();
+        private Dictionary<int, DialogueEntry> nodeGridDict = new Dictionary<int, DialogueEntry>();
+        private const int MaxNodeGridX = 1000;
+        private int GetNodeGridKey(int x, int y) { return x + (y * MaxNodeGridX); }
+        private int GetNodeGridKey(Vector2Int location) { return GetNodeGridKey(location.x, location.y); }
+
+        private void HandleChildren(List<Link> links, DialogueEntry parent, int layer, int startX = 8, 
+            List<Vector2Int> parentLocations = null)
+        {
+            Rect leftMost = new Rect();
+            Rect rightMost = new Rect();
+            int leftIndex = 0;
+            int rightIndex = 0;
+
+            for (int i = 0; i < links.Count; i++)
+            {
+                DialogueEntry child = currentConversation.dialogueEntries.Find(x => x.id == links[i].destinationDialogueID);
+                if (child == null || arrangedNodes.Contains(child))
+                {
+                    continue;
+                }
+
+                while (nodeGridDict.ContainsKey(GetNodeGridKey(i + startX, layer)))
+                {
+                    startX++;
+                }
+
+                int xIndex = i + startX;
+
+                nodeGridDict[GetNodeGridKey(xIndex, layer)] = child;
+                arrangedNodes.Add(child);
+
+                child.canvasRect = new Rect((xIndex * (canvasRectWidth + 10)), layer * (canvasRectHeight + 24), canvasRectWidth, canvasRectHeight);
+
+                if (child.outgoingLinks.Count > 0)
+                {
+                    if (child.outgoingLinks.Count == 1)
+                    {
+                        if (parentLocations == null)
+                        {
+                            parentLocations = new List<Vector2Int>();
+                        }
+                        parentLocations.Add(new Vector2Int(xIndex, layer));
+                        HandleChildren(child.outgoingLinks, child, layer + 1, xIndex, parentLocations);
+                    }
+                    else
+                    {
+                        int childIndexStart = xIndex - (child.outgoingLinks.Count / 2);
+
+                        if (parentLocations != null)
+                        {
+                            //Fill gaps above single stacks with branches below
+                            foreach (var location in parentLocations)
+                            {
+                                // Move parents in line with child, hypothetically
+                                if (nodeGridDict.ContainsKey(GetNodeGridKey(location)))
+                                {
+                                    DialogueEntry value = nodeGridDict[GetNodeGridKey(location)];
+                                    if (value != null)
+                                    {
+                                        value.canvasRect.x = (xIndex * (canvasRectWidth + 10));
+                                    }
+                                    nodeGridDict[GetNodeGridKey(xIndex, location.y)] = value;
+                                    nodeGridDict.Remove(GetNodeGridKey(location));
+                                }
+
+                                for (int j = 0; j < child.outgoingLinks.Count; j++)
+                                {
+                                    nodeGridDict[GetNodeGridKey(childIndexStart + j, location.y)] = null;
+                                }
+                            }
+                        }
+                        HandleChildren(child.outgoingLinks, child, layer + 1, childIndexStart);
+                    }
+                }
+
+                if (i == 0)
+                {
+                    leftMost = child.canvasRect;
+                    leftIndex = xIndex;
+                }
+                rightMost = child.canvasRect;
+                rightIndex = xIndex;
+
+            }
+            if (leftIndex != 0 && rightIndex != 0)
+            {
+                parent.canvasRect.x = ((leftIndex + rightIndex) * 0.5f) * (canvasRectWidth + 10);
+            }
+        }
+
+        private void MoveNodesToLeftSide()
+        {
+            float minX = CanvasSize;
+            foreach (var entry in currentConversation.dialogueEntries)
+            {
+                if (orphans.Find(x => x.entry == entry) != null) continue;
+                minX = Mathf.Min(minX, entry.canvasRect.x);
+            }
+            if (minX > 10)
+            {
+                var dx = Mathf.Max(0, minX - (20 + ((orphans.Count > 0) ? canvasRectWidth : 0)));
+                foreach (var entry in currentConversation.dialogueEntries)
+                {
+                    if (orphans.Find(x => x.entry == entry) != null) continue;
+                    entry.canvasRect.x -= dx;
                 }
             }
         }

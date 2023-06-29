@@ -1,7 +1,9 @@
+// Copyright (c) Pixel Crushers. All rights reserved.
+
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.Graphs;
-using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem.DialogueEditor
 {
@@ -34,6 +36,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private bool showActorPortraits = false;
 
         [SerializeField]
+        private bool showDescriptions = false;
+
+        [SerializeField]
         private bool showParticipantNames = true;
 
         [SerializeField]
@@ -41,6 +46,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         [SerializeField]
         private bool showFullTextOnHover = true;
+
+        [SerializeField]
+        private bool showLinkOrderOnConnectors = true;
 
         [SerializeField]
         private bool addNewNodesToRight = false;
@@ -80,8 +88,6 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private GUIContent currentHoverGUIContent = null;
         private Rect currentHoverRect;
 
-        //private GUIStyle nodeStyle = null;
-
         private static Color OutgoingLinkColor = Color.yellow;
         private static Color IncomingLinkColor = new Color(0.6f, 0.3f, 0.1f);
 
@@ -91,6 +97,65 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private bool showQuickDialogueTextEntry = false;
         private Rect quickDialogueTextEntryRect;
 
+        private Texture2D _sequenceIcon = null;
+        private Texture2D sequenceIcon
+        {
+            get
+            {
+                if (_sequenceIcon == null) _sequenceIcon = EditorGUIUtility.Load("Dialogue System/Sequence.png") as Texture2D;
+                return _sequenceIcon;
+            }
+        }
+        private Texture2D _conditionsIcon = null;
+        private Texture2D conditionsIcon
+        {
+            get
+            {
+                if (_conditionsIcon == null) _conditionsIcon = EditorGUIUtility.Load("Dialogue System/Conditions.png") as Texture2D;
+                return _conditionsIcon;
+            }
+        }
+        private Texture2D _scriptIcon = null;
+        private Texture2D scriptIcon
+        {
+            get
+            {
+                if (_scriptIcon == null) _scriptIcon = EditorGUIUtility.Load("Dialogue System/Script.png") as Texture2D;
+                return _scriptIcon;
+            }
+        }
+        private Texture2D _eventIcon = null;
+        private Texture2D eventIcon
+        {
+            get
+            {
+                if (_eventIcon == null) _eventIcon = EditorGUIUtility.Load("Dialogue System/Event.png") as Texture2D;
+                return _eventIcon;
+            }
+        }
+        private Texture2D _resizeIcon = null;
+        private Texture2D resizeIcon
+        {
+            get
+            {
+                if (_resizeIcon == null) _resizeIcon = EditorGUIUtility.Load("Dialogue System/Resize.png") as Texture2D;
+                return _resizeIcon;
+            }
+        }
+        private Texture2D _boxTexture = null;
+        private Texture2D boxTexture
+        {
+            get
+            {
+                if (_boxTexture == null)
+                {
+                    _boxTexture = new Texture2D(1, 1);
+                    _boxTexture.SetPixel(0, 0, Color.white);
+                }
+                return _boxTexture;
+            }
+        }
+
         private Vector2 ConvertScreenCoordsToZoomCoords(Rect _zoomArea, Vector2 screenCoords)
         {
             return (screenCoords - _zoomArea.TopLeft()) / _zoom + _zoomCoordsOrigin;
@@ -99,7 +164,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         public class MultinodeSelection
         {
             public List<DialogueEntry> nodes = new List<DialogueEntry>();
+            public List<EntryGroup> groups = new List<EntryGroup>();
+
+            public void Clear()
+            {
+                nodes.Clear();
+                groups.Clear();
+            }
         }
+
+        private const float EntryGroupHeadingBaseHeight = 20;
+        private float entryGroupHeadingHeight = 20;
+        private List<DialogueEntry> nodesInEntryGroup = null;
+        private List<EntryGroup> subgroupsInEntryGroup = null;
+        private bool isRenamingEntryGroup = false;
+        private bool isResizingEntryGroup = false;
 
         private MultinodeSelection multinodeSelection = new MultinodeSelection();
 
@@ -112,15 +191,27 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private bool wasShiftDown = false;
 
+        private EntryGroup selectedEntryGroup = null;
+
+
         private void DrawConversationSectionNodeStyle()
         {
             if (!(Application.isPlaying && DialogueManager.hasInstance)) currentRuntimeEntry = null;
 
             CheckDialogueTreeGUIStyles();
+            if (_zoom != currentEntryGroupHeadingZoom && entryGroupHeadingStyle != null)
+            {
+                currentEntryGroupHeadingZoom = _zoom;
+                entryGroupHeadingStyle.fontSize = Mathf.RoundToInt((_zoom >= 1) ? entryGroupHeadingBaseFontSize
+                    : (entryGroupHeadingBaseFontSize / _zoom));
+                entryGroupHeadingHeight = Mathf.RoundToInt((_zoom >= 1) ? EntryGroupHeadingBaseHeight
+                    : (EntryGroupHeadingBaseHeight / _zoom));
+            }
+
             if (nodeEditorDeleteCurrentConversation) DeleteCurrentConversationInNodeEditor();
             //--- Unnecessary: if (inspectorSelection == null) inspectorSelection = currentConversation;
 
-            DrawNodeEditorTopControls();            
+            DrawNodeEditorTopControls();
 
             var topOffset = GetTopOffsetHeight();
 
@@ -164,11 +255,13 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             if (currentConversation == null) return;
             newSelectedLink = null;
+            DrawAllEntryGroups();
             DrawAllConnectors();
             DrawAllNodes();
             DrawLasso();
             CheckNewSelectedLink();
             if (showQuickDialogueTextEntry) DrawQuickDialogueTextEntry();
+            else if (isRenamingEntryGroup) DrawEntryGroupRenameField();
             newSelectedLink = null;
         }
 
@@ -177,6 +270,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private int canvasConversantID = -1;
         private string canvasActorName = "unassigned";
         private string canvasConversantName = "unassigned";
+        private bool isCanvasActorNameValid = false;
+        private bool isCanvasConversantNameValid = false;
 
         private void DrawParticipantsOnCanvas()
         {
@@ -185,18 +280,29 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 (currentConversation != canvasParticipantsConversation || (currentConversation.ActorID != canvasActorID || currentConversation.ConversantID != canvasConversantID)))
             {
                 canvasParticipantsConversation = currentConversation;
+
                 canvasActorID = currentConversation.ActorID;
-                canvasConversantID = currentConversation.ConversantID;
                 var actor = database.GetActor(canvasActorID);
                 canvasActorName = (actor != null) ? actor.Name : "unassigned";
+                isCanvasActorNameValid = (canvasActorID != -1) && (actor != null);
+
+                canvasConversantID = currentConversation.ConversantID;
                 var conversant = database.GetActor(canvasConversantID);
                 canvasConversantName = (conversant != null) ? conversant.Name : "unassigned";
+                isCanvasConversantNameValid = (canvasConversantID != -1) && (conversant != null);
             }
             try
             {
-                EditorGUI.LabelField(new Rect(0, position.height - 60, position.width - 4, 60),
-                    "Actor: " + canvasActorName + "\nConversant: " + canvasConversantName,
+                if (!isCanvasActorNameValid) GUI.color = Color.red;
+                EditorGUI.LabelField(new Rect(0, position.height - 50, position.width - 4, 50),
+                    "Actor: " + canvasActorName,
                     conversationParticipantsStyle);
+                if (!isCanvasActorNameValid && isCanvasConversantNameValid) GUI.color = Color.white;
+                if (!isCanvasConversantNameValid) GUI.color = Color.red;
+                EditorGUI.LabelField(new Rect(0, position.height - 26, position.width - 4, 26),
+                    "Conversant: " + canvasConversantName,
+                    conversationParticipantsStyle);
+                if (!isCanvasConversantNameValid) GUI.color = Color.white;
             }
             catch (System.NullReferenceException)
             {
@@ -227,13 +333,58 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 selectedLink = newSelectedLink;
                 inspectorSelection = selectedLink;
                 isLassoing = false;
-                multinodeSelection.nodes.Clear();
+                multinodeSelection.Clear();
                 Event.current.Use();
             }
             else if (currentEntry != null)
             {
                 selectedLink = null;
             }
+        }
+
+        private void DrawAllEntryGroups()
+        {
+            var originalColor = GUI.color;
+            for (int i = 0; i < currentConversation.entryGroups.Count; i++)
+            {
+                var group = currentConversation.entryGroups[i];
+                if (!nodeEditorVisibleRect.Overlaps(group.rect)) continue; // Skip drawing if not in visible window.
+                GUI.color = group.color;
+                if (boxTexture != null) GUI.DrawTexture(group.rect, boxTexture);
+                if (!isRenamingEntryGroup)
+                {
+                    GUI.color = new Color(group.color.r, group.color.g, group.color.b, 1);
+                    if (entryGroupHeadingStyle == null) InitEntryGroupHeadingStyle();
+                    GUI.Box(new Rect(group.rect.x, group.rect.y, group.rect.width, entryGroupHeadingHeight), group.name, entryGroupHeadingStyle);
+                }
+                GUI.color = originalColor;
+                var resizeRect = new Rect(group.rect.x + group.rect.width - 20, group.rect.y + group.rect.height - 20, 16, 16);
+                if (resizeIcon != null) GUI.DrawTexture(resizeRect, resizeIcon);
+            }
+            GUI.color = originalColor;
+        }
+
+        private void DrawEntryGroupRenameField()
+        {
+            if (selectedEntryGroup == null) return;
+            var group = selectedEntryGroup;
+            selectedEntryGroup.name = EditorGUI.TextField(new Rect(group.rect.x, group.rect.y, group.rect.width, entryGroupHeadingHeight), GUIContent.none, group.name);
+        }
+
+        public void DrawEntryGroupContents()
+        {
+            if (selectedEntryGroup == null) return;
+            selectedEntryGroup.name = EditorGUILayout.TextField("Name", selectedEntryGroup.name);
+#if UNITY_5 || UNITY_2017
+            selectedEntryGroup.color = EditorGUILayout.ColorField(GUIContent.none, selectedEntryGroup.color, true, true, false, null);
+#else
+            selectedEntryGroup.color = EditorGUILayout.ColorField(GUIContent.none, selectedEntryGroup.color, true, true, false);
+#endif
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            var delete = GUILayout.Button("Delete", GUILayout.Width(128));
+            EditorGUILayout.EndHorizontal();
+            if (delete) DeleteEntryGroup(selectedEntryGroup);
         }
 
         private void DrawAllConnectors()
@@ -265,8 +416,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     DialogueEntry destination = currentConversation.dialogueEntries.Find(e => e.id == link.destinationDialogueID);
                     if (destination != null)
                     {
-                        Vector3 start = new Vector3(entry.canvasRect.center.x, entry.canvasRect.center.y, 0);
-                        Vector3 end = new Vector3(destination.canvasRect.center.x, destination.canvasRect.center.y, 0);
+                        var startCenter = entry.canvasRect.center;
+                        var endCenter = destination.canvasRect.center;
+                        Vector3 start = new Vector3(startCenter.x, startCenter.y, 0);
+                        Vector3 end = new Vector3(endCenter.x, endCenter.y, 0);
+                        // Check if it's not in visible window and we can skip:
+                        if (!(nodeEditorVisibleRect.Contains(startCenter) || nodeEditorVisibleRect.Contains(endCenter)))
+                        {
+                            var connectorRect = new Rect(Mathf.Min(startCenter.x, endCenter.x), Mathf.Min(startCenter.y, endCenter.y), Mathf.Abs(startCenter.x - endCenter.x), Mathf.Abs(startCenter.y - endCenter.y));
+                            if (!nodeEditorVisibleRect.Overlaps(connectorRect)) continue; // Skip drawing if not in visible window.
+                        }
                         Color connectorColor = (link == selectedLink) ? SelectedNodeColor : Color.white;
                         if (IsCurrentRuntimeEntry(entry))
                         {
@@ -284,6 +443,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         }
                         DrawLink(start, end, connectorColor, link.priority != ConditionPriority.Normal);
                         HandleConnectorEvents(link, start, end);
+                        if (showLinkOrderOnConnectors && entry.outgoingLinks.Count > 1)
+                        {
+                            Vector3 cross = Vector3.Cross((start - end).normalized, Vector3.forward);
+                            Vector3 diff = (end - start);
+                            Vector3 direction = diff.normalized;
+                            Vector3 mid = ((0.5f * diff) + start) - (0.5f * cross);
+                            Vector3 center = mid + direction;
+                            GUIContent content = new GUIContent(i.ToString());
+                            Vector2 size = EditorStyles.miniTextField.CalcSize(content);
+                            EditorGUI.LabelField(new Rect(center.x - 6, center.y - 28, size.x + 2, size.y + 2), (i + 1).ToString(), EditorStyles.miniTextField);
+                        }
                     }
                 }
                 else
@@ -394,13 +564,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             switch (Event.current.type)
             {
                 case EventType.MouseUp:
-                    bool isReallyLassoing = isLassoing && (Mathf.Abs(lassoRect.width) > 10f) && (Mathf.Abs(lassoRect.height) > 10f);
-                    if (!isReallyLassoing && (Event.current.button == LeftMouseButton) && IsPointOnLineSegment(Event.current.mousePosition, start, end))
+                    bool isReallyLassoing = isLassoing && (Mathf.Abs(lassoRect.width) > 10f) && (Mathf.Abs(lassoRect.height) > 10f) && (selectedEntryGroup != null);
+                    if (!isReallyLassoing && (Event.current.button == LeftMouseButton) &&
+                        IsPointOnLineSegment(Event.current.mousePosition, start, end) &&
+                        !IsMouseInQuickDialogueTextRect())
                     {
                         newSelectedLink = link;
                         currentEntry = null;
                         inspectorSelection = newSelectedLink;
-                        if (showQuickDialogueTextEntry && !GetQuickDialogueTextRect().Contains(Event.current.mousePosition))
+                        if (IsMouseInQuickDialogueTextRect())
                         {
                             CloseQuickDialogueTextEntry();
                         }
@@ -467,6 +639,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 var text = currentHoveredEntry.currentDialogueText;
                 if (string.IsNullOrEmpty(text)) text = currentHoveredEntry.currentMenuText;
                 if (string.IsNullOrEmpty(text)) text = currentHoveredEntry.Title;
+                var linkText = GetLinkSummaryHoverText();
+                if (!string.IsNullOrEmpty(linkText))
+                {
+                    text += linkText;
+                }
                 if (Application.isPlaying && DialogueManager.instance != null && DialogueManager.instance.includeSimStatus)
                 {
                     text += "\nSimStatus=" + DialogueLua.GetSimStatus(currentHoveredEntry);
@@ -489,6 +666,34 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
+        private string GetLinkSummaryHoverText()
+        {
+            if (currentHoveredEntry == null || currentHoveredEntry.outgoingLinks == null || currentHoveredEntry.outgoingLinks.Count == 0) return string.Empty;
+            var s = string.Empty;
+            for (int i = (int)ConditionPriority.High; i >= 0; i--)
+            {
+                var priority = (ConditionPriority)i;
+                for (int j = 0; j < currentHoveredEntry.outgoingLinks.Count; j++)
+                {
+                    var link = currentHoveredEntry.outgoingLinks[j];
+                    if (link.priority == priority)
+                    {
+                        if (!string.IsNullOrEmpty(s)) s += ", ";
+                        if (link.destinationConversationID == currentHoveredEntry.conversationID)
+                        {
+                            s += "[" + link.destinationDialogueID + "]";
+                        }
+                        else
+                        {
+                            s += "[" + link.destinationConversationID + ":" + link.destinationDialogueID + "]";
+                        }
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(s)) s = "\n" + s;
+            return s;
+        }
+
         #region Node Styles
 
         private Dictionary<Styles.Color, GUIStyle> m_nodeStyles = new Dictionary<Styles.Color, GUIStyle>();
@@ -500,12 +705,14 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             return isSelected ? GetNodeStyle(m_nodeStylesSelected, color, isSelected) : GetNodeStyle(m_nodeStyles, color, isSelected);
         }
 
-        private GUIStyle GetNodeStyle(Dictionary <Styles.Color, GUIStyle> dict, Styles.Color color, bool isSelected)
+        private GUIStyle GetNodeStyle(Dictionary<Styles.Color, GUIStyle> dict, Styles.Color color, bool isSelected)
         {
             GUIStyle nodeStyle;
             if (!dict.TryGetValue(color, out nodeStyle))
             {
-                nodeStyle = Styles.GetNodeStyle("node", color, isSelected);
+                nodeStyle = new GUIStyle(Styles.GetNodeStyle("node", color, isSelected));
+                nodeStyle.alignment = TextAnchor.MiddleCenter;
+                nodeStyle.contentOffset = new Vector2(0, -16);
                 dict.Add(color, nodeStyle);
             }
             return nodeStyle;
@@ -538,7 +745,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 if (actorHasCustomColorCache == null) actorHasCustomColorCache = new Dictionary<int, bool>();
                 if (actorIsPlayerCache == null) actorIsPlayerCache = new Dictionary<int, bool>();
                 if (actorCustomColorCache == null) actorCustomColorCache = new Dictionary<int, Color>();
-                if (!actorHasCustomColorCache.ContainsKey(actorID) || 
+                if (!actorHasCustomColorCache.ContainsKey(actorID) ||
+                    !actorCustomColorCache.ContainsKey(actorID) ||
                     (actorCustomColorCache.ContainsKey(actorID) && (actorCustomColorCache[actorID].a == 0)))
                 {
                     var actor = database.GetActor(actorID);
@@ -572,14 +780,20 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     // Use actor's custom color:
                     isCustomColor = true;
                     customColor = actorCustomColorCache[actorID];
-                    if (m_customNodeStyle == null)
+                    if (customColor.a == 0)
+                    {
+                        actorHasCustomColorCache.Remove(actorID);
+                        actorCustomColorCache.Remove(actorID);
+                        customColor = Color.gray;
+                    }
+                    if (m_customNodeStyle == null || m_customNodeStyle.normal.background == null)
                     {
 #if UNITY_2019_3_OR_NEWER
                         m_customNodeStyle = new GUIStyle(GUI.skin.button);
 #else
                         m_customNodeStyle = new GUIStyle(GUI.skin.box);
 #endif
-                        m_customNodeStyle.contentOffset = new Vector2(0, -6);
+                        m_customNodeStyle.contentOffset = new Vector2(0, -4);
                         var nodeTexture = EditorGUIUtility.Load("Dialogue System/EditorNode.png") as Texture2D;
                         m_customNodeStyle.normal.background = nodeTexture ?? Texture2D.whiteTexture;
                         m_customNodeStyle.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0.9f, 0.9f, 0.9f) : Color.black;
@@ -598,7 +812,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-#endregion
+        #endregion
 
         private void DrawEntryNode(DialogueEntry entry)
         {
@@ -609,6 +823,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             bool isCustomColor;
             Color customColor;
             GetNodeStyle(entry, out nodeStyle, out isSelected, out isCustomColor, out customColor);
+
+            if (isCustomColor && customColor.a == 0) customColor = Color.gray; // Safeguard.
 
             string nodeLabel = GetDialogueEntryNodeText(entry);
             if (showQuickDialogueTextEntry && entry == currentEntry) nodeLabel = string.Empty;
@@ -634,6 +850,29 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 GUI.backgroundColor = guicolor_backup;
             }
 
+            if (_zoom > 0.5f)
+            {
+                // Draw icons for Sequence, Conditions, Script, & Event:
+                if (DoesDialogueEntryHaveSequence(entry))
+                {
+                    GUI.Label(new Rect((boxRect.x + boxRect.width) - 44, (boxRect.y + boxRect.height) - 15, 16, 16), new GUIContent(sequenceIcon, entry.Sequence));
+                }
+
+                if (!string.IsNullOrEmpty(entry.conditionsString))
+                {
+                    GUI.Label(new Rect((boxRect.x + boxRect.width) - 30, (boxRect.y + boxRect.height) - 15, 16, 16), new GUIContent(conditionsIcon, entry.conditionsString));
+                }
+
+                if (!string.IsNullOrEmpty(entry.userScript))
+                {
+                    GUI.Label(new Rect((boxRect.x + boxRect.width) - 16, (boxRect.y + boxRect.height) - 15, 16, 16), new GUIContent(scriptIcon, entry.userScript));
+                }
+                if (eventIcon != null && DoesDialogueEntryHaveEvent(entry))
+                {
+                    GUI.DrawTexture(new Rect((boxRect.x + boxRect.width) - 58, (boxRect.y + boxRect.height) - 15, 16, 16), eventIcon);
+                }
+            }
+
             if (showActorPortraits)
             {
                 var portrait = GetActorPortrait(entry.ActorID);
@@ -641,6 +880,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     GUIDrawSprite(new Rect(boxRect.x - 30, boxRect.y, 30, 30), portrait);
                 }
+            }
+
+            if (showDescriptions)
+            {
+                var descriptionGUIContent = GetDialogueEntryNodeDescription(entry);
+                if (descriptionGUIContent != null)
+                {
+                    var height = EditorStyles.textField.CalcHeight(descriptionGUIContent, boxRect.width);
+                    GUI.Label(new Rect(boxRect.x, boxRect.y + boxRect.height, boxRect.width, height), descriptionGUIContent, EditorStyles.textField);
+                }
+            }
+
+            if (customDrawDialogueEntryNode != null)
+            {
+                customDrawDialogueEntryNode(database, entry, boxRect);
             }
         }
 
@@ -666,16 +920,27 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void OpenQuickDialogueTextEntry()
         {
-            if (currentEntry == null) return;
-            if (multinodeSelection.nodes.Count > 1) return;
-            showQuickDialogueTextEntry = true;
-            var rect = currentEntry.canvasRect;
-            quickDialogueTextEntryRect = new Rect(rect.x, rect.y, rect.width + DialogueEntry.CanvasRectWidth, rect.height + DialogueEntry.CanvasRectHeight);
+            if (!showQuickDialogueTextEntry)
+            {
+                if (currentEntry == null) return;
+                if (multinodeSelection.nodes.Count > 1) return;
+                showQuickDialogueTextEntry = true;
+                var rect = currentEntry.canvasRect;
+                quickDialogueTextEntryRect = new Rect(rect.x, rect.y, rect.width + DialogueEntry.CanvasRectWidth, rect.height + DialogueEntry.CanvasRectHeight);
+            }
         }
 
         private void CloseQuickDialogueTextEntry()
         {
-            showQuickDialogueTextEntry = false;
+            if (showQuickDialogueTextEntry)
+            {
+                showQuickDialogueTextEntry = false;
+            }
+        }
+
+        private bool IsMouseInQuickDialogueTextRect()
+        {
+            return showQuickDialogueTextEntry && GetQuickDialogueTextRect().Contains(Event.current.mousePosition + canvasScrollPosition);
         }
 
         private Rect GetQuickDialogueTextRect()
@@ -689,7 +954,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (!actorPortraitCache.ContainsKey(actorID))
             {
                 var actor = database.GetActor(actorID);
-                actorPortraitCache.Add(actorID, (actor != null) ? actor.GetPortraitSprite() : null);
+                actorPortraitCache.Add(actorID, (actor != null) ? actor.GetPortraitSprite(1) : null);
             }
             return actorPortraitCache[actorID];
         }
@@ -879,6 +1144,18 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     }
                     Event.current.Use();
                 }
+                else if (Event.current.keyCode == KeyCode.Comma && (Event.current.command || Event.current.control) && Event.current.shift)
+                {
+                    // Ctrl/Cmd+Shift+< key: (previous conversation)
+                    OpenPreviousConversation();
+                    Event.current.Use();
+                }
+                else if (Event.current.keyCode == KeyCode.Period && (Event.current.command || Event.current.control) && Event.current.shift)
+                {
+                    // Ctrl/Cmd+Shift+> key: (next conversation)
+                    OpenNextConversation();
+                    Event.current.Use();
+                }
             }
         }
 
@@ -937,7 +1214,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     }
                     break;
                 case EventType.MouseUp:
-                    hasStartedSnapToGrid = false;
+                    if (hasStartedSnapToGrid)
+                    {
+                        FinishSnapToGrid();
+                        hasStartedSnapToGrid = false;
+                    }
                     if (Event.current.button == LeftMouseButton)
                     {
                         if (!isMakingLink && entry.canvasRect.Contains(Event.current.mousePosition))
@@ -960,6 +1241,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                 }
                                 CloseQuickDialogueTextEntry();
                             }
+                            else if (showQuickDialogueTextEntry && GetQuickDialogueTextRect().Contains(Event.current.mousePosition))
+                            {
+                                return;
+                            }
                             else
                             {
                                 if (!(dragged && (multinodeSelection.nodes.Count > 1)))
@@ -977,7 +1262,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     if ((entry == nodeToDrag))
                     {
                         dragged = true;
-                        DragNodes(multinodeSelection.nodes);
+                        DragMultiSelection();
                         Event.current.Use();
                     }
                     break;
@@ -991,12 +1276,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void DragNodes(List<DialogueEntry> nodeList)
+        private void DragMultiSelection()
         {
             var snapToGrid = snapToGridAmount >= MinorGridLineWidth;
-            for (int i = 0; i < nodeList.Count; i++)
+            for (int i = 0; i < multinodeSelection.nodes.Count; i++)
             {
-                var dragEntry = nodeList[i];
+                var dragEntry = multinodeSelection.nodes[i];
 
                 if (snapToGrid && dragEntry == nodeToDrag)
                 {
@@ -1016,8 +1301,47 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 dragEntry.canvasRect.x = Mathf.Max(1f, dragEntry.canvasRect.x);
                 dragEntry.canvasRect.y = Mathf.Max(1f, dragEntry.canvasRect.y);
             }
+            for (int i = 0; i < multinodeSelection.groups.Count; i++)
+            {
+                var group = multinodeSelection.groups[i];
+
+                if (snapToGrid)
+                {
+                    group.rect.x = (((int)group.rect.x) / snapToGridAmount) * snapToGridAmount;
+                    group.rect.y = (((int)group.rect.y) / snapToGridAmount) * snapToGridAmount;
+                }
+                else
+                {
+                    group.rect.x += Event.current.delta.x;
+                    group.rect.y += Event.current.delta.y;
+                }
+                group.rect.x = Mathf.Max(1f, group.rect.x);
+                group.rect.y = Mathf.Max(1f, group.rect.y);
+            }
             hasStartedSnapToGrid = true;
             SetDatabaseDirty("Drag");
+        }
+
+        private void FinishSnapToGrid()
+        {
+            var snapToGrid = snapToGridAmount >= MinorGridLineWidth;
+            if (!snapToGrid) return;
+            for (int i = 0; i < multinodeSelection.nodes.Count; i++)
+            {
+                var entry = multinodeSelection.nodes[i];
+                var canvasRect = entry.canvasRect;
+                entry.canvasRect.x = ((int)(canvasRect.x / snapToGridAmount) * snapToGridAmount);
+                entry.canvasRect.y = ((int)(canvasRect.y / snapToGridAmount) * snapToGridAmount);
+            }
+            for (int i = 0; i < multinodeSelection.groups.Count; i++)
+            {
+                var group = multinodeSelection.groups[i];
+                var canvasRect = group.rect;
+                group.rect.x = ((int)(canvasRect.x / snapToGridAmount) * snapToGridAmount);
+                group.rect.y = ((int)(canvasRect.y / snapToGridAmount) * snapToGridAmount);
+            }
+            hasStartedSnapToGrid = false;
+            SetDatabaseDirty("Drag End");
         }
 
         private bool IsModifierDown(EventModifiers modifier)
@@ -1110,7 +1434,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void HandleEmptyCanvasEvents()
+        private void HandleEmptyCanvasEvents() // Also handles entry group events.
         {
             wantsMouseMove = true;
             Event e = Event.current;
@@ -1120,6 +1444,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     GUI.FocusControl("SearchClearButton"); // Deselect search bar text input field.
                     isDraggingCanvas = IsDragCanvasEvent();
                     if (isDraggingCanvas) nodeToDrag = null;
+                    CheckClickOnEntryGroup();
                     if (isMakingLink)
                     {
                         if ((Event.current.button == LeftMouseButton) || (Event.current.button == RightMouseButton))
@@ -1145,11 +1470,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     else if (Event.current.button == LeftMouseButton)
                     {
                         nodeToDrag = null;
-                        //if (Event.current.clickCount == 2) // On second thought, I'm not a fan of double-clicking canvas to create a new node.
-                        //{
-                        //    AddChildCallback(null);
-                        //}
-                        //else
+                        if (selectedEntryGroup == null)
                         {
                             isLassoing = true;
                             lassoRect = new Rect(Event.current.mousePosition.x + canvasScrollPosition.x, Event.current.mousePosition.y + canvasScrollPosition.y, 1, 1);
@@ -1158,17 +1479,23 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     break;
                 case EventType.MouseUp:
                     isDraggingCanvas = false;
+                    if (!IsMouseOnSelectedEntryGroupHeading())
+                    {
+                        ClearSelectedEntryGroup();
+                    }
                     if (isLassoing)
                     {
                         FinishLasso();
                         newSelectedLink = null;
                     }
-                    else if (newSelectedLink == null && Event.current.button != MiddleMouseButton)
+                    else if (newSelectedLink == null && Event.current.button != MiddleMouseButton && selectedEntryGroup == null &&
+                        ((currentEntry == null) || !IsMouseInQuickDialogueTextRect()))
                     {
-                        currentEntry = null;
-                        selectedLink = null;
-                        multinodeSelection.nodes.Clear();
-                        inspectorSelection = currentConversation;
+                        InspectConversationProperties();
+                    }
+                    else if (selectedEntryGroup != null && !IsMouseOnSelectedEntryGroupHeading())
+                    {
+                        ClearSelectedEntryGroup();
                     }
                     break;
                 case EventType.MouseDrag:
@@ -1178,6 +1505,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         canvasScrollPosition.x = Mathf.Clamp(canvasScrollPosition.x, 0, Mathf.Infinity);
                         canvasScrollPosition.y = Mathf.Clamp(canvasScrollPosition.y, 0, Mathf.Infinity);
                     }
+                    else if (selectedEntryGroup != null)
+                    {
+                        if (isResizingEntryGroup)
+                        {
+                            ResizeSelectedEntryGroup();
+                        }
+                        else
+                        {
+                            DragSelectedEntryGroup();
+                        }
+                    }
                     else if (isLassoing)
                     {
                         lassoRect.width += Event.current.delta.x;
@@ -1186,6 +1524,98 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     break;
             }
             if (Event.current.isMouse) e.Use();
+        }
+
+        private void CheckClickOnEntryGroup()
+        {
+            if (currentConversation == null) return;
+            var clickPos = Event.current.mousePosition + canvasScrollPosition;
+            for (int i = 0; i < currentConversation.entryGroups.Count; i++)
+            {
+                var group = currentConversation.entryGroups[i];
+                var groupHeadingRect = new Rect(group.rect.x, group.rect.y, group.rect.width, entryGroupHeadingHeight);
+                var resizeRect = new Rect(group.rect.x + group.rect.width - 20, group.rect.y + group.rect.height - 20, 20, 20);
+                if (groupHeadingRect.Contains(clickPos) || resizeRect.Contains(clickPos))
+                {
+                    if (selectedEntryGroup != group || nodesInEntryGroup == null || subgroupsInEntryGroup == null)
+                    {
+                        selectedEntryGroup = group;
+                        inspectorSelection = group;
+                        nodesInEntryGroup = new List<DialogueEntry>();
+                        isResizingEntryGroup = resizeRect.Contains(clickPos);
+                        foreach (var entry in currentConversation.dialogueEntries)
+                        {
+                            if (group.rect.Contains(entry.canvasRect.TopLeft()) && 
+                                group.rect.Contains(entry.canvasRect.BottomRight()))
+                            {
+                                nodesInEntryGroup.Add(entry);
+                            }
+                        }
+                        subgroupsInEntryGroup = new List<EntryGroup>();
+                        foreach (var otherGroup in currentConversation.entryGroups)
+                        {
+                            if (otherGroup == group) continue;
+                            if (group.rect.Contains(otherGroup.rect.TopLeft()) &&
+                                group.rect.Contains(otherGroup.rect.BottomRight()))
+                            {
+                                subgroupsInEntryGroup.Add(otherGroup);
+                            }
+                        }
+                        return;
+                    }
+                }
+            }
+            ClearSelectedEntryGroup();
+        }
+
+        private bool IsMouseOnSelectedEntryGroupHeading()
+        {
+            if (currentConversation == null || selectedEntryGroup == null) return false;
+            var clickPos = Event.current.mousePosition + canvasScrollPosition;
+            var group = selectedEntryGroup;
+            var groupHeadingRect = new Rect(group.rect.x, group.rect.y, group.rect.width, entryGroupHeadingHeight);
+            return groupHeadingRect.Contains(clickPos);
+        }
+
+        private void ClearSelectedEntryGroup()
+        {
+            selectedEntryGroup = null;
+            nodesInEntryGroup = null;
+            subgroupsInEntryGroup = null;
+            isRenamingEntryGroup = false;
+            isResizingEntryGroup = false;
+        }
+
+        private void DragSelectedEntryGroup()
+        {
+            if (selectedEntryGroup == null) return;
+            selectedEntryGroup.rect.x += Event.current.delta.x;
+            selectedEntryGroup.rect.y += Event.current.delta.y;
+            foreach (var entry in nodesInEntryGroup)
+            {
+                entry.canvasRect.x += Event.current.delta.x;
+                entry.canvasRect.y += Event.current.delta.y;
+            }
+            foreach (var subgroup in subgroupsInEntryGroup)
+            {
+                subgroup.rect.x += Event.current.delta.x;
+                subgroup.rect.y += Event.current.delta.y;
+            }
+        }
+
+        private void ResizeSelectedEntryGroup()
+        {
+            if (selectedEntryGroup == null) return;
+            selectedEntryGroup.rect.width += Event.current.delta.x;
+            selectedEntryGroup.rect.height += Event.current.delta.y;
+        }
+
+        private void InspectConversationProperties()
+        {
+            currentEntry = null;
+            selectedLink = null;
+            multinodeSelection.nodes.Clear();
+            inspectorSelection = currentConversation;
         }
 
         private void DrawLasso()
@@ -1205,17 +1635,53 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                  Mathf.Abs(lassoRect.width),
                                  Mathf.Abs(lassoRect.height));
             currentEntry = null;
-            if (!IsShiftDown()) multinodeSelection.nodes.Clear();
-            for (int i = 0; i < currentConversation.dialogueEntries.Count; i++)
+            if (IsControlDown())
             {
-                var entry = currentConversation.dialogueEntries[i];
-                if (lassoRect.Overlaps(entry.canvasRect))
+                CreateEntryGroup(lassoRect);
+            }
+            else
+            {
+                if (!IsShiftDown()) multinodeSelection.Clear();
+                for (int i = 0; i < currentConversation.dialogueEntries.Count; i++)
                 {
-                    currentEntry = entry;
-                    if (!multinodeSelection.nodes.Contains(entry)) multinodeSelection.nodes.Add(entry);
+                    var entry = currentConversation.dialogueEntries[i];
+                    if (lassoRect.Overlaps(entry.canvasRect))
+                    {
+                        currentEntry = entry;
+                        if (!multinodeSelection.nodes.Contains(entry)) multinodeSelection.nodes.Add(entry);
+                    }
+                }
+                for (int i = 0; i < currentConversation.entryGroups.Count; i++)
+                {
+                    var group = currentConversation.entryGroups[i];
+                    if (lassoRect.Contains(group.rect.TopLeft()) && lassoRect.Contains(group.rect.BottomRight()))
+                    {
+                        if (!multinodeSelection.groups.Contains(group)) multinodeSelection.groups.Add(group);
+                    }
                 }
             }
             UpdateEntrySelection();
+        }
+
+        private void CreateEntryGroup(Rect rect)
+        {
+            var entryGroup = new EntryGroup("Group", rect);
+            currentConversation.entryGroups.Add(entryGroup);
+            SetDatabaseDirty("Group");
+        }
+
+        private void RenameEntryGroup(object o)
+        {
+            if (currentConversation == null || selectedEntryGroup == null) return;
+            isRenamingEntryGroup = true;
+        }
+
+        private void DeleteEntryGroup(object o)
+        {
+            if (currentConversation == null || selectedEntryGroup == null) return;
+            currentConversation.entryGroups.Remove(selectedEntryGroup);
+            ClearSelectedEntryGroup();
+            SetDatabaseDirty("Delete Group");
         }
 
         private void ShowEmptyCanvasContextMenu()
@@ -1237,6 +1703,13 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
             contextMenu.AddItem(new GUIContent("Duplicate Conversation"), false, CopyConversationCallback, null);
             contextMenu.AddItem(new GUIContent("Delete Conversation"), false, DeleteConversationCallback, null);
+
+            if (selectedEntryGroup != null)
+            {
+                contextMenu.AddSeparator(string.Empty);
+                contextMenu.AddItem(new GUIContent("Group/Rename"), false, RenameEntryGroup, null);
+                contextMenu.AddItem(new GUIContent("Group/Delete"), false, DeleteEntryGroup, null);
+            }
 
             AddCanvasContextMenuGotoItems(contextMenu);
 
@@ -1521,14 +1994,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private int GetAvailableConversationID()
         {
-            for (int i = 1; i < 9999; i++)
-            {
-                if (database.conversations.Find(c => c.id == i) == null)
-                {
-                    return i;
-                }
-            }
-            return 9999;
+            int highestID = database.baseID - 1;
+            database.conversations.ForEach(a => highestID = Mathf.Max(highestID, a.id));
+            return Mathf.Max(1, highestID + 1);
         }
 
         private string GetAvailableCopyTitle()
@@ -1651,6 +2119,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     }
                 }
 
+                // Handle scene event:
+                DuplicateEntrySceneEventIfPresent(newEntry);
+
                 // Position and select:
                 newEntry.canvasRect.x = newEntry.canvasRect.x + xDelta;
                 newEntry.canvasRect.y = newEntry.canvasRect.y + yDelta;
@@ -1687,12 +2158,54 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             newEntry.canvasRect.x = entry.canvasRect.x + 10f;
             newEntry.canvasRect.y = entry.canvasRect.y + entry.canvasRect.height + AutoHeightBetweenNodes;
             ApplyDialogueEntryTemplate(newEntry.fields);
+            DuplicateEntrySceneEventIfPresent(newEntry);
             currentEntry = newEntry;
             inspectorSelection = currentEntry;
             InitializeDialogueTree();
             ResetDialogueEntryText();
             Repaint();
             SetDatabaseDirty("Duplicate Dialogue Entry");
+        }
+
+        private void DuplicateEntrySceneEventIfPresent(DialogueEntry entry)
+        {
+            var sceneEventGuidField = Field.Lookup(entry.fields, DialogueEntry.SceneEventGuidFieldName);
+
+            // If no scene event, we can end here:
+            if (sceneEventGuidField == null) return;
+            if (string.IsNullOrEmpty(sceneEventGuidField.value)) return;
+
+            var sceneEventIndex = DialogueSystemSceneEvents.GetDialogueEntrySceneEventIndex(sceneEventGuidField.value);
+            if (sceneEventIndex == -1)
+            {
+                // If wrong scene, remove scene event:
+                entry.fields.Remove(sceneEventGuidField);
+            }
+            else
+            {
+                // For now, just add empty event block:
+                //var sourceEvent = DialogueSystemSceneEvents.GetDialogueEntrySceneEvent(sceneEventGuidField.value);
+                string newGuid;
+                DialogueSystemSceneEvents.AddNewDialogueEntrySceneEvent(out newGuid);
+                //var destEvent = DialogueSystemSceneEvents.GetDialogueEntrySceneEvent(newGuid);
+                sceneEventGuidField.value = newGuid;
+
+                ////--- TO DO: Copy event (Need to resolve duplication issues.)
+                //var numEvents = sourceEvent.onExecute.GetPersistentEventCount();
+                //for (int i = 0; i < numEvents; i++)
+                //{
+                //    try
+                //    {
+                //        var target = sourceEvent.onExecute.GetPersistentTarget(i);
+                //        var methodName = sourceEvent.onExecute.GetPersistentMethodName(i);
+                //        // etc.
+                //    }
+                //    catch (System.Exception e)
+                //    {
+                //        Debug.LogException(e);
+                //    }
+                //}
+            }
         }
 
         private void SplitPipesIntoEntries(object data)
