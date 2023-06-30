@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class Interactor : MonoBehaviour
+public class Interactor : Raycast
 {
-    [SerializeField] private float _rayDistance;
-    [SerializeField] private Transform _rayOrigin;
     [SerializeField] private LayerMask _interactionInventoryLayer;
     [SerializeField] private LayerMask _interactionItemLayer;
     [SerializeField] private LayerMask _interactionConstructionLayer;
@@ -12,14 +10,7 @@ public class Interactor : MonoBehaviour
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private InteractionConstructionPlayerInput _interactionConstructionPlayerInput;
 
-    private Camera _camera;
-
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
-
-    private void Awake()
-    {
-        _camera = Camera.main;
-    }
 
     private void OnEnable()
     {
@@ -69,11 +60,5 @@ public class Interactor : MonoBehaviour
                 }
             }
         }
-    }
-
-    private bool IsRayHittingSomething(LayerMask layerMask, out RaycastHit hitInfo)
-    {
-        var ray = new Ray(_rayOrigin.position, _camera.transform.forward * _rayDistance);
-        return Physics.Raycast(ray, out hitInfo, _rayDistance, layerMask);
     }
 }
