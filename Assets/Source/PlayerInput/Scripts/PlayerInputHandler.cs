@@ -10,7 +10,17 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private InteractionConstructionPlayerInput _interactionConstructionPlayerInput;
     [SerializeField] private HitPlayerInput _hitPlayerInput;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
+    [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
     [SerializeField] private Transform _inventoryPanels;
+
+    public FirstPersonController FirstPersonController => _firstPersonController;
+    public InventoryPlayerInput InventoryPlayerInput => _inventoryPlayerInput;
+    public SelectionPlayerInput SelectionPlayerInput => _selectionPlayerInput;
+    public InteractionPlayerInput InteractionPlayerInput => _interactionPlayerInput;
+    public InteractionConstructionPlayerInput InteractionConstructionPlayerInput => _interactionConstructionPlayerInput;
+    public HitPlayerInput HitPlayerInput => _hitPlayerInput;
+    public BuildPlayerInput BuildPlayerInput => _buildPlayerInput;
+    public WeaponPlayerInput WeaponPlayerInput => _weaponPlayerInput;
 
     private void Start()
     {
@@ -52,6 +62,11 @@ public class PlayerInputHandler : MonoBehaviour
     public void ToggleBuildPlayerInput(bool visible)
     {
         _buildPlayerInput.enabled = visible;
+    }
+
+    public void ToggleWeaponPlayerInput(bool visible)
+    {
+        _weaponPlayerInput.enabled = visible;
     }
 
     public void ToggleInventoryPanels(bool visible)

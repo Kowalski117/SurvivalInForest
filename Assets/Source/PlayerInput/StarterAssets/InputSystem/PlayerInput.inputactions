@@ -680,6 +680,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "WeaponSystem",
+            "id": "541d161c-eff1-48dc-9394-04c9f75bf750",
+            "actions": [
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "d84e7900-b330-45f6-baed-0f4af66a4da9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c50f2373-8b48-4cad-929d-f91dd8d18ef8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

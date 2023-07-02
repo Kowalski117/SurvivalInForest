@@ -2,7 +2,7 @@ using System;
 using BehaviorDesigner.Runtime;
 
 [Serializable]
-public class SharedPlayer  : SharedVariable<Player>
+public class SharedPlayer  : SharedVariable<PlayerHealth>
 {
-    public static implicit operator SharedPlayer(Player value) => new SharedPlayer { Value = value };
+    public static implicit operator SharedPlayer(PlayerHealth value) => new SharedPlayer { Value = value };
 }

@@ -10,6 +10,7 @@ public class InventorySystem
     [SerializeField] private int _gold;
 
     public event UnityAction<InventorySlot> OnInventorySlotChanged;
+    public event UnityAction<InventoryItemData, int> OnItemDataChanged;
 
     public List<InventorySlot> InventorySlots => _inventorySlots;
     public int InventorySize => _inventorySlots.Count;
@@ -27,16 +28,17 @@ public class InventorySystem
         _gold = gold;
     }
 
-    public bool AddToInventory(InventoryItemData itemToAdd, int amountToAdd)
+    public bool AddToInventory(InventoryItemData item, int amount)
     {
-        if(ContainsItem(itemToAdd, out List<InventorySlot> inventorySlots))
+        if(ContainsItem(item, out List<InventorySlot> inventorySlots))
         {
             foreach (var slot in inventorySlots)
             {
-                if (slot.EnoughRoomLeftInStack(amountToAdd))
+                if (slot.EnoughRoomLeftInStack(amount))
                 {
-                    slot.AddToStack(amountToAdd);
+                    slot.AddToStack(amount);
                     OnInventorySlotChanged?.Invoke(slot);
+                    OnItemDataChanged?.Invoke(item, amount);
                     return true;
                 }
             }
@@ -44,10 +46,11 @@ public class InventorySystem
         
         if(HasFreeSlot(out InventorySlot freeSlot))
         {
-            if (freeSlot.EnoughRoomLeftInStack(amountToAdd))
+            if (freeSlot.EnoughRoomLeftInStack(amount))
             {
-                freeSlot.UpdateInventorySlot(itemToAdd, amountToAdd);
+                freeSlot.UpdateInventorySlot(item, amount);
                 OnInventorySlotChanged?.Invoke(freeSlot);
+                OnItemDataChanged?.Invoke(item, amount);
                 return true;
             }
         }
@@ -72,6 +75,7 @@ public class InventorySystem
                     {
                         slot.RemoveFromStack(remainingAmount);
                         OnInventorySlotChanged?.Invoke(slot);
+                        OnItemDataChanged?.Invoke(data, -amount);
                         return true;
                     }
                     else if (stackSize > 0)

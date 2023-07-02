@@ -702,6 +702,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""WeaponSystem"",
+            ""id"": ""541d161c-eff1-48dc-9394-04c9f75bf750"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""d84e7900-b330-45f6-baed-0f4af66a4da9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c50f2373-8b48-4cad-929d-f91dd8d18ef8"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -784,6 +812,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_BuildSystem_RotateBuilding = m_BuildSystem.FindAction("RotateBuilding", throwIfNotFound: true);
         m_BuildSystem_DeleteModeBuilding = m_BuildSystem.FindAction("DeleteModeBuilding", throwIfNotFound: true);
         m_BuildSystem_DeleteBuilding = m_BuildSystem.FindAction("DeleteBuilding", throwIfNotFound: true);
+        // WeaponSystem
+        m_WeaponSystem = asset.FindActionMap("WeaponSystem", throwIfNotFound: true);
+        m_WeaponSystem_Shoot = m_WeaponSystem.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1106,6 +1137,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public BuildSystemActions @BuildSystem => new BuildSystemActions(this);
+
+    // WeaponSystem
+    private readonly InputActionMap m_WeaponSystem;
+    private IWeaponSystemActions m_WeaponSystemActionsCallbackInterface;
+    private readonly InputAction m_WeaponSystem_Shoot;
+    public struct WeaponSystemActions
+    {
+        private @PlayerInput m_Wrapper;
+        public WeaponSystemActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_WeaponSystem_Shoot;
+        public InputActionMap Get() { return m_Wrapper.m_WeaponSystem; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WeaponSystemActions set) { return set.Get(); }
+        public void SetCallbacks(IWeaponSystemActions instance)
+        {
+            if (m_Wrapper.m_WeaponSystemActionsCallbackInterface != null)
+            {
+                @Shoot.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnShoot;
+            }
+            m_Wrapper.m_WeaponSystemActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+            }
+        }
+    }
+    public WeaponSystemActions @WeaponSystem => new WeaponSystemActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1174,5 +1238,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnRotateBuilding(InputAction.CallbackContext context);
         void OnDeleteModeBuilding(InputAction.CallbackContext context);
         void OnDeleteBuilding(InputAction.CallbackContext context);
+    }
+    public interface IWeaponSystemActions
+    {
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

@@ -3,8 +3,7 @@ using UnityEngine;
 public class UIHandler : MonoBehaviour
 {
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
-    [SerializeField] private BuildPlayerInput _buildPlayerInput;
-    [SerializeField] private PlayerInputHandler _cursorController;
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private BuildTool _buildTool;
 
     [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
@@ -16,7 +15,6 @@ public class UIHandler : MonoBehaviour
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
-
     private bool _isTurnOffWindows = false;
 
     private void Awake()
@@ -31,7 +29,7 @@ public class UIHandler : MonoBehaviour
         InventoryHolder.OnDinamicInventoryDisplayRequested += DisplayInventory;
         _inventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
 
-        _buildPlayerInput.OnDeleteBuilding += EnableWindows;
+        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += EnableWindows;
         _buildTool.OnCreateBuild += TurnOffWindows;
         _buildTool.OnCompletedBuild += EnableWindows;
     }
@@ -41,7 +39,7 @@ public class UIHandler : MonoBehaviour
         InventoryHolder.OnDinamicInventoryDisplayRequested -= DisplayInventory;
         _inventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
 
-        _buildPlayerInput.OnDeleteBuilding -= EnableWindows;
+        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= EnableWindows;
         _buildTool.OnCreateBuild -= TurnOffWindows;
         _buildTool.OnCompletedBuild -= EnableWindows;
     }
@@ -67,14 +65,18 @@ public class UIHandler : MonoBehaviour
 
         if (_isInventoryOpen)
         {
-            _buildPlayerInput.enabled = false;
+            _playerInputHandler.ToggleBuildPlayerInput(false);
+            _playerInputHandler.ToggleWeaponPlayerInput(false);
             _playerBackpackPanel.gameObject.SetActive(true);
-            _cursorController.SetCursorVisible(true);
+            _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
         }
         else
         {
-            CloseInventory();
+            _playerBackpackPanel.gameObject.SetActive(false);
+            _playerInputHandler.SetCursorVisible(false);
+            _playerInputHandler.ToggleBuildPlayerInput(true);
+            _playerInputHandler.ToggleWeaponPlayerInput(true);
         }
     }
 
@@ -84,10 +86,10 @@ public class UIHandler : MonoBehaviour
 
         if (_isTurnOffWindows)
         {
-            _cursorController.ToggleInventoryPanels(false);
-            _cursorController.SetCursorVisible(false);
-            _cursorController.ToggleBuildPlayerInput(true);
-            _cursorController.ToggleInventoryInput(false);
+            _playerInputHandler.ToggleInventoryPanels(false);
+            _playerInputHandler.SetCursorVisible(false);
+            _playerInputHandler.ToggleBuildPlayerInput(true);
+            _playerInputHandler.ToggleInventoryInput(false);
             _buildTool.SetDeleteModeEnabled(false);
         }
     }
@@ -96,21 +98,11 @@ public class UIHandler : MonoBehaviour
     {
         if (_isTurnOffWindows)
         {
-            _cursorController.SetCursorVisible(true);
-            _cursorController.ToggleInventoryPanels(true);
-            _cursorController.ToggleBuildPlayerInput(false);
-            _cursorController.ToggleInventoryInput(true);
+            _playerInputHandler.SetCursorVisible(true);
+            _playerInputHandler.ToggleInventoryPanels(true);
+            _playerInputHandler.ToggleBuildPlayerInput(false);
+            _playerInputHandler.ToggleInventoryInput(true);
             _isTurnOffWindows = false;
-        }
-    }
-
-    private void CloseInventory()
-    {
-        if (!_isInventoryOpen)
-        {
-            _playerBackpackPanel.gameObject.SetActive(false);
-            _cursorController.SetCursorVisible(false);
-            _buildPlayerInput.enabled = true;
         }
     }
 }

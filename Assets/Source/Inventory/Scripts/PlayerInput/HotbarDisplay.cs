@@ -1,9 +1,13 @@
+using UnityEngine.Events;
+
 public class HotbarDisplay : StaticInventoryDisplay
 {
     private int _maxIndexSize = 6;
     private int _currentIndex = 0;
 
     private PlayerInput _playerInput;
+
+    public event UnityAction<InventoryItemData> ItemClicked;
 
     private void Awake()
     {
@@ -27,6 +31,7 @@ public class HotbarDisplay : StaticInventoryDisplay
 
         if (_playerInput.Inventory.MouseWheel.ReadValue<float>() < -0.1f)
             ChangeIndex(-1);
+
     }
 
     protected override void OnEnable()
@@ -73,6 +78,8 @@ public class HotbarDisplay : StaticInventoryDisplay
             _currentIndex = _maxIndexSize;
 
         Slots[_currentIndex].ToggleHighlight();
+
+        ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
     }
 
     private void SetIndex(int newIndex)
@@ -88,6 +95,8 @@ public class HotbarDisplay : StaticInventoryDisplay
         _currentIndex = newIndex;
 
         Slots[_currentIndex].ToggleHighlight();
+
+        ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
     }
 
 
@@ -96,6 +105,8 @@ public class HotbarDisplay : StaticInventoryDisplay
     {
         if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
             Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
+
+        ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
     }
 
     private void Hotbar(int index)
