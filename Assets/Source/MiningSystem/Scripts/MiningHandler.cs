@@ -5,10 +5,12 @@ public class MiningHandler : MonoBehaviour
 {
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private InteractionPlayerInput _interactionPlayerInput;
+    [SerializeField] private AudioSource _audioSource;
 
     private ItemType _typeSlot = ItemType.Tool;
     private InventoryItemData _currentItemData;
     private Resource _currentResoure;
+    private float _nextFire;
 
     private void OnEnable()
     {
@@ -22,6 +24,9 @@ public class MiningHandler : MonoBehaviour
 
     private void InteractResource()
     {
+        //_audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
+        ////_currentWeapon.MuzzleFlash.Play();
+
         if (_currentItemData != null && _currentResoure != null)
         {
             var itemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
@@ -29,12 +34,16 @@ public class MiningHandler : MonoBehaviour
             {
                 if (itemData is ToolItemData toolItemData && _currentResoure.ExtractionType == toolItemData.ToolType)
                 {
-                    _currentResoure.TakeDamage(toolItemData.DamageResources, 0);
-
-                    if(_currentResoure.Health <= 0)
+                    if (Time.time > _nextFire)
                     {
-                        _currentItemData = null;
-                        _currentResoure = null;
+                        _nextFire = Time.time + 1 / toolItemData.Speed;
+                        _currentResoure.TakeDamage(toolItemData.DamageResources, 0);
+
+                        if (_currentResoure.Health <= 0)
+                        {
+                            _currentItemData = null;
+                            _currentResoure = null;
+                        }
                     }
                 }
             }
