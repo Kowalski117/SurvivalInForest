@@ -54,7 +54,7 @@ public class Interactor : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
             {
-                if (_playerInventoryHolder.InventorySystem.AddToInventory(itemPickUp.ItemData, 1))
+                if (_playerInventoryHolder.AddToInventory(itemPickUp.ItemData, 1))
                 {
                     itemPickUp.PicUp();
                 }

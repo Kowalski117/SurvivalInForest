@@ -29,7 +29,7 @@ public class CraftItemSlot : CraftSlot
         {
             foreach (var ingredient in craftRecipe.CraftingIngridients)
             {
-                playerInventoryHolder.InventorySystem.RemoveItemsInventory(ingredient.ItemRequired, ingredient.AmountRequured);
+                playerInventoryHolder.RemoveInventory(ingredient.ItemRequired, ingredient.AmountRequured);
             }
 
             playerInventoryHolder.AddToInventory(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, true);
