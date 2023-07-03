@@ -20,12 +20,18 @@ public class ViewInventoryNotifier : MonoBehaviour
         _inventoryItemData = itemData;
         _icon.sprite = itemData.Icon;
         _nameText.text = itemData.DisplayName;
-        _amountText.text = amount.ToString();
 
-        if(amount > 0 )
+        if(amount > 0)
+        {
             _frame.color = _addItemColor;
+            _amountText.text = "+" + amount.ToString();
+        }
+
         else
+        {
             _frame.color = _removeItemColor;
+            _amountText.text = amount.ToString();
+        }
     }
 
     public void UpdateAmount(int amount)

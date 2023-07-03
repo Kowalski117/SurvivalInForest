@@ -22,11 +22,14 @@ public class ChangingInventory : MonoBehaviour
 
     private void ShowNotification(InventoryItemData itemData, int amount)
     {
-        var notificationData = new NotificationData(itemData, amount);
+        if(itemData != null)
+        {
+            var notificationData = new NotificationData(itemData, amount);
 
-        _notificationQueue.Enqueue(notificationData);
+            _notificationQueue.Enqueue(notificationData);
 
-        ProcessNotificationQueue();
+            ProcessNotificationQueue();
+        }
     }
 
     private void ProcessNotificationQueue()

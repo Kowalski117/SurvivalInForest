@@ -16,7 +16,8 @@ public class MouseItemData : MonoBehaviour
     [SerializeField] private InventoryPlayerInput _playerInput;
 
     private Transform _playerTransform;
-    private Camera _camera;
+
+    private InventorySlot _initialInventorySlot;
 
     public static UnityAction OnUpdatedSlots;
     public event UnityAction<InventorySlot> OnInteractItem;
@@ -25,7 +26,6 @@ public class MouseItemData : MonoBehaviour
 
     private void Awake()
     {
-        _camera = Camera.main;
         _itemSprite.preserveAspect = true;
         _itemSprite.color = Color.clear;
         _itemCount.text = "";
@@ -44,11 +44,13 @@ public class MouseItemData : MonoBehaviour
     private void OnEnable()
     {
         _playerInput.OnSelectInventoryItem += MouseClick;
+        _playerInput.OnToggleInventory += CleanMouseSlot;
     }
 
     private void OnDisable()
     {
         _playerInput.OnSelectInventoryItem -= MouseClick;
+        _playerInput.OnToggleInventory -= CleanMouseSlot;
     }
 
     public void MouseClick()
@@ -75,6 +77,23 @@ public class MouseItemData : MonoBehaviour
         }
     }
 
+    public void CleanMouseSlot()
+    {
+        if (_initialInventorySlot != null)
+        {
+            _initialInventorySlot.AssignItem(_assignedInventorySlot);
+            _initialInventorySlot.UpdateInventorySlot(_assignedInventorySlot.ItemData, _assignedInventorySlot.Size);
+        }
+        else
+        {
+            _assignedInventorySlot.ClearSlot();
+        }
+        _itemSprite.sprite = null;
+        _itemSprite.color = Color.clear;
+        _itemCount.text = "";
+        OnUpdatedSlots?.Invoke();
+    }
+
     public void CleanSlot()
     {
         _assignedInventorySlot.ClearSlot();
@@ -86,6 +105,7 @@ public class MouseItemData : MonoBehaviour
 
     public void UpdateMouseSlot(InventorySlot inventorySlot)
     {
+        _initialInventorySlot = inventorySlot;
         _assignedInventorySlot.AssignItem(inventorySlot);
         UpdateMouseSlot();
         OnUpdatedSlots?.Invoke();   
@@ -106,10 +126,4 @@ public class MouseItemData : MonoBehaviour
         EventSystem.current.RaycastAll(eventDataCurrentPosition, result);
         return result.Count > 0;
     }
-
-    //private bool IsRayHittingSomething(LayerMask layerMask, out RaycastHit hitInfo)
-    //{
-    //    Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-    //    return Physics.Raycast(ray, out hitInfo, layerMask);
-    //}
 }

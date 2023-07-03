@@ -15,12 +15,12 @@ public class SelectionPlayerInput : MonoBehaviour
     private void OnEnable()
     {
         playerInput.Enable();
-        playerInput.Player.PickUp.started += ctx => OnPerformed();
+        playerInput.Player.PickUp.performed += ctx => OnPerformed();
     }
 
     private void OnDisable()
     {
-        playerInput.Player.PickUp.started -= ctx => OnPerformed();
+        playerInput.Player.PickUp.performed -= ctx => OnPerformed();
         playerInput.Disable();
     }
 

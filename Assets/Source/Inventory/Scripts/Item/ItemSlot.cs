@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public  abstract class ItemSlot : ISerializationCallbackReceiver
+public abstract class ItemSlot : ISerializationCallbackReceiver
 {
     [SerializeField] protected InventoryItemData InventoryItemData;
     [SerializeField] protected int ItemId = -1;

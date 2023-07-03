@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,6 +14,7 @@ public class InventoryPlayerInput : MonoBehaviour
 
     public event UnityAction<InventorySystem, int> SwitchInventory;
     public event UnityAction<Crafting—ategory> OnCraftPlayerWindow;
+    public event UnityAction OnToggleInventory;
     public event UnityAction OnBuildingWindow;
     public event UnityAction OnSelectInventoryItem;
     public event UnityAction OnInteractInventoryItem;
@@ -44,6 +46,7 @@ public class InventoryPlayerInput : MonoBehaviour
 
     private void InteractCrafting() 
     {
+        OnToggleInventory?.Invoke();
         SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
         OnCraftPlayerWindow?.Invoke(_manualWorkbench.Crafting—ategory);
     }
