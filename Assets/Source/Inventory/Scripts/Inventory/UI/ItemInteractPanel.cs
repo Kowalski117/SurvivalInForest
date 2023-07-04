@@ -61,7 +61,7 @@ public class ItemInteractPanel : MonoBehaviour
 
     private void UseItemButtonClick()
     {
-        if (_inventoryHolder.InventorySystem.RemoveItemsInventory(_currentSlot.ItemData, 1))
+        if (_inventoryHolder.RemoveInventory(_currentSlot.ItemData, 1))
         {
             if (_currentSlot.ItemData is FoodItemData foodItemData)
             {

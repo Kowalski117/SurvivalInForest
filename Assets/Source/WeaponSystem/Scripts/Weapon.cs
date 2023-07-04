@@ -68,7 +68,7 @@ public class Weapon : Raycast
     {
         if (Time.time > _nextFire)
         {
-            if (_inventory.InventorySystem.RemoveItemsInventory(_currentWeapon.Bullet.ItemData, 1))
+            if (_inventory.RemoveInventory(_currentWeapon.Bullet.ItemData, 1))
             {
                 _nextFire = Time.time + 1 / _currentWeapon.Speed;
 

@@ -37,7 +37,7 @@ public class SurvivalAttribute : MonoBehaviour
 
     public void ReplenishValue(float value)
     {
-        CurrentValue += value;
+        CurrentValue += value * _hourInSeconds;
 
         if(CurrentValue > _maxValue)
             CurrentValue = _maxValue;

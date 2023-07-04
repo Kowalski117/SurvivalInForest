@@ -49,9 +49,9 @@ public class ExchangerSlotView : MonoBehaviour
 
     private void OnExchangeButtonClicked()
     {
-        if (_inventoryHolder.InventorySystem.RemoveItemsInventory(_shopSlot.ItemData1, _shopSlot.Amount1 * _amount))
+        if (_inventoryHolder.RemoveInventory(_shopSlot.ItemData1, _shopSlot.Amount1 * _amount))
         {
-            _inventoryHolder.InventorySystem.AddToInventory(_shopSlot.ItemData2, _shopSlot.Amount2 * _amount);
+            _inventoryHolder.RemoveInventory(_shopSlot.ItemData2, _shopSlot.Amount2 * _amount);
             Destroy(gameObject);
             _amount = 1;
         }

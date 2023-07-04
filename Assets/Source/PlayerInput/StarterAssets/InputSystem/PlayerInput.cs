@@ -76,9 +76,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""PickUp"",
                     ""type"": ""PassThrough"",
                     ""id"": ""7efafd88-afda-45a1-bfef-28f2f16ca2d6"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -332,7 +332,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""ba3973d2-92fe-4c3f-9132-4cd0c42fd51c"",
                     ""path"": ""<Keyboard>/f"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""PickUp"",

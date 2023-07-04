@@ -6,6 +6,7 @@ public class PlayerInventoryHolder : InventoryHolder
 {
     public static UnityAction OnPlayerInventoryChanged;
     public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
+    public event UnityAction<InventoryItemData, int> OnItemDataChanged;
 
     private void Start()
     {
@@ -16,11 +17,23 @@ public class PlayerInventoryHolder : InventoryHolder
     {
         if (PrimaryInventorySystem.AddToInventory(data, amount))
         {
+            OnItemDataChanged?.Invoke(data, amount);
             return true;
         }
 
         if(spawnItemOnFail)
             Instantiate(data.ItemPrefab, transform.position + transform.forward, Quaternion.identity);
+
+        return false;
+    }
+
+    public bool RemoveInventory(InventoryItemData data, int amount)
+    {
+        if(PrimaryInventorySystem.RemoveItemsInventory(data, amount))
+        {
+            OnItemDataChanged?.Invoke(data, -amount);
+            return true;
+        }
 
         return false;
     }

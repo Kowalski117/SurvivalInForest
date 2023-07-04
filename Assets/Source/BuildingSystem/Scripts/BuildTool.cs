@@ -211,7 +211,7 @@ public class BuildTool : MonoBehaviour
         {
             foreach (var ingredient in craftRecipe.CraftingIngridients)
             {
-                _inventoryHolder.InventorySystem.RemoveItemsInventory(ingredient.ItemRequired, ingredient.AmountRequured);
+                _inventoryHolder.RemoveInventory(ingredient.ItemRequired, ingredient.AmountRequured);
             }
         }
     }

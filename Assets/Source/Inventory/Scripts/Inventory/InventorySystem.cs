@@ -10,7 +10,6 @@ public class InventorySystem
     [SerializeField] private int _gold;
 
     public event UnityAction<InventorySlot> OnInventorySlotChanged;
-    public event UnityAction<InventoryItemData, int> OnItemDataChanged;
 
     public List<InventorySlot> InventorySlots => _inventorySlots;
     public int InventorySize => _inventorySlots.Count;
@@ -38,7 +37,6 @@ public class InventorySystem
                 {
                     slot.AddToStack(amount);
                     OnInventorySlotChanged?.Invoke(slot);
-                    OnItemDataChanged?.Invoke(item, amount);
                     return true;
                 }
             }
@@ -50,7 +48,6 @@ public class InventorySystem
             {
                 freeSlot.UpdateInventorySlot(item, amount);
                 OnInventorySlotChanged?.Invoke(freeSlot);
-                OnItemDataChanged?.Invoke(item, amount);
                 return true;
             }
         }
@@ -75,7 +72,6 @@ public class InventorySystem
                     {
                         slot.RemoveFromStack(remainingAmount);
                         OnInventorySlotChanged?.Invoke(slot);
-                        OnItemDataChanged?.Invoke(data, -amount);
                         return true;
                     }
                     else if (stackSize > 0)

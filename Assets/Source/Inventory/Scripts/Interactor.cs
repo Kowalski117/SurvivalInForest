@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactor : Raycast
 {
@@ -10,6 +11,13 @@ public class Interactor : Raycast
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private InteractionConstructionPlayerInput _interactionConstructionPlayerInput;
 
+    [SerializeField] private float _liftingDelay = 2f;
+
+    private float _lookTimer = 0;
+
+    public event UnityAction<float> OnTimeUpdate;
+
+    public float LookTimerPracent => _lookTimer / _liftingDelay;
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
 
     private void OnEnable()
@@ -24,6 +32,31 @@ public class Interactor : Raycast
         _selectionPlayerInput.PickUp -= PickUp;
         _inventoryPlayerInput.InteractKeyPressed -= InteractableInventory;
         _interactionConstructionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
+    }
+
+    private void Update()
+    {
+        if (IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo))
+        {
+            if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
+            {
+                _lookTimer += Time.deltaTime;
+                OnTimeUpdate?.Invoke(LookTimerPracent);
+
+                if (_lookTimer >= _liftingDelay)
+                {
+                    if (_playerInventoryHolder.AddToInventory(itemPickUp.ItemData, 1))
+                    {
+                        itemPickUp.PicUp();
+                    }
+                }
+            }
+        }
+        else
+        {
+            _lookTimer = 0;
+            OnTimeUpdate?.Invoke(LookTimerPracent);
+        }
     }
 
     private void InteractableInventory()
@@ -54,7 +87,7 @@ public class Interactor : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
             {
-                if (_playerInventoryHolder.InventorySystem.AddToInventory(itemPickUp.ItemData, 1))
+                if (_playerInventoryHolder.AddToInventory(itemPickUp.ItemData, 1))
                 {
                     itemPickUp.PicUp();
                 }
