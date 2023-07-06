@@ -29,7 +29,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void SetCursorVisible(bool visible)
     {
-        _firstPersonController.enabled = !visible;
+        _firstPersonController.TogglePersonController(!visible);
         Cursor.visible = visible;
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
     }
