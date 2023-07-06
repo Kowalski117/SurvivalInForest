@@ -41,8 +41,6 @@ public class Building : MonoBehaviour
     public void Init(BuildingData data, BuildingSaveData saveData = null)
     {
         _assignedData = data;
-        _boxCollider.size = _assignedData.BuildingSize;
-        _boxCollider.center = new Vector3(0, (_assignedData.BuildingSize.y + 0.2f) * 0.5f, 0);
 
         _colliders = transform.Find("Colliders");
 
@@ -64,6 +62,7 @@ public class Building : MonoBehaviour
 
         gameObject.layer = _defoultLayerInt;
         gameObject.name = _assignedData.DisplayName + " - " + transform.position;
+        _boxCollider.enabled = false;
 
 
         if (_saveData == null)

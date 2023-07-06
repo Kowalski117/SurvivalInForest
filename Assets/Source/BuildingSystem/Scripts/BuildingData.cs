@@ -7,14 +7,14 @@ public class BuildingData : ScriptableObject
 {
     [SerializeField] private string _displayName;
     [SerializeField] private Sprite _icon;
-    [SerializeField] private float GridSnapSize;
+    //[SerializeField] private float GridSnapSize;
     [SerializeField] private Building _prefab;
-    [SerializeField] private Vector3 _buildingSize;
+    //[SerializeField] private Vector3 _buildingSize;
     [SerializeField] private ItemType _type;
 
     public string DisplayName => _displayName;
     public Sprite Icon => _icon;
-    public Vector3 BuildingSize => _buildingSize;
+    //public Vector3 BuildingSize => _buildingSize;
     public Building Prefab => _prefab;
     public ItemType Type => _type;  
 }
