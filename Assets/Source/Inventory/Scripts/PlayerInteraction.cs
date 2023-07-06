@@ -1,6 +1,8 @@
+using UnityEditor.Media;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
-public class PlayerInteraction : Raycast
+public class Weapon : Raycast
 {
     [SerializeField] private PlayerInventoryHolder _inventory;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
@@ -11,61 +13,23 @@ public class PlayerInteraction : Raycast
     [SerializeField] private PlayerAnimation _playerAnimation;
 
     private WeaponItemData _currentWeapon;
-    private ToolItemData _currentTool;
-    private InventoryItemData _currentItemData;
-    private InventoryItemData _previousItemData;
-    private Resource _currentResoure;
+
     private Animals _currentAnim;
-
     private float _nextFire;
-
-    private void Update()
-    {
-        UpdateItemData();
-    }
 
     private void OnEnable()
     {
-        _weaponPlayerInput.OnShoot += UseItem;
+        _weaponPlayerInput.OnShoot += UseWeapon;
+        _hotbarDisplay.ItemClicked += Init;
     }
 
     private void OnDisable()
     {
-        _weaponPlayerInput.OnShoot -= UseItem;
+        _weaponPlayerInput.OnShoot -= UseWeapon;
+        _hotbarDisplay.ItemClicked -= Init;
     }
 
-    public void UpdateItemData()
-    {
-        _previousItemData = _currentItemData; // Добавлено: сохраняем предыдущий выбранный предмет
-        _currentItemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
-
-        // Добавлено: проверяем, отличается ли текущий предмет от предыдущего
-        if (_currentItemData != _previousItemData)
-        {
-            _playerAnimation.GetItem(_currentItemData);
-        }
-    }
-
-    private void UseItem()
-    {
-        InitWeapon(_currentItemData);
-        InitTool(_currentItemData);
-
-        if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon && _currentTool == null)
-        {
-            Shoot();
-        }
-        else if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon && _currentTool == null)
-        {
-            Hit();
-        }
-        else if(_currentTool != null)
-        {
-            InteractResource();
-        }
-    }
-
-    public void InitWeapon(InventoryItemData itemData)
+    public void Init(InventoryItemData itemData)
     {
         if (itemData != null)
         {
@@ -76,30 +40,29 @@ public class PlayerInteraction : Raycast
             else
             {
                 _currentWeapon = _armItemData;
+                return;
             }
         }
         else
         {
             _currentWeapon = _armItemData;
+            return;
         }
     }
 
-    public void InitTool(InventoryItemData itemData)
+    private void UseWeapon()
     {
-        if (itemData != null)
+        var itemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
+
+        Init(itemData);
+
+        if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon)
         {
-            if (itemData is ToolItemData weaponItemData)
-            {
-                _currentTool = weaponItemData;
-            }
-            else
-            {
-                _currentTool = null;
-            }
+            Shoot();
         }
-        else
+        else if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon)
         {
-            _currentTool = null;
+            Hit();
         }
     }
 
@@ -120,7 +83,7 @@ public class PlayerInteraction : Raycast
 
                     if (hitInfo.collider.TryGetComponent(out Animals animals))
                     {
-                        if (_currentWeapon.HitEffect != null)
+                        if(_currentWeapon.HitEffect != null)
                         {
                             ParticleSystem impact = Instantiate(_currentWeapon.HitEffect, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
                             impact.Play();
@@ -144,37 +107,13 @@ public class PlayerInteraction : Raycast
         {
             _nextFire = Time.time + 1 / _currentWeapon.Speed;
             _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
-            _playerAnimation.Hit(_currentWeapon);
+            //_playerAnimation.Hit(_currentWeapon);
 
             if (_currentAnim != null)
                 _currentAnim.TakeDamage(_currentWeapon.Damage, 0);
         }
     }
 
-    private void InteractResource()
-    {
-        if (Time.time > _nextFire)
-        {
-            _nextFire = Time.time + 1 / _currentTool.Speed;
-            _audioSource.PlayOneShot(_currentTool.MuzzleSound);
-            _playerAnimation.Hit(_currentTool);
-            //_currentTool.MuzzleFlash.Play();
-
-            if (_currentTool != null && _currentResoure != null)
-            {
-                if (_currentResoure.ExtractionType == _currentTool.ToolType)
-                {
-                    _currentResoure.TakeDamage(_currentTool.DamageResources, 0);
-
-                    if (_currentResoure.Health <= 0)
-                    {
-                        _currentItemData = null;
-                        _currentResoure = null;
-                    }
-                }
-            }
-        }
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -183,22 +122,10 @@ public class PlayerInteraction : Raycast
             if (animals != null)
                 _currentAnim = animals;
         }
-
-        if (other.TryGetComponent(out Resource resource))
-        {
-            if (resource != null)
-                _currentResoure = resource;
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Resource resource))
-        {
-            if (resource != null)
-                _currentResoure = null;
-        }
-
         if (other.TryGetComponent(out Animals animals))
         {
             if (animals != null)
