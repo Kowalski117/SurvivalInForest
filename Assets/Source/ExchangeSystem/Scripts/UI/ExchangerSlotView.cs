@@ -4,18 +4,14 @@ using UnityEngine.UI;
 
 public class ExchangerSlotView : MonoBehaviour
 {
-    [SerializeField] private Image _itemSprite1;
-    [SerializeField] private Image _itemSprite2;
-    [SerializeField] private TMP_Text _itemName1;
-    [SerializeField] private TMP_Text _itemName2;
-    [SerializeField] private TMP_Text _itemAmount1;
-    [SerializeField] private TMP_Text _itemAmount2;
+    [SerializeField] private ExchangedItemView[] _itemsToExchangeView;
+    [SerializeField] private ExchangedItemView[] _itemsToReceiveView;
     [SerializeField] private Button _exchangeButton;
     [SerializeField] private Button _plusButton;
     [SerializeField] private Button _minusButton;
 
-    [SerializeField] private ShopInventoryItem _shopSlot;
-    [SerializeField] private PlayerInventoryHolder _inventoryHolder;
+    private ExchangerInventoryItem _shopSlot;
+    private PlayerInventoryHolder _inventoryHolder;
 
     private int _amount = 1;
 
@@ -33,27 +29,32 @@ public class ExchangerSlotView : MonoBehaviour
         _minusButton.onClick.RemoveListener(RemoveAmount);
     }
 
-    public void Init(ShopInventoryItem shopSlot, PlayerInventoryHolder inventoryHolder)
+    public void Init(ExchangerInventoryItem shopSlot, PlayerInventoryHolder inventoryHolder)
     {
         _shopSlot = shopSlot;
         _inventoryHolder = inventoryHolder;
 
-        _itemSprite1.sprite = shopSlot.ItemData1.Icon;
-        _itemSprite2.sprite = shopSlot.ItemData2.Icon;
-
-        _itemName1.text = shopSlot.ItemData1.DisplayName;
-        _itemName2.text = shopSlot.ItemData2.DisplayName;
+        UpdateExchangedItems(_itemsToExchangeView, shopSlot.ItemsToExchange);
+        UpdateExchangedItems(_itemsToReceiveView, shopSlot.ItemsToReceive);
 
         UpdateAmount();
     }
 
     private void OnExchangeButtonClicked()
     {
-        if (_inventoryHolder.RemoveInventory(_shopSlot.ItemData1, _shopSlot.Amount1 * _amount))
+        foreach (var itemToExchange in _shopSlot.ItemsToExchange)
         {
-            _inventoryHolder.RemoveInventory(_shopSlot.ItemData2, _shopSlot.Amount2 * _amount);
-            Destroy(gameObject);
-            _amount = 1;
+            if (_inventoryHolder.RemoveInventory(itemToExchange.ItemData, itemToExchange.Amount * _amount))
+            {
+                foreach (var itemToReceive in _shopSlot.ItemsToReceive)
+                {
+                    _inventoryHolder.AddToInventory(itemToReceive.ItemData, itemToReceive.Amount * _amount);
+                }
+
+                gameObject.SetActive(false);
+                _amount = 1;
+                break;
+            }
         }
     }
 
@@ -65,14 +66,38 @@ public class ExchangerSlotView : MonoBehaviour
 
     private void RemoveAmount()
     {
-        if(_amount > 1)
+        if (_amount > 1)
             _amount--;
         UpdateAmount();
     }
 
     private void UpdateAmount()
     {
-        _itemAmount1.text = (_amount * _shopSlot.Amount1).ToString();
-        _itemAmount2.text = (_amount * _shopSlot.Amount2).ToString();
+        foreach (var itemToExchangeView in _itemsToExchangeView)
+        {
+            itemToExchangeView.UpdateAmount(_amount);
+        }
+
+        foreach (var itemToReceiveView in _itemsToReceiveView)
+        {
+            itemToReceiveView.UpdateAmount(_amount);
+        }
     }
+
+    private void UpdateExchangedItems(ExchangedItemView[] itemViewArray, ExchangedItem[] itemArray)
+    {
+        for (int i = 0; i < itemViewArray.Length; i++)
+        {
+            if (i < itemArray.Length)
+            {
+                itemViewArray[i].gameObject.SetActive(true);
+                itemViewArray[i].Init(itemArray[i]);
+            }
+            else
+            {
+                itemViewArray[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
 }
