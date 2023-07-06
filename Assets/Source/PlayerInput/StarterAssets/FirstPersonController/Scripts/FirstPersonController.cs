@@ -84,10 +84,13 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+        public bool _isEnable = true;
 
         private const float _threshold = 0.01f;
 
         public event UnityAction Selected;
+
+        public float Speed => _speed;
 
         private bool IsCurrentDeviceMouse
         {
@@ -127,15 +130,24 @@ namespace StarterAssets
 
         private void Update()
         {
+            if (_isEnable)
+            {
+                Move();
+                Stealth();
+            }
             GroundedCheck();
-            Move();
-            Stealth();
             JumpAndGravity();
         }
 
         private void LateUpdate()
         {
-            CameraRotation();
+            if(_isEnable)
+                CameraRotation();
+        }
+
+        public void TogglePersonController(bool toggle)
+        {
+            _isEnable = toggle;
         }
 
         private void GroundedCheck()
@@ -217,16 +229,10 @@ namespace StarterAssets
 
         private void Move()
         {
-            // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint && _survivalHandler.Stamina.IsNotEmpty ? SprintSpeed : MoveSpeed;
 
-            // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-            // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            // if there is no input, set the target speed to 0
             if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
-            // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
             float speedOffset = 0.1f;
@@ -261,8 +267,10 @@ namespace StarterAssets
                 inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
             }
 
-            // move the player
-            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            if (_isEnable)
+            {
+                _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
         }
 
         private void Stealth()
