@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using System;
+using TMPro;
 using UnityEngine;
 
 public class ExchangeHandler : MonoBehaviour
@@ -7,9 +8,8 @@ public class ExchangeHandler : MonoBehaviour
     [SerializeField] private Transform _panel;
     [SerializeField] private Transform _containerForSlot;
     [SerializeField] private ExchangerItemList _exchangerItemList;
-    [SerializeField] private ExchangerSlotView _exchangerSlotPrefab;
-
-    [SerializeField] private Dictionary<InventoryItemData, int> _itemsHeld;
+    [SerializeField] private ExchangerSlotView[] _exchangerSlots;
+    [SerializeField] private TMP_Text _nameText;
 
     private bool _isShopOpen = false;
 
@@ -45,21 +45,40 @@ public class ExchangeHandler : MonoBehaviour
 
     private void CreateSlots()
     {
+        _nameText.text = _exchangerItemList.Name;
+
         foreach (Transform child in _containerForSlot)
         {
-            Destroy(child.gameObject);
+            child.gameObject.SetActive(false);
         }
 
-        _itemsHeld = _inventoryHolder.InventorySystem.GetAllItemsHeld();
+        var itemsHeld = _inventoryHolder.InventorySystem.GetAllItemsHeld();
 
-        foreach (var item in _itemsHeld)
+        foreach (var exchangerItem in _exchangerItemList.Items)
         {
-            ExchangerSlotView exchangerSlot = Instantiate(_exchangerSlotPrefab, _containerForSlot);
-            foreach (var itemList in _exchangerItemList.Items)
+            bool canExchange = true;
+
+            foreach (var itemToExchange in exchangerItem.ItemsToExchange)
             {
-                if (itemList.ItemData1 == item.Key)
-                    exchangerSlot.Init(itemList, _inventoryHolder);
+                if (!itemsHeld.TryGetValue(itemToExchange.ItemData, out int amountHeld) || amountHeld < itemToExchange.Amount)
+                {
+                    canExchange = false;
+                    break;
+                }
+            }
+
+            if (canExchange)
+            {
+                ExchangerSlotView exchangerSlot = Array.Find(_exchangerSlots, slot => !slot.gameObject.activeSelf);
+
+                if (exchangerSlot != null)
+                {
+                    exchangerSlot.Init(exchangerItem, _inventoryHolder);
+                    exchangerSlot.gameObject.SetActive(true);
+                }
             }
         }
     }
 }
+
+
