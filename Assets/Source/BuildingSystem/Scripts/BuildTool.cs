@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class BuildTool : MonoBehaviour
 {
+    [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private float _rotateSnapAngle = 45f;
@@ -76,6 +77,7 @@ public class BuildTool : MonoBehaviour
         _spawnBuilding.Init(buildingRecipe.BuildingData);
         _spawnBuilding.transform.rotation = _lastRotation;
         OnCreateBuild?.Invoke();
+        _playerAnimation.Build();
     }
 
     private void Update()
@@ -90,6 +92,7 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null)
         {
+            _playerAnimation.TurnOffAnimations();
             Destroy(_spawnBuilding.gameObject);
             _spawnBuilding = null;
         }
@@ -180,6 +183,7 @@ public class BuildTool : MonoBehaviour
             _spawnBuilding.PlaceBuilding();
             _spawnBuilding = null;
             OnCompletedBuild?.Invoke();
+            _playerAnimation.TurnOffAnimations();
         }
     }
 
