@@ -25,7 +25,7 @@ public class CrafBuildSlot : CraftSlot
 
     private void CraftingItem(BuildingRecipe craftRecipe)
     {
-        LoadingWindow.Instance.ShowLoadingWindow(2);
+        //LoadingWindow.Instance.ShowLoadingWindow(2);
         OnCreateRecipeButtonClick?.Invoke(craftRecipe);
     }
 }

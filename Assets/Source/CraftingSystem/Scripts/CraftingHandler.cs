@@ -53,24 +53,22 @@ public class CraftingHandler : MonoBehaviour
 
     private void CreateCraftSlots(Crafting—ategory craftingCategory)
     {
-        foreach (var recipeList in craftingCategory.RecipeItemLists)
+        foreach (var recipe in craftingCategory.RecipeItemLists)
         {
-            foreach (var recipe in recipeList.Items)
-            {
-                CraftItemSlotView craftSlot = Instantiate(_craftItemSlotPrefab, _containerForSlots);
-                _craftItemSlots.Add(craftSlot);
-                craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
-            }
+
+            CraftItemSlotView craftSlot = Instantiate(_craftItemSlotPrefab, _containerForSlots);
+            _craftItemSlots.Add(craftSlot);
+            craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
+
         }
 
-        foreach (var recipeList in craftingCategory.RecipeBuildingLists)
+        foreach (var recipe in craftingCategory.RecipeBuildingLists)
         {
-            foreach (var recipe in recipeList.Items)
-            {
-                CraftBuildSlotView craftSlot = Instantiate(_craftBuildingSlotPrefab, _containerForSlots);
-                _craftBuildSlots.Add(craftSlot);
-                craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
-            }
+
+            CraftBuildSlotView craftSlot = Instantiate(_craftBuildingSlotPrefab, _containerForSlots);
+            _craftBuildSlots.Add(craftSlot);
+            craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
+
         }
     }
 
@@ -118,34 +116,33 @@ public class CraftingHandler : MonoBehaviour
     {
         _currentCategory = craftingCategory;
 
-        foreach (var recipeList in _currentCategory.RecipeItemLists)
+        foreach (var recipe in _currentCategory.RecipeItemLists)
         {
-            foreach (var recipe in recipeList.Items)
-            {
-                foreach (var slot in _craftItemSlots)
-                {
-                    if (slot.Recipe == recipe && craftingCategory == slot.Category)
-                    {
-                        slot.OpenForCrafting();
-                    }
-                    else
-                    {
-                        slot.CloseForCrafting();
-                    }
-                }
 
-                foreach (var slot in _craftBuildSlots)
+            foreach (var slot in _craftItemSlots)
+            {
+                if (slot.Recipe == recipe && craftingCategory == slot.Category)
                 {
-                    if (slot.Recipe == recipe && craftingCategory == slot.Category)
-                    {
-                        slot.OpenForCrafting();
-                    }
-                    else
-                    {
-                        slot.CloseForCrafting();
-                    }
+                    slot.OpenForCrafting();
                 }
-            }   
+                else
+                {
+                    slot.CloseForCrafting();
+                }
+            }
+
+            foreach (var slot in _craftBuildSlots)
+            {
+                if (slot.Recipe == recipe && craftingCategory == slot.Category)
+                {
+                    slot.OpenForCrafting();
+                }
+                else
+                {
+                    slot.CloseForCrafting();
+                }
+            }
+
         }
 
         SwitchCraftingCategory(_defoultType);

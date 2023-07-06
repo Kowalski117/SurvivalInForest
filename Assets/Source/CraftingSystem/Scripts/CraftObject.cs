@@ -3,13 +3,12 @@ using UnityEngine;
 public class CraftObject : MonoBehaviour
 {
     [SerializeField] private CraftingÑategory _craftingÑategory;
-    [SerializeField] private CraftingHandler _craftingHandler;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
         {
-            _craftingHandler.DisplayCraftWindow(_craftingÑategory);
+            manualWorkbench.CraftingHandler.DisplayCraftWindow(_craftingÑategory);
         }
     }
 
@@ -17,7 +16,7 @@ public class CraftObject : MonoBehaviour
     {
         if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
         {
-            _craftingHandler.DisplayCraftWindow(manualWorkbench.CraftingÑategory);
+            manualWorkbench.CraftingHandler.DisplayCraftWindow(manualWorkbench.CraftingÑategory);
         }
     }
 }
