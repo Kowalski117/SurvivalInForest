@@ -38,6 +38,7 @@ public class CraftItemSlotView : CraftSlotView
 
     public void OnCreateRecipeButton()
     {
-        OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
+        if (InventoryHolder.CheckIfCanCraft(_recipe))
+            OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
     }
 }
