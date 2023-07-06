@@ -6,9 +6,11 @@ public class Weapon : Raycast
 {
     [SerializeField] private PlayerInventoryHolder _inventory;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
+    [SerializeField] private WeaponItemData _armItemData;
     [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
     [SerializeField] private LayerMask _creatureLayer;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private PlayerAnimation _playerAnimation;
 
     private WeaponItemData _currentWeapon;
 
@@ -37,13 +39,13 @@ public class Weapon : Raycast
             }
             else
             {
-                _currentWeapon = null;
+                _currentWeapon = _armItemData;
                 return;
             }
         }
         else
         {
-            _currentWeapon = null;
+            _currentWeapon = _armItemData;
             return;
         }
     }
@@ -105,11 +107,13 @@ public class Weapon : Raycast
         {
             _nextFire = Time.time + 1 / _currentWeapon.Speed;
             _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
+            //_playerAnimation.Hit(_currentWeapon);
 
             if (_currentAnim != null)
                 _currentAnim.TakeDamage(_currentWeapon.Damage, 0);
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {

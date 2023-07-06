@@ -6,6 +6,7 @@ public class MiningHandler : MonoBehaviour
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private InteractionPlayerInput _interactionPlayerInput;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private PlayerAnimation _playerAnimation;
 
     private ItemType _typeSlot = ItemType.Tool;
     private InventoryItemData _currentItemData;
@@ -38,6 +39,7 @@ public class MiningHandler : MonoBehaviour
                     {
                         _nextFire = Time.time + 1 / toolItemData.Speed;
                         _currentResoure.TakeDamage(toolItemData.DamageResources, 0);
+                        _playerAnimation.Hit(toolItemData);
 
                         if (_currentResoure.Health <= 0)
                         {
