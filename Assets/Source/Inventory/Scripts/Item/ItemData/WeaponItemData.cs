@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Inventory System/Item Data/Weapon", order = 51)]
@@ -26,3 +27,21 @@ public enum WeaponType
     RangedWeapon,
     MeleeWeapon
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(WeaponItemData))]
+public class WeaponItemDataEditor : Editor
+{
+    public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height)
+    {
+        var data = (WeaponItemData)target;
+
+        if (data == null || data.Icon == null)
+            return null;
+
+        Texture2D texture = new Texture2D(width, height);
+        EditorUtility.CopySerialized(data.Icon.texture, texture);
+        return texture;
+    }
+}
+#endif

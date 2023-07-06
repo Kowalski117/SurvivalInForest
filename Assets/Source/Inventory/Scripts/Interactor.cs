@@ -10,6 +10,7 @@ public class Interactor : Raycast
     [SerializeField] private SelectionPlayerInput _selectionPlayerInput;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private InteractionConstructionPlayerInput _interactionConstructionPlayerInput;
+    [SerializeField] private PlayerAnimation _playerAnimation;
 
     [SerializeField] private float _liftingDelay = 2f;
 
@@ -47,6 +48,7 @@ public class Interactor : Raycast
                 {
                     if (_playerInventoryHolder.AddToInventory(itemPickUp.ItemData, 1))
                     {
+                        _playerAnimation.PickUp();
                         itemPickUp.PicUp();
                     }
                 }
@@ -89,6 +91,7 @@ public class Interactor : Raycast
             {
                 if (_playerInventoryHolder.AddToInventory(itemPickUp.ItemData, 1))
                 {
+                    _playerAnimation.PickUp();
                     itemPickUp.PicUp();
                 }
             }
