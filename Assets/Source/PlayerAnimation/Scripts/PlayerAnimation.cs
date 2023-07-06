@@ -99,16 +99,14 @@ public class PlayerAnimation : MonoBehaviour
         if (itemData != null)
         {
             bool itemFound = false;
-
+            _currentItemData = itemData;
             foreach (var item in _items)
             {
                 if (itemData == item.ItemData)
                 {
-                    item.ToggleItem(true);
-
                     if (itemData is WeaponItemData weaponItemData)
                     {
-                        if(weaponItemData.WeaponType == WeaponType.RangedWeapon)
+                        if (weaponItemData.WeaponType == WeaponType.RangedWeapon)
                         {
                             _handAnimator.SetTrigger(_pullBow);
                         }
@@ -121,10 +119,6 @@ public class PlayerAnimation : MonoBehaviour
                     _isItemInHand = true;
                     itemFound = true;
                 }
-                else
-                {
-                    item.ToggleItem(false);
-                }
             }
 
             if (!itemFound && _isItemInHand)
@@ -135,17 +129,43 @@ public class PlayerAnimation : MonoBehaviour
         }
         else
         {
-            if(_isItemInHand) 
+            if (_isItemInHand)
             {
-                foreach (var item in _items)
-                {
-                    item.ToggleItem(false);
-                }
-
                 _handAnimator.SetTrigger(_removeItem);
                 _isItemInHand = false;
             }
 
+        }
+    }
+
+    public void PullItemAnimationEvent()
+    {
+        foreach (var item in _items)
+        {
+            if (_currentItemData == item.ItemData)
+            {
+                item.ToggleItem(true);
+            }
+            else
+            {
+                item.ToggleItem(false);
+            }
+        }
+    }
+
+    public void RemoveItemAnimationEvent()
+    {
+        foreach (var item in _items)
+        {
+            item.ToggleItem(false);
+            //if (_currentItemData == item.ItemData)
+            //{
+            //    item.ToggleItem(true);
+            //}
+            //else
+            //{
+            //    item.ToggleItem(false);
+            //}
         }
     }
 
