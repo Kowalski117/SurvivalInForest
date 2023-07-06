@@ -12,8 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9898525228042f429fe2a94fce9f460, type: 3}
   m_Name: Shop Item List
   m_EditorClassIdentifier: 
+  _name: "\u0422\u043E\u0440\u0433\u043E\u0432\u0435\u0446"
   _items:
-  - _itemData1: {fileID: 11400000, guid: 3cee7e1159969614fbcdf947905c4194, type: 2}
-    _amount1: 1
-    _itemData2: {fileID: 11400000, guid: a80dc382bbf8613409c41098bb8cd7a4, type: 2}
-    _amount2: 1
+  - _itemsToExchange:
+    - _item: {fileID: 11400000, guid: cc663e98aa7670a4fa26266c078b8957, type: 2}
+      _amount: 1
+    _itemsToReceive:
+    - _item: {fileID: 11400000, guid: 8a5afd7c21c669640a13a1729db169c4, type: 2}
+      _amount: 1
+  - _itemsToExchange:
+    - _item: {fileID: 11400000, guid: d326aa6e0f549bf4b885c22bfcc0b793, type: 2}
+      _amount: 1
+    _itemsToReceive:
+    - _item: {fileID: 11400000, guid: 90d0f449336abc94b810ca9c658d702f, type: 2}
+      _amount: 1
