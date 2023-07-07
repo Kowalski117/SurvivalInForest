@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CraftingHandler : MonoBehaviour
@@ -12,7 +13,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private Transform _containerForSlots;
     [SerializeField] private Transform _craftingWindow;
     [SerializeField] private ItemType _defoultType = ItemType.Weapon;
-
+    [SerializeField] private TMP_Text _nameCategory;
     [SerializeField] private CraftItemSlotView _craftItemSlotPrefab;
     [SerializeField] private CraftBuildSlotView _craftBuildingSlotPrefab;
 
@@ -58,6 +59,8 @@ public class CraftingHandler : MonoBehaviour
 
     private void CreateCraftSlots(Crafting—ategory craftingCategory)
     {
+        _nameCategory.text = craftingCategory.Name—ategory;
+
         foreach (var recipe in craftingCategory.RecipeItemLists)
         {
 

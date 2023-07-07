@@ -201,7 +201,6 @@ public class BuildTool : MonoBehaviour
         DeleteObjectPreview();
         _deleteModeEnabled = !_deleteModeEnabled;
         OnCompletedBuild?.Invoke();
-
     }
 
     private void DeleteBuilding()

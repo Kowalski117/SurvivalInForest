@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(BoxCollider))]
 public class Building : MonoBehaviour
@@ -19,6 +20,8 @@ public class Building : MonoBehaviour
     private bool _flaggedForDelete;
 
     private BuildingSaveData _saveData;
+
+    public event UnityAction OnCompletedBuild;
 
     public BuildingData AssignedData => _assignedData;
     public bool FlaggedForDelete => _flaggedForDelete;
@@ -63,7 +66,7 @@ public class Building : MonoBehaviour
         gameObject.layer = _defoultLayerInt;
         gameObject.name = _assignedData.DisplayName + " - " + transform.position;
         _boxCollider.enabled = false;
-
+        OnCompletedBuild?.Invoke();
 
         if (_saveData == null)
             _saveData = new BuildingSaveData(gameObject.name, _assignedData, transform.position, transform.rotation);

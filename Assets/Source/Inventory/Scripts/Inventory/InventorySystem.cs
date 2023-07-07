@@ -7,24 +7,20 @@ using System.Linq;
 public class InventorySystem
 {
     [SerializeField] private List<InventorySlot> _inventorySlots;
-    [SerializeField] private int _gold;
 
     public event UnityAction<InventorySlot> OnInventorySlotChanged;
 
     public List<InventorySlot> InventorySlots => _inventorySlots;
     public int InventorySize => _inventorySlots.Count;
-    public int Gold => _gold;
 
     public InventorySystem(int size)
     {
         CreateInventory(size);
-        _gold = 0;
     }
 
     public InventorySystem(int size, int gold)
     {
         CreateInventory(size);
-        _gold = gold;
     }
 
     public bool AddToInventory(InventoryItemData item, int amount)
@@ -118,11 +114,6 @@ public class InventorySystem
         }
 
         return true;
-    }
-
-    public void SpendGold(int basketTotal)
-    {
-        _gold -= basketTotal;
     }
 
     private void CreateInventory(int size)

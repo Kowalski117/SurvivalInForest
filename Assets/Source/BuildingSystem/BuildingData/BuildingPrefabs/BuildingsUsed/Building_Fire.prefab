@@ -137,9 +137,13 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4872877596446958106, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
+      propertyPath: _collider
+      value: 
+      objectReference: {fileID: 443537942}
+    - target: {fileID: 4872877596446958106, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
       propertyPath: "_crafting\u0421ategory"
       value: 
-      objectReference: {fileID: 11400000, guid: 41d95986d12172343a6581009f21b605, type: 2}
+      objectReference: {fileID: 11400000, guid: 8c061a3b8dec1ff4bbf147a607fa0ab6, type: 2}
     - target: {fileID: 4872877596446958107, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -150,8 +154,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
+--- !u!135 &443537942 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 4872877596446958107, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
+  m_PrefabInstance: {fileID: 4872877596012050445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4868536049686657021 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4349553000075248, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
   m_PrefabInstance: {fileID: 4872877596012050445}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4871700009551931093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1179792248266456, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
+  m_PrefabInstance: {fileID: 4872877596012050445}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6056263089233278444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4871700009551931093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 264dd96b8d51b5f47b7ccb0dd62fe6b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

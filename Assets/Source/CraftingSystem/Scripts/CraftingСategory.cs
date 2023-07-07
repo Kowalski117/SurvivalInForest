@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Inventory System/Category lists items", order = 51)]
 public class CraftingÑategory : ScriptableObject
 {
+    [SerializeField] private string _nameÑategory;
     [SerializeField] private List<ItemRecipe> _recipeItemLists;
     [SerializeField] private List<BuildingRecipe> _recipeBuildingLists;
 
+    public string NameÑategory => _nameÑategory;
     public List<ItemRecipe> RecipeItemLists => _recipeItemLists;
     public List<BuildingRecipe> RecipeBuildingLists => _recipeBuildingLists;
 }
