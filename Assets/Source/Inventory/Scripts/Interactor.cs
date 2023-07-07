@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,13 +8,14 @@ public class Interactor : Raycast
     [SerializeField] private LayerMask _interactionItemLayer;
     [SerializeField] private LayerMask _interactionConstructionLayer;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
-    [SerializeField] private SelectionPlayerInput _selectionPlayerInput;
-    [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
-    [SerializeField] private InteractionConstructionPlayerInput _interactionConstructionPlayerInput;
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private BuildTool _buildTool;
     [SerializeField] private PlayerAnimation _playerAnimation;
 
     [SerializeField] private float _liftingDelay = 2f;
 
+    private IInteractable _currentInteractable;
+    private bool _isStartingPick = true;
     private float _lookTimer = 0;
     private ItemPickUp _currentItemPickUp;
 
@@ -24,16 +26,20 @@ public class Interactor : Raycast
 
     private void OnEnable()
     {
-        _selectionPlayerInput.PickUp += PickUpItem;
-        _inventoryPlayerInput.InteractKeyPressed += InteractableInventory;
-        _interactionConstructionPlayerInput.OnInteractedConstruction += InteractableConstruction;
+        _buildTool.OnCompletedBuild += ClearIInteractable;
+
+        _playerInputHandler.SelectionPlayerInput.PickUp += PickUpItem;
+        _playerInputHandler.InventoryPlayerInput.InteractKeyPressed += InteractableInventory;
+        _playerInputHandler.InteractionConstructionPlayerInput.OnInteractedConstruction += InteractableConstruction;
     }
 
     private void OnDisable()
     {
-        _selectionPlayerInput.PickUp -= PickUpItem;
-        _inventoryPlayerInput.InteractKeyPressed -= InteractableInventory;
-        _interactionConstructionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
+        _buildTool.OnCompletedBuild -= ClearIInteractable;
+
+        _playerInputHandler.SelectionPlayerInput.PickUp -= PickUpItem;
+        _playerInputHandler.InventoryPlayerInput.InteractKeyPressed -= InteractableInventory;
+        _playerInputHandler.InteractionConstructionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
     }
 
     private void Update()
@@ -42,15 +48,16 @@ public class Interactor : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
             {
-                OnTimeUpdate?.Invoke(LookTimerPracent);
-
-                _lookTimer += Time.deltaTime;
-
-                if (_lookTimer >= _liftingDelay)
+                if(_isStartingPick)
                 {
-                    _playerAnimation.PickUp();
-                    _lookTimer = 0;
-                    _currentItemPickUp = itemPickUp;
+                    _lookTimer += Time.deltaTime;
+                    OnTimeUpdate?.Invoke(LookTimerPracent);
+                    if (_lookTimer >= _liftingDelay)
+                    {
+                        _playerAnimation.PickUp();
+                        _lookTimer = 0;
+                        _currentItemPickUp = itemPickUp;
+                    }
                 }
             }
         }
@@ -68,6 +75,7 @@ public class Interactor : Raycast
             if (hitInfo.collider.TryGetComponent(out IInteractable interactable))
             {
                 interactable.Interact(this, out bool interactSuccessful);
+                _currentInteractable = interactable;
             }
         }
     }
@@ -89,8 +97,11 @@ public class Interactor : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
             {
-                _playerAnimation.PickUp();
-                _currentItemPickUp = itemPickUp;
+                if(LookTimerPracent >= 1)
+                {
+                    _playerAnimation.PickUp();
+                    _currentItemPickUp = itemPickUp;
+                }
             }
         }
     }
@@ -104,6 +115,18 @@ public class Interactor : Raycast
                 _currentItemPickUp.PicUp();
                 _currentItemPickUp = null;
             }
+            _isStartingPick = true;
         }
+    }
+
+    public void StartPickUpAninationEvent()
+    {
+        _isStartingPick = false;
+    }
+
+    private void ClearIInteractable()
+    {
+        _currentInteractable.Interact(this, out bool interactSuccessful);
+        _currentInteractable = null;
     }
 }

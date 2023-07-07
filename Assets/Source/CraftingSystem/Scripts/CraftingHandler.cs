@@ -23,6 +23,11 @@ public class CraftingHandler : MonoBehaviour
     private bool _isCraftPlayerOpen = false;
     public Transform CraftingWindow => _craftingWindow;
 
+    private void Awake()
+    {
+        _craftingWindow.gameObject.SetActive(false);
+    }
+
     private void OnEnable()
     {
         _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;

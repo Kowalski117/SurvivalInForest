@@ -21,6 +21,7 @@ public class PlayerInputHandler : MonoBehaviour
     public HitPlayerInput HitPlayerInput => _hitPlayerInput;
     public BuildPlayerInput BuildPlayerInput => _buildPlayerInput;
     public WeaponPlayerInput WeaponPlayerInput => _weaponPlayerInput;
+    public Transform InventoryPanels => _inventoryPanels;
 
     private void Start()
     {
