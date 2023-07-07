@@ -10,10 +10,12 @@ public class Interactor : Raycast
     [SerializeField] private SelectionPlayerInput _selectionPlayerInput;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private InteractionConstructionPlayerInput _interactionConstructionPlayerInput;
+    [SerializeField] private PlayerAnimation _playerAnimation;
 
     [SerializeField] private float _liftingDelay = 2f;
 
     private float _lookTimer = 0;
+    private ItemPickUp _currentItemPickUp;
 
     public event UnityAction<float> OnTimeUpdate;
 
@@ -22,14 +24,14 @@ public class Interactor : Raycast
 
     private void OnEnable()
     {
-        _selectionPlayerInput.PickUp += PickUp;
+        _selectionPlayerInput.PickUp += PickUpItem;
         _inventoryPlayerInput.InteractKeyPressed += InteractableInventory;
         _interactionConstructionPlayerInput.OnInteractedConstruction += InteractableConstruction;
     }
 
     private void OnDisable()
     {
-        _selectionPlayerInput.PickUp -= PickUp;
+        _selectionPlayerInput.PickUp -= PickUpItem;
         _inventoryPlayerInput.InteractKeyPressed -= InteractableInventory;
         _interactionConstructionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
     }
@@ -40,15 +42,15 @@ public class Interactor : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
             {
-                _lookTimer += Time.deltaTime;
                 OnTimeUpdate?.Invoke(LookTimerPracent);
+
+                _lookTimer += Time.deltaTime;
 
                 if (_lookTimer >= _liftingDelay)
                 {
-                    if (_playerInventoryHolder.AddToInventory(itemPickUp.ItemData, 1))
-                    {
-                        itemPickUp.PicUp();
-                    }
+                    _playerAnimation.PickUp();
+                    _lookTimer = 0;
+                    _currentItemPickUp = itemPickUp;
                 }
             }
         }
@@ -81,16 +83,26 @@ public class Interactor : Raycast
         }
     }
 
-    private void PickUp()
+    private void PickUpItem()
     {
         if (IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo))
         {
             if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
             {
-                if (_playerInventoryHolder.AddToInventory(itemPickUp.ItemData, 1))
-                {
-                    itemPickUp.PicUp();
-                }
+                _playerAnimation.PickUp();
+                _currentItemPickUp = itemPickUp;
+            }
+        }
+    }
+
+    public void PickUpAninationEvent()
+    {
+        if(_currentItemPickUp != null)
+        {
+            if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, 1))
+            {
+                _currentItemPickUp.PicUp();
+                _currentItemPickUp = null;
             }
         }
     }

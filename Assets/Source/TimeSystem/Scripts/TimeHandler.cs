@@ -82,6 +82,7 @@ public class TimeHandler : MonoBehaviour
         float dotProduct = Vector3.Dot(_sunLight.transform.forward, Vector3.down);
         _sunLight.intensity = Mathf.Lerp(0, _maxSunLightIntensity, _lightChangeCurve.Evaluate(dotProduct));
         _moonLight.intensity = Mathf.Lerp(_maxMoonLightIntensity, 0, _lightChangeCurve.Evaluate(dotProduct));
+        //_moonLight.intensity = Mathf.Lerp(0, _maxMoonLightIntensity, _lightChangeCurve.Evaluate(dotProduct));
         RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _lightChangeCurve.Evaluate(dotProduct));
     }
 
