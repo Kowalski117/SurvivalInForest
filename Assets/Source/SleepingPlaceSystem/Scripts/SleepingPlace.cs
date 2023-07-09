@@ -10,9 +10,4 @@ public class SleepingPlace : MonoBehaviour
         OnInteractionSleepingPlace?.Invoke();
         interactSuccessfull = true;
     }
-
-    public void EndInteraction()
-    {
-
-    }
 }

@@ -15,7 +15,6 @@ public class InventoryPlayerInput : MonoBehaviour
     public event UnityAction<InventorySystem, int> SwitchInventory;
     public event UnityAction<CraftingÑategory> OnCraftPlayerWindow;
     public event UnityAction OnToggleInventory;
-    public event UnityAction OnBuildingWindow;
     public event UnityAction OnSelectInventoryItem;
     public event UnityAction OnInteractInventoryItem;
 

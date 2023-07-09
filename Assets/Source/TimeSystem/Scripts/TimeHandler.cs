@@ -15,6 +15,7 @@ public class TimeHandler : MonoBehaviour
     [SerializeField] private Color _dayAmblientLight;
     [SerializeField] private Color _nightAmblientLight;
     [SerializeField] private AnimationCurve _lightChangeCurve;
+    [SerializeField] private ParticleSystem _starsParticle;
 
     private DateTime _currentTime;
     private TimeSpan _sunriseTime;
@@ -55,7 +56,7 @@ public class TimeHandler : MonoBehaviour
     {
         float sunLightRotation;
 
-        if(_currentTime.TimeOfDay > _sunriseTime && _currentTime.TimeOfDay < _sunsetTime)
+        if (_currentTime.TimeOfDay > _sunriseTime && _currentTime.TimeOfDay < _sunsetTime)
         {
             TimeSpan sunriseSunsetDuration = CalculateTimeDifference(_sunriseTime, _sunsetTime);
             TimeSpan timeSinceSunrise = CalculateTimeDifference(_sunriseTime, _currentTime.TimeOfDay);
@@ -63,6 +64,8 @@ public class TimeHandler : MonoBehaviour
             double percentage = timeSinceSunrise.TotalMinutes / sunriseSunsetDuration.TotalMinutes;
 
             sunLightRotation = Mathf.Lerp(0, 180, (float)percentage);
+
+            //_starsParticle.gameObject.SetActive(false);
         }
         else
         {
@@ -75,6 +78,8 @@ public class TimeHandler : MonoBehaviour
         }
 
         _sunLight.transform.rotation = Quaternion.AngleAxis(sunLightRotation, Vector3.right);
+
+        //_starsParticle.gameObject.SetActive(true);
     }
 
     private void UpdateLightSettings()
@@ -90,7 +95,7 @@ public class TimeHandler : MonoBehaviour
     {
         TimeSpan difference = toTime - fromTime;
 
-        if(difference.TotalSeconds < 0)
+        if (difference.TotalSeconds < 0)
         {
             difference += TimeSpan.FromHours(24);
         }
