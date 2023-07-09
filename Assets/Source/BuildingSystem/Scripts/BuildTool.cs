@@ -153,24 +153,16 @@ public class BuildTool : MonoBehaviour
     {
         _spawnBuilding.UpdateMaterial(_spawnBuilding.IsOverlapping ? _buildingMatNegative : _buildingMatPositive);
 
-
         if (IsRayHittingSomething(_buildModeLayerMask, out RaycastHit hitInfo))
         {
             Vector3 hitPoint = hitInfo.point;
             Vector3 terrainNormal = hitInfo.normal;
 
-            // Перемещение точки столкновения немного выше, чтобы постройка не находилась полностью внутри террейна
             hitPoint += terrainNormal * 0.1f;
-
-            // Подстройка постройки под поверхность террейна
             Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
-
-            // Получение высоты террейна в заданной точке
             float terrainHeight = Terrain.activeTerrain.SampleHeight(hitPoint);
 
-            // Корректировка позиции постройки по вертикали, чтобы она соответствовала высоте террейна
             gridPosition.y = terrainHeight;
-
             _spawnBuilding.transform.position = gridPosition;
         }
     }
@@ -179,10 +171,10 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
         {
+            OnCompletedBuild?.Invoke();
             CraftingItem(_recipe);
             _spawnBuilding.PlaceBuilding();
             _spawnBuilding = null;
-            OnCompletedBuild?.Invoke();
             _playerAnimation.TurnOffAnimations();
         }
     }
@@ -198,9 +190,9 @@ public class BuildTool : MonoBehaviour
 
     private void DeleteMobeBuilding()
     {
+        OnCompletedBuild?.Invoke();
         DeleteObjectPreview();
         _deleteModeEnabled = !_deleteModeEnabled;
-        OnCompletedBuild?.Invoke();
     }
 
     private void DeleteBuilding()

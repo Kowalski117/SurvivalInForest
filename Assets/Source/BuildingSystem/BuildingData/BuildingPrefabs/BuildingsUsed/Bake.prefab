@@ -90,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1473915299898816, guid: d8a3982d045f8e74d9df34be3e13c13b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1701385238162528, guid: d8a3982d045f8e74d9df34be3e13c13b, type: 3}
       propertyPath: m_Name
@@ -194,3 +194,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264dd96b8d51b5f47b7ccb0dd62fe6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6326854920623682353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8771037106102598925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ad420d2d61e1c41b7a9c8bdc8aa7a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fireParticle: {fileID: 8898953002228127339}
+--- !u!198 &8898953002228127339 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198613835509712646, guid: d8a3982d045f8e74d9df34be3e13c13b, type: 3}
+  m_PrefabInstance: {fileID: 8772713696091492717}
+  m_PrefabAsset: {fileID: 0}

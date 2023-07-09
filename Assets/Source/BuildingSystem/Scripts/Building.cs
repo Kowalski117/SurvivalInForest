@@ -5,7 +5,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(BoxCollider))]
 public class Building : MonoBehaviour
 {
-    [SerializeField] private int _defoultLayerInt = 8;
+    [SerializeField] private int _defoultLayerInt = 12;
 
     private BuildingData _assignedData;
     private BoxCollider _boxCollider;
