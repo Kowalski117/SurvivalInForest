@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,6 +9,7 @@ public class Interactor : Raycast
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private BuildTool _buildTool;
+    [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private PlayerAnimation _playerAnimation;
 
     [SerializeField] private float _liftingDelay = 2f;
@@ -26,6 +26,7 @@ public class Interactor : Raycast
 
     private void OnEnable()
     {
+        _buildTool.OnCreateBuild += CreateBuild;
         _buildTool.OnCompletedBuild += ClearIInteractable;
 
         _playerInputHandler.SelectionPlayerInput.PickUp += PickUpItem;
@@ -35,6 +36,7 @@ public class Interactor : Raycast
 
     private void OnDisable()
     {
+        _buildTool.OnCreateBuild -= CreateBuild;
         _buildTool.OnCompletedBuild -= ClearIInteractable;
 
         _playerInputHandler.SelectionPlayerInput.PickUp -= PickUpItem;
@@ -75,7 +77,15 @@ public class Interactor : Raycast
             if (hitInfo.collider.TryGetComponent(out IInteractable interactable))
             {
                 interactable.Interact(this, out bool interactSuccessful);
-                _currentInteractable = interactable;
+
+                if (_currentInteractable == null)
+                {
+                    _currentInteractable = interactable;
+                }
+                else
+                {
+                    _currentInteractable = null;
+                }
             }
         }
     }
@@ -88,6 +98,11 @@ public class Interactor : Raycast
             {
                 interactable.Interact(this, out bool interactSuccessful);
             }
+
+            if (hitInfo.collider.TryGetComponent(out Fire fire))
+            {
+                AddFire(fire);
+            }
         }
     }
 
@@ -97,7 +112,7 @@ public class Interactor : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
             {
-                if(LookTimerPracent >= 1)
+                if (LookTimerPracent >= 1)
                 {
                     _playerAnimation.PickUp();
                     _currentItemPickUp = itemPickUp;
@@ -108,7 +123,7 @@ public class Interactor : Raycast
 
     public void PickUpAninationEvent()
     {
-        if(_currentItemPickUp != null)
+        if (_currentItemPickUp != null)
         {
             if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, 1))
             {
@@ -126,7 +141,28 @@ public class Interactor : Raycast
 
     private void ClearIInteractable()
     {
-        _currentInteractable.Interact(this, out bool interactSuccessful);
-        _currentInteractable = null;
+        if (_currentInteractable != null)
+        {
+            _currentInteractable.Interact(this, out bool interactSuccessful);
+            _currentInteractable = null;
+        }
+    }
+
+    private void AddFire(Fire fire)
+    {
+        InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+
+        if(slot.ItemData != null && slot.ItemData.GorenjeTime > 0 && slot.Size > 0)
+        {
+            if (fire.AddTime(slot.ItemData.GorenjeTime))
+            {
+                _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
+            }
+        }
+    }
+
+    private void CreateBuild()
+    {
+        //enabled = false;
     }
 }

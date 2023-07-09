@@ -12,6 +12,7 @@ public class InventoryItemData : ScriptableObject
     [SerializeField] private Sprite _icon;
     [SerializeField] private int _maxStackSize;
     [SerializeField] private GameObject _itemPrefab;
+    [SerializeField] private float _gorenjeTime;
 
     public int Id => _id;
     public ItemType Type => _type;
@@ -21,7 +22,7 @@ public class InventoryItemData : ScriptableObject
     public int MaxStackSize => _maxStackSize;
     public GameObject ItemPrefab => _itemPrefab;
 
-
+    public float GorenjeTime => _gorenjeTime;
 
     public void SetId(int id)
     {
@@ -37,6 +38,7 @@ public class InventoryItemData : ScriptableObject
 public enum ItemType
 {
     Build,
+    InteractBuilding,
     Weapon,
     Tool,
     Food,

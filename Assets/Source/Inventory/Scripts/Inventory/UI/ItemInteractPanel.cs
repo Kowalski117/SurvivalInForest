@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class ItemInteractPanel : MonoBehaviour
 {
+    [SerializeField] private Transform _playerTransform;
+    [SerializeField] private float _dropOffset;
     [SerializeField] private Transform _panel;
     [SerializeField] private Image _icon;
     [SerializeField] private TMP_Text _nameText;
@@ -13,6 +15,7 @@ public class ItemInteractPanel : MonoBehaviour
     [SerializeField] private Button _discardButton;
     [SerializeField] private Button _exitButton;
 
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private SurvivalHandler _survivalHandler;
 
@@ -26,16 +29,18 @@ public class ItemInteractPanel : MonoBehaviour
     private void OnEnable()
     {
         InventorySlotUI.OnInteract += Init;
-
+        _playerInputHandler.InventoryPlayerInput.OnToggleInventory += ExitBttonClick;
         _useButton.onClick.AddListener(UseItemButtonClick);
+        _discardButton.onClick.AddListener(DiscardButtonClick);
         _exitButton.onClick.AddListener(ExitBttonClick);
     }
 
     private void OnDisable()
     {
         InventorySlotUI.OnInteract -= Init;
-
+        _playerInputHandler.InventoryPlayerInput.OnToggleInventory += ExitBttonClick;
         _useButton.onClick.RemoveListener(UseItemButtonClick);
+        _discardButton.onClick.RemoveListener(DiscardButtonClick);
         _exitButton.onClick.RemoveListener(ExitBttonClick);
     }
 
@@ -68,16 +73,33 @@ public class ItemInteractPanel : MonoBehaviour
                 _survivalHandler.Hunger.ReplenishValue(foodItemData.AmountSatiety);
                 _survivalHandler.Thirst.ReplenishValue(foodItemData.AmountWater);
             }
-
-            _amountText.text = _inventoryHolder.InventorySystem.GetItemCount(_currentSlot.ItemData).ToString();
-
-            if (_inventoryHolder.InventorySystem.GetItemCount(_currentSlot.ItemData) == 0)
-                _panel.gameObject.SetActive(false);
         }
+
+        UpdateState();
+    }
+
+    private void DiscardButtonClick()
+    {
+
+        if (_inventoryHolder.InventorySystem.GetItemCount(_currentSlot.ItemData) >= 0)
+        {
+            Instantiate(_currentSlot.ItemData.ItemPrefab, _playerTransform.position + _playerTransform.forward * _dropOffset, Quaternion.identity);
+            _inventoryHolder.RemoveInventory(_currentSlot.ItemData, 1);
+        }
+        UpdateState();
     }
 
     private void ExitBttonClick()
     {
-        _panel.gameObject.SetActive(false);
+        if(_panel.gameObject.activeInHierarchy)
+            _panel.gameObject.SetActive(false);
+    }
+
+    private void UpdateState()
+    {
+        _amountText.text = _inventoryHolder.InventorySystem.GetItemCount(_currentSlot.ItemData).ToString();
+
+        if (_inventoryHolder.InventorySystem.GetItemCount(_currentSlot.ItemData) == 0)
+            _panel.gameObject.SetActive(false);
     }
 }
