@@ -17,6 +17,8 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private CraftItemSlotView _craftItemSlotPrefab;
     [SerializeField] private CraftBuildSlotView _craftBuildingSlotPrefab;
 
+    [SerializeField] private CraftingCategoryButton[] _craftingCategoryButtons;
+
     private List<CraftItemSlotView> _craftItemSlots = new List<CraftItemSlotView>();
     private List<CraftBuildSlotView> _craftBuildSlots = new List<CraftBuildSlotView>();
 
@@ -59,24 +61,18 @@ public class CraftingHandler : MonoBehaviour
 
     private void CreateCraftSlots(CraftingÑategory craftingCategory)
     {
-        _nameCategory.text = craftingCategory.NameÑategory;
-
         foreach (var recipe in craftingCategory.RecipeItemLists)
         {
-
             CraftItemSlotView craftSlot = Instantiate(_craftItemSlotPrefab, _containerForSlots);
             _craftItemSlots.Add(craftSlot);
             craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
-
         }
 
         foreach (var recipe in craftingCategory.RecipeBuildingLists)
         {
-
             CraftBuildSlotView craftSlot = Instantiate(_craftBuildingSlotPrefab, _containerForSlots);
             _craftBuildSlots.Add(craftSlot);
             craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
-
         }
     }
 
@@ -122,38 +118,58 @@ public class CraftingHandler : MonoBehaviour
 
     public void DisplayCraftWindow(CraftingÑategory craftingCategory)
     {
+        _nameCategory.text = craftingCategory.NameÑategory;
         _currentCategory = craftingCategory;
 
-        foreach (var recipe in _currentCategory.RecipeItemLists)
+        foreach (var button in _craftingCategoryButtons)
         {
-
-            foreach (var slot in _craftItemSlots)
-            {
-                if (slot.Recipe == recipe && craftingCategory == slot.Category)
-                {
-                    slot.OpenForCrafting();
-                }
-                else
-                {
-                    slot.CloseForCrafting();
-                }
-            }
-
-            foreach (var slot in _craftBuildSlots)
-            {
-                if (slot.Recipe == recipe && craftingCategory == slot.Category)
-                {
-                    slot.OpenForCrafting();
-                }
-                else
-                {
-                    slot.CloseForCrafting();
-                }
-            }
-
+            button.gameObject.SetActive(false);
         }
 
-        SwitchCraftingCategory(_defoultType);
+        foreach (var button in _craftingCategoryButtons)
+        {
+            foreach (var recipe in _currentCategory.RecipeItemLists)
+            {
+                foreach (var slot in _craftItemSlots)
+                {
+                    if (slot.Recipe == recipe && craftingCategory == slot.Category)
+                    {
+                        slot.OpenForCrafting();
+
+                        if (button.ItemType == slot.Recipe.CraftedItem.Type)
+                        {
+                            button.gameObject.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        slot.CloseForCrafting();
+                    }
+                }
+            }
+
+            foreach (var recipe in _currentCategory.RecipeBuildingLists)
+            {
+                foreach (var slot in _craftBuildSlots)
+                {
+                    if (slot.Recipe == recipe && craftingCategory == slot.Category)
+                    {
+                        slot.OpenForCrafting();
+
+                        if (button.ItemType == slot.Recipe.BuildingData.Type)
+                        {
+                            button.gameObject.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        slot.CloseForCrafting();
+                    }
+                }
+            }
+        }
+            
+            SwitchCraftingCategory(craftingCategory.DefoultType);
     }
 
     private void DisplayCraftPlayerWindow(CraftingÑategory craftingCategory)

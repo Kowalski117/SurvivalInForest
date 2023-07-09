@@ -8,6 +8,8 @@ public class CraftingCategoryButton : MonoBehaviour
 
     private Button _button;
 
+    public ItemType ItemType => _itemType;
+
     private void Awake()
     {
         _button = GetComponent<Button>();

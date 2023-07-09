@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class DynamicInventoryDisplay : InventoryDisplay
 {
-    [SerializeField] private InventorySlotUI _slotPrefab;
+    [SerializeField] private InventorySlotUI[] _slots;
 
     protected override void Start()
     {
@@ -22,7 +21,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
         ClearSlots();
         inventorySystem = inventoryToSystem;
 
-        if(inventorySystem != null)
+        if (inventorySystem != null)
             inventorySystem.OnInventorySlotChanged += UpdateSlot;
 
         AssingSlot(inventoryToSystem, offSet);
@@ -35,23 +34,33 @@ public class DynamicInventoryDisplay : InventoryDisplay
         if (inventoryToDisplay == null)
             return;
 
-        for (int i = offSet; i < inventoryToDisplay.InventorySize; i++)
+        // Включаем или выключаем слоты в зависимости от размера инвентаря
+        for (int i = 0; i < _slots.Length; i++)
         {
-            var viewSlot = Instantiate(_slotPrefab, transform); // переделать для оптимизации
-            slotDictionary.Add(viewSlot, inventoryToDisplay.InventorySlots[i]);
-            viewSlot.Init(inventoryToDisplay.InventorySlots[i]);
-            viewSlot.UpdateUiSlot();
+            if (i < inventoryToDisplay.InventorySize)
+            {
+                InventorySlotUI viewSlot = _slots[i];
+                slotDictionary.Add(viewSlot, inventoryToDisplay.InventorySlots[i + offSet]);
+                viewSlot.gameObject.SetActive(true);
+                viewSlot.Init(inventoryToDisplay.InventorySlots[i + offSet]);
+                viewSlot.UpdateUiSlot();
+            }
+            else
+            {
+                // Если слоты в массиве _slots закончились, выключаем оставшиеся слоты
+                _slots[i].gameObject.SetActive(false);
+            }
         }
     }
 
     private void ClearSlots()
     {
-        foreach (var item in transform.Cast<Transform>())
+        foreach (var slot in _slots)
         {
-            Destroy(item.gameObject); // переделать для оптимизации
+            slot.gameObject.SetActive(false);
         }
 
-        if(slotDictionary!= null)
+        if (slotDictionary != null)
             slotDictionary.Clear();
     }
 }

@@ -6,10 +6,12 @@ using UnityEngine;
 public class CraftingÑategory : ScriptableObject
 {
     [SerializeField] private string _nameÑategory;
+    [SerializeField] private ItemType _defoultType;
     [SerializeField] private List<ItemRecipe> _recipeItemLists;
     [SerializeField] private List<BuildingRecipe> _recipeBuildingLists;
 
     public string NameÑategory => _nameÑategory;
+    public ItemType DefoultType => _defoultType;
     public List<ItemRecipe> RecipeItemLists => _recipeItemLists;
     public List<BuildingRecipe> RecipeBuildingLists => _recipeBuildingLists;
 }

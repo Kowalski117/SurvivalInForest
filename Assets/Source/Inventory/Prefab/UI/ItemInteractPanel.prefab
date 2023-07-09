@@ -59,6 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4054741f5c3143abdf974082a816a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerTransform: {fileID: 0}
+  _dropOffset: 1
   _panel: {fileID: 1035419457078865932}
   _icon: {fileID: 1035419456611233922}
   _nameText: {fileID: 1035419457009261205}
@@ -67,6 +69,7 @@ MonoBehaviour:
   _useButton: {fileID: 1035419458566499028}
   _discardButton: {fileID: 1035419457163690973}
   _exitButton: {fileID: 1035419456827870171}
+  _playerInputHandler: {fileID: 0}
   _inventoryHolder: {fileID: 0}
   _survivalHandler: {fileID: 0}
 --- !u!1 &1035419456611233932
