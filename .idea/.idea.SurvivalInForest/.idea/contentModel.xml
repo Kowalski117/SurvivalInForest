@@ -17,6 +17,77 @@
         <e p="Gizmos" t="Include">
           <e p="LoveHate" t="Include" />
         </e>
+        <e p="Graphy - Ultimate Stats Monitor" t="Include">
+          <e p="Changelog.txt" t="Include" />
+          <e p="Editor" t="Include">
+            <e p="GraphyDebuggerEditor.cs" t="Include" />
+            <e p="GraphyEditorStyle.cs" t="Include" />
+            <e p="GraphyManagerEditor.cs" t="Include" />
+            <e p="GraphyMenuItem.cs" t="Include" />
+            <e p="Tayx.Graphy.Editor.asmdef" t="Include" />
+          </e>
+          <e p="Font" t="Include">
+            <e p="Northwest-Bold" t="Include">
+              <e p="ERIC-TIRADO-NORTHWEST-LICENSE.txt" t="Include" />
+            </e>
+            <e p="Roboto" t="Include">
+              <e p="license.txt" t="Include" />
+            </e>
+          </e>
+          <e p="GUI" t="Include" />
+          <e p="Materials" t="Include" />
+          <e p="package.json" t="Include" />
+          <e p="Prefab" t="Include">
+            <e p="Internal" t="Include" />
+          </e>
+          <e p="Runtime" t="Include">
+            <e p="Advanced" t="Include">
+              <e p="G_AdvancedData.cs" t="Include" />
+            </e>
+            <e p="Audio" t="Include">
+              <e p="G_AudioGraph.cs" t="Include" />
+              <e p="G_AudioManager.cs" t="Include" />
+              <e p="G_AudioMonitor.cs" t="Include" />
+              <e p="G_AudioText.cs" t="Include" />
+            </e>
+            <e p="Fps" t="Include">
+              <e p="G_FpsGraph.cs" t="Include" />
+              <e p="G_FpsManager.cs" t="Include" />
+              <e p="G_FpsMonitor.cs" t="Include" />
+              <e p="G_FpsText.cs" t="Include" />
+            </e>
+            <e p="Graph" t="Include">
+              <e p="G_Graph.cs" t="Include" />
+            </e>
+            <e p="GraphyDebugger.cs" t="Include" />
+            <e p="GraphyManager.cs" t="Include" />
+            <e p="Ram" t="Include">
+              <e p="G_RamGraph.cs" t="Include" />
+              <e p="G_RamManager.cs" t="Include" />
+              <e p="G_RamMonitor.cs" t="Include" />
+              <e p="G_RamText.cs" t="Include" />
+            </e>
+            <e p="Shader" t="Include">
+              <e p="G_GraphShader.cs" t="Include" />
+            </e>
+            <e p="Tayx.Graphy.asmdef" t="Include" />
+            <e p="UI" t="Include">
+              <e p="IModifiableState.cs" t="Include" />
+              <e p="IMovable.cs" t="Include" />
+            </e>
+            <e p="Util" t="Include">
+              <e p="G_ExtensionMethods.cs" t="Include" />
+              <e p="G_FloatString.cs" t="Include" />
+              <e p="G_Intstring.cs" t="Include" />
+              <e p="G_Singleton.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="GraphMobile.shader" t="Include" />
+            <e p="GraphStandard.shader" t="Include" />
+          </e>
+          <e p="Textures" t="Include" />
+        </e>
         <e p="ModelsAndUI" t="Include">
           <e p="Blink" t="Include">
             <e p="Art" t="Include">
@@ -537,6 +608,22 @@
             <e p="Texture" t="Include" />
             <e p="VFX" t="Include" />
           </e>
+          <e p="LowPoly Environment Pack" t="Include">
+            <e p="Demo" t="Include">
+              <e p="Scene 1" t="Include" />
+              <e p="Scene 2" t="Include" />
+              <e p="Scene 3" t="Include" />
+            </e>
+            <e p="FBX" t="Include">
+              <e p="Materials" t="Include" />
+            </e>
+            <e p="Prefabs" t="Include" />
+          </e>
+          <e p="LowPolyTreePack" t="Include">
+            <e p="Materials" t="Include" />
+            <e p="Models" t="Include" />
+            <e p="Prefabs" t="Include" />
+          </e>
           <e p="Painted UI" t="Include">
             <e p="Character &amp; Inventory" t="Include" />
             <e p="HUD" t="Include">
@@ -852,6 +939,12 @@
             <e p="Model" t="Include" />
             <e p="Prefabs" t="Include" />
             <e p="Texture" t="Include" />
+          </e>
+          <e p="SimpleNaturePack" t="Include">
+            <e p="Materials" t="Include" />
+            <e p="Models" t="Include" />
+            <e p="Prefabs" t="Include" />
+            <e p="Textures" t="Include" />
           </e>
           <e p="UnityAssetsStore" t="Include">
             <e p="Low Poly" t="Include">
@@ -4317,14 +4410,21 @@
             <e p="ViewGizmos.cs" t="Include" />
           </e>
           <e p="BuildingSystem" t="Include">
-            <e p="BuildingData" t="Include" />
+            <e p="BuildingData" t="Include">
+              <e p="BuildingPrefabs" t="Include">
+                <e p="BuildingsUsed" t="Include" />
+                <e p="House" t="Include" />
+              </e>
+              <e p="BuildingsUsed" t="Include" />
+              <e p="Sprites" t="Include" />
+            </e>
             <e p="Materials" t="Include" />
             <e p="Prefabs" t="Include">
-              <e p="BuildingPrefabs" t="Include" />
               <e p="UI" t="Include" />
             </e>
             <e p="Scripts" t="Include">
               <e p="BaseHandler.cs" t="Include" />
+              <e p="BuildHandler.cs" t="Include" />
               <e p="Building.cs" t="Include" />
               <e p="BuildingData.cs" t="Include" />
               <e p="BuildPreview.cs" t="Include" />
@@ -4335,13 +4435,13 @@
           </e>
           <e p="CraftingSystem" t="Include">
             <e p="CraftingCategory" t="Include" />
-            <e p="CraftingItemList" t="Include">
-              <e p="CraftBench" t="Include" />
-              <e p="Fire" t="Include" />
-              <e p="PlayerCraft" t="Include" />
-            </e>
             <e p="CraftRecipe" t="Include">
-              <e p="Build" t="Include" />
+              <e p="Build" t="Include">
+                <e p="Decor" t="Include" />
+              </e>
+              <e p="Food" t="Include" />
+              <e p="Tool" t="Include" />
+              <e p="Weapon" t="Include" />
             </e>
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
@@ -4383,6 +4483,7 @@
               <e p="ExchangerSlot.cs" t="Include" />
               <e p="ExchangeSystem.cs" t="Include" />
               <e p="UI" t="Include">
+                <e p="ExchangedItemView.cs" t="Include" />
                 <e p="ExchangerSlotView.cs" t="Include" />
                 <e p="UIHandler.cs" t="Include" />
               </e>
@@ -4394,17 +4495,22 @@
           <e p="Inventory" t="Include">
             <e p="Materials" t="Include" />
             <e p="Prefab" t="Include">
-              <e p="Food" t="Include" />
-              <e p="Tool" t="Include" />
               <e p="UI" t="Include" />
-              <e p="Weapon" t="Include" />
             </e>
             <e p="Resources" t="Include">
               <e p="ItemData" t="Include">
                 <e p="Food" t="Include" />
+                <e p="Items" t="Include" />
                 <e p="Tool" t="Include" />
                 <e p="Weapon" t="Include" />
               </e>
+              <e p="Prefabs" t="Include">
+                <e p="Food" t="Include" />
+                <e p="Items" t="Include" />
+                <e p="Tool" t="Include" />
+                <e p="Weapon" t="Include" />
+              </e>
+              <e p="Sprites" t="Include" />
             </e>
             <e p="Scripts" t="Include">
               <e p="InteractionPoint.cs" t="Include" />
@@ -4442,9 +4548,11 @@
               <e p="PlayerInput" t="Include">
                 <e p="HotbarDisplay.cs" t="Include" />
               </e>
+              <e p="PlayerInteraction.cs" t="Include" />
               <e p="Raycast.cs" t="Include" />
               <e p="UI" t="Include">
                 <e p="ChangingInventory.cs" t="Include" />
+                <e p="DelayIcon.cs" t="Include" />
                 <e p="ViewInventoryNotifier.cs" t="Include" />
               </e>
             </e>
@@ -4455,9 +4563,18 @@
           <e p="MiningSystem" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
-              <e p="MiningHandler.cs" t="Include" />
               <e p="Resource.cs" t="Include" />
             </e>
+          </e>
+          <e p="PlayerAnimation" t="Include">
+            <e p="AnimationsWithoutObjects" t="Include" />
+            <e p="Materials" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="AxeAnimation.cs" t="Include" />
+              <e p="PlayerAnimation.cs" t="Include" />
+            </e>
+            <e p="Tool" t="Include" />
+            <e p="Weapon" t="Include" />
           </e>
           <e p="PlayerHealth.cs" t="Include" />
           <e p="PlayerInput" t="Include">
@@ -4543,6 +4660,7 @@
               </e>
             </e>
           </e>
+          <e p="Prefabs" t="Include" />
           <e p="QuickOutline" t="Include">
             <e p="readme.txt" t="Include" />
             <e p="Resources" t="Include">
@@ -4559,6 +4677,7 @@
             <e p="Scripts" t="Include">
               <e p="Outline.cs" t="Include" />
               <e p="OutlineSelection.cs" t="Include" />
+              <e p="OutlineSwitch.cs" t="Include" />
             </e>
           </e>
           <e p="SaveLoadSystem" t="Include">
@@ -4593,6 +4712,7 @@
           </e>
           <e p="TestButton.cs" t="Include" />
           <e p="TimeSystem" t="Include">
+            <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
               <e p="TimeHandler.cs" t="Include" />
               <e p="UI" t="Include">
@@ -4603,20 +4723,23 @@
           <e p="Tree.cs" t="Include" />
           <e p="WeaponSystem" t="Include">
             <e p="Prefabs" t="Include" />
-            <e p="Scripts" t="Include">
-              <e p="Weapon.cs" t="Include" />
-            </e>
+            <e p="Scripts" t="Include" />
           </e>
         </e>
         <e p="Terrain" t="Include" />
         <e p="TerrainManager.cs" t="Include" />
         <e p="TerrainManagerEditor.cs" t="Include" />
+        <e p="WebGLTemplates" t="Include">
+          <e p="FullscreenWindow" t="Include" />
+        </e>
       </e>
       <e p="NavMeshComponents.csproj" t="IncludeRecursive" />
       <e p="NavMeshComponentsEditor.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="SurvivalInForest.sln" t="IncludeFlat" />
+      <e p="Tayx.Graphy.csproj" t="IncludeRecursive" />
+      <e p="Tayx.Graphy.Editor.csproj" t="IncludeRecursive" />
       <e p="Temp\Bin" t="ExcludeRecursive" />
     </e>
     <e p="C:\Users\tavri\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
