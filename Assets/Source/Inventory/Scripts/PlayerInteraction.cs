@@ -36,10 +36,10 @@ public class PlayerInteraction : Raycast
 
     public void UpdateItemData()
     {
-        _previousItemData = _currentItemData; // Добавлено: сохраняем предыдущий выбранный предмет
+        _previousItemData = _currentItemData; // Р”РѕР±Р°РІР»РµРЅРѕ: СЃРѕС…СЂР°РЅСЏРµРј РїСЂРµРґС‹РґСѓС‰РёР№ РІС‹Р±СЂР°РЅРЅС‹Р№ РїСЂРµРґРјРµС‚
         _currentItemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
 
-        // Добавлено: проверяем, отличается ли текущий предмет от предыдущего
+        // Р”РѕР±Р°РІР»РµРЅРѕ: РїСЂРѕРІРµСЂСЏРµРј, РѕС‚Р»РёС‡Р°РµС‚СЃСЏ Р»Рё С‚РµРєСѓС‰РёР№ РїСЂРµРґРјРµС‚ РѕС‚ РїСЂРµРґС‹РґСѓС‰РµРіРѕ
         if (_currentItemData != _previousItemData)
         {
             _playerAnimation.GetItem(_currentItemData);

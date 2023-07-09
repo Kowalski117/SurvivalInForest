@@ -125,6 +125,9 @@
               </e>
             </e>
           </e>
+          <e p="Clean Vector Icons" t="Include">
+            <e p="Update" t="Include" />
+          </e>
           <e p="Dark - Complete Horror UI" t="Include">
             <e p="Animations" t="Include">
               <e p="Button" t="Include" />
@@ -4411,6 +4414,7 @@
           </e>
           <e p="BuildingSystem" t="Include">
             <e p="BuildingData" t="Include">
+              <e p="Build" t="Include" />
               <e p="BuildingPrefabs" t="Include">
                 <e p="BuildingsUsed" t="Include" />
                 <e p="House" t="Include" />
@@ -4486,6 +4490,14 @@
                 <e p="ExchangedItemView.cs" t="Include" />
                 <e p="ExchangerSlotView.cs" t="Include" />
                 <e p="UIHandler.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="FireSystem" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="Fire.cs" t="Include" />
+              <e p="UI" t="Include">
+                <e p="GorenjeTimerView.cs" t="Include" />
               </e>
             </e>
           </e>
@@ -4714,6 +4726,7 @@
           <e p="TimeSystem" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="DayCycleHandler.cs" t="Include" />
               <e p="TimeHandler.cs" t="Include" />
               <e p="UI" t="Include">
                 <e p="ClockUI.cs" t="Include" />
@@ -4727,8 +4740,6 @@
           </e>
         </e>
         <e p="Terrain" t="Include" />
-        <e p="TerrainManager.cs" t="Include" />
-        <e p="TerrainManagerEditor.cs" t="Include" />
         <e p="WebGLTemplates" t="Include">
           <e p="FullscreenWindow" t="Include" />
         </e>
