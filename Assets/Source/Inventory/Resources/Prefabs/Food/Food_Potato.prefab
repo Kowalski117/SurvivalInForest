@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 3213165293021434145}
   - component: {fileID: 3213165293021434144}
   - component: {fileID: 4120157787384532034}
-  - component: {fileID: 33697623434153481}
   - component: {fileID: 33697623434153482}
+  - component: {fileID: 322876781605810352}
   m_Layer: 6
   m_Name: Food_Potato
   m_TagString: Untagged
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 49b02fc6-fb37-44b0-806a-de4a6ed82797
+  _id: 342950e8-53f7-4e1e-944a-cc4d847070cf
 --- !u!114 &4120157787384532034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,20 +136,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!64 &33697623434153481
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3212155127040667662}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 490b83aa49786b843b67a79c249b2cf6, type: 3}
 --- !u!54 &33697623434153482
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -166,3 +152,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &322876781605810352
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212155127040667662}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.06899128
+  m_Center: {x: -0.00050837547, y: -0.0011575818, z: -0.0011764839}

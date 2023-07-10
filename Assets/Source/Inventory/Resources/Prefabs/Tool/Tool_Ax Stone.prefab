@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 4366471474225778140}
   - component: {fileID: 4391433557084651540}
   - component: {fileID: 4385777455631531406}
-  - component: {fileID: 4354186823405430290}
   - component: {fileID: 852700906774967955}
   - component: {fileID: 577862085664657110}
   - component: {fileID: 8788600684820827457}
   - component: {fileID: 128786640}
+  - component: {fileID: 6867728098639469508}
   m_Layer: 6
   m_Name: Tool_Ax Stone
   m_TagString: Untagged
@@ -88,20 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4354186823405430290
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4363874843209616080}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 2693c744a015225458c286e2fbe26d08, type: 3}
 --- !u!114 &852700906774967955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 95922f70-6c3d-4ae8-bfa3-016d5648468e
+  _id: 517b88c3-b182-4e00-8ca3-019e1deea08c
 --- !u!114 &577862085664657110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,3 +152,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6867728098639469508
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4363874843209616080}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.125, y: 0.5, z: 0.05}
+  m_Center: {x: -0.025, y: 0.055424765, z: 0.0013908151}

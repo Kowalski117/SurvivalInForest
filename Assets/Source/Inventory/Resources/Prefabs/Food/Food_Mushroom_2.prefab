@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 8937240945695608303}
   - component: {fileID: 8937240945695608302}
   - component: {fileID: 1031243760436062499}
-  - component: {fileID: 33903938021564881}
   - component: {fileID: 33903938021564882}
+  - component: {fileID: 7102587419343629260}
   m_Layer: 6
   m_Name: Food_Mushroom_2
   m_TagString: Untagged
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 0e4498b9-77d0-4174-9c8f-c22bff036b21
+  _id: 02ba7231-5f25-4006-a7d0-1282d642e83c
 --- !u!114 &1031243760436062499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,20 +136,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!64 &33903938021564881
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8936125653630984870}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 3e9e58f960588aa418bc585c53eec143, type: 3}
 --- !u!54 &33903938021564882
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -166,3 +152,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &7102587419343629260
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8936125653630984870}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.07
+  m_Height: 0.23
+  m_Direction: 2
+  m_Center: {x: 0.0018743798, y: 0.00096477964, z: 0.12}

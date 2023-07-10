@@ -6,6 +6,7 @@ public class GorenjeTimerView : MonoBehaviour
 {
     [SerializeField] private Fire _fire;
     [SerializeField] private TMP_Text _timerText;
+    [SerializeField] private bool _isRotate = false;
 
     private Camera _mainCamera;
 
@@ -27,7 +28,7 @@ public class GorenjeTimerView : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_mainCamera != null && _timerText.gameObject.activeInHierarchy)
+        if (_mainCamera != null && _timerText.gameObject.activeInHierarchy && _isRotate)
         {
             transform.LookAt(transform.position + _mainCamera.transform.rotation * Vector3.forward, _mainCamera.transform.rotation * Vector3.up);
         }

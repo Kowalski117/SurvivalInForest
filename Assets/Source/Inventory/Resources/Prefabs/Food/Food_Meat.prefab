@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 727747226364548973}
   - component: {fileID: 727747226364548974}
   - component: {fileID: 282464361996307433}
-  - component: {fileID: 33876706174890326}
   - component: {fileID: 33876706174890327}
+  - component: {fileID: 8931598136151603270}
   m_Layer: 6
   m_Name: Food_Meat
   m_TagString: Untagged
@@ -136,20 +136,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!64 &33876706174890326
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728100886918063908}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 45524efaedad6224ab0207861e0a468e, type: 3}
 --- !u!54 &33876706174890327
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -166,3 +152,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &8931598136151603270
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728100886918063908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.325, y: 0.19, z: 0.05643527}
+  m_Center: {x: 0.012408644, y: 0.00001702458, z: -0.0000048875822}

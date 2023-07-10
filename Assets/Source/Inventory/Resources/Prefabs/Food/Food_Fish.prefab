@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 409448425798972047}
   - component: {fileID: 409448425798972046}
   - component: {fileID: 7696907540439328249}
-  - component: {fileID: 33887565098260362}
   - component: {fileID: 33887565098260363}
+  - component: {fileID: 6825250252437832556}
   m_Layer: 6
   m_Name: Food_Fish
   m_TagString: Untagged
@@ -136,20 +136,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!64 &33887565098260362
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408245026495506069}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: c3de73d5f05d46442a34d72fe7dc86a6, type: 3}
 --- !u!54 &33887565098260363
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -166,3 +152,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6825250252437832556
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408245026495506069}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.125, z: 0.03}
+  m_Center: {x: 0.02, y: -0.01, z: 0.00005115849}

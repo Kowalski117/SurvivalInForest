@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 2006157863569543925}
   - component: {fileID: 2006157863569543818}
   - component: {fileID: 3705481932318165987}
-  - component: {fileID: 33767161300394829}
   - component: {fileID: 33767161300394830}
+  - component: {fileID: 2522891725501621457}
   m_Layer: 6
   m_Name: Food_Apple
   m_TagString: Untagged
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 1610180d-20d4-4898-b28c-2ee3048b9237
+  _id: 91410300-cd92-4664-b14d-3532c9e751dc
 --- !u!114 &3705481932318165987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,20 +136,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!64 &33767161300394829
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2004534677244297127}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 7fcc56c1bc987d140b131d6ea2568432, type: 3}
 --- !u!54 &33767161300394830
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -166,3 +152,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &2522891725501621457
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004534677244297127}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Center: {x: -0.00035586767, y: -0.00034013772, z: 0}
