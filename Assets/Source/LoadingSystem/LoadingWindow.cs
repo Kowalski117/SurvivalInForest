@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,38 +8,30 @@ public class LoadingWindow : MonoBehaviour
 {
     [SerializeField] private Transform _loadingPanel;
     [SerializeField] private Image _loadingBar;
+    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private TMP_Text _timeText;
 
-    private static LoadingWindow _instance;
+    DateTime time;
+    public event Action OnLoadingComplete;
 
-    private void Awake()
+    public void ShowLoadingWindow(float delay, float skipTime, string name)
     {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        StartCoroutine(LoadingRoutine(delay, skipTime, name));
     }
 
-    public static LoadingWindow Instance
+    private IEnumerator LoadingRoutine(float delay, float skipTime, string name)
     {
-        get { return _instance; }
-    }
-
-    public void ShowLoadingWindow(float value)
-    {
-        StartCoroutine(LoadingRoutine(value));
-    }
-
-    private IEnumerator LoadingRoutine(float value)
-    {
+        DateTime times;
+        _playerInputHandler.ToggleAllInput(false);
         _loadingPanel.gameObject.SetActive(true);
 
+        times = time + TimeSpan.FromHours(skipTime);
+
+        _text.text = $"Крафтится {name}, затраченное время - {time.ToString("HH:mm")}";
         float elapsedTime = 0f;
-        float duration = value;
+        float duration = delay;
 
         while (elapsedTime < duration)
         {
@@ -51,7 +45,10 @@ public class LoadingWindow : MonoBehaviour
         _loadingBar.fillAmount = 1f;
 
         yield return new WaitForSeconds(0.5f);
-
+        
+        _timeHandler.AddTimeInHours(skipTime);
         _loadingPanel.gameObject.SetActive(false);
+        _playerInputHandler.ToggleAllInput(true);
+        OnLoadingComplete?.Invoke();
     }
 }

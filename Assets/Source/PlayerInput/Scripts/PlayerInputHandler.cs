@@ -35,6 +35,11 @@ public class PlayerInputHandler : MonoBehaviour
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
+    public void TogglePersonController(bool visible)
+    {
+        _firstPersonController.TogglePersonController(visible);
+    }
+
     public void ToggleInventoryInput(bool visible)
     {
         _inventoryPlayerInput.enabled = visible;
@@ -73,5 +78,16 @@ public class PlayerInputHandler : MonoBehaviour
     public void ToggleInventoryPanels(bool visible)
     {
          _inventoryPanels.gameObject.SetActive(visible);
+    }
+
+    public void ToggleAllInput(bool visible)
+    {
+        TogglePersonController(visible);
+        ToggleInventoryInput(visible);
+        ToggleSelectionInput(visible);
+        ToggleInteractionInput(visible);
+        ToggleInteractionConstructionInput(visible);
+        ToggleBuildPlayerInput(visible);
+        ToggleWeaponPlayerInput(visible);
     }
 }

@@ -8,6 +8,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private ManualWorkbench _manualWorkbench;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private BuildTool _buildTool;
+    [SerializeField] private LoadingWindow _loadingWindow;
 
     [SerializeField] private Crafting—ategory[] _crafting—ategories;
     [SerializeField] private Transform _containerForSlots;
@@ -37,6 +38,7 @@ public class CraftingHandler : MonoBehaviour
 
         _buildTool.OnCompletedBuild += UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate += UpdateSlot;
+        CrafBuildSlot.OnCraftSlotUpdate += UpdateSlot;
         MouseItemData.OnUpdatedSlots += UpdateSlot;
     }
 
@@ -46,6 +48,7 @@ public class CraftingHandler : MonoBehaviour
 
         _buildTool.OnCompletedBuild -= UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate -= UpdateSlot;
+        CrafBuildSlot.OnCraftSlotUpdate -= UpdateSlot;
         MouseItemData.OnUpdatedSlots -= UpdateSlot;
     }
 
@@ -65,14 +68,14 @@ public class CraftingHandler : MonoBehaviour
         {
             CraftItemSlotView craftSlot = Instantiate(_craftItemSlotPrefab, _containerForSlots);
             _craftItemSlots.Add(craftSlot);
-            craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
+            craftSlot.Init(_inventoryHolder, recipe, craftingCategory, _loadingWindow);
         }
 
         foreach (var recipe in craftingCategory.RecipeBuildingLists)
         {
             CraftBuildSlotView craftSlot = Instantiate(_craftBuildingSlotPrefab, _containerForSlots);
             _craftBuildSlots.Add(craftSlot);
-            craftSlot.Init(_inventoryHolder, recipe, craftingCategory);
+            craftSlot.Init(_inventoryHolder, recipe, craftingCategory, _loadingWindow);
         }
     }
 

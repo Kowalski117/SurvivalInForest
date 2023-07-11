@@ -13,6 +13,7 @@ public class InventoryItemData : ScriptableObject
     [SerializeField] private int _maxStackSize;
     [SerializeField] private GameObject _itemPrefab;
     [SerializeField] private float _gorenjeTime;
+    [SerializeField][HideInInspector] private float _numberUses = 10;
 
     public int Id => _id;
     public ItemType Type => _type;
@@ -21,8 +22,8 @@ public class InventoryItemData : ScriptableObject
     public Sprite Icon => _icon;
     public int MaxStackSize => _maxStackSize;
     public GameObject ItemPrefab => _itemPrefab;
-
     public float GorenjeTime => _gorenjeTime;
+    public float NumberUses => _numberUses;
 
     public void SetId(int id)
     {
@@ -31,7 +32,12 @@ public class InventoryItemData : ScriptableObject
 
     public void UseItem()
     {
+        
+    }
 
+    public void LowerStrength(float amount)
+    {
+        _numberUses -= amount;
     }
 }
 

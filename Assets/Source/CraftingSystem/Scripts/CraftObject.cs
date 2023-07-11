@@ -11,17 +11,25 @@ public class CraftObject : MonoBehaviour
     {
         _building = GetComponentInParent<Building>();
         _collider = GetComponent<SphereCollider>();
-        _collider.enabled = false;
+        if(_building != null )
+            _collider.enabled = false;
     }
 
     private void OnEnable()
     {
-        _building.OnCompletedBuild += EnableCollider;
+        if(_building != null )
+        {
+            _building.OnCompletedBuild += EnableCollider;
+        }
+
     }
 
     private void OnDisable()
     {
-        _building.OnCompletedBuild -= EnableCollider;
+        if (_building != null)
+        {
+            _building.OnCompletedBuild -= EnableCollider;
+        }
     }
 
     private void EnableCollider()

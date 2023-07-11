@@ -12,13 +12,14 @@ public class SleepPanel : MonoBehaviour
     [SerializeField] private Transform _sleepWindow;
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private LoadingWindow _loadingWindow;
 
     private DateTime _sleepTime;
     private bool _isSleepWindowOpen = false;
 
     public Transform SleepWindow => _sleepWindow;
 
-    public event UnityAction OnSleepButton;
+    public static UnityAction<float> OnSleepButton;
 
     private void Start()
     {
@@ -44,17 +45,23 @@ public class SleepPanel : MonoBehaviour
     public void OpenWindow()
     {
         _sleepWindow.gameObject.SetActive(true);
-        _timer.text = _sleepTime.AddSeconds(_survivalHandler.Sleep.MissingValue).ToString("HH:mm");
+        _timer.text = _sleepTime.AddHours(_survivalHandler.Sleep.MissingValue).ToString("HH:mm");
     }
 
     private void SleepButtonClick()
     {
-        LoadingWindow.Instance.ShowLoadingWindow(_survivalHandler.Sleep.MissingValue / 3600);
+        ExitButtonClick();
+        _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, "Кровать");
+        _loadingWindow.OnLoadingComplete += OnLoadingComplete;
+    }
+
+    private void OnLoadingComplete()
+    {
         _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue);
+        OnSleepButton?.Invoke(_survivalHandler.Sleep.MissingValue);
         _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue);
 
-        OnSleepButton?.Invoke();
-        ExitButtonClick();
+        _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
     private void ExitButtonClick()

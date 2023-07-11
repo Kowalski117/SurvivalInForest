@@ -72,4 +72,9 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     {
 
     }
+
+    public void LowerStrength(float amount)
+    {
+        ItemData.LowerStrength(amount);
+    }
 }
