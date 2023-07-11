@@ -14,11 +14,13 @@ public class Fire : MonoBehaviour
     private DateTime _maxTimer;
     private TimeHandler _timeHandler;
     private bool _isFire = false;
+    private SphereCollider _collider;
 
     public event UnityAction<DateTime> OnCompletionTimeUpdate;
 
     private void Awake()
     {
+        _collider = GetComponent<SphereCollider>();
         _timeHandler = FindObjectOfType<TimeHandler>();
         _building = GetComponentInParent<Building>();
         _fireParticle.gameObject.SetActive(false);
@@ -27,11 +29,13 @@ public class Fire : MonoBehaviour
 
     private void OnEnable()
     {
+        SleepPanel.OnSleepButton += ReduceTime;
         _building.OnCompletedBuild += StartFire;
     }
 
     private void OnDisable()
     {
+        SleepPanel.OnSleepButton -= ReduceTime;
         _building.OnCompletedBuild -= StartFire;
     }
 
@@ -39,13 +43,65 @@ public class Fire : MonoBehaviour
     {
         if (_isFire)
         {
-            UpdateTimer();
+            UpdateTimer(_timeHandler.TimeMultiplier);
         }
     }
 
-    public bool AddTime(float time)
+    public bool AddFire(InventorySlot slot)
     {
-        if(_currentTime < _maxTimer)
+        if (slot.ItemData != null && slot.ItemData.GorenjeTime > 0 && slot.Size > 0)
+        {
+            if (AddTime(slot.ItemData.GorenjeTime))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void UpdateTimer(float time)
+    {
+        _currentTime = _currentTime.AddSeconds(-Time.deltaTime * time);
+
+        OnCompletionTimeUpdate?.Invoke(_currentTime);
+
+        if (_currentTime.TimeOfDay.TotalMilliseconds < 10000)
+        {
+            _fireParticle.gameObject.SetActive(false);
+            _craftObject.enabled = false;
+            _isFire = false;
+            _collider.enabled = false;
+        }
+    }
+
+    private void StartFire()
+    {
+        _currentTime = _currentTime + TimeSpan.FromHours(_workingHours);
+        EnableParticle();
+    }
+
+    private void EnableParticle()
+    {
+        _collider.enabled = true;
+        _craftObject.enabled = true;
+        _fireParticle.gameObject.SetActive(true);
+        _isFire = true;
+    }
+
+    private void ReduceTime(float time)
+    {
+        if(_currentTime.TimeOfDay.TotalMilliseconds > 10000)
+        {
+            _currentTime = _currentTime - TimeSpan.FromSeconds(time);
+            OnCompletionTimeUpdate?.Invoke(_currentTime);
+        }
+    }
+
+
+    private bool AddTime(float time)
+    {
+        if (_currentTime < _maxTimer)
         {
             _currentTime = _currentTime.AddHours(time);
             OnCompletionTimeUpdate?.Invoke(_currentTime);
@@ -58,32 +114,5 @@ public class Fire : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    private void UpdateTimer()
-    {
-        _currentTime = _currentTime.AddSeconds(-Time.deltaTime * _timeHandler.TimeMultiplier);
-
-        OnCompletionTimeUpdate?.Invoke(_currentTime);
-
-        if (_currentTime.TimeOfDay.TotalMilliseconds < 10000)
-        {
-            _fireParticle.gameObject.SetActive(false);
-            _craftObject.enabled = false;
-            _isFire = false;
-        }
-    }
-
-    private void StartFire()
-    {
-        _currentTime = _currentTime + TimeSpan.FromHours(_workingHours);
-        EnableParticle();
-    }
-
-    private void EnableParticle()
-    {
-        _craftObject.enabled = true;
-        _fireParticle.gameObject.SetActive(true);
-        _isFire = true;
     }
 }

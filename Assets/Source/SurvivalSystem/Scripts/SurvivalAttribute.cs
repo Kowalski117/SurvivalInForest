@@ -13,7 +13,7 @@ public class SurvivalAttribute : MonoBehaviour
     public event UnityAction<float> OnValueChanged;
     public event UnityAction OnZeroValueReached;
 
-    public float MissingValue => _maxValue - CurrentValue;
+    public float MissingValue => (_maxValue - CurrentValue) / _hourInSeconds;
     public float ValuePercent => CurrentValue / _maxValue;
 
     private void Start()
@@ -39,7 +39,7 @@ public class SurvivalAttribute : MonoBehaviour
     {
         CurrentValue += value * _hourInSeconds;
 
-        if(CurrentValue > _maxValue)
+        if (CurrentValue > _maxValue)
             CurrentValue = _maxValue;
 
         OnValueChanged?.Invoke(ValuePercent);

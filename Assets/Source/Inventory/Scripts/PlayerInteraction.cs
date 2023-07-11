@@ -16,6 +16,7 @@ public class PlayerInteraction : Raycast
     private InventoryItemData _previousItemData;
     private Resource _currentResoure;
     private Animals _currentAnim;
+    private BrokenObject _currentBrokenObject;
 
     private float _nextFire;
 
@@ -36,10 +37,9 @@ public class PlayerInteraction : Raycast
 
     public void UpdateItemData()
     {
-        _previousItemData = _currentItemData; // Добавлено: сохраняем предыдущий выбранный предмет
+        _previousItemData = _currentItemData;
         _currentItemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
 
-        // Добавлено: проверяем, отличается ли текущий предмет от предыдущего
         if (_currentItemData != _previousItemData)
         {
             _playerAnimation.GetItem(_currentItemData);
@@ -88,9 +88,9 @@ public class PlayerInteraction : Raycast
     {
         if (itemData != null)
         {
-            if (itemData is ToolItemData weaponItemData)
+            if (itemData is ToolItemData toolItemData)
             {
-                _currentTool = weaponItemData;
+                _currentTool = toolItemData;
             }
             else
             {
@@ -148,6 +148,17 @@ public class PlayerInteraction : Raycast
 
             if (_currentAnim != null)
                 _currentAnim.TakeDamage(_currentWeapon.Damage, 0);
+            else if (_currentBrokenObject != null)
+                _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
+
+            if (_currentWeapon.NumberUses > 0)
+            {
+                Debug.Log(_currentWeapon.NumberUses);
+                _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.LowerStrength(1);
+
+                if (_currentWeapon.NumberUses <= 0)
+                    _inventory.RemoveInventory(_currentWeapon, 1);
+            }
         }
     }
 
@@ -173,8 +184,18 @@ public class PlayerInteraction : Raycast
                     }
                 }
             }
+            else if (_currentAnim != null)
+            {
+                _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
+            }
+            else if(_currentBrokenObject != null)
+            {
+                _currentBrokenObject.TakeDamage(_currentTool.DamageResources, 0);
+            }
+
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -189,20 +210,33 @@ public class PlayerInteraction : Raycast
             if (resource != null)
                 _currentResoure = resource;
         }
+
+        if (other.TryGetComponent(out BrokenObject brokenObject))
+        {
+            Debug.Log(brokenObject);
+            if (brokenObject != null)
+                _currentBrokenObject = brokenObject;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out Resource resource))
         {
-            if (resource != null)
+            if (_currentResoure != null)
                 _currentResoure = null;
         }
 
         if (other.TryGetComponent(out Animals animals))
         {
-            if (animals != null)
+            if (_currentAnim != null)
                 _currentAnim = null;
+        }
+
+        if (other.TryGetComponent(out BrokenObject brokenObject))
+        {
+            if (_currentBrokenObject != null)
+                _currentBrokenObject = null;
         }
     }
 }

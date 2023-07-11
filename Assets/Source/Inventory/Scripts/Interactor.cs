@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using static PixelCrushers.QuestMachine.Demo.DemoInventory;
 
 public class Interactor : Raycast
 {
@@ -101,7 +102,12 @@ public class Interactor : Raycast
 
             if (hitInfo.collider.TryGetComponent(out Fire fire))
             {
-                AddFire(fire);
+                InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+
+                if (fire.AddFire(slot))
+                {
+                    _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
+                }
             }
         }
     }
@@ -145,19 +151,6 @@ public class Interactor : Raycast
         {
             _currentInteractable.Interact(this, out bool interactSuccessful);
             _currentInteractable = null;
-        }
-    }
-
-    private void AddFire(Fire fire)
-    {
-        InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
-
-        if(slot.ItemData != null && slot.ItemData.GorenjeTime > 0 && slot.Size > 0)
-        {
-            if (fire.AddTime(slot.ItemData.GorenjeTime))
-            {
-                _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
-            }
         }
     }
 
