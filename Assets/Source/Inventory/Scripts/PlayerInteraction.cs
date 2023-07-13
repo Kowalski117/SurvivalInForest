@@ -151,14 +151,10 @@ public class PlayerInteraction : Raycast
             else if (_currentBrokenObject != null)
                 _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
 
-            if (_currentWeapon.NumberUses > 0)
-            {
-                Debug.Log(_currentWeapon.NumberUses);
-                _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.LowerStrength(1);
+            _currentWeapon.LowerStrength(1);
 
-                if (_currentWeapon.NumberUses <= 0)
-                    _inventory.RemoveInventory(_currentWeapon, 1);
-            }
+            if (_currentWeapon.NumberUses <= 0)
+                _inventory.RemoveInventory(_currentWeapon, 1);
         }
     }
 

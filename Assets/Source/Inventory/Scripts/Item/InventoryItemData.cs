@@ -13,7 +13,7 @@ public class InventoryItemData : ScriptableObject
     [SerializeField] private int _maxStackSize;
     [SerializeField] private GameObject _itemPrefab;
     [SerializeField] private float _gorenjeTime;
-    [SerializeField][HideInInspector] private float _numberUses = 10;
+    [SerializeField] private float _numberUses = 10;
 
     public int Id => _id;
     public ItemType Type => _type;
@@ -37,7 +37,8 @@ public class InventoryItemData : ScriptableObject
 
     public void LowerStrength(float amount)
     {
-        _numberUses -= amount;
+        if(_numberUses > 0)
+            _numberUses -= amount;
     }
 }
 
