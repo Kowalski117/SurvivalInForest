@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerInputHandler : MonoBehaviour
 {
     [SerializeField] private FirstPersonController _firstPersonController;
+    [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private SelectionPlayerInput _selectionPlayerInput;
     [SerializeField] private InteractionPlayerInput _interactionPlayerInput;
@@ -31,6 +32,7 @@ public class PlayerInputHandler : MonoBehaviour
     public void SetCursorVisible(bool visible)
     {
         _firstPersonController.TogglePersonController(!visible);
+
         Cursor.visible = visible;
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
     }
@@ -38,6 +40,11 @@ public class PlayerInputHandler : MonoBehaviour
     public void TogglePersonController(bool visible)
     {
         _firstPersonController.TogglePersonController(visible);
+    }
+
+    public void ToggleHotbarDisplay(bool visible)
+    {
+        _hotbarDisplay.ToggleHotbarDisplay(visible);
     }
 
     public void ToggleInventoryInput(bool visible)

@@ -17,6 +17,7 @@ public class PlayerInteraction : Raycast
     private Resource _currentResoure;
     private Animals _currentAnim;
     private BrokenObject _currentBrokenObject;
+    private InventorySlot _currentInventorySlot;
 
     private float _nextFire;
 
@@ -39,6 +40,7 @@ public class PlayerInteraction : Raycast
     {
         _previousItemData = _currentItemData;
         _currentItemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
+        _currentInventorySlot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
 
         if (_currentItemData != _previousItemData)
         {
@@ -151,13 +153,15 @@ public class PlayerInteraction : Raycast
             else if (_currentBrokenObject != null)
                 _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
 
-            if (_currentWeapon.NumberUses > 0)
+            if (_currentInventorySlot.Durability > 0)
             {
-                Debug.Log(_currentWeapon.NumberUses);
-                _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.LowerStrength(1);
+                _currentInventorySlot.LowerStrength(1);
 
-                if (_currentWeapon.NumberUses <= 0)
+                if (_currentInventorySlot.Durability <= 0)
+                {
+                    _currentInventorySlot.UpdateDurabilityIfNeeded();
                     _inventory.RemoveInventory(_currentWeapon, 1);
+                }
             }
         }
     }

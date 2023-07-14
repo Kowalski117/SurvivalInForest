@@ -4,9 +4,6 @@ using UnityEngine;
 public class StaticInventoryDisplay : InventoryDisplay
 {
     [SerializeField] private InventoryHolder _inventoryHolder;
-    [SerializeField] private InventorySlotUI[] _slots;
-
-    public InventorySlotUI[] Slots => _slots;
 
     protected override void Start()
     {
@@ -27,10 +24,16 @@ public class StaticInventoryDisplay : InventoryDisplay
     {
         slotDictionary = new Dictionary<InventorySlotUI, InventorySlot>();
 
-        for (int i = 0; i < _inventoryHolder.Offset; i++)
+        for (int i = 0; i < Slots.Length; i++)
         {
-            slotDictionary.Add(_slots[i], inventorySystem.InventorySlots[i]);
-            _slots[i].Init(inventorySystem.InventorySlots[i]);
+            slotDictionary.Add(Slots[i], inventoryToDisplay.InventorySlots[i + offSet]);
+            Slots[i].Init(inventoryToDisplay.InventorySlots[i + offSet]);
+
+            Slots[i].OnItemClicked += HandleItemSelection;
+            Slots[i].OnItemBeginDrag += HandleBeginDrag;
+            Slots[i].OnItemDroppedOn += HandleSwap;
+            Slots[i].OnItemEndDrag += HandleEndDrag;
+            Slots[i].OnRightMouseClick += HandleShowItemActions;
         }
     }
 

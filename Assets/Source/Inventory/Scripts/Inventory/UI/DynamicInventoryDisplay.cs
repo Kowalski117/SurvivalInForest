@@ -1,13 +1,22 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DynamicInventoryDisplay : InventoryDisplay
 {
-    [SerializeField] private InventorySlotUI[] _slots;
+    [SerializeField] private Transform _parentTransform;
+
+    public Transform ParentTransform => _parentTransform;
 
     protected override void Start()
     {
         base.Start();
+    }
+
+    private void OnEnable()
+    {
+        if (inventorySystem != null)
+            inventorySystem.OnInventorySlotChanged += UpdateSlot;
     }
 
     private void OnDisable()
@@ -34,28 +43,32 @@ public class DynamicInventoryDisplay : InventoryDisplay
         if (inventoryToDisplay == null)
             return;
 
-        // Включаем или выключаем слоты в зависимости от размера инвентаря
-        for (int i = 0; i < _slots.Length; i++)
+        for (int i = 0; i < Slots.Length; i++)
         {
             if (i < inventoryToDisplay.InventorySize)
             {
-                InventorySlotUI viewSlot = _slots[i];
+                InventorySlotUI viewSlot = Slots[i];
                 slotDictionary.Add(viewSlot, inventoryToDisplay.InventorySlots[i + offSet]);
                 viewSlot.gameObject.SetActive(true);
                 viewSlot.Init(inventoryToDisplay.InventorySlots[i + offSet]);
                 viewSlot.UpdateUiSlot();
+
+                Slots[i].OnItemClicked += HandleItemSelection;
+                Slots[i].OnItemBeginDrag += HandleBeginDrag;
+                Slots[i].OnItemDroppedOn += HandleSwap;
+                Slots[i].OnItemEndDrag += HandleEndDrag;
+                Slots[i].OnRightMouseClick += HandleShowItemActions;
             }
             else
             {
-                // Если слоты в массиве _slots закончились, выключаем оставшиеся слоты
-                _slots[i].gameObject.SetActive(false);
+                Slots[i].gameObject.SetActive(false);
             }
         }
     }
 
     private void ClearSlots()
     {
-        foreach (var slot in _slots)
+        foreach (var slot in Slots)
         {
             slot.gameObject.SetActive(false);
         }

@@ -5,15 +5,21 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     [SerializeField] protected InventoryItemData InventoryItemData;
     [SerializeField] protected int ItemId = -1;
     [SerializeField] protected int StackSize;
+    [SerializeField] protected float DurabilityValue;
+
+    private float _currentDurability;
 
     public InventoryItemData ItemData => InventoryItemData;
     public int Size => StackSize;
+    public float Durability => DurabilityValue;
 
     public void ClearSlot()
     {
         InventoryItemData = null;
         ItemId = -1;
         StackSize = -1;
+        DurabilityValue = - 1;
+        _currentDurability = -1;
     }
 
     public void AssignItem(InventorySlot inventorySlot)
@@ -27,6 +33,7 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
             InventoryItemData = inventorySlot.ItemData;
             ItemId = ItemData.Id;
             StackSize = 0;
+            DurabilityValue = inventorySlot.Durability;
             AddToStack(inventorySlot.StackSize);
         }
     }
@@ -42,6 +49,7 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
             InventoryItemData = data; 
             ItemId = data.Id;
             StackSize = 0;
+            DurabilityValue = data.Durability;
             AddToStack(amount);
         }
     }
@@ -49,6 +57,9 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     public void AddToStack(int amount)
     {
         StackSize += amount;
+
+        if (StackSize > 1)
+            _currentDurability = DurabilityValue;
     }
 
     public void RemoveFromStack(int amount)
@@ -75,6 +86,22 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
 
     public void LowerStrength(float amount)
     {
-        ItemData.LowerStrength(amount);
+        DurabilityValue -= amount;
     }
+
+    public void UpdateDurabilityIfNeeded()
+    {
+        if (DurabilityValue <= 0 && StackSize > 1)
+            DurabilityValue = _currentDurability;
+    }
+}
+
+public struct InventoryItem
+{
+    [SerializeField] private InventoryItemData _inventoryItemData;
+    [SerializeField] private int _stackSize;
+    [SerializeField] private int _itemId;
+    [SerializeField] private bool _isEmpty => _inventoryItemData == null;
+
+    
 }

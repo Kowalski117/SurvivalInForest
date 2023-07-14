@@ -28,7 +28,7 @@ public class ItemInteractPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        InventorySlotUI.OnInteract += Init;
+        //InventorySlotUI.OnInteract += Init;
         _playerInputHandler.InventoryPlayerInput.OnToggleInventory += ExitBttonClick;
         _useButton.onClick.AddListener(UseItemButtonClick);
         _discardButton.onClick.AddListener(DiscardButtonClick);
@@ -37,7 +37,7 @@ public class ItemInteractPanel : MonoBehaviour
 
     private void OnDisable()
     {
-        InventorySlotUI.OnInteract -= Init;
+        //InventorySlotUI.OnInteract -= Init;
         _playerInputHandler.InventoryPlayerInput.OnToggleInventory += ExitBttonClick;
         _useButton.onClick.RemoveListener(UseItemButtonClick);
         _discardButton.onClick.RemoveListener(DiscardButtonClick);

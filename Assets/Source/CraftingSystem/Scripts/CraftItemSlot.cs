@@ -32,7 +32,7 @@ public class CraftItemSlot : CraftSlot
                 playerInventoryHolder.RemoveInventory(ingredient.ItemRequired, ingredient.AmountRequured);
             }
 
-            playerInventoryHolder.AddToInventory(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, true);
+            playerInventoryHolder.AddToInventory(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, craftRecipe.CraftedItem.Durability);
             OnCraftSlotUpdate?.Invoke();
         }
     }

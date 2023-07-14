@@ -102,12 +102,12 @@ public class Interactor : Raycast
 
             if (hitInfo.collider.TryGetComponent(out Fire fire))
             {
-                InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+                ////InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
 
-                if (fire.AddFire(slot))
-                {
-                    _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
-                }
+                //if (fire.AddFire(slot))
+                //{
+                //    _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
+                //}
             }
         }
     }
@@ -131,7 +131,7 @@ public class Interactor : Raycast
     {
         if (_currentItemPickUp != null)
         {
-            if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, 1))
+            if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, 1, _currentItemPickUp.Durability))
             {
                 _currentItemPickUp.PicUp();
                 _currentItemPickUp = null;
