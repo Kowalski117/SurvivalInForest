@@ -16,18 +16,18 @@ public class ItemPickUp : MonoBehaviour
     {
         _id = GetComponent<UniqueID>().Id;
         _durability = _itemData.Durability;
-        SaveLoad.OnLoadData += LoadGame;
+        //SaveLoad.OnLoadData += LoadGame;
         _itemSaveData = new ItemPickUpSaveData(_itemData, transform.position, transform.rotation, _durability);
     }
 
     private void Start()
     {
-        SaveGameHandler.Data.ActiveItems.Add(_id, _itemSaveData);
+        //SaveGameHandler.Data.ActiveItems.Add(_id, _itemSaveData);
     }
 
     public void PicUp()
     {
-        SaveGameHandler.Data.CollectedItems.Add(_id);
+        //SaveGameHandler.Data.CollectedItems.Add(_id);
         Destroy(this.gameObject); // переделать для оптимизации
     }
 
@@ -39,9 +39,9 @@ public class ItemPickUp : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (SaveGameHandler.Data.ActiveItems.ContainsKey(_id))
-            SaveGameHandler.Data.ActiveItems.Remove(_id);
-        SaveLoad.OnLoadData -= LoadGame;
+        //if (SaveGameHandler.Data.ActiveItems.ContainsKey(_id))
+        //    SaveGameHandler.Data.ActiveItems.Remove(_id);
+        //SaveLoad.OnLoadData -= LoadGame;
     }
 }
 

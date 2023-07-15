@@ -111,6 +111,7 @@ public abstract class InventoryDisplay : MonoBehaviour
                 MouseInventoryItem.UpdateMouseSlot(inventorySlotUI.AssignedInventorySlot);
                 _currentSlot = inventorySlotUI;
                 inventorySlotUI.CleanSlot();
+                Debug.Log("dssdfd");
                 return;
             }
         }
@@ -187,7 +188,7 @@ public abstract class InventoryDisplay : MonoBehaviour
                     clickedUISlot.AssignedInventorySlot.AddToStack(leftInStack);
                     clickedUISlot.UpdateUiSlot();
 
-                    var newItem = new InventorySlot(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData, remainingOnMouse);
+                    var newItem = new InventorySlot(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData, remainingOnMouse, clickedUISlot.AssignedInventorySlot.Durability);
                     MouseInventoryItem.CleanSlot();
                     MouseInventoryItem.UpdateMouseSlot(newItem);
                     return;

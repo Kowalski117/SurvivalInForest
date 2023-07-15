@@ -1,15 +1,16 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class InventorySlot : ItemSlot
 {
-    public InventorySlot(InventoryItemData source, int amount)
+    public InventorySlot(InventoryItemData source, int amount, float durability)
     {
         InventoryItemData = source;
         ItemId = ItemData.Id;
         StackSize = amount;
-        DurabilityValue = source.Durability;
+        MaxDurabilityValue = source.Durability;
+        _currentDurability = durability;
     }
 
     public InventorySlot()
@@ -22,7 +23,8 @@ public class InventorySlot : ItemSlot
         InventoryItemData = data;
         ItemId = ItemData.Id;
         StackSize = amount;
-        DurabilityValue = durability;
+        MaxDurabilityValue = data.Durability;
+        _currentDurability = durability;
     }
 
     public bool EnoughRoomLeftInStack(int amountToAdd, out int amountRemaining)
@@ -50,13 +52,7 @@ public class InventorySlot : ItemSlot
         int halfStack = Mathf.RoundToInt(StackSize / 2);
         RemoveFromStack(halfStack);
 
-        splitSlot = new InventorySlot(ItemData, halfStack);
+        splitSlot = new InventorySlot(ItemData, halfStack, _currentDurability);
         return true;
     }
-
-    public void UpdateDurability(float durability)
-    {
-        DurabilityValue = durability;
-    }
 }
-

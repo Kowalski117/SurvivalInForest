@@ -1,24 +1,28 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class ItemSlot : ISerializationCallbackReceiver
 {
     [SerializeField] protected InventoryItemData InventoryItemData;
     [SerializeField] protected int ItemId = -1;
     [SerializeField] protected int StackSize;
-    [SerializeField] protected float DurabilityValue;
+    [SerializeField] protected float MaxDurabilityValue;
 
-    private float _currentDurability;
+    protected float _currentDurability;
 
+    public event UnityAction<float> OnDurabilityChanged;
+
+    public float DurabilityPercent => _currentDurability / MaxDurabilityValue;
     public InventoryItemData ItemData => InventoryItemData;
     public int Size => StackSize;
-    public float Durability => DurabilityValue;
+    public float Durability => _currentDurability;
 
     public void ClearSlot()
     {
         InventoryItemData = null;
         ItemId = -1;
         StackSize = -1;
-        DurabilityValue = - 1;
+        MaxDurabilityValue = -1;
         _currentDurability = -1;
     }
 
@@ -33,12 +37,13 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
             InventoryItemData = inventorySlot.ItemData;
             ItemId = ItemData.Id;
             StackSize = 0;
-            DurabilityValue = inventorySlot.Durability;
+            MaxDurabilityValue = inventorySlot.ItemData.Durability;
+            _currentDurability = inventorySlot.Durability;
             AddToStack(inventorySlot.StackSize);
         }
     }
 
-    public void AssignItem(InventoryItemData data, int amount)
+    public void AssignItem(InventoryItemData data, int amount, float durability)
     {
         if (ItemData == data)
         {
@@ -49,7 +54,8 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
             InventoryItemData = data; 
             ItemId = data.Id;
             StackSize = 0;
-            DurabilityValue = data.Durability;
+            MaxDurabilityValue = data.Durability;
+            _currentDurability = durability;
             AddToStack(amount);
         }
     }
@@ -58,8 +64,8 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     {
         StackSize += amount;
 
-        if (StackSize > 1)
-            _currentDurability = DurabilityValue;
+        //if (StackSize >= 1)
+        //    _currentDurability = MaxDurabilityValue;
     }
 
     public void RemoveFromStack(int amount)
@@ -86,22 +92,12 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
 
     public void LowerStrength(float amount)
     {
-        DurabilityValue -= amount;
+        _currentDurability -= amount;
     }
 
     public void UpdateDurabilityIfNeeded()
     {
-        if (DurabilityValue <= 0 && StackSize > 1)
-            DurabilityValue = _currentDurability;
+        if (_currentDurability <= 0 && StackSize > 1)
+            _currentDurability = MaxDurabilityValue;
     }
-}
-
-public struct InventoryItem
-{
-    [SerializeField] private InventoryItemData _inventoryItemData;
-    [SerializeField] private int _stackSize;
-    [SerializeField] private int _itemId;
-    [SerializeField] private bool _isEmpty => _inventoryItemData == null;
-
-    
 }

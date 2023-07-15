@@ -83,18 +83,8 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            if (_assignedInventorySlot.ItemData != null)
-            {
-                OnRightMouseClick?.Invoke(this);
-            }
-        }
-        else
-        {
-            _borderImage.enabled = true;
-            OnItemClicked?.Invoke(this);
-        }
+        _borderImage.enabled = true;
+        OnItemClicked?.Invoke(this);
     }
 
     public void OnBeginDrag(PointerEventData eventData)

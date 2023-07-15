@@ -136,6 +136,8 @@ public class PlayerInteraction : Raycast
                         ItemPickUp bullet = Instantiate(_currentWeapon.Bullet, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
                     }
                 }
+
+                UpdateDurabilityItem();
             }
         }
     }
@@ -149,19 +151,14 @@ public class PlayerInteraction : Raycast
             _playerAnimation.Hit(_currentWeapon);
 
             if (_currentAnim != null)
-                _currentAnim.TakeDamage(_currentWeapon.Damage, 0);
-            else if (_currentBrokenObject != null)
-                _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
-
-            if (_currentInventorySlot.Durability > 0)
             {
-                _currentInventorySlot.LowerStrength(1);
-
-                if (_currentInventorySlot.Durability <= 0)
-                {
-                    _currentInventorySlot.UpdateDurabilityIfNeeded();
-                    _inventory.RemoveInventory(_currentWeapon, 1);
-                }
+                _currentAnim.TakeDamage(_currentWeapon.Damage, 0);
+                UpdateDurabilityItem();
+            }
+            else if (_currentBrokenObject != null)
+            {
+                _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
+                UpdateDurabilityItem();
             }
         }
     }
@@ -180,6 +177,7 @@ public class PlayerInteraction : Raycast
                 if (_currentResoure.ExtractionType == _currentTool.ToolType)
                 {
                     _currentResoure.TakeDamage(_currentTool.DamageResources, 0);
+                    UpdateDurabilityItem();
 
                     if (_currentResoure.Health <= 0)
                     {
@@ -191,15 +189,30 @@ public class PlayerInteraction : Raycast
             else if (_currentAnim != null)
             {
                 _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
+                UpdateDurabilityItem();
             }
             else if(_currentBrokenObject != null)
             {
                 _currentBrokenObject.TakeDamage(_currentTool.DamageResources, 0);
+                UpdateDurabilityItem();
             }
 
         }
     }
 
+    private void UpdateDurabilityItem()
+    {
+        if (_currentInventorySlot.Durability > 0)
+        {
+            _currentInventorySlot.LowerStrength(1);
+
+            if (_currentInventorySlot.Durability <= 0)
+            {
+                _currentInventorySlot.UpdateDurabilityIfNeeded();
+                _inventory.RemoveInventory(_currentInventorySlot.ItemData, 1);
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
