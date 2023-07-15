@@ -108,4 +108,12 @@ public class TimeHandler : MonoBehaviour
 
         return difference;
     }
+
+    public void TimeScale()
+    {
+        if (_timeMultiplier == 60)
+            _timeMultiplier = 6000;
+        else
+            _timeMultiplier = 60;
+    }
 }
