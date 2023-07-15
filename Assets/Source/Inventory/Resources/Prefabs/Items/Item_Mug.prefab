@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 2486ae0d-a6db-4245-b7aa-e6e0feda7bd5
+  _id: 048fe0be-c376-410d-b997-9bc4b9065b69
 --- !u!114 &1495356798148328046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +118,8 @@ MonoBehaviour:
     _itemData: {fileID: 0}
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
+    _durability: 0
+  _durability: 0
 --- !u!114 &1910670097661087515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +162,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0

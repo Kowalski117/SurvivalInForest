@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 2685972454109167249}
   - component: {fileID: 3168441736334629834}
   - component: {fileID: 5693164074243054664}
-  - component: {fileID: 1316382809}
   - component: {fileID: 5364156888240803335}
+  - component: {fileID: 983968520}
   m_Layer: 6
   m_Name: Weapon_Bow
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: d3bd55ab-9c0c-4d4b-9c01-779946f7932b
+  _id: 1f8ad84a-e230-4999-87e5-3d318379dea0
 --- !u!114 &3168441736334629834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +118,8 @@ MonoBehaviour:
     _itemData: {fileID: 0}
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
+    _durability: 0
+  _durability: 0
 --- !u!114 &5693164074243054664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,22 +138,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!54 &1316382809
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687467787669184739}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &5364156888240803335
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -165,3 +151,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.65, y: 0.225, z: 0.04}
   m_Center: {x: 0.00013865535, y: -0.005605014, z: -0.00030600745}
+--- !u!54 &983968520
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687467787669184739}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
