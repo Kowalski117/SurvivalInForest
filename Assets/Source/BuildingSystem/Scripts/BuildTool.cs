@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class BuildTool : MonoBehaviour
 {
     [SerializeField] private PlayerAnimation _playerAnimation;
+    [SerializeField] private LoadingWindow _loadingWindow;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private float _rotateSnapAngle = 45f;
@@ -58,10 +59,11 @@ public class BuildTool : MonoBehaviour
     }
 
     private void ChoosePart(BuildingRecipe buildingRecipe) 
-    { 
-        if(_deleteModeEnabled)
+    {
+        _recipe = buildingRecipe;
+        if (_deleteModeEnabled)
         {
-            if(_targetBuilding != null && _targetBuilding.FlaggedForDelete)
+            if (_targetBuilding != null && _targetBuilding.FlaggedForDelete)
             {
                 _targetBuilding.RemoveDeleteFlag();
 
@@ -72,9 +74,8 @@ public class BuildTool : MonoBehaviour
 
         DeleteObjectPreview();
 
-        _recipe = buildingRecipe;
-        _spawnBuilding = Instantiate(buildingRecipe.BuildingData.Prefab, _containerBuildings);
-        _spawnBuilding.Init(buildingRecipe.BuildingData);
+        _spawnBuilding = Instantiate(_recipe.BuildingData.Prefab, _containerBuildings);
+        _spawnBuilding.Init(_recipe.BuildingData);
         _spawnBuilding.transform.rotation = _lastRotation;
         OnCreateBuild?.Invoke();
         _playerAnimation.Build();

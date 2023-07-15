@@ -28,7 +28,7 @@ public class ItemInteractPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        InventorySlotUI.OnInteract += Init;
+        //InventorySlotUI.OnInteract += Init;
         _playerInputHandler.InventoryPlayerInput.OnToggleInventory += ExitBttonClick;
         _useButton.onClick.AddListener(UseItemButtonClick);
         _discardButton.onClick.AddListener(DiscardButtonClick);
@@ -37,7 +37,7 @@ public class ItemInteractPanel : MonoBehaviour
 
     private void OnDisable()
     {
-        InventorySlotUI.OnInteract -= Init;
+        //InventorySlotUI.OnInteract -= Init;
         _playerInputHandler.InventoryPlayerInput.OnToggleInventory += ExitBttonClick;
         _useButton.onClick.RemoveListener(UseItemButtonClick);
         _discardButton.onClick.RemoveListener(DiscardButtonClick);
@@ -66,13 +66,17 @@ public class ItemInteractPanel : MonoBehaviour
 
     private void UseItemButtonClick()
     {
-        if (_inventoryHolder.RemoveInventory(_currentSlot.ItemData, 1))
+        if(_currentSlot.ItemData != null)
         {
             if (_currentSlot.ItemData is FoodItemData foodItemData)
             {
                 _survivalHandler.Hunger.ReplenishValue(foodItemData.AmountSatiety);
                 _survivalHandler.Thirst.ReplenishValue(foodItemData.AmountWater);
+
+                if(foodItemData.EmptyDishes != null)
+                    _inventoryHolder.AddToInventory(foodItemData.EmptyDishes, 1);
             }
+            _inventoryHolder.RemoveInventory(_currentSlot.ItemData, 1);
         }
 
         UpdateState();

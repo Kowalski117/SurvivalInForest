@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class UIHandler : MonoBehaviour
@@ -6,6 +7,7 @@ public class UIHandler : MonoBehaviour
 
     [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
+    [SerializeField] private StaticInventoryDisplay _playerHotbarInventory;
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
@@ -13,7 +15,7 @@ public class UIHandler : MonoBehaviour
     private void Awake()
     {
         _inventoryPanel.gameObject.SetActive(false);
-        _playerBackpackPanel.gameObject.SetActive(false);
+        _playerBackpackPanel.ParentTransform.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -51,16 +53,20 @@ public class UIHandler : MonoBehaviour
         {
             _playerInputHandler.ToggleBuildPlayerInput(false);
             _playerInputHandler.ToggleWeaponPlayerInput(false);
-            _playerBackpackPanel.gameObject.SetActive(true);
+            _playerBackpackPanel.ParentTransform.gameObject.SetActive(true);
             _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
+            _playerInputHandler.ToggleHotbarDisplay(false);
         }
         else
         {
-            _playerBackpackPanel.gameObject.SetActive(false);
+            _playerBackpackPanel.ResetSelection();
+            _playerHotbarInventory.ResetSelection();
+            _playerBackpackPanel.ParentTransform.gameObject.SetActive(false);
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleWeaponPlayerInput(true);
+            _playerInputHandler.ToggleHotbarDisplay(true);
         }
     }
 }

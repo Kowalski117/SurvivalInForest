@@ -1,42 +1,33 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
+public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
 {
-    [SerializeField] private Image _imageSprite;
+    [SerializeField] private Image _iconImage;
+    [SerializeField] private Image _borderImage;
     [SerializeField] private TMP_Text _itemCount;
-    [SerializeField] private GameObject _slotHighlight;
     [SerializeField] private InventorySlot _assignedInventorySlot;
 
-    private Button _button;
+    private bool _empty = true;
 
-    public InventoryDisplay ParentDisplay { get; private set; }
-
-    public static UnityAction<InventorySlot> OnInteract;
+    public event Action<InventorySlotUI> OnItemClicked;
+    public event Action<InventorySlotUI> OnItemDroppedOn;
+    public event Action<InventorySlotUI> OnItemBeginDrag;
+    public event Action<InventorySlotUI> OnItemEndDrag;
+    public event Action<InventorySlotUI> OnRightMouseClick;
 
     public InventorySlot AssignedInventorySlot => _assignedInventorySlot;
 
     private void Awake()
     {
-        _button = GetComponent<Button>();
         CleanSlot();
-        _imageSprite.preserveAspect = true;
-        ParentDisplay = transform.parent.GetComponent<InventoryDisplay>();
-    }
-
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnUISlotClick);
-    }
-
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnUISlotClick);
+        Deselect();
+        _iconImage.preserveAspect = true;
     }
 
     public void Init(InventorySlot slot)
@@ -45,57 +36,76 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
         UpdateUiSlot();
     }
 
-    public void UpdateUISlot(InventorySlot slot)
+    public void Deselect()
     {
-        if (slot.ItemData != null)
+        _borderImage.enabled = false;
+    }
+
+    public void Select()
+    {
+        _borderImage.enabled = true;
+    }
+
+    public void UpdateUiSlot()
+    {
+        if (_assignedInventorySlot.ItemData != null)
         {
-            _imageSprite.sprite = slot.ItemData.Icon;
-            _imageSprite.color = Color.white;
+            _iconImage.gameObject.SetActive(true);
+            _iconImage.sprite = _assignedInventorySlot.ItemData.Icon;
+            _iconImage.color = Color.white;
+            _empty = false;
         }
         else
         {
             CleanSlot();
         }
 
-        if (slot.Size > 1)
-            _itemCount.text = slot.Size.ToString();
+        if (_assignedInventorySlot.Size > 1)
+            _itemCount.text = _assignedInventorySlot.Size.ToString();
         else
             _itemCount.text = "";
-    }
-
-    public void UpdateUiSlot()
-    {
-        if (_assignedInventorySlot != null)
-            UpdateUISlot(_assignedInventorySlot);
-
     }
 
     public void CleanSlot()
     {
         _assignedInventorySlot?.ClearSlot();
-        _imageSprite.sprite = null;
-        _imageSprite.color = Color.clear;
+        _iconImage.sprite = null;
+        _iconImage.color = Color.clear;
         _itemCount.text = "";
-    }
-
-    public void OnUISlotClick()
-    {
-        ParentDisplay?.SlotClicked(this);
+        _iconImage.gameObject.SetActive(false);
+        _empty = true;
     }
 
     public void ToggleHighlight()
     {
-        _slotHighlight.SetActive(!_slotHighlight.activeInHierarchy);
+        _borderImage.enabled = !_borderImage.enabled;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            if(_assignedInventorySlot.ItemData != null)
-            {
-                OnInteract?.Invoke(_assignedInventorySlot);
-            }
-        }
+        _borderImage.enabled = true;
+        OnItemClicked?.Invoke(this);
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (_empty)
+            return;
+        OnItemBeginDrag?.Invoke(this);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        OnItemEndDrag?.Invoke(this);
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        OnItemDroppedOn?.Invoke(this);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+
     }
 }

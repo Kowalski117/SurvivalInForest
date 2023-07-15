@@ -5,6 +5,8 @@ public class HotbarDisplay : StaticInventoryDisplay
     private int _maxIndexSize = 6;
     private int _currentIndex = 0;
 
+    private bool _isActive = true;
+
     private PlayerInput _playerInput;
 
     public event UnityAction<InventoryItemData> ItemClicked;
@@ -66,20 +68,29 @@ public class HotbarDisplay : StaticInventoryDisplay
         return Slots[_currentIndex];
     }
 
-    private void ChangeIndex(int direction)
+    public void ToggleHotbarDisplay(bool isActive)
     {
         Slots[_currentIndex].ToggleHighlight();
-        _currentIndex += direction;
+        _isActive = isActive;
+    }
 
-        if (_currentIndex > _maxIndexSize)
-            _currentIndex = 0;
+    private void ChangeIndex(int direction)
+    {
+        if (_isActive)
+        {
+            Slots[_currentIndex].ToggleHighlight();
+            _currentIndex += direction;
 
-        if (_currentIndex < 0)
-            _currentIndex = _maxIndexSize;
+            if (_currentIndex > _maxIndexSize)
+                _currentIndex = 0;
 
-        Slots[_currentIndex].ToggleHighlight();
+            if (_currentIndex < 0)
+                _currentIndex = _maxIndexSize;
 
-        ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
+            Slots[_currentIndex].ToggleHighlight();
+
+            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
+        }
     }
 
     private void SetIndex(int newIndex)
@@ -103,14 +114,18 @@ public class HotbarDisplay : StaticInventoryDisplay
 
     private void UseItem()
     {
-        if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
-            Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
+        if (_isActive)
+        {
+            if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
+                Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
 
-        ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
+            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
+        }
     }
 
     private void Hotbar(int index)
     {
-        SetIndex(index);
+        if(_isActive)
+            SetIndex(index);
     }
 }

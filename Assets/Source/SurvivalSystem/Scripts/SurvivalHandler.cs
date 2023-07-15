@@ -1,7 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SurvivalHandler : MonoBehaviour
 {
+    [SerializeField] private PlayerInventoryHolder _playerInventory;
     [SerializeField] private PlayerHealth _health;
     [SerializeField] private SurvivalAttribute _hunger;
     [SerializeField] private SurvivalAttribute _thirst;
@@ -33,6 +35,19 @@ public class SurvivalHandler : MonoBehaviour
                 _lookTimer = 0;
             }
         }
+    }
+
+    public void Eat(InventorySlot slot)
+    {
+        if (slot.ItemData is FoodItemData foodItemData)
+        {
+            _hunger.ReplenishValue(foodItemData.AmountSatiety);
+            _thirst.ReplenishValue(foodItemData.AmountWater);
+
+            if (foodItemData.EmptyDishes != null)
+                _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+        }
+        _playerInventory.RemoveInventory(slot.ItemData, 1);
     }
 
     private void HandleTimeUpdate()

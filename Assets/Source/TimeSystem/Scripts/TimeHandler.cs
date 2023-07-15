@@ -46,6 +46,12 @@ public class TimeHandler : MonoBehaviour
         OnTimeUpdate?.Invoke(_currentTime);
     }
 
+    public void AddTimeInHours(float time)
+    {
+        _currentTime = _currentTime.AddHours(time);
+        OnTimeUpdate?.Invoke(_currentTime);
+    }
+
     private void UpdateTimeDay()
     {
         _currentTime = _currentTime.AddSeconds(Time.deltaTime * _timeMultiplier);

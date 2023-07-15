@@ -6,6 +6,7 @@ public class CrafBuildSlot : CraftSlot
 {
     private CraftBuildSlotView _slotView;
 
+    public static UnityAction OnCraftSlotUpdate;
     public static UnityAction<BuildingRecipe> OnCreateRecipeButtonClick;
 
     private void Awake()
@@ -25,7 +26,7 @@ public class CrafBuildSlot : CraftSlot
 
     private void CraftingItem(BuildingRecipe craftRecipe)
     {
-        //LoadingWindow.Instance.ShowLoadingWindow(2);
+        OnCraftSlotUpdate?.Invoke();
         OnCreateRecipeButtonClick?.Invoke(craftRecipe);
     }
 }

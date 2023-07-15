@@ -48,7 +48,7 @@ public class ExchangerSlotView : MonoBehaviour
             {
                 foreach (var itemToReceive in _shopSlot.ItemsToReceive)
                 {
-                    _inventoryHolder.AddToInventory(itemToReceive.ItemData, itemToReceive.Amount * _amount);
+                    _inventoryHolder.AddToInventory(itemToReceive.ItemData, itemToReceive.Amount * _amount, itemToReceive.ItemData.Durability);
                 }
 
                 gameObject.SetActive(false);

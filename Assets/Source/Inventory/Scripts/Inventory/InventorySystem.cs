@@ -9,6 +9,7 @@ public class InventorySystem
     [SerializeField] private List<InventorySlot> _inventorySlots;
 
     public event UnityAction<InventorySlot> OnInventorySlotChanged;
+    public event UnityAction<int, int> OnSwapItem;
 
     public List<InventorySlot> InventorySlots => _inventorySlots;
     public int InventorySize => _inventorySlots.Count;
@@ -18,14 +19,9 @@ public class InventorySystem
         CreateInventory(size);
     }
 
-    public InventorySystem(int size, int gold)
+    public bool AddToInventory(InventoryItemData item, int amount, float durability)
     {
-        CreateInventory(size);
-    }
-
-    public bool AddToInventory(InventoryItemData item, int amount)
-    {
-        if(ContainsItem(item, out List<InventorySlot> inventorySlots))
+        if (ContainsItem(item, out List<InventorySlot> inventorySlots))
         {
             foreach (var slot in inventorySlots)
             {
@@ -37,12 +33,12 @@ public class InventorySystem
                 }
             }
         }
-        
-        if(HasFreeSlot(out InventorySlot freeSlot))
+
+        if (HasFreeSlot(out InventorySlot freeSlot))
         {
             if (freeSlot.EnoughRoomLeftInStack(amount))
             {
-                freeSlot.UpdateInventorySlot(item, amount);
+                freeSlot.UpdateInventorySlot(item, amount, durability);
                 OnInventorySlotChanged?.Invoke(freeSlot);
                 return true;
             }
@@ -92,28 +88,6 @@ public class InventorySystem
     {
         freeSlot = _inventorySlots.FirstOrDefault(i => i.ItemData == null);
         return freeSlot == null ? false : true;
-    }
-
-    public bool CheckInventoryRemaining(Dictionary<InventoryItemData, int> shoppingCart)
-    {
-        var clonedSystem = new InventorySystem(this.InventorySize);
-
-        for (int i = 0; i < InventorySize; i++)
-        {
-            clonedSystem.InventorySlots[i].AssignItem(this.InventorySlots[i].ItemData, this.InventorySlots[i].Size);
-
-        }
-
-        foreach (var item in shoppingCart)
-        {
-            for (int i = 0; i < item.Value; i++)
-            {
-                if (!clonedSystem.AddToInventory(item.Key, 1))
-                    return false;
-            }
-        }
-
-        return true;
     }
 
     private void CreateInventory(int size)

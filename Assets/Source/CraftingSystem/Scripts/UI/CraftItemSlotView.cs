@@ -18,10 +18,11 @@ public class CraftItemSlotView : CraftSlotView
         CraftedButton.onClick.RemoveListener(OnCreateRecipeButton);
     }
 
-    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, Crafting—ategory Òategory)
+    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, Crafting—ategory Òategory, LoadingWindow loadingWindow)
     {
         _recipe = craftRecipe;
         InventoryHolder = playerInventory;
+        LoadingWindow = loadingWindow;
 
         Crafting—ategory = Òategory;
 
@@ -39,6 +40,14 @@ public class CraftItemSlotView : CraftSlotView
     public void OnCreateRecipeButton()
     {
         if (InventoryHolder.CheckIfCanCraft(_recipe))
-            OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
+        {
+            LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName);
+            LoadingWindow.OnLoadingComplete += OnLoadingComplete;
+        }
+    }
+
+    private void OnLoadingComplete()
+    {
+        OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
     }
 }

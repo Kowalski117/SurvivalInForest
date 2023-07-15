@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using static PixelCrushers.QuestMachine.Demo.DemoInventory;
 
 public class Interactor : Raycast
 {
@@ -101,7 +102,12 @@ public class Interactor : Raycast
 
             if (hitInfo.collider.TryGetComponent(out Fire fire))
             {
-                AddFire(fire);
+                InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+
+                if (fire.AddFire(slot))
+                {
+                    _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
+                }
             }
         }
     }
@@ -125,7 +131,7 @@ public class Interactor : Raycast
     {
         if (_currentItemPickUp != null)
         {
-            if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, 1))
+            if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, 1, _currentItemPickUp.Durability))
             {
                 _currentItemPickUp.PicUp();
                 _currentItemPickUp = null;
@@ -139,25 +145,21 @@ public class Interactor : Raycast
         _isStartingPick = false;
     }
 
+    public void RemoveItem(InventorySlot inventorySlot)
+    {
+        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.ItemData) >= 0)
+        {
+            Instantiate(inventorySlot.ItemData.ItemPrefab, _buildTool.transform.position + _buildTool.transform.forward * RayDistance, Quaternion.identity);
+            _playerInventoryHolder.RemoveInventory(inventorySlot.ItemData, 1);
+        }
+    }
+
     private void ClearIInteractable()
     {
         if (_currentInteractable != null)
         {
             _currentInteractable.Interact(this, out bool interactSuccessful);
             _currentInteractable = null;
-        }
-    }
-
-    private void AddFire(Fire fire)
-    {
-        InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
-
-        if(slot.ItemData != null && slot.ItemData.GorenjeTime > 0 && slot.Size > 0)
-        {
-            if (fire.AddTime(slot.ItemData.GorenjeTime))
-            {
-                _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
-            }
         }
     }
 
