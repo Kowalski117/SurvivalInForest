@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class LoadingWindow : MonoBehaviour
@@ -13,12 +14,19 @@ public class LoadingWindow : MonoBehaviour
     [SerializeField] private TMP_Text _text;
     [SerializeField] private TMP_Text _timeText;
 
-    DateTime time;
-    public event Action OnLoadingComplete;
+    private DateTime time;
+    private Coroutine _coroutine;
+    public event UnityAction OnLoadingComplete;
 
     public void ShowLoadingWindow(float delay, float skipTime, string name)
     {
-        StartCoroutine(LoadingRoutine(delay, skipTime, name));
+        if(_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _coroutine = StartCoroutine(LoadingRoutine(delay, skipTime, name));
     }
 
     private IEnumerator LoadingRoutine(float delay, float skipTime, string name)

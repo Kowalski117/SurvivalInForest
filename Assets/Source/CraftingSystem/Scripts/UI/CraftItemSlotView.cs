@@ -1,4 +1,6 @@
+using System;
 using UnityEngine.Events;
+using UnityEngine;
 
 public class CraftItemSlotView : CraftSlotView
 {
@@ -49,5 +51,6 @@ public class CraftItemSlotView : CraftSlotView
     private void OnLoadingComplete()
     {
         OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
+        LoadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 }

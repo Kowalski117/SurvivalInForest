@@ -14,11 +14,6 @@ public abstract class InventoryDisplay : MonoBehaviour
     protected InventorySystem inventorySystem;
     protected Dictionary<InventorySlotUI, InventorySlot> slotDictionary;
 
-    public event Action<int> OnDescriptionRequested;
-    public event Action<int> OnItemActionRequested;
-    public event Action<int> OnStartDragging;
-    public event Action<int, int> OnSwapItem;
-
     public InventorySystem InventorySystem => inventorySystem;
     public InventorySlotUI[] SlotsUI => Slots;
     public Dictionary<InventorySlotUI, InventorySlot> SlotDictionary => slotDictionary;
@@ -111,7 +106,6 @@ public abstract class InventoryDisplay : MonoBehaviour
                 MouseInventoryItem.UpdateMouseSlot(inventorySlotUI.AssignedInventorySlot);
                 _currentSlot = inventorySlotUI;
                 inventorySlotUI.CleanSlot();
-                Debug.Log("dssdfd");
                 return;
             }
         }
