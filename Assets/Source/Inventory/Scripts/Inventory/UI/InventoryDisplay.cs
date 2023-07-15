@@ -207,8 +207,6 @@ public abstract class InventoryDisplay : MonoBehaviour
             clickedUISlot.ToggleHighlight();
             return;
         }
-
-        OnSwapItem?.Invoke(_currentlyDraggedItemIndex, clickedIndex);
         SlotClicked(Slots[_currentlyDraggedItemIndex]);
     }
 }
