@@ -14,7 +14,7 @@ public class InventoryDescriptionUI : MonoBehaviour
     [SerializeField] private Interactor _interactor;
     [SerializeField] private SurvivalHandler _survivalHandler;
 
-    private InventorySlot _currentSlot;
+    private InventorySlotUI _currentSlot;
 
     private void Awake()
     {
@@ -44,9 +44,12 @@ public class InventoryDescriptionUI : MonoBehaviour
 
     public void SetDescription(InventorySlotUI inventorySlotUI)
     {
-        if(inventorySlotUI.AssignedInventorySlot.ItemData != null)
+        if(_currentSlot != null && _currentSlot.AssignedInventorySlot.ItemData != null && _currentSlot != inventorySlotUI)
+            _currentSlot.ToggleHighlight();
+
+        if (inventorySlotUI.AssignedInventorySlot.ItemData != null)
         {
-            _currentSlot = inventorySlotUI.AssignedInventorySlot;
+            _currentSlot = inventorySlotUI;
 
             _iconImage.gameObject.SetActive(true);
             _iconImage.sprite = inventorySlotUI.AssignedInventorySlot.ItemData.Icon;
@@ -71,18 +74,17 @@ public class InventoryDescriptionUI : MonoBehaviour
 
     private void UseItemButtonClick()
     {
-        _survivalHandler.Eat(_currentSlot);
+        _survivalHandler.Eat(_currentSlot.AssignedInventorySlot);
 
-        if (_currentSlot.ItemData == null)
+        if (_currentSlot.AssignedInventorySlot.ItemData == null)
             ResetDescription();
-
     }
 
     private void DiscardButtonClick()
     {
-        _interactor.RemoveItem(_currentSlot);
+        _interactor.RemoveItem(_currentSlot.AssignedInventorySlot);
 
-        if (_currentSlot.ItemData == null)
+        if (_currentSlot.AssignedInventorySlot.ItemData == null)
             ResetDescription();
     }
 }

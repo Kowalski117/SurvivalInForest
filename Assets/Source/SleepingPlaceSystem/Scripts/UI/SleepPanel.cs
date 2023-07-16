@@ -49,7 +49,7 @@ public class SleepPanel : MonoBehaviour
     private void SleepButtonClick()
     {
         ExitButtonClick();
-        _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, "Кровать");
+        _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, string.Empty, ActionType.Sleep);
         _loadingWindow.OnLoadingComplete += OnLoadingComplete;
     }
 

@@ -97,6 +97,7 @@ public abstract class InventoryDisplay : MonoBehaviour
             if (isShiftPressed && inventorySlotUI.AssignedInventorySlot.SplitStack(out InventorySlot halfStackSlot))
             {
                 MouseInventoryItem.UpdateMouseSlot(halfStackSlot);
+                MouseInventoryItem.UpdateCurrentInventorySlot(inventorySlotUI);
                 inventorySlotUI.UpdateUiSlot();
                 _currentSlot = inventorySlotUI;
                 return;
@@ -104,6 +105,7 @@ public abstract class InventoryDisplay : MonoBehaviour
             else
             {
                 MouseInventoryItem.UpdateMouseSlot(inventorySlotUI.AssignedInventorySlot);
+                MouseInventoryItem.UpdateCurrentInventorySlot(inventorySlotUI);
                 _currentSlot = inventorySlotUI;
                 inventorySlotUI.CleanSlot();
                 return;
@@ -190,6 +192,7 @@ public abstract class InventoryDisplay : MonoBehaviour
             }
             else if (!isSameItem)
             {
+                Debug.Log("1");
                 SwapSlots(clickedUISlot);
                 return;
             }
@@ -198,15 +201,22 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     private void SwapSlots(InventorySlotUI clickedUISlot)
     {
-        int clickedIndex = Array.IndexOf(Slots, clickedUISlot);
-        if (clickedIndex == -1)
-            return;
+        //int clickedIndex = Array.IndexOf(Slots, clickedUISlot);
+        //if (clickedIndex == -1)
+        //    return;
 
-        if (_currentlyDraggedItemIndex == clickedIndex)
-        {
-            clickedUISlot.ToggleHighlight();
-            return;
-        }
-        SlotClicked(Slots[_currentlyDraggedItemIndex]);
+        //if (_currentlyDraggedItemIndex == clickedIndex)
+        //{
+        //    clickedUISlot.ToggleHighlight();
+        //    return;
+        //}
+
+        MouseInventoryItem.CurrentSlot.AssignedInventorySlot.AssignItem(clickedUISlot.AssignedInventorySlot);
+        MouseInventoryItem.CurrentSlot.UpdateUiSlot();
+
+        clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
+        clickedUISlot.UpdateUiSlot();
+        MouseInventoryItem.CleanSlot();
+        ResetDraggedItem();
     }
 }
