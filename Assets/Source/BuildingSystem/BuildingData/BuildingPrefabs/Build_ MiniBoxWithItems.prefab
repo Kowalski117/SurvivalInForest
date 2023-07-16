@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 276989750}
   - component: {fileID: 276989749}
   - component: {fileID: 276989748}
+  - component: {fileID: 5628872222501980364}
   m_Layer: 8
   m_Name: Build_ MiniBoxWithItems
   m_TagString: Untagged
@@ -79,6 +80,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _endurance: 100
   _brokenObject: {fileID: 5392919405799880902}
+--- !u!208 &5628872222501980364
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2618397888444623019}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &2797884670873104576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -205,6 +222,14 @@ PrefabInstance:
       propertyPath: _inventorySize
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5497875930764367127, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
+      propertyPath: startingItems.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5497875930764367127, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
+      propertyPath: startingItems.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3544a707eed4d754291c28db4e515d0f, type: 2}
     - target: {fileID: 7591004686422047558, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
       propertyPath: _id
       value: 306cb935-e232-4ede-84c9-e442ac1f91eb

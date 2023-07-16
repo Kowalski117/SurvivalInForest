@@ -17,8 +17,6 @@ public class SleepPanel : MonoBehaviour
     private DateTime _sleepTime;
     private bool _isSleepWindowOpen = false;
 
-    public Transform SleepWindow => _sleepWindow;
-
     public static UnityAction<float> OnSleepButton;
 
     private void Start()

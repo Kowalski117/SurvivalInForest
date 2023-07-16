@@ -14,7 +14,7 @@ public class LoadingWindow : MonoBehaviour
     [SerializeField] private TMP_Text _text;
     [SerializeField] private TMP_Text _timeText;
 
-    private DateTime time;
+    private DateTime _time;
     private Coroutine _coroutine;
     public event UnityAction OnLoadingComplete;
 
@@ -35,9 +35,9 @@ public class LoadingWindow : MonoBehaviour
         _playerInputHandler.ToggleAllInput(false);
         _loadingPanel.gameObject.SetActive(true);
 
-        times = time + TimeSpan.FromHours(skipTime);
+        times = _time + TimeSpan.FromHours(skipTime);
 
-        _text.text = $"Крафтится {name}, затраченное время - {time.ToString("HH:mm")}";
+        _text.text = $"Крафтится {name}, затраченное время - {_time.ToString("HH:mm")}";
         float elapsedTime = 0f;
         float duration = delay;
 

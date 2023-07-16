@@ -5,9 +5,9 @@ using UnityEngine.Events;
 public class MouseItemData : MonoBehaviour
 {
     [SerializeField] private InventoryPlayerInput _playerInput;
+    [SerializeField] private Canvas _canvas;
 
     private InventorySlotUI _inventorySlotUI;
-    [SerializeField] private Canvas _canvas;
 
     public static UnityAction OnUpdatedSlots;
     public event UnityAction<InventorySlot> OnInteractItem;

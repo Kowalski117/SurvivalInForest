@@ -9,7 +9,6 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private SelectionPlayerInput _selectionPlayerInput;
     [SerializeField] private InteractionPlayerInput _interactionPlayerInput;
     [SerializeField] private InteractionConstructionPlayerInput _interactionConstructionPlayerInput;
-    [SerializeField] private HitPlayerInput _hitPlayerInput;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
     [SerializeField] private Transform _inventoryPanels;
@@ -19,7 +18,6 @@ public class PlayerInputHandler : MonoBehaviour
     public SelectionPlayerInput SelectionPlayerInput => _selectionPlayerInput;
     public InteractionPlayerInput InteractionPlayerInput => _interactionPlayerInput;
     public InteractionConstructionPlayerInput InteractionConstructionPlayerInput => _interactionConstructionPlayerInput;
-    public HitPlayerInput HitPlayerInput => _hitPlayerInput;
     public BuildPlayerInput BuildPlayerInput => _buildPlayerInput;
     public WeaponPlayerInput WeaponPlayerInput => _weaponPlayerInput;
     public Transform InventoryPanels => _inventoryPanels;
@@ -66,12 +64,6 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _interactionConstructionPlayerInput.enabled = visible;
     }
-
-    public void ToggleHitPlayerInput(bool visible)
-    {
-        _hitPlayerInput.enabled = visible;
-    }
-
     public void ToggleBuildPlayerInput(bool visible)
     {
         _buildPlayerInput.enabled = visible;

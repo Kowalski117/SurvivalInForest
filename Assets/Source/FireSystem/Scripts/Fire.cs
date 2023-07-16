@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class Fire : MonoBehaviour
 {
     [SerializeField] private CraftObject _craftObject;
-    [SerializeField] private ParticleSystem _fireParticle;
+    [SerializeField] private GameObject _fireParticle;
 
     private float _workingHours = 2f;
     private float _maxHours = 5f;
@@ -63,15 +63,13 @@ public class Fire : MonoBehaviour
     private void UpdateTimer(float time)
     {
         _currentTime = _currentTime.AddSeconds(-Time.deltaTime * time);
-
         OnCompletionTimeUpdate?.Invoke(_currentTime);
 
         if (_currentTime.TimeOfDay.TotalMilliseconds < 10000)
         {
             _fireParticle.gameObject.SetActive(false);
-            _craftObject.enabled = false;
+            _craftObject.TurnOff();
             _isFire = false;
-            _collider.enabled = false;
         }
     }
 

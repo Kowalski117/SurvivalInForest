@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    //[SerializeField] private RuntimeAnimatorController _animator;
-    //[SerializeField] private Transform _item;
-
     [SerializeField] private Animator _handAnimator;
     [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
@@ -31,9 +28,6 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        //if (_firstPersonController.Speed > 0)
-        //    TurnOffAnimations();
-
         if (_firstPersonController._isEnable)
             _handAnimator.SetFloat(_speed, (_firstPersonController.Speed / 10));
         else
@@ -158,14 +152,6 @@ public class PlayerAnimation : MonoBehaviour
         foreach (var item in _items)
         {
             item.ToggleItem(false);
-            //if (_currentItemData == item.ItemData)
-            //{
-            //    item.ToggleItem(true);
-            //}
-            //else
-            //{
-            //    item.ToggleItem(false);
-            //}
         }
     }
 

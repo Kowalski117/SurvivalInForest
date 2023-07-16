@@ -6,6 +6,7 @@ public class CraftObject : MonoBehaviour
 
     private Building _building;
     private SphereCollider _collider;
+    private ManualWorkbench _workbench;
 
     private void Awake()
     {
@@ -21,7 +22,6 @@ public class CraftObject : MonoBehaviour
         {
             _building.OnCompletedBuild += EnableCollider;
         }
-
     }
 
     private void OnDisable()
@@ -30,6 +30,19 @@ public class CraftObject : MonoBehaviour
         {
             _building.OnCompletedBuild -= EnableCollider;
         }
+    }
+
+    public void TurnOff()
+    {
+        _collider.enabled = false;
+
+        if(_workbench != null)
+        {
+            _workbench.CraftingHandler.DisplayCraftWindow(_workbench.Crafting—ategory);
+            _workbench = null;
+        }
+
+        enabled = false;
     }
 
     private void EnableCollider()
@@ -41,6 +54,7 @@ public class CraftObject : MonoBehaviour
     {
         if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
         {
+            _workbench = manualWorkbench;
             manualWorkbench.CraftingHandler.DisplayCraftWindow(_crafting—ategory);
         }
     }
@@ -50,6 +64,7 @@ public class CraftObject : MonoBehaviour
         if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
         {
             manualWorkbench.CraftingHandler.DisplayCraftWindow(manualWorkbench.Crafting—ategory);
+            _workbench = null;
         }
     }
 }

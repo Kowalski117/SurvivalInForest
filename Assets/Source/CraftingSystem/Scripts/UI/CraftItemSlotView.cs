@@ -25,9 +25,7 @@ public class CraftItemSlotView : CraftSlotView
         _recipe = craftRecipe;
         InventoryHolder = playerInventory;
         LoadingWindow = loadingWindow;
-
         Crafting—ategory = Òategory;
-
         CraftedIcon.sprite = craftRecipe.CraftedItem.Icon;
         CraftedName.text = craftRecipe.CraftedItem.DisplayName;
 

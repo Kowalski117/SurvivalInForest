@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,6 @@ public class ExchangerSlotView : MonoBehaviour
 
     private ExchangerInventoryItem _shopSlot;
     private PlayerInventoryHolder _inventoryHolder;
-
     private int _amount = 1;
 
     private void OnEnable()
@@ -36,7 +34,6 @@ public class ExchangerSlotView : MonoBehaviour
 
         UpdateExchangedItems(_itemsToExchangeView, shopSlot.ItemsToExchange);
         UpdateExchangedItems(_itemsToReceiveView, shopSlot.ItemsToReceive);
-
         UpdateAmount();
     }
 
@@ -99,5 +96,4 @@ public class ExchangerSlotView : MonoBehaviour
             }
         }
     }
-
 }

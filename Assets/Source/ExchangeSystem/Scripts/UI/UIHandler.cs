@@ -1,10 +1,8 @@
-using System;
 using UnityEngine;
 
 public class UIHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-
     [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
     [SerializeField] private StaticInventoryDisplay _playerHotbarInventory;

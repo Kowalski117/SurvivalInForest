@@ -25,6 +25,5 @@ public class ValueDurabilityView : MonoBehaviour
         {
             _image.enabled = false;
         }
-
     }
 }

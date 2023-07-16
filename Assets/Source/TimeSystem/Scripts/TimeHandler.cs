@@ -71,7 +71,7 @@ public class TimeHandler : MonoBehaviour
 
             sunLightRotation = Mathf.Lerp(0, 180, (float)percentage);
 
-            //_starsParticle.gameObject.SetActive(false);
+            _starsParticle.Stop();
         }
         else
         {
@@ -85,7 +85,7 @@ public class TimeHandler : MonoBehaviour
 
         _sunLight.transform.rotation = Quaternion.AngleAxis(sunLightRotation, Vector3.right);
 
-        //_starsParticle.gameObject.SetActive(true);
+        _starsParticle.Play();
     }
 
     private void UpdateLightSettings()
@@ -93,7 +93,6 @@ public class TimeHandler : MonoBehaviour
         float dotProduct = Vector3.Dot(_sunLight.transform.forward, Vector3.down);
         _sunLight.intensity = Mathf.Lerp(0, _maxSunLightIntensity, _lightChangeCurve.Evaluate(dotProduct));
         _moonLight.intensity = Mathf.Lerp(_maxMoonLightIntensity, 0, _lightChangeCurve.Evaluate(dotProduct));
-        //_moonLight.intensity = Mathf.Lerp(0, _maxMoonLightIntensity, _lightChangeCurve.Evaluate(dotProduct));
         RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _lightChangeCurve.Evaluate(dotProduct));
     }
 
