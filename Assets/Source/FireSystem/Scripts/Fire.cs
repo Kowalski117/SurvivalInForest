@@ -6,7 +6,6 @@ public class Fire : MonoBehaviour
 {
     [SerializeField] private CraftObject _craftObject;
     [SerializeField] private GameObject _fireParticle;
-    [SerializeField] private bool _isRemoveAfterFire = false;
 
     private float _workingHours = 2f;
     private float _maxHours = 5f;
@@ -71,9 +70,6 @@ public class Fire : MonoBehaviour
             _fireParticle.gameObject.SetActive(false);
             _craftObject.TurnOff();
             _isFire = false;
-
-            if(_isRemoveAfterFire)
-                Destroy(gameObject);
         }
     }
 

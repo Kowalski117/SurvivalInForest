@@ -7,24 +7,23 @@ public class ChestInventory : InventoryHolder, IInteractable
 {
     [SerializeField] private List<InventoryItemData> _startingItems;
 
-    private UniqueID _uniqueId;
-
     public UnityAction<IInteractable> OnInteractionComplete { get; set; }
 
     protected override void Awake()
     {
-        _uniqueId = GetComponent<UniqueID>();
-
         base.Awake();
+        SaveLoad.OnLoadData += LoadInventory;
     }
 
     private void Start()
     {
+        var chestSaveData = new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation);
+
         foreach (var item in _startingItems)
         {
             PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
         }
-
+        SaveGameHandler.Data.ChestDictionary.Add(GetComponent<UniqueID>().Id, chestSaveData);
     }
 
     public void Interact(Interactor interactor, out bool interactSuccessfull)
@@ -38,17 +37,18 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     }
 
-    protected override void SaveInventory()
+    protected override void LoadInventory(SaveData data)
     {
-        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation);
-        ES3.Save(_uniqueId.Id, saveData);
-    }
+        if (data.ChestDictionary.TryGetValue(GetComponent<UniqueID>().Id, out InventorySaveData chestData))
+        {
+            this.PrimaryInventorySystem = chestData.InventorySystem;
+            this.transform.position = chestData.Position;
+            this.transform.rotation = chestData.Rotation;
 
-    protected override void LoadInventory()
-    {
-        InventorySaveData saveData = ES3.Load<InventorySaveData>(_uniqueId.Id, new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation));
-        PrimaryInventorySystem = saveData.InventorySystem;
-        transform.position = saveData.Position;
-        transform.rotation = saveData.Rotation;
+            foreach (var item in _startingItems)
+            {
+                PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
+            }
+        }
     }
 }

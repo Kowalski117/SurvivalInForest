@@ -12,6 +12,7 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
     [SerializeField] private LayerMask _deleteModeLayerMask;
+    [SerializeField] private int _defoultLayerInt = 11;
     [SerializeField] private Transform _rayOrigin;
     [SerializeField] private Material _buildingMatPositive;
     [SerializeField] private Material _buildingMatNegative;

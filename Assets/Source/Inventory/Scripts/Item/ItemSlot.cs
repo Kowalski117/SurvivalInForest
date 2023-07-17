@@ -10,6 +10,8 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
 
     protected float ÑurrentDurability;
 
+    public event UnityAction<float> OnDurabilityChanged;
+
     public float DurabilityPercent => ÑurrentDurability / MaxDurabilityValue;
     public InventoryItemData ItemData => InventoryItemData;
     public int Size => StackSize;

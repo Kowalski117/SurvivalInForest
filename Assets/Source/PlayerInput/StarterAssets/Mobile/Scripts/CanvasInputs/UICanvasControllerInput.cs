@@ -4,6 +4,7 @@ namespace StarterAssets
 {
     public class UICanvasControllerInput : MonoBehaviour
     {
+
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;
 
@@ -21,5 +22,7 @@ namespace StarterAssets
         {
             starterAssetsInputs.SprintInput(virtualSprintState);
         }
+        
     }
+
 }

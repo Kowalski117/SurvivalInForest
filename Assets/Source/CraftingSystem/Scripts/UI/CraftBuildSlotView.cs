@@ -1,4 +1,3 @@
-using System;
 using UnityEngine.Events;
 
 public class CraftBuildSlotView : CraftSlotView
@@ -21,15 +20,12 @@ public class CraftBuildSlotView : CraftSlotView
 
     public void Init(PlayerInventoryHolder playerInventory, BuildingRecipe craftRecipe, Crafting—ategory Òategory, LoadingWindow loadingWindow)
     {
-        CraftedTime = DateTime.MinValue;
         _recipe = craftRecipe;
         InventoryHolder = playerInventory;
         LoadingWindow = loadingWindow;
         Crafting—ategory = Òategory;
         CraftedIcon.sprite = craftRecipe.BuildingData.Icon;
         CraftedName.text = craftRecipe.BuildingData.DisplayName;
-        CraftedTime = CraftedTime + TimeSpan.FromHours(craftRecipe.CraftingTime);
-        CraftedTimeText.text = CraftedTime.ToString("HH:mm");
 
         foreach (var ingridient in craftRecipe.CraftingIngridients)
         {

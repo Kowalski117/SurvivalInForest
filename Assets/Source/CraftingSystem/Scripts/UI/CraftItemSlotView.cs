@@ -22,15 +22,12 @@ public class CraftItemSlotView : CraftSlotView
 
     public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, Crafting—ategory Òategory, LoadingWindow loadingWindow)
     {
-        CraftedTime = DateTime.MinValue;
         _recipe = craftRecipe;
         InventoryHolder = playerInventory;
         LoadingWindow = loadingWindow;
         Crafting—ategory = Òategory;
         CraftedIcon.sprite = craftRecipe.CraftedItem.Icon;
         CraftedName.text = craftRecipe.CraftedItem.DisplayName;
-        CraftedTime = CraftedTime + TimeSpan.FromHours(craftRecipe.CraftingTime);
-        CraftedTimeText.text = CraftedTime.ToString("HH:mm");
 
         foreach (var ingridient in craftRecipe.CraftingIngridients)
         {

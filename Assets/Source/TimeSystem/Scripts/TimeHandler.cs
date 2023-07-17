@@ -28,6 +28,7 @@ public class TimeHandler : MonoBehaviour
     private void Start()
     {
         _currentTime = DateTime.Now.Date + TimeSpan.FromHours(_startHour);
+
         _sunriseTime = TimeSpan.FromHours(_sunriseHour);
         _sunsetTime = TimeSpan.FromHours(_sunsetHour);
     }
@@ -37,18 +38,6 @@ public class TimeHandler : MonoBehaviour
         UpdateTimeDay();
         RotateSun();
         UpdateLightSettings();
-    }
-
-    private void OnEnable()
-    {
-        SaveGame.OnSaveGame += SaveTime;
-        SaveGame.OnLoadData += LoadTime;
-    }
-
-    private void OnDisable()
-    {
-        SaveGame.OnSaveGame -= SaveTime;
-        SaveGame.OnLoadData -= LoadTime;
     }
 
     public void AddTime(float time)
@@ -125,15 +114,5 @@ public class TimeHandler : MonoBehaviour
             _timeMultiplier = 6000;
         else
             _timeMultiplier = 60;
-    }
-
-    public void SaveTime()
-    {
-        ES3.Save("Time", _currentTime);
-    }
-
-    public void LoadTime()
-    {
-        _currentTime = ES3.Load<DateTime>("Time", DateTime.Now.Date + TimeSpan.FromHours(_startHour));
     }
 }

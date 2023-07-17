@@ -1,4 +1,3 @@
-using System.Xml;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,11 +6,10 @@ public class Building : MonoBehaviour
 {
     [SerializeField] private int _defoultLayerInt = 12;
 
-    private string _buildingId = "Building_";
-
     private BuildingData _assignedData;
     private BoxCollider _boxCollider;
     private Rigidbody _rigidbody;
+    private Building _graphic;
     private Transform _colliders;
     private bool _isOverlapping;
 
@@ -20,7 +18,6 @@ public class Building : MonoBehaviour
 
     private bool _flaggedForDelete;
     private BuildingSaveData _saveData;
-    private UniqueID _uniqueID;
 
     public event UnityAction OnCompletedBuild;
 
@@ -30,7 +27,6 @@ public class Building : MonoBehaviour
 
     private void Awake()
     {
-        _uniqueID = GetComponent<UniqueID>();
         _boxCollider = GetComponent<BoxCollider>();
         _rigidbody = GetComponent<Rigidbody>();
         _boxCollider.isTrigger = true;
@@ -66,10 +62,15 @@ public class Building : MonoBehaviour
         UpdateMaterials(_defoultMaterial);
 
         gameObject.layer = _defoultLayerInt;
+        gameObject.name = _assignedData.DisplayName + " - " + transform.position;
         _boxCollider.enabled = false;
         OnCompletedBuild?.Invoke();
 
-        Save();
+        if (_saveData == null)
+            _saveData = new BuildingSaveData(gameObject.name, _assignedData, transform.position, transform.rotation);
+
+        if (!SaveGameHandler.Data.BuildingSaveData.Contains(_saveData))
+            SaveGameHandler.Data.AddBuildingSaveData(_saveData);
     }
 
     public void UpdateMaterial(Material newMaterial)
@@ -115,30 +116,8 @@ public class Building : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (ES3.KeyExists(_buildingId + _uniqueID.Id))
-            ES3.DeleteKey(_buildingId + _uniqueID.Id);
-        Destroy(this.gameObject);
-    }
-
-    private void Save()
-    {
-        BuildingSaveData itemSaveData = new BuildingSaveData(_assignedData, transform.position, transform.rotation);
-        ES3.Save(_buildingId + _uniqueID.Id, itemSaveData);
-    }
-
-    private void Load()
-    {
-        if (ES3.KeyExists(_buildingId + _uniqueID.Id))
-        {
-            BuildingSaveData itemSaveData = ES3.Load(_buildingId + _uniqueID.Id, new BuildingSaveData(_assignedData, transform.position, transform.rotation));
-            _assignedData = itemSaveData.AssignedData;
-            transform.position = itemSaveData.Position;
-            transform.rotation = itemSaveData.Rotation;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (SaveGameHandler.Data.BuildingSaveData.Contains(_saveData))
+            SaveGameHandler.Data.RemoveBuildingSaveData(_saveData);
     }
 }
 
@@ -155,8 +134,9 @@ public class BuildingSaveData
     public Vector3 Position => _position;
     public Quaternion Rotation => _rotation;
 
-    public BuildingSaveData(BuildingData assignedData, Vector3 position, Quaternion rotation)
+    public BuildingSaveData(string buildingName, BuildingData assignedData, Vector3 position, Quaternion rotation)
     {
+        _buildingName = buildingName;
         _assignedData = assignedData;
         _position = position;
         _rotation = rotation;

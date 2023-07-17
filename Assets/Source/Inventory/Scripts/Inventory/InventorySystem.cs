@@ -9,6 +9,7 @@ public class InventorySystem
     [SerializeField] private List<InventorySlot> _inventorySlots;
 
     public event UnityAction<InventorySlot> OnInventorySlotChanged;
+    public event UnityAction<int, int> OnSwapItem;
 
     public List<InventorySlot> InventorySlots => _inventorySlots;
     public int InventorySize => _inventorySlots.Count;

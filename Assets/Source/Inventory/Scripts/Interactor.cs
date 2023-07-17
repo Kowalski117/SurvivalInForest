@@ -17,7 +17,6 @@ public class Interactor : Raycast
     private bool _isStartingPick = true;
     private float _lookTimer = 0;
     private ItemPickUp _currentItemPickUp;
-    private bool _isIconFilled = false;
 
     public event UnityAction<float> OnTimeUpdate;
 
@@ -52,10 +51,10 @@ public class Interactor : Raycast
                 {
                     _lookTimer += Time.deltaTime;
                     OnTimeUpdate?.Invoke(LookTimerPracent);
-                    if (_lookTimer >= _liftingDelay && !_isIconFilled)
+                    if (_lookTimer >= _liftingDelay)
                     {
-                        _isIconFilled = true;
                         _playerAnimation.PickUp();
+                        _lookTimer = 0;
                         _currentItemPickUp = itemPickUp;
                     }
                 }
@@ -64,8 +63,7 @@ public class Interactor : Raycast
         else
         {
             _lookTimer = 0;
-            OnTimeUpdate?.Invoke(0f);
-            _isIconFilled = false;
+            OnTimeUpdate?.Invoke(LookTimerPracent);
         }
     }
 
@@ -91,10 +89,8 @@ public class Interactor : Raycast
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.ItemData) >= 0)
         {
-            ItemPickUp itemPickUp =  Instantiate(inventorySlot.ItemData.ItemPrefab, _buildTool.transform.position + _buildTool.transform.forward * RayDistance, Quaternion.identity);
-            itemPickUp.GenerateNewID();
+            Instantiate(inventorySlot.ItemData.ItemPrefab, _buildTool.transform.position + _buildTool.transform.forward * RayDistance, Quaternion.identity);
             _playerInventoryHolder.RemoveInventory(inventorySlot.ItemData, 1);
-            //_playerAnimation.RemoveItemAnimationEvent();
         }
     }
 
