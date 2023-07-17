@@ -25,6 +25,11 @@ namespace StarterAssets
             starterAssetsInputs.SprintInput(virtualSprintState);
         }
 
+        public void VirtualStealthInput(bool virtualSprintState)
+        {
+            starterAssetsInputs.StealthInput(virtualSprintState);
+        }
+
         public void Hit()
         {
             _weaponPlayerInput.Shoot();

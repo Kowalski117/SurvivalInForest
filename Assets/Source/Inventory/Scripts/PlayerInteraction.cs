@@ -4,7 +4,7 @@ public class PlayerInteraction : Raycast
 {
     [SerializeField] private PlayerInventoryHolder _inventory;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
-    [SerializeField] private WeaponItemData _armItemData;
+    [SerializeField] private ToolItemData _armItemData;
     [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
     [SerializeField] private LayerMask _creatureLayer;
     [SerializeField] private AudioSource _audioSource;
@@ -54,12 +54,12 @@ public class PlayerInteraction : Raycast
             }
             else
             {
-                _currentWeapon = _armItemData;
+                _currentWeapon = null;
             }
         }
         else
         {
-            _currentWeapon = _armItemData;
+            _currentWeapon = null;
         }
     }
 
@@ -73,12 +73,12 @@ public class PlayerInteraction : Raycast
             }
             else
             {
-                _currentTool = null;
+                _currentTool = _armItemData;
             }
         }
         else
         {
-            _currentTool = null;
+            _currentTool = _armItemData;
         }
     }
 
@@ -138,18 +138,6 @@ public class PlayerInteraction : Raycast
                 _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
                 UpdateDurabilityItem();
             }
-            else if (_currentResoure != null)
-            {
-
-                _currentResoure.TakeDamage(0, 0);
-                UpdateDurabilityItem();
-
-                if (_currentResoure.Health <= 0)
-                {
-                    _currentItemData = null;
-                    _currentResoure = null;
-                }
-            }
         }
     }
 
@@ -157,8 +145,10 @@ public class PlayerInteraction : Raycast
     {
         if (Time.time > _nextFire)
         {
+            _playerAnimation.Hit(_currentTool);
             _nextFire = Time.time + 1 / _currentTool.Speed;
-            if(_currentTool != null && _currentTool.Durability > 0)
+
+            if (_currentTool != null && _currentTool.Durability > 0)
             {
                 _audioSource.PlayOneShot(_currentTool.MuzzleSound);
                 //_currentTool.MuzzleFlash.Play();
@@ -177,7 +167,7 @@ public class PlayerInteraction : Raycast
                         }
                     }
                 }
-                else if ( _currentAnim != null)
+                else if (_currentAnim != null)
                 {
                     _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
                     UpdateDurabilityItem();
@@ -187,8 +177,23 @@ public class PlayerInteraction : Raycast
                     _currentBrokenObject.TakeDamage(_currentTool.DamageResources, 0);
                     UpdateDurabilityItem();
                 }
+            }
+            else
+            {
+                if (_currentAnim != null)
+                {
+                    _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
+                }
+                if (_currentResoure != null)
+                {
+                    _currentResoure.TakeDamage(_currentTool.DamageResources, 0);
 
-                _playerAnimation.Hit(_currentTool);
+                    if (_currentResoure.Health <= 0)
+                    {
+                        _currentItemData = null;
+                        _currentResoure = null;
+                    }
+                }
             }
         }
     }
@@ -222,7 +227,7 @@ public class PlayerInteraction : Raycast
         {
             Hit();
         }
-        else if (_currentTool != null)
+        else if (_currentTool != null && _currentWeapon == null)
         {
             InteractResource();
         }

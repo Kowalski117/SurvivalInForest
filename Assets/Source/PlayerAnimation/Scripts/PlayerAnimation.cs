@@ -86,6 +86,10 @@ public class PlayerAnimation : MonoBehaviour
                         {
                             _handAnimator.SetTrigger(_blowPickaxe);
                         }
+                        else if (toolItemData.ToolType == ToolType.Arm)
+                        {
+                            _handAnimator.SetTrigger(_hit);
+                        }
                     }
                     else if(itemData is WeaponItemData weapon)
                     {
