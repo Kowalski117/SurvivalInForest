@@ -21,11 +21,6 @@ public class PlayerInteraction : Raycast
 
     private float _nextFire;
 
-    private void Update()
-    {
-        UpdateItemData();
-    }
-
     private void OnEnable()
     {
         _weaponPlayerInput.OnShoot += UseItem;
@@ -116,6 +111,7 @@ public class PlayerInteraction : Raycast
                     if (_currentWeapon.Bullet != null)
                     {
                         ItemPickUp bullet = Instantiate(_currentWeapon.Bullet, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
+                        bullet.GenerateNewID();
                     }
                 }
 
@@ -150,33 +146,37 @@ public class PlayerInteraction : Raycast
         if (Time.time > _nextFire)
         {
             _nextFire = Time.time + 1 / _currentTool.Speed;
-            _audioSource.PlayOneShot(_currentTool.MuzzleSound);
-            _playerAnimation.Hit(_currentTool);
-            //_currentTool.MuzzleFlash.Play();
-
-            if (_currentTool != null && _currentResoure != null)
+            if(_currentTool != null && _currentTool.Durability > 0)
             {
-                if (_currentResoure.ExtractionType == _currentTool.ToolType)
-                {
-                    _currentResoure.TakeDamage(_currentTool.DamageResources, 0);
-                    UpdateDurabilityItem();
+                _audioSource.PlayOneShot(_currentTool.MuzzleSound);
+                //_currentTool.MuzzleFlash.Play();
 
-                    if (_currentResoure.Health <= 0)
+                if (_currentResoure != null)
+                {
+                    if (_currentResoure.ExtractionType == _currentTool.ToolType)
                     {
-                        _currentItemData = null;
-                        _currentResoure = null;
+                        _currentResoure.TakeDamage(_currentTool.DamageResources, 0);
+                        UpdateDurabilityItem();
+
+                        if (_currentResoure.Health <= 0)
+                        {
+                            _currentItemData = null;
+                            _currentResoure = null;
+                        }
                     }
                 }
-            }
-            else if (_currentAnim != null)
-            {
-                _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
-                UpdateDurabilityItem();
-            }
-            else if(_currentBrokenObject != null)
-            {
-                _currentBrokenObject.TakeDamage(_currentTool.DamageResources, 0);
-                UpdateDurabilityItem();
+                else if ( _currentAnim != null)
+                {
+                    _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
+                    UpdateDurabilityItem();
+                }
+                else if (_currentBrokenObject != null)
+                {
+                    _currentBrokenObject.TakeDamage(_currentTool.DamageResources, 0);
+                    UpdateDurabilityItem();
+                }
+
+                _playerAnimation.Hit(_currentTool);
             }
         }
     }
@@ -191,12 +191,14 @@ public class PlayerInteraction : Raycast
             {
                 _currentInventorySlot.UpdateDurabilityIfNeeded();
                 _inventory.RemoveInventory(_currentInventorySlot.ItemData, 1);
+                _currentInventorySlot = null;
             }
         }
     }
 
     private void UseItem()
     {
+        UpdateItemData();
         InitWeapon(_currentItemData);
         InitTool(_currentItemData);
 
