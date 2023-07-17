@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class TestButton : MonoBehaviour
 {
-   [SerializeField] private Animals _animals;
+   [SerializeField] private Resource _resource;
 
    public void TakeDamage()
    {
-      _animals.TakeDamage(15,5);
+      _resource.TakeDamage(1,0);
    }
 }

@@ -1,52 +1,81 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(BoxCollider))]
-public class Resource : MonoBehaviour, IDamagable
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
+public abstract class Resource : MonoBehaviour, IDamagable
 {
     [SerializeField] private int _health;
     [SerializeField] private ToolType _extractionType;
-    [SerializeField] private GameObject _resourceObject;
-    [SerializeField] private ItemPickUp[] _additionalResources;
+    [SerializeField] private GameObject _loot;
+    [SerializeField] private int _lootsCount;
+    [SerializeField] private ParticleSystem _takeDamage;
+    [SerializeField] private GameObject _parent;
 
-    private BoxCollider _collider;
-
-    public int Health => _health;
+    private int _curenntHealth;
+    private float _radiusSpawnLoots = 1;
+    private float _spawnLootUp = 1;
+    private float _disappearanceTime = 5;
+    private bool _isDead = false;
+    private Rigidbody _rigidbody;
+    private Collider _collider;
+    public event Action Died;
+    public int Health => _curenntHealth;
     public ToolType ExtractionType => _extractionType;
 
-    private void Awake()
+    public virtual void Start()
     {
-        _collider = GetComponent<BoxCollider>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
     }
 
-    private void Start()
+    public virtual void OnEnable()
     {
-        SetActiveResources(false);
+        _curenntHealth = _health;
     }
 
-    public void TakeDamage(float damage, float overTimeDamage)
+    public virtual void TakeDamage(float damage, float overTimeDamage)
     {
-        _health -= (int)damage;
-
-        if (_health <= 0)
+        _takeDamage.Play();
+        _curenntHealth -= (int) damage;
+        
+        if (_curenntHealth <= 0 & _isDead == false)
         {
-            _health = 0;
             Die();
         }
     }
 
-    public void Die()
+    public virtual void Die()
     {
-        _resourceObject.SetActive(false);
-        SetActiveResources(true);
-        _collider.enabled = false;
-        enabled = false;
+        _rigidbody.isKinematic = false;
+        SpawnLoot(_loot, _radiusSpawnLoots, _spawnLootUp, _lootsCount);
+        _isDead = true;
+        StartCoroutine(Precipice());
     }
 
-    private void SetActiveResources(bool isActive)
+    public virtual void SpawnLoot(GameObject gameObject, float radius, float spawnPointUp,int count)
     {
-        foreach (var resource in _additionalResources)
-        {
-            resource.gameObject.SetActive(isActive);
+        if (_isDead == false)
+        { 
+            for (int i = 0; i < count; i++)
+            {
+              GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation, _parent.transform);
+              current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
+            }
         }
+    }
+
+    IEnumerator Precipice()
+    {
+        yield return new WaitForSeconds(_disappearanceTime/2);
+        _collider.enabled = false;
+        yield return new WaitForSeconds(_disappearanceTime/2);
+        _rigidbody.isKinematic = true;
+        _isDead = false;
+        _collider.enabled = true;
+        gameObject.SetActive(false);
+        Died?.Invoke();
     }
 }

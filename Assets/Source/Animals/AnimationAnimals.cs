@@ -11,7 +11,6 @@ public class AnimationAnimals : MonoBehaviour
     private string _sleep = "Sleep";
     private string _sit = "Sit";
     private string _attacks ="Attack";
-    private string _howl = "Howl";
     private static int _maxAttacksAnimation = 3;
 
 

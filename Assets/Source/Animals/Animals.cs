@@ -4,18 +4,24 @@ using System.Collections.Generic;
 using BehaviorDesigner.Runtime;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(Collider))]
 public abstract class Animals : MonoBehaviour, IDamagable
 {
-    [SerializeField] private List<GameObject> _loots;
+    [SerializeField] private GameObject _meat;
+    [SerializeField] private int _numberMeat;
     [SerializeField] private float _healh;
     [SerializeField] private float _armor;
     [SerializeField] private GameObject _blood;
 
+    private float _radiusSpawnLoots = 1;
+    private float _spawnLootUp = 0.5f;
     private BehaviorTree _behaviorTree;
     private NavMeshAgent _agent;
     private bool _isDead = false;
     private Coroutine _coroutineOverTimeDamage;
+    private Collider _collider;
 
     public bool IsDead => _isDead;
 
@@ -25,7 +31,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     {
         _behaviorTree = GetComponent<BehaviorTree>();
         _agent = GetComponent<NavMeshAgent>();
-        
+        _collider = GetComponent<Collider>();
     }
     
     public void TakeDamage(float damage,float overTimeDamage)
@@ -49,18 +55,26 @@ public abstract class Animals : MonoBehaviour, IDamagable
 
     public void Die()
     {
-        _isDead = true;
+        _collider.enabled = false;
         _behaviorTree.enabled = false;
         _agent.enabled = false;
-        
-        
-        foreach (var loot in _loots)
-        {
-           GameObject currentLoot = Instantiate(loot);
-           currentLoot.transform.position = transform.position;
-        }
+        SpawnLoot(_meat,_radiusSpawnLoots,_spawnLootUp,_numberMeat);
+        _isDead = true;
+
         Died?.Invoke();
         StartCoroutine(Precipice());
+    }
+    
+    public void SpawnLoot(GameObject gameObject, float radius, float spawnPointUp,int count)
+    {
+        if (_isDead == false)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation);
+                current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
+            }
+        }
     }
 
     IEnumerator Precipice()
