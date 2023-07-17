@@ -7,62 +7,41 @@ public class ItemPickUp : MonoBehaviour
     [SerializeField] private ItemPickUpSaveData _itemSaveData;
     [SerializeField] private float _durability;
 
-    private UniqueID _uniqueID;
-    private string _item = "Item_";
+    private string _id;
 
     public InventoryItemData ItemData => _itemData;
     public float Durability => _durability;
 
     private void Awake()
     {
-        _uniqueID = GetComponent<UniqueID>();
+        _id = GetComponent<UniqueID>().Id;
         _durability = _itemData.Durability;
+        //SaveLoad.OnLoadData += LoadGame;
+        _itemSaveData = new ItemPickUpSaveData(_itemData, transform.position, transform.rotation, _durability);
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
-    }
-
-    private void OnDisable()
-    {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
-    }
-
-    public void GenerateNewID()
-    {
-        _uniqueID.Generate();
+        //SaveGameHandler.Data.ActiveItems.Add(_id, _itemSaveData);
     }
 
     public void PicUp()
     {
-        if (ES3.KeyExists(_item + _uniqueID.Id))
-            ES3.DeleteKey(_item + _uniqueID.Id);
-        Destroy(this.gameObject);
+        //SaveGameHandler.Data.CollectedItems.Add(_id);
+        Destroy(this.gameObject); // переделать для оптимизации
     }
 
-    private void Save()
+    private void LoadGame(SaveData data)
     {
-        ItemPickUpSaveData itemSaveData = new ItemPickUpSaveData(_itemData, transform.position, transform.rotation, _durability);
-        ES3.Save(_item + _uniqueID.Id, itemSaveData);
+        if (data.CollectedItems.Contains(_id))
+            Destroy(this.gameObject);  //переделать для оптимизации
     }
 
-    private void Load()
+    private void OnDestroy()
     {
-        if (ES3.KeyExists(_item + _uniqueID.Id))
-        {
-            ItemPickUpSaveData itemSaveData = ES3.Load<ItemPickUpSaveData>(_item + _uniqueID.Id, new ItemPickUpSaveData(_itemData, transform.position, transform.rotation, _durability));
-            _itemData = itemSaveData.ItemData;
-            transform.position = itemSaveData.Position;
-            transform.rotation = itemSaveData.Rotation;
-            _durability = itemSaveData.Durability;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //if (SaveGameHandler.Data.ActiveItems.ContainsKey(_id))
+        //    SaveGameHandler.Data.ActiveItems.Remove(_id);
+        //SaveLoad.OnLoadData -= LoadGame;
     }
 }
 
@@ -72,12 +51,7 @@ public struct ItemPickUpSaveData
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private Vector3 _position;
     [SerializeField] private Quaternion _rotation;
-    [SerializeField] private float _durability;
-    
-    public InventoryItemData ItemData => _itemData;
-    public Vector3 Position => _position;
-    public Quaternion Rotation => _rotation;
-    public float Durability => _durability;
+    [SerializeField] private float _durability; 
 
     public ItemPickUpSaveData(InventoryItemData itemData, Vector3 position, Quaternion rotation, float durability)
     {

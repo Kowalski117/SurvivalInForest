@@ -19,6 +19,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     public event Action<InventorySlotUI> OnItemDroppedOn;
     public event Action<InventorySlotUI> OnItemBeginDrag;
     public event Action<InventorySlotUI> OnItemEndDrag;
+    public event Action<InventorySlotUI> OnRightMouseClick;
 
     public InventorySlot AssignedInventorySlot => _assignedInventorySlot;
 

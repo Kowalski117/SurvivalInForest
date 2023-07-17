@@ -35,6 +35,11 @@ public abstract class InventoryDisplay : MonoBehaviour
         }
     }
 
+    protected void HandleShowItemActions(InventorySlotUI inventorySlotUI)
+    {
+
+    }
+
     protected void HandleEndDrag(InventorySlotUI inventorySlotUI)
     {
         if(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null && _currentSlot != null)

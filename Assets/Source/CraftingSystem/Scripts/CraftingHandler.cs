@@ -12,6 +12,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private Crafting—ategory[] _crafting—ategories;
     [SerializeField] private Transform _containerForSlots;
     [SerializeField] private Transform _craftingWindow;
+    [SerializeField] private ItemType _defoultType = ItemType.Weapon;
     [SerializeField] private TMP_Text _nameCategory;
     [SerializeField] private CraftItemSlotView _craftItemSlotPrefab;
     [SerializeField] private CraftBuildSlotView _craftBuildingSlotPrefab;
@@ -36,9 +37,7 @@ public class CraftingHandler : MonoBehaviour
         _buildTool.OnCompletedBuild += UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate += UpdateSlot;
         CrafBuildSlot.OnCraftSlotUpdate += UpdateSlot;
-        //MouseItemData.OnUpdatedSlots += UpdateSlot;
-
-        _inventoryHolder.OnUpdateItemSlot += UpdateSlot;
+        MouseItemData.OnUpdatedSlots += UpdateSlot;
     }
 
     private void OnDisable()
@@ -47,9 +46,7 @@ public class CraftingHandler : MonoBehaviour
         _buildTool.OnCompletedBuild -= UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate -= UpdateSlot;
         CrafBuildSlot.OnCraftSlotUpdate -= UpdateSlot;
-        //MouseItemData.OnUpdatedSlots -= UpdateSlot;
-
-        _inventoryHolder.OnUpdateItemSlot -= UpdateSlot;
+        MouseItemData.OnUpdatedSlots -= UpdateSlot;
     }
 
     private void Start()

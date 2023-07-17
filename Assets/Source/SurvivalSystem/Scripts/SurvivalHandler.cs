@@ -19,18 +19,6 @@ public class SurvivalHandler : MonoBehaviour
     public SurvivalAttribute Sleep => _sleep;
     public TimeHandler TimeHandler => _timeHandler;
 
-    private void OnEnable()
-    {
-        SaveGame.OnSaveGame += SaveSurvivalAttributes;
-        SaveGame.OnLoadData += LoadSurvivalAttributes;
-    }
-
-    private void OnDisable()
-    {
-        SaveGame.OnSaveGame -= SaveSurvivalAttributes;
-        SaveGame.OnLoadData -= LoadSurvivalAttributes;
-    }
-
     private void Update()
     {
         _stamina.DecreaseStaminaValue();
@@ -66,19 +54,5 @@ public class SurvivalHandler : MonoBehaviour
         _hunger.LowerValue(_timeHandler.TimeMultiplier);
         _thirst.LowerValue(_timeHandler.TimeMultiplier);
         _sleep.LowerValue(_timeHandler.TimeMultiplier);
-    }
-
-    public void SaveSurvivalAttributes()
-    {
-        ES3.Save("Hunger", _hunger.CurrentAttribute);
-        ES3.Save("Thirst", _thirst.CurrentAttribute);
-        ES3.Save("Sleep", _sleep.CurrentAttribute);
-    }
-
-    public void LoadSurvivalAttributes()
-    {
-        _hunger.SetValue(ES3.Load<float>("Hunger", _hunger.MaxValueInSeconds));
-        _thirst.SetValue(ES3.Load<float>("Thirst", _thirst.MaxValueInSeconds));
-        _sleep.SetValue(ES3.Load<float>("Sleep", _sleep.MaxValueInSeconds));
     }
 }
