@@ -8,10 +8,9 @@ public class MouseItemData : MonoBehaviour
     [SerializeField] private Canvas _canvas;
 
     private InventorySlotUI _inventorySlotUI;
-    private InventorySlotUI _currentSlot; 
+    private InventorySlotUI _currentSlot;
 
     public static UnityAction OnUpdatedSlots;
-    public event UnityAction<InventorySlot> OnInteractItem;
 
     public InventorySlotUI InventorySlotUI => _inventorySlotUI;
     public InventorySlotUI CurrentSlot => _currentSlot;
@@ -26,10 +25,7 @@ public class MouseItemData : MonoBehaviour
     {
         if(RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_canvas.transform, Input.mousePosition, _canvas.worldCamera, out Vector2 position))
         {
-            if (_inventorySlotUI.AssignedInventorySlot.ItemData != null)
-            {
-                transform.position = _canvas.transform.TransformPoint(position);
-            }
+            transform.position = _canvas.transform.TransformPoint(position);
         }
     }
 

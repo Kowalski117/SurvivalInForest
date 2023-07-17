@@ -15,7 +15,6 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public void LowerHealth(float value)
     {
         CurrentValue -= value;
-        Debug.Log(value);
 
         if (CurrentValue <= 0)
             CurrentValue = 0;

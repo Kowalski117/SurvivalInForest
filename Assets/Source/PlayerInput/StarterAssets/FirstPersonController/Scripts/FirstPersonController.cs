@@ -88,7 +88,6 @@ namespace StarterAssets
 
         private const float _threshold = 0.01f;
 
-        public event UnityAction Selected;
 
         public float Speed => _speed;
 

@@ -32,6 +32,18 @@ public class PlayerAnimation : MonoBehaviour
             _handAnimator.SetFloat(_speed, (_firstPersonController.Speed / 10));
         else
             _handAnimator.SetFloat(_speed, 0);
+
+        Init(_hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData);
+    }
+
+    private void OnEnable()
+    {
+        _hotbarDisplay.ItemClicked += Init;
+    }
+
+    private void OnDisable()
+    {
+        _hotbarDisplay.ItemClicked -= Init;
     }
 
     public void Init(InventoryItemData itemData)
@@ -41,7 +53,7 @@ public class PlayerAnimation : MonoBehaviour
 
         if (_currentItemData != _previousItemData)
         {
-            GetItem(itemData);
+            GetItem(_currentItemData);
         }
     }
 
@@ -109,7 +121,6 @@ public class PlayerAnimation : MonoBehaviour
                     {
                         _handAnimator.SetTrigger(_pullItem);
                     }
-
                     _isItemInHand = true;
                     itemFound = true;
                 }
@@ -148,6 +159,12 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     public void RemoveItemAnimationEvent()
+    {
+        if (_currentItemData == null)
+            RemoveItemsAnimationEvent();
+    }
+
+    public void RemoveItemsAnimationEvent()
     {
         foreach (var item in _items)
         {
