@@ -57,7 +57,6 @@ public class DynamicInventoryDisplay : InventoryDisplay
                 Slots[i].OnItemBeginDrag += HandleBeginDrag;
                 Slots[i].OnItemDroppedOn += HandleSwap;
                 Slots[i].OnItemEndDrag += HandleEndDrag;
-                Slots[i].OnRightMouseClick += HandleShowItemActions;
             }
             else
             {
