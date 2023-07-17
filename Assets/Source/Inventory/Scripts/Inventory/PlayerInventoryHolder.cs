@@ -1,23 +1,17 @@
-using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 public class PlayerInventoryHolder : InventoryHolder
 {
-    public static UnityAction OnPlayerInventoryChanged;
     public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
     public event UnityAction<InventoryItemData, int> OnItemDataChanged;
-
-    private void Start()
-    {
-        SaveGameHandler.Data._playerInventory = new InventorySaveData(PrimaryInventorySystem); // поменять
-    }
+    public event UnityAction OnUpdateItemSlot;
 
     public bool AddToInventory(InventoryItemData data, int amount, float durability = 0)
     {
         if (PrimaryInventorySystem.AddToInventory(data, amount, durability))
         {
             OnItemDataChanged?.Invoke(data, amount);
+            OnUpdateItemSlot?.Invoke();
             return true;
         }
 
@@ -29,6 +23,7 @@ public class PlayerInventoryHolder : InventoryHolder
         if(PrimaryInventorySystem.RemoveItemsInventory(data, amount))
         {
             OnItemDataChanged?.Invoke(data, -amount);
+            OnUpdateItemSlot?.Invoke();
             return true;
         }
 
@@ -51,12 +46,18 @@ public class PlayerInventoryHolder : InventoryHolder
         return true;
     }
 
-    protected override void LoadInventory(SaveData data)
+    protected override void SaveInventory()
     {
-        if (data.PlayerInventory.InventorySystem != null)
-        {
-            this.PrimaryInventorySystem = data.PlayerInventory.InventorySystem;
-            OnPlayerInventoryChanged?.Invoke();
-        }
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation);
+        ES3.Save("InventoryData", saveData);
+    }
+
+    protected override void LoadInventory()
+    {
+        InventorySaveData saveData = ES3.Load<InventorySaveData>("InventoryData", new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation));
+        PrimaryInventorySystem = saveData.InventorySystem;
+        transform.position = saveData.Position;
+        transform.rotation = saveData.Rotation;
+        OnPlayerInventoryChanged?.Invoke();
     }
 }
