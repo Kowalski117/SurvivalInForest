@@ -42,7 +42,7 @@ public class InventoryPlayerInput : MonoBehaviour
         _playerInput.Disable();
     }
 
-    private void InteractCrafting() 
+    public void InteractCrafting() 
     {
         OnToggleInventory?.Invoke();
         SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);

@@ -138,6 +138,18 @@ public class PlayerInteraction : Raycast
                 _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
                 UpdateDurabilityItem();
             }
+            else if (_currentResoure != null)
+            {
+
+                _currentResoure.TakeDamage(0, 0);
+                UpdateDurabilityItem();
+
+                if (_currentResoure.Health <= 0)
+                {
+                    _currentItemData = null;
+                    _currentResoure = null;
+                }
+            }
         }
     }
 

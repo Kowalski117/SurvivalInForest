@@ -5,6 +5,7 @@ namespace StarterAssets
     public class UICanvasControllerInput : MonoBehaviour
     {
         [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
+        [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
 
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;
@@ -27,6 +28,11 @@ namespace StarterAssets
         public void Hit()
         {
             _weaponPlayerInput.Shoot();
+        }
+
+        public void ToggleInventory()
+        {
+            _inventoryPlayerInput.InteractCrafting();
         }
     }
 }
