@@ -34,11 +34,6 @@ public class InventoryItemData : ScriptableObject
     {
         
     }
-
-    public void LowerStrength(float amount)
-    {
-        _durability -= amount;
-    }
 }
 
 public enum ItemType

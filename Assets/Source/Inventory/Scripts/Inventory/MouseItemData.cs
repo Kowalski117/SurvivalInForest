@@ -5,14 +5,16 @@ using UnityEngine.Events;
 public class MouseItemData : MonoBehaviour
 {
     [SerializeField] private InventoryPlayerInput _playerInput;
+    [SerializeField] private Canvas _canvas;
 
     private InventorySlotUI _inventorySlotUI;
-    [SerializeField] private Canvas _canvas;
+    private InventorySlotUI _currentSlot; 
 
     public static UnityAction OnUpdatedSlots;
     public event UnityAction<InventorySlot> OnInteractItem;
 
     public InventorySlotUI InventorySlotUI => _inventorySlotUI;
+    public InventorySlotUI CurrentSlot => _currentSlot;
 
     private void Awake()
     {
@@ -42,6 +44,11 @@ public class MouseItemData : MonoBehaviour
         _inventorySlotUI.AssignedInventorySlot.AssignItem(inventorySlot);
         UpdateMouseSlot();
         OnUpdatedSlots?.Invoke();
+    }
+
+    public void UpdateCurrentInventorySlot(InventorySlotUI inventorySlot)
+    {
+        _currentSlot = inventorySlot;
     }
 
     public void UpdateMouseSlot()

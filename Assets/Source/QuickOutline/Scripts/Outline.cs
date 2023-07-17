@@ -74,7 +74,7 @@ public class Outline : MonoBehaviour {
   [SerializeField, HideInInspector]
   private List<ListVector3> bakeValues = new List<ListVector3>();
 
-  private Renderer[] renderers;
+  private Renderer renderers;
   private Material outlineMaskMaterial;
   private Material outlineFillMaterial;
 
@@ -83,7 +83,7 @@ public class Outline : MonoBehaviour {
   void Awake() {
 
     // Cache renderers
-    renderers = GetComponentsInChildren<Renderer>();
+    renderers = GetComponent<Renderer>();
 
     // Instantiate outline materials
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
@@ -99,20 +99,17 @@ public class Outline : MonoBehaviour {
     needsUpdate = true;
   }
 
-  void OnEnable() {
-    foreach (var renderer in renderers) {
+    void OnEnable()
+    {
+        var materials = renderers.sharedMaterials.ToList();
 
-      // Append outline shaders
-      var materials = renderer.sharedMaterials.ToList();
+        materials.Add(outlineMaskMaterial);
+        materials.Add(outlineFillMaterial);
 
-      materials.Add(outlineMaskMaterial);
-      materials.Add(outlineFillMaterial);
-
-      renderer.materials = materials.ToArray();
+        renderers.materials = materials.ToArray();
     }
-  }
 
-  void OnValidate() {
+    void OnValidate() {
 
     // Update material properties
     needsUpdate = true;
@@ -137,20 +134,17 @@ public class Outline : MonoBehaviour {
     }
   }
 
-  void OnDisable() {
-    foreach (var renderer in renderers) {
+    void OnDisable()
+    {
+        var materials = renderers.sharedMaterials.ToList();
 
-      // Remove outline shaders
-      var materials = renderer.sharedMaterials.ToList();
+        materials.Remove(outlineMaskMaterial);
+        materials.Remove(outlineFillMaterial);
 
-      materials.Remove(outlineMaskMaterial);
-      materials.Remove(outlineFillMaterial);
-
-      renderer.materials = materials.ToArray();
+        renderers.materials = materials.ToArray();
     }
-  }
 
-  void OnDestroy() {
+    void OnDestroy() {
 
     // Destroy material instances
     Destroy(outlineMaskMaterial);

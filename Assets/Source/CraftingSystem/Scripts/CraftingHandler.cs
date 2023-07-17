@@ -9,7 +9,6 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private LoadingWindow _loadingWindow;
-
     [SerializeField] private CraftingÑategory[] _craftingÑategories;
     [SerializeField] private Transform _containerForSlots;
     [SerializeField] private Transform _craftingWindow;
@@ -17,7 +16,6 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private TMP_Text _nameCategory;
     [SerializeField] private CraftItemSlotView _craftItemSlotPrefab;
     [SerializeField] private CraftBuildSlotView _craftBuildingSlotPrefab;
-
     [SerializeField] private CraftingCategoryButton[] _craftingCategoryButtons;
 
     private List<CraftItemSlotView> _craftItemSlots = new List<CraftItemSlotView>();
@@ -25,6 +23,7 @@ public class CraftingHandler : MonoBehaviour
 
     private CraftingÑategory _currentCategory;
     private bool _isCraftPlayerOpen = false;
+
     public Transform CraftingWindow => _craftingWindow;
 
     private void Awake()
@@ -35,7 +34,6 @@ public class CraftingHandler : MonoBehaviour
     private void OnEnable()
     {
         _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
-
         _buildTool.OnCompletedBuild += UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate += UpdateSlot;
         CrafBuildSlot.OnCraftSlotUpdate += UpdateSlot;
@@ -45,7 +43,6 @@ public class CraftingHandler : MonoBehaviour
     private void OnDisable()
     {
         _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
-
         _buildTool.OnCompletedBuild -= UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate -= UpdateSlot;
         CrafBuildSlot.OnCraftSlotUpdate -= UpdateSlot;
@@ -171,8 +168,7 @@ public class CraftingHandler : MonoBehaviour
                 }
             }
         }
-            
-            SwitchCraftingCategory(craftingCategory.DefoultType);
+        SwitchCraftingCategory(craftingCategory.DefoultType);
     }
 
     private void DisplayCraftPlayerWindow(CraftingÑategory craftingCategory)

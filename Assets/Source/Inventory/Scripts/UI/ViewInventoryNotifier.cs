@@ -11,13 +11,8 @@ public class ViewInventoryNotifier : MonoBehaviour
     [SerializeField] private Color _addItemColor;
     [SerializeField] private Color _removeItemColor;
 
-    private InventoryItemData _inventoryItemData;
-
-    public InventoryItemData ItemData => _inventoryItemData;
-
     public void Init(InventoryItemData itemData, int amount)
     {
-        _inventoryItemData = itemData;
         _icon.sprite = itemData.Icon;
         _nameText.text = itemData.DisplayName;
 
@@ -26,7 +21,6 @@ public class ViewInventoryNotifier : MonoBehaviour
             _frame.color = _addItemColor;
             _amountText.text = "+" + amount.ToString();
         }
-
         else
         {
             _frame.color = _removeItemColor;

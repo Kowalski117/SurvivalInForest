@@ -53,40 +53,17 @@ public class BuildTool : MonoBehaviour
         _buildPlayerInput.OnDeleteBuilding -= DeleteBuilding;
     }
 
-    public void SetDeleteModeEnabled(bool deleteMode)
-    {
-        _deleteModeEnabled = deleteMode;
-    }
-
-    private void ChoosePart(BuildingRecipe buildingRecipe) 
-    {
-        _recipe = buildingRecipe;
-        if (_deleteModeEnabled)
-        {
-            if (_targetBuilding != null && _targetBuilding.FlaggedForDelete)
-            {
-                _targetBuilding.RemoveDeleteFlag();
-
-                _targetBuilding = null;
-                _deleteModeEnabled = false;
-            }
-        }
-
-        DeleteObjectPreview();
-
-        _spawnBuilding = Instantiate(_recipe.BuildingData.Prefab, _containerBuildings);
-        _spawnBuilding.Init(_recipe.BuildingData);
-        _spawnBuilding.transform.rotation = _lastRotation;
-        OnCreateBuild?.Invoke();
-        _playerAnimation.Build();
-    }
-
     private void Update()
     {
         if (_deleteModeEnabled)
             DeleteModeLogic();
         else
             BuildModeLogic();
+    }
+
+    public void SetDeleteModeEnabled(bool deleteMode)
+    {
+        _deleteModeEnabled = deleteMode;
     }
 
     public void DeleteObjectPreview()
@@ -210,5 +187,28 @@ public class BuildTool : MonoBehaviour
                 _inventoryHolder.RemoveInventory(ingredient.ItemRequired, ingredient.AmountRequured);
             }
         }
+    }
+
+    private void ChoosePart(BuildingRecipe buildingRecipe)
+    {
+        _recipe = buildingRecipe;
+        if (_deleteModeEnabled)
+        {
+            if (_targetBuilding != null && _targetBuilding.FlaggedForDelete)
+            {
+                _targetBuilding.RemoveDeleteFlag();
+
+                _targetBuilding = null;
+                _deleteModeEnabled = false;
+            }
+        }
+
+        DeleteObjectPreview();
+
+        _spawnBuilding = Instantiate(_recipe.BuildingData.Prefab, _containerBuildings);
+        _spawnBuilding.Init(_recipe.BuildingData);
+        _spawnBuilding.transform.rotation = _lastRotation;
+        OnCreateBuild?.Invoke();
+        _playerAnimation.Build();
     }
 }

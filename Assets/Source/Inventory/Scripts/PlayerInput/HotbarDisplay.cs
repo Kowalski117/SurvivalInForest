@@ -63,6 +63,17 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Disable();
     }
 
+    private void UseItem()
+    {
+        if (_isActive)
+        {
+            if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
+                Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
+
+            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
+        }
+    }
+
     public InventorySlotUI GetInventorySlotUI()
     {
         return Slots[_currentIndex];
@@ -108,19 +119,6 @@ public class HotbarDisplay : StaticInventoryDisplay
         Slots[_currentIndex].ToggleHighlight();
 
         ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
-    }
-
-
-
-    private void UseItem()
-    {
-        if (_isActive)
-        {
-            if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
-                Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
-
-            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
-        }
     }
 
     private void Hotbar(int index)

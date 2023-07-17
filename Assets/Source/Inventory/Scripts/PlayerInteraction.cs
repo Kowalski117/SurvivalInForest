@@ -48,24 +48,6 @@ public class PlayerInteraction : Raycast
         }
     }
 
-    private void UseItem()
-    {
-        InitWeapon(_currentItemData);
-        InitTool(_currentItemData);
-
-        if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon && _currentTool == null)
-        {
-            Shoot();
-        }
-        else if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon && _currentTool == null)
-        {
-            Hit();
-        }
-        else if(_currentTool != null)
-        {
-            InteractResource();
-        }
-    }
 
     public void InitWeapon(InventoryItemData itemData)
     {
@@ -196,7 +178,6 @@ public class PlayerInteraction : Raycast
                 _currentBrokenObject.TakeDamage(_currentTool.DamageResources, 0);
                 UpdateDurabilityItem();
             }
-
         }
     }
 
@@ -211,6 +192,25 @@ public class PlayerInteraction : Raycast
                 _currentInventorySlot.UpdateDurabilityIfNeeded();
                 _inventory.RemoveInventory(_currentInventorySlot.ItemData, 1);
             }
+        }
+    }
+
+    private void UseItem()
+    {
+        InitWeapon(_currentItemData);
+        InitTool(_currentItemData);
+
+        if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon && _currentTool == null)
+        {
+            Shoot();
+        }
+        else if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon && _currentTool == null)
+        {
+            Hit();
+        }
+        else if (_currentTool != null)
+        {
+            InteractResource();
         }
     }
 
@@ -230,7 +230,6 @@ public class PlayerInteraction : Raycast
 
         if (other.TryGetComponent(out BrokenObject brokenObject))
         {
-            Debug.Log(brokenObject);
             if (brokenObject != null)
                 _currentBrokenObject = brokenObject;
         }

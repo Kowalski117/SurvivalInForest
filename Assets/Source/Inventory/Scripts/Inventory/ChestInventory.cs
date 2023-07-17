@@ -5,9 +5,9 @@ using System.Collections.Generic;
 [RequireComponent(typeof(UniqueID))]
 public class ChestInventory : InventoryHolder, IInteractable
 {
-    public UnityAction<IInteractable> OnInteractionComplete { get; set; }
+    [SerializeField] private List<InventoryItemData> _startingItems;
 
-    public List<InventoryItemData> startingItems; // Поле для хранения предметов
+    public UnityAction<IInteractable> OnInteractionComplete { get; set; }
 
     protected override void Awake()
     {
@@ -19,7 +19,7 @@ public class ChestInventory : InventoryHolder, IInteractable
     {
         var chestSaveData = new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation);
 
-        foreach (var item in startingItems)
+        foreach (var item in _startingItems)
         {
             PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
         }
@@ -45,8 +45,7 @@ public class ChestInventory : InventoryHolder, IInteractable
             this.transform.position = chestData.Position;
             this.transform.rotation = chestData.Rotation;
 
-            // Добавление предметов из списка startingItems в инвентарь
-            foreach (var item in startingItems)
+            foreach (var item in _startingItems)
             {
                 PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
             }

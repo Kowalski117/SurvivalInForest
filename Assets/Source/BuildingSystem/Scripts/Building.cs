@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,7 +17,6 @@ public class Building : MonoBehaviour
     private Material[] _defoultMaterial;
 
     private bool _flaggedForDelete;
-
     private BuildingSaveData _saveData;
 
     public event UnityAction OnCompletedBuild;
@@ -35,6 +33,7 @@ public class Building : MonoBehaviour
         _rigidbody.isKinematic = true;
         _renderers = transform.GetComponentsInChildren<Renderer>();
         _defoultMaterial = new Material[_renderers.Length];
+
         for (int i = 0; i < _renderers.Length; i++)
         {
             _defoultMaterial[i] = _renderers[i].material;
@@ -44,7 +43,6 @@ public class Building : MonoBehaviour
     public void Init(BuildingData data, BuildingSaveData saveData = null)
     {
         _assignedData = data;
-
         _colliders = transform.Find("Colliders");
 
         if(_colliders != null )

@@ -19,7 +19,6 @@ public class WeaponItemData : InventoryItemData
     public ParticleSystem MuzzleFlash => _muzzleFlash;
     public ParticleSystem HitEffect => _hitEffect;
     public AudioClip MuzzleSound => _muzzleSound;
-
 }
 
 public enum WeaponType

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Inventory System/Category lists items", order = 51)]

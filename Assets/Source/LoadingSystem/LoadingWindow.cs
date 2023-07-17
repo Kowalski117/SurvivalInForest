@@ -14,30 +14,31 @@ public class LoadingWindow : MonoBehaviour
     [SerializeField] private TMP_Text _text;
     [SerializeField] private TMP_Text _timeText;
 
-    private DateTime time;
+    private DateTime _time;
     private Coroutine _coroutine;
     public event UnityAction OnLoadingComplete;
 
-    public void ShowLoadingWindow(float delay, float skipTime, string name)
+    public void ShowLoadingWindow(float delay, float skipTime, string name, ActionType actionType)
     {
-        if(_coroutine != null)
+        if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
             _coroutine = null;
         }
 
-        _coroutine = StartCoroutine(LoadingRoutine(delay, skipTime, name));
+        _coroutine = StartCoroutine(LoadingRoutine(delay, skipTime, name, actionType));
     }
 
-    private IEnumerator LoadingRoutine(float delay, float skipTime, string name)
+    private IEnumerator LoadingRoutine(float delay, float skipTime, string name, ActionType actionType)
     {
-        DateTime times;
         _playerInputHandler.ToggleAllInput(false);
         _loadingPanel.gameObject.SetActive(true);
 
-        times = time + TimeSpan.FromHours(skipTime);
+        _time = _time + TimeSpan.FromHours(skipTime);
 
-        _text.text = $"Крафтится {name}, затраченное время - {time.ToString("HH:mm")}";
+        string actionText = GetActionText(actionType, name);
+        _text.text = actionText;
+
         float elapsedTime = 0f;
         float duration = delay;
 
@@ -53,10 +54,47 @@ public class LoadingWindow : MonoBehaviour
         _loadingBar.fillAmount = 1f;
 
         yield return new WaitForSeconds(0.5f);
-        
+
         _timeHandler.AddTimeInHours(skipTime);
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);
+
+        if (actionType == ActionType.CraftItem)
+        {
+            _playerInputHandler.ToggleHotbarDisplay(false);
+            _playerInputHandler.ToggleBuildPlayerInput(false);
+            _playerInputHandler.ToggleWeaponPlayerInput(false);
+            _playerInputHandler.TogglePersonController(false);
+        }
+        else if (actionType == ActionType.CraftBuild)
+        {
+            _playerInputHandler.ToggleWeaponPlayerInput(false);
+        }
+
+        _time = DateTime.MinValue;
+
         OnLoadingComplete?.Invoke();
     }
+
+    private string GetActionText(ActionType actionType, string name)
+    {
+        switch (actionType)
+        {
+            case ActionType.CraftItem:
+                return $"Крафтится {name}, затраченное время - {_time.ToString("HH:mm")}";
+            case ActionType.CraftBuild:
+                return $"Строится {name}, затраченное время - {_time.ToString("HH:mm")}";
+            case ActionType.Sleep:
+                return $"Вы спите, затраченное время - {_time.ToString("HH:mm")}";
+            default:
+                return string.Empty;
+        }
+    }
+}
+
+public enum ActionType
+{
+    CraftItem,
+    CraftBuild,
+    Sleep
 }

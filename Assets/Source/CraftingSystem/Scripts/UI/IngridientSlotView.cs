@@ -10,12 +10,10 @@ public class IngridientSlotView : MonoBehaviour
     private InventoryItemData _data;
     private int _amount;
 
-
     public void Init(PlayerInventoryHolder playerInventory, InventoryItemData data, int amount)
     {
         _data = data;
         _amount = amount;
-
         _imageSprite.sprite = data.Icon;
 
         UpdateAmount(playerInventory);

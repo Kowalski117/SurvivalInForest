@@ -17,8 +17,6 @@ public class SleepPanel : MonoBehaviour
     private DateTime _sleepTime;
     private bool _isSleepWindowOpen = false;
 
-    public Transform SleepWindow => _sleepWindow;
-
     public static UnityAction<float> OnSleepButton;
 
     private void Start()
@@ -51,7 +49,7 @@ public class SleepPanel : MonoBehaviour
     private void SleepButtonClick()
     {
         ExitButtonClick();
-        _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, "Кровать");
+        _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, string.Empty, ActionType.Sleep);
         _loadingWindow.OnLoadingComplete += OnLoadingComplete;
     }
 

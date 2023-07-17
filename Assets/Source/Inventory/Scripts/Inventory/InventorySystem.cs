@@ -90,16 +90,6 @@ public class InventorySystem
         return freeSlot == null ? false : true;
     }
 
-    private void CreateInventory(int size)
-    {
-        _inventorySlots = new List<InventorySlot>(size);
-
-        for (int i = 0; i < size; i++)
-        {
-            _inventorySlots.Add(new InventorySlot());
-        }
-    }
-
     public Dictionary<InventoryItemData, int> GetAllItemsHeld()
     {
         var distinctItems = new Dictionary<InventoryItemData, int>();
@@ -134,5 +124,15 @@ public class InventorySystem
             count = 0;
 
         return count;
+    }
+
+    private void CreateInventory(int size)
+    {
+        _inventorySlots = new List<InventorySlot>(size);
+
+        for (int i = 0; i < size; i++)
+        {
+            _inventorySlots.Add(new InventorySlot());
+        }
     }
 }

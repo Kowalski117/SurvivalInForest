@@ -28,7 +28,6 @@ public class BaseHandler : MonoBehaviour
             _spawnedBuilding.Init(building.AssignedData, building);
             _spawnedBuilding.transform.position = building.Position;
             _spawnedBuilding.transform.rotation = building.Rotation;
-
             _spawnedBuilding.PlaceBuilding();
         }
     }
