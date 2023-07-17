@@ -691,6 +691,9 @@
                 <e p="Plants" t="Include" />
               </e>
             </e>
+            <e p="PNB_Meadow_Forest 1" t="Include">
+              <e p="Prefabs" t="Include" />
+            </e>
             <e p="URP_ExtractMe_Nature_Biomes.unitypackage" t="Include" />
           </e>
           <e p="PolygonWestern" t="Include">
@@ -4349,6 +4352,7 @@
             </e>
           </e>
         </e>
+        <e p="Resources" t="Include" />
         <e p="Samples" t="Include">
           <e p="Web Utility" t="Include">
             <e p="2.2.0" t="Include">
@@ -4412,6 +4416,7 @@
             <e p="SharedPlayer.cs" t="Include" />
             <e p="ViewGizmos.cs" t="Include" />
           </e>
+          <e p="BrokenObject.cs" t="Include" />
           <e p="BuildingSystem" t="Include">
             <e p="BuildingData" t="Include">
               <e p="Build" t="Include" />
@@ -4484,8 +4489,6 @@
               <e p="ExchangeHandler.cs" t="Include" />
               <e p="ExchangeKeeper.cs" t="Include" />
               <e p="ExchangerItemList.cs" t="Include" />
-              <e p="ExchangerSlot.cs" t="Include" />
-              <e p="ExchangeSystem.cs" t="Include" />
               <e p="UI" t="Include">
                 <e p="ExchangedItemView.cs" t="Include" />
                 <e p="ExchangerSlotView.cs" t="Include" />
@@ -4525,6 +4528,7 @@
               <e p="Sprites" t="Include" />
             </e>
             <e p="Scripts" t="Include">
+              <e p="DragItem.cs" t="Include" />
               <e p="InteractionPoint.cs" t="Include" />
               <e p="Interactor.cs" t="Include" />
               <e p="Interfases" t="Include">
@@ -4539,6 +4543,7 @@
                 <e p="PlayerInventoryHolder.cs" t="Include" />
                 <e p="UI" t="Include">
                   <e p="DynamicInventoryDisplay.cs" t="Include" />
+                  <e p="InventoryDescriptionUI.cs" t="Include" />
                   <e p="InventoryDisplay.cs" t="Include" />
                   <e p="InventorySlotUI.cs" t="Include" />
                   <e p="InventoryUIController.cs" t="Include" />
@@ -4556,6 +4561,7 @@
                 </e>
                 <e p="ItemPickUp.cs" t="Include" />
                 <e p="ItemSlot.cs" t="Include" />
+                <e p="ValueDurabilityView.cs" t="Include" />
               </e>
               <e p="PlayerInput" t="Include">
                 <e p="HotbarDisplay.cs" t="Include" />
@@ -4575,7 +4581,11 @@
           <e p="MiningSystem" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="AppleTree.cs" t="Include" />
               <e p="Resource.cs" t="Include" />
+              <e p="SpawnResource.cs" t="Include" />
+              <e p="Stone.cs" t="Include" />
+              <e p="Tree.cs" t="Include" />
             </e>
           </e>
           <e p="PlayerAnimation" t="Include">
@@ -4733,7 +4743,6 @@
               </e>
             </e>
           </e>
-          <e p="Tree.cs" t="Include" />
           <e p="WeaponSystem" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include" />
