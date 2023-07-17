@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class CraftSlotView : MonoBehaviour
 {
     [SerializeField] protected Image CraftedIcon;
     [SerializeField] protected TMP_Text CraftedName;
+    [SerializeField] protected TMP_Text CraftedTimeText;
     [SerializeField] protected IngridientSlotView SlotIngridientPrefab;
     [SerializeField] protected Transform IngridientsContainer;
     [SerializeField] protected Button CraftedButton;
@@ -15,6 +17,8 @@ public class CraftSlotView : MonoBehaviour
     protected PlayerInventoryHolder InventoryHolder;
     protected LoadingWindow LoadingWindow;
     protected CraftingÑategory CraftingÑategory;
+
+    protected DateTime CraftedTime;
 
     public CraftingÑategory Category => CraftingÑategory;
 
