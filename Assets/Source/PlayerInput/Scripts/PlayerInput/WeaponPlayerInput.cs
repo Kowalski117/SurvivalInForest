@@ -24,7 +24,7 @@ public class WeaponPlayerInput : MonoBehaviour
         playerInput.Disable();
     }
 
-    private void Shoot()
+    public void Shoot()
     {
         OnShoot?.Invoke();
     }

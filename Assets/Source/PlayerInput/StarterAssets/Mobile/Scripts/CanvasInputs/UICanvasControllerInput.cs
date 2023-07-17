@@ -4,6 +4,8 @@ namespace StarterAssets
 {
     public class UICanvasControllerInput : MonoBehaviour
     {
+        [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
+
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;
 
@@ -20,6 +22,11 @@ namespace StarterAssets
         public void VirtualSprintInput(bool virtualSprintState)
         {
             starterAssetsInputs.SprintInput(virtualSprintState);
+        }
+
+        public void Hit()
+        {
+            _weaponPlayerInput.Shoot();
         }
     }
 }
