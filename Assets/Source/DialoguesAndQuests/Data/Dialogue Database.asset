@@ -60,7 +60,7 @@ MonoBehaviour:
   - id: 2
     fields:
     - title: Name
-      value: NPC
+      value: Trader
       type: 0
       typeString: 
     - title: Pictures
@@ -79,7 +79,37 @@ MonoBehaviour:
     spritePortrait: {fileID: 0}
     alternatePortraits: []
     spritePortraits: []
-  items: []
+  items:
+  - id: 1
+    fields:
+    - title: Name
+      value: find a stick
+      type: 0
+      typeString: 
+    - title: Pictures
+      value: '[]'
+      type: 3
+      typeString: CustomFieldType_Files
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
+    - title: Success Description
+      value: 
+      type: 0
+      typeString: 
+    - title: Failure Description
+      value: 
+      type: 0
+      typeString: 
+    - title: State
+      value: unassigned
+      type: 0
+      typeString: 
+    - title: Is Item
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
   locations:
   - id: 1
     fields:
@@ -684,12 +714,6 @@ MonoBehaviour:
       - originConversationID: 3
         originDialogueID: 0
         destinationConversationID: 3
-        destinationDialogueID: 1
-        isConnector: 0
-        priority: 2
-      - originConversationID: 3
-        originDialogueID: 0
-        destinationConversationID: 3
         destinationDialogueID: 8
         isConnector: 0
         priority: 2
@@ -805,8 +829,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 270.6522
-        y: 108
+        x: 267.4607
+        y: 109.06383
         width: 160
         height: 30
     - id: 2
@@ -1397,6 +1421,10 @@ MonoBehaviour:
         value: 
         type: 4
         typeString: CustomFieldType_Localization
+      - title: Response Menu Sequence
+        value: 
+        type: 0
+        typeString: 
       conversationID: 3
       isRoot: 0
       isGroup: 0
@@ -1417,7 +1445,7 @@ MonoBehaviour:
         destinationDialogueID: 11
         isConnector: 0
         priority: 2
-      conditionsString: 
+      conditionsString: HasQuest("OpenBowler")  ~= true
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -1425,7 +1453,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 573.5923
-        y: 115.6505
+        y: 114.6505
         width: 160
         height: 30
     - id: 9
@@ -1455,7 +1483,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value: "\u0422\u044B \u0443\u0436\u0435 \u0432\u044B\u043F\u043E\u043B\u043D\u0438\u043B
+          \u0437\u0430\u0434\u0430\u043D\u0438\u0435?"
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -1501,15 +1530,16 @@ MonoBehaviour:
         destinationDialogueID: 12
         isConnector: 0
         priority: 2
-      conditionsString: 
+      conditionsString: CurrentQuestState("find a stick") == "active" and (GetQuestNodeState("find
+        a stick", "find a stick")  == "active")
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 916.3107
-        y: 112.737854
+        x: 841.047
+        y: 119.82576
         width: 160
         height: 30
     - id: 10
@@ -1583,22 +1613,12 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: "ShowAlert(\"\u041D\u043E\u0432\u044B\u0439 \u043A\u0432\u0435\u0441\u0442:
+        \u043D\u0430\u0439\u0442\u0438 \u043F\u0430\u043B\u043A\u0438\");\nGiveQuest(\"Trader\",
+        \"OpenBowler\")"
       onExecute:
         m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 0}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: 
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: 
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
+          m_Calls: []
       canvasRect:
         serializedVersion: 2
         x: 533.78644
@@ -1709,7 +1729,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value: "\u041D\u0435\u0442"
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -1729,7 +1749,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: "\u0414\u0430"
+        value: "\u041D\u0435\u0442"
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
@@ -1755,8 +1775,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 916.3107
-        y: 162.73785
+        x: 884.4426
+        y: 174.86084
         width: 160
         height: 30
     - id: 13
@@ -1786,7 +1806,9 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value: "\u0421\u043F\u0430\u0441\u0438\u0431\u043E \u0442\u0435\u0431\u0435
+          \u0442\u044B \u0432\u044B\u043F\u043E\u043B\u043D\u0438\u043B \u0437\u0430\u0434\u0430\u043D\u0438\u0435,
+          \u043F\u043E\u043B\u0443\u0447\u0438 \u043D\u0430\u0433\u0440\u0430\u0434\u0443"
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -1833,15 +1855,16 @@ MonoBehaviour:
         destinationDialogueID: 14
         isConnector: 0
         priority: 2
-      conditionsString: 
+      conditionsString: (CurrentQuestState("find a stick") == "active") and (GetQuestNodeState("find
+        a stick", "find a stick")  == "success")
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1158.4161
-        y: 112.737885
+        x: 1081.493
+        y: 127.02359
         width: 160
         height: 30
     - id: 14
@@ -1912,19 +1935,22 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: 'SetQuestState("find a stick", "success");
+
+        SetQuestNodeState("find
+        a stick", "Return", "success")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1158.4161
-        y: 162.73788
+        x: 1083.6909
+        y: 177.02359
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 57.771553, y: 0}
-    canvasZoom: 1.1799998
+    canvasScrollPosition: {x: 47.488914, y: 16.086147}
+    canvasZoom: 1
   syncInfo:
     syncActors: 0
     syncItems: 0

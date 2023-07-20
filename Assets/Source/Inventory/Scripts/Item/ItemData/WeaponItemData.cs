@@ -6,6 +6,7 @@ public class WeaponItemData : InventoryItemData
 {
     [SerializeField] private WeaponType _weaponType;
     [SerializeField] private float _damage;
+    [SerializeField] private float _overTimeDamage;
     [SerializeField] private float _speed;
     [SerializeField] private ItemPickUp _bullet;
     [SerializeField] private ParticleSystem _muzzleFlash;
@@ -14,6 +15,7 @@ public class WeaponItemData : InventoryItemData
 
     public WeaponType WeaponType => _weaponType;
     public float Damage => _damage;
+    public float OverTimeDamage => _overTimeDamage;   
     public float Speed => _speed;
     public ItemPickUp Bullet => _bullet;
     public ParticleSystem MuzzleFlash => _muzzleFlash;

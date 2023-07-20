@@ -50,7 +50,7 @@ public class UIHandler : MonoBehaviour
         if (_isInventoryOpen)
         {
             _playerInputHandler.ToggleBuildPlayerInput(false);
-            _playerInputHandler.ToggleWeaponPlayerInput(false);
+            _playerInputHandler.ToggleInteractionConstructionInput(false);
             _playerBackpackPanel.ParentTransform.gameObject.SetActive(true);
             _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
@@ -63,7 +63,7 @@ public class UIHandler : MonoBehaviour
             _playerBackpackPanel.ParentTransform.gameObject.SetActive(false);
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
-            _playerInputHandler.ToggleWeaponPlayerInput(true);
+            _playerInputHandler.ToggleInteractionConstructionInput(true);
             _playerInputHandler.ToggleHotbarDisplay(true);
         }
     }

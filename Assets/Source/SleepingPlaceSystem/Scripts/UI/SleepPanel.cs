@@ -39,17 +39,22 @@ public class SleepPanel : MonoBehaviour
         _sleepButton.onClick.RemoveListener(SleepButtonClick);
         _exitButton.onClick.RemoveListener(ExitButtonClick);
     }
+    private void Update()
+    {
+        if(_sleepWindow.gameObject.activeInHierarchy)
+            _timer.text = _sleepTime.AddHours(_survivalHandler.Sleep.MissingValue).ToString("HH:mm");
+    }
 
     public void OpenWindow()
     {
         _sleepWindow.gameObject.SetActive(true);
-        _timer.text = _sleepTime.AddHours(_survivalHandler.Sleep.MissingValue).ToString("HH:mm");
     }
 
     private void SleepButtonClick()
     {
         ExitButtonClick();
         _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, string.Empty, ActionType.Sleep);
+        _survivalHandler.TimeHandler.ToggleEnable(false);
         _loadingWindow.OnLoadingComplete += OnLoadingComplete;
     }
 
@@ -58,7 +63,7 @@ public class SleepPanel : MonoBehaviour
         _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue);
         OnSleepButton?.Invoke(_survivalHandler.Sleep.MissingValue);
         _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue);
-
+        _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 

@@ -11,6 +11,7 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     private int _currentlyDraggedItemIndex = -1;
     private InventorySlotUI _currentSlot;
+    protected InventorySlotUI ClickSlot;
     protected InventorySystem inventorySystem;
     protected Dictionary<InventorySlotUI, InventorySlot> slotDictionary;
 
@@ -119,6 +120,7 @@ public abstract class InventoryDisplay : MonoBehaviour
 
         if (Slots[index].AssignedInventorySlot.ItemData != null)
         {
+            ClickSlot = Slots[index];
             Slots[index].Select();
             InventoryDescription.SetDescription(Slots[index]);
         }

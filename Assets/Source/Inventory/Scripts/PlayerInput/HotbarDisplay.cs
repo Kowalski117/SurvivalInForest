@@ -1,7 +1,10 @@
+using UnityEngine;
 using UnityEngine.Events;
 
 public class HotbarDisplay : StaticInventoryDisplay
 {
+    [SerializeField] private SurvivalHandler _survivalHandler;
+
     private int _maxIndexSize = 6;
     private int _currentIndex = 0;
 
@@ -9,7 +12,7 @@ public class HotbarDisplay : StaticInventoryDisplay
 
     private PlayerInput _playerInput;
 
-    public event UnityAction<InventoryItemData> ItemClicked;
+    public event UnityAction<InventorySlot> ItemClicked;
 
     private void Awake()
     {
@@ -33,14 +36,12 @@ public class HotbarDisplay : StaticInventoryDisplay
 
         if (_playerInput.Inventory.MouseWheel.ReadValue<float>() < -0.1f)
             ChangeIndex(-1);
-
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         _playerInput.Enable();
-
         _playerInput.Inventory.Hotbar1.performed += ctx => Hotbar(0);
         _playerInput.Inventory.Hotbar2.performed += ctx => Hotbar(1);
         _playerInput.Inventory.Hotbar3.performed += ctx => Hotbar(2);
@@ -70,7 +71,7 @@ public class HotbarDisplay : StaticInventoryDisplay
             if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
                 Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
 
-            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
+            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot);
         }
     }
 
@@ -99,8 +100,6 @@ public class HotbarDisplay : StaticInventoryDisplay
                 _currentIndex = _maxIndexSize;
 
             Slots[_currentIndex].ToggleHighlight();
-
-            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
         }
     }
 
@@ -117,8 +116,6 @@ public class HotbarDisplay : StaticInventoryDisplay
         _currentIndex = newIndex;
 
         Slots[_currentIndex].ToggleHighlight();
-
-        ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot.ItemData);
     }
 
     private void Hotbar(int index)

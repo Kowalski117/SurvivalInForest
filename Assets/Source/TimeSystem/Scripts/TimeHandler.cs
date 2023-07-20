@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityBehaviour;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,8 @@ public class TimeHandler : MonoBehaviour
     private TimeSpan _sunriseTime;
     private TimeSpan _sunsetTime;
 
+    private bool _isEnabled = true;
+
     public event UnityAction<DateTime> OnTimeUpdate;
     public DateTime StartTime => _currentTime.Date + TimeSpan.FromHours(_startHour);
     public float TimeMultiplier => _timeMultiplier;
@@ -34,9 +37,12 @@ public class TimeHandler : MonoBehaviour
 
     private void Update()
     {
-        UpdateTimeDay();
-        RotateSun();
-        UpdateLightSettings();
+        if (_isEnabled)
+        {
+            UpdateTimeDay();
+            RotateSun();
+            UpdateLightSettings();
+        }
     }
 
     private void OnEnable()
@@ -61,6 +67,11 @@ public class TimeHandler : MonoBehaviour
     {
         _currentTime = _currentTime.AddHours(time);
         OnTimeUpdate?.Invoke(_currentTime);
+    }
+
+    public void ToggleEnable(bool isActive)
+    {
+        _isEnabled = isActive;
     }
 
     private void UpdateTimeDay()

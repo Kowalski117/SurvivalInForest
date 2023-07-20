@@ -82,7 +82,7 @@ public class InventoryDescriptionUI : MonoBehaviour
 
     private void DiscardButtonClick()
     {
-        _interactor.RemoveItem(_currentSlot.AssignedInventorySlot);
+        _interactor.RemoveItem(_currentSlot);
 
         if (_currentSlot.AssignedInventorySlot.ItemData == null)
             ResetDescription();

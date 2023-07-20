@@ -36,15 +36,15 @@ public class PlayerAnimation : MonoBehaviour
         Init(_hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData);
     }
 
-    private void OnEnable()
-    {
-        _hotbarDisplay.ItemClicked += Init;
-    }
+    //private void OnEnable()
+    //{
+    //    _hotbarDisplay.ItemClicked += Init;
+    //}
 
-    private void OnDisable()
-    {
-        _hotbarDisplay.ItemClicked -= Init;
-    }
+    //private void OnDisable()
+    //{
+    //    _hotbarDisplay.ItemClicked -= Init;
+    //}
 
     public void Init(InventoryItemData itemData)
     {

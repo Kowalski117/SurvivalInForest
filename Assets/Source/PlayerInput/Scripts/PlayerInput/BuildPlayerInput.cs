@@ -33,22 +33,22 @@ public class BuildPlayerInput : MonoBehaviour
         _playerInput.Disable();
     }
 
-    private void PutBuilding()
+    public void PutBuilding()
     {
         OnPutBuilding?.Invoke();
     }
 
-    private void RotateBuilding()
+    public void RotateBuilding()
     {
         OnRotateBuilding?.Invoke();
     }
 
-    private void DeleteModeBuilding()
+    public void DeleteModeBuilding()
     {
         OnDeleteModeBuilding?.Invoke();
     }
 
-    private void DeleteBuilding()
+    public void DeleteBuilding()
     {
         OnDeleteBuilding?.Invoke();
     }

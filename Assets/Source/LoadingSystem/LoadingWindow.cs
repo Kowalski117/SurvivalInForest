@@ -63,12 +63,12 @@ public class LoadingWindow : MonoBehaviour
         {
             _playerInputHandler.ToggleHotbarDisplay(false);
             _playerInputHandler.ToggleBuildPlayerInput(false);
-            _playerInputHandler.ToggleWeaponPlayerInput(false);
+            _playerInputHandler.ToggleInteractionConstructionInput(false);
             _playerInputHandler.TogglePersonController(false);
         }
         else if (actionType == ActionType.CraftBuild)
         {
-            _playerInputHandler.ToggleWeaponPlayerInput(false);
+            _playerInputHandler.ToggleInteractionConstructionInput(false);
         }
 
         _time = DateTime.MinValue;

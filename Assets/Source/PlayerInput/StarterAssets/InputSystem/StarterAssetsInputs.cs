@@ -14,6 +14,7 @@ namespace StarterAssets
         public bool sprint;
         public bool stealth;
         public bool interact;
+        public bool attack;
 
         [Header("Movement Settings")]
         public bool analogMovement;
@@ -55,6 +56,11 @@ namespace StarterAssets
         {
             InteractInput(value.isPressed);
         }
+
+        //public void OnAttack(InputValue value)
+        //{
+        //    AttackInput(value.isPressed);
+        //}
 #endif
 
         public void MoveInput(Vector2 newMoveDirection)
@@ -85,6 +91,11 @@ namespace StarterAssets
         public void InteractInput(bool newInteractState)
         {
             interact = newInteractState;
+        }
+
+        public void AttackInput(bool newAttackState)
+        {
+            attack = newAttackState;
         }
 
         private void OnApplicationFocus(bool hasFocus)

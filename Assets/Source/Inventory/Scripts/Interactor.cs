@@ -12,6 +12,7 @@ public class Interactor : Raycast
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private float _liftingDelay = 2f;
+    [SerializeField] private Transform _removeItemPoint;
 
     private IInteractable _currentInteractable;
     private bool _isStartingPick = true;
@@ -28,18 +29,18 @@ public class Interactor : Raycast
     {
         _buildTool.OnCreateBuild += CreateBuild;
         _buildTool.OnCompletedBuild += ClearIInteractable;
-        _playerInputHandler.SelectionPlayerInput.PickUp += PickUpItem;
-        _playerInputHandler.InventoryPlayerInput.InteractKeyPressed += InteractableInventory;
-        _playerInputHandler.InteractionConstructionPlayerInput.OnInteractedConstruction += InteractableConstruction;
+        _playerInputHandler.InteractionPlayerInput.OnPickUp += PickUpItem;
+        _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable += InteractableInventory;
+        _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction += InteractableConstruction;
     }
 
     private void OnDisable()
     {
         _buildTool.OnCreateBuild -= CreateBuild;
         _buildTool.OnCompletedBuild -= ClearIInteractable;
-        _playerInputHandler.SelectionPlayerInput.PickUp -= PickUpItem;
-        _playerInputHandler.InventoryPlayerInput.InteractKeyPressed -= InteractableInventory;
-        _playerInputHandler.InteractionConstructionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
+        _playerInputHandler.InteractionPlayerInput.OnPickUp -= PickUpItem;
+        _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable -= InteractableInventory;
+        _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
     }
 
     private void Update()
@@ -58,6 +59,11 @@ public class Interactor : Raycast
                         _playerAnimation.PickUp();
                         _currentItemPickUp = itemPickUp;
                     }
+                }
+                else
+                {
+                    _lookTimer = 0;
+                    _isIconFilled = false;
                 }
             }
         }
@@ -87,14 +93,17 @@ public class Interactor : Raycast
         _isStartingPick = false;
     }
 
-    public void RemoveItem(InventorySlot inventorySlot)
+    public void RemoveItem(InventorySlotUI inventorySlot)
     {
-        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.ItemData) >= 0)
+        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
-            ItemPickUp itemPickUp =  Instantiate(inventorySlot.ItemData.ItemPrefab, _buildTool.transform.position + _buildTool.transform.forward * RayDistance, Quaternion.identity);
+            ItemPickUp itemPickUp =  Instantiate(inventorySlot.AssignedInventorySlot.ItemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
             itemPickUp.GenerateNewID();
-            _playerInventoryHolder.RemoveInventory(inventorySlot.ItemData, 1);
+            _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot.ItemData, 1);
             //_playerAnimation.RemoveItemAnimationEvent();
+
+            if(inventorySlot.AssignedInventorySlot.ItemData == null)
+                inventorySlot.ToggleHighlight();
         }
     }
 

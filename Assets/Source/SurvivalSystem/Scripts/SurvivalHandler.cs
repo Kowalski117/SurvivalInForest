@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SurvivalHandler : MonoBehaviour
 {
+    [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private PlayerInventoryHolder _playerInventory;
     [SerializeField] private PlayerHealth _health;
     [SerializeField] private SurvivalAttribute _hunger;
@@ -23,12 +24,16 @@ public class SurvivalHandler : MonoBehaviour
     {
         SaveGame.OnSaveGame += SaveSurvivalAttributes;
         SaveGame.OnLoadData += LoadSurvivalAttributes;
+
+        _hotbarDisplay.ItemClicked += Eat;
     }
 
     private void OnDisable()
     {
         SaveGame.OnSaveGame -= SaveSurvivalAttributes;
         SaveGame.OnLoadData -= LoadSurvivalAttributes;
+
+        _hotbarDisplay.ItemClicked -= Eat;
     }
 
     private void Update()
@@ -57,8 +62,9 @@ public class SurvivalHandler : MonoBehaviour
 
             if (foodItemData.EmptyDishes != null)
                 _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+
+            _playerInventory.RemoveInventory(slot.ItemData, 1);
         }
-        _playerInventory.RemoveInventory(slot.ItemData, 1);
     }
 
     private void HandleTimeUpdate()
