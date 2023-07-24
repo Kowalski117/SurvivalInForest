@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -46,20 +46,24 @@ namespace PixelCrushers.QuestMachine
             AddEntity(other.GetComponentInChildren<QuestEntity>());
         }
 
-        public void OnTriggerEnter2D(Collider2D other)
-        {
-            AddEntity(other.GetComponentInChildren<QuestEntity>());
-        }
-
         public void OnTriggerExit(Collider other)
         {
             RemoveEntity(other.GetComponentInChildren<QuestEntity>());
+        }
+
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+
+        public void OnTriggerEnter2D(Collider2D other)
+        {
+            AddEntity(other.GetComponentInChildren<QuestEntity>());
         }
 
         public void OnTriggerExit2D(Collider2D other)
         {
             RemoveEntity(other.GetComponentInChildren<QuestEntity>());
         }
+
+#endif
 
         public void AddEntity(QuestEntity entity)
         {

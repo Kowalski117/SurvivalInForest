@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -15,11 +15,11 @@ namespace PixelCrushers.QuestMachine.Demo
     /// </summary>
     public class DemoInventory : Saver, IMessageHandler
     {
+        public enum ItemType { Carrot = 0, Wand = 1, Coin = 2 }
 
-        // Hard-coded item slots: Carrot, Wand, and Coin.
-        public const int CarrotSlot = 0;
-        public const int WandSlot = 1;
-        public const int CoinSlot = 2;
+        public static int CarrotSlot { get { return (int)ItemType.Carrot; } }
+        public static int WandSlot { get { return (int)ItemType.Wand; } }
+        public static int CoinSlot { get { return (int)ItemType.Coin; } }
 
         [Serializable]
         public class Slot
@@ -34,6 +34,8 @@ namespace PixelCrushers.QuestMachine.Demo
         }
 
         public Slot[] slots;
+
+        public GameObject wandBarrel; // Handles barrel containing magic polymorph wand.
 
         public int usingIndex { get; private set; }
 
@@ -110,15 +112,24 @@ namespace PixelCrushers.QuestMachine.Demo
             MessageSystem.AddListener(this, "Drop", "Carrot");
             MessageSystem.AddListener(this, "Drop", "Wand");
             MessageSystem.AddListener(this, "Drop", "Coin");
+            MessageSystem.AddListener(this, "Activate Wand Barrel", string.Empty); // and to activate wand barrel.
         }
 
         public void OnMessage(MessageArgs messageArgs)
         {
-            // When we get a message, modify the item count:
-            var count = (messageArgs.firstValue != null) && (messageArgs.firstValue.GetType() == typeof(int)) ? (int)messageArgs.firstValue : 1;
-            if (messageArgs.message == "Drop") count = -count;
-            var slotIndex = GetSlotIndex(messageArgs.parameter);
-            ModifyItemCount(slotIndex, count);
+            if (messageArgs.message == "Activate Wand Barrel")
+            {
+                // Make the wand barrel appear:
+                wandBarrel.GetComponent<SpriteRenderer>().enabled = true;
+            }
+            else
+            {
+                // Modify the item count:
+                var count = (messageArgs.firstValue != null) && (messageArgs.firstValue.GetType() == typeof(int)) ? (int)messageArgs.firstValue : 1;
+                if (messageArgs.message == "Drop") count = -count;
+                var slotIndex = GetSlotIndex(messageArgs.parameter);
+                ModifyItemCount(slotIndex, count);
+            }
         }
 
         private int GetSlotIndex(string slotType)

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -96,10 +96,7 @@ namespace PixelCrushers.QuestMachine
             {
                 if (!uiPanel.isOpen) uiPanel.Open();
             }
-            else
-            {
-                mainPanel.gameObject.SetActive(true);
-            }
+            mainPanel.gameObject.SetActive(true);
         }
 
         public virtual void Hide()
@@ -178,6 +175,10 @@ namespace PixelCrushers.QuestMachine
             {
                 AddAudioContent(content as AudioClipQuestContent);
             }
+            else
+            {
+                AddGenericContent(content);
+            }
         }
 
         protected virtual void AddHeadingContent(HeadingTextQuestContent headingContent)
@@ -193,6 +194,14 @@ namespace PixelCrushers.QuestMachine
             var instance = Instantiate<UnityUITextTemplate>(currentBodyTemplate);
             currentContentManager.Add(instance, currentContentContainer);
             instance.Assign(bodyContent.runtimeText);
+            currentIconList = null;
+        }
+
+        protected virtual void AddBodyContent(string bodyContentString)
+        {
+            var instance = Instantiate<UnityUITextTemplate>(currentBodyTemplate);
+            currentContentManager.Add(instance, currentContentContainer);
+            instance.Assign(bodyContentString);
             currentIconList = null;
         }
 
@@ -236,6 +245,18 @@ namespace PixelCrushers.QuestMachine
         {
             if (audioContent == null || audioContent.audioClip == null || audioContent.useAudioSourceOn == null) return;
             audioContent.useAudioSourceOn.Play(audioContent.audioClip);
+        }
+
+        /// <summary>
+        /// If you're defining new content types, you may want to override this method
+        /// to handle your new content types specially.
+        /// </summary>
+        protected virtual void AddGenericContent(QuestContent content)
+        {
+            if (content == null) return;
+            var runtimeText = content.runtimeText;
+            if (string.IsNullOrEmpty(runtimeText)) return;
+            AddBodyContent(runtimeText);
         }
 
         protected virtual void ClearContent()

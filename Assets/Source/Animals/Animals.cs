@@ -23,6 +23,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private Coroutine _coroutineOverTimeDamage;
     private Collider _collider;
 
+    public float Health => _healh;
     public bool IsDead => _isDead;
 
     public event Action Died;

@@ -1,4 +1,6 @@
-﻿// Copyright (c) Pixel Crushers. All rights reserved.
+// Recompile at 21.07.2023 17:38:37
+
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -420,12 +422,13 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public override void Stop()
         {
-            if (isPlaying)
+            var wasPlaying = isPlaying;
+            StopTypewriterCoroutine();
+            if (wasPlaying)
             {
                 onEnd.Invoke();
                 Sequencer.Message(SequencerMessages.Typed);
             }
-            StopTypewriterCoroutine();
             if (textComponent != null) 
             {
                 textComponent.maxVisibleCharacters = textComponent.textInfo.characterCount;

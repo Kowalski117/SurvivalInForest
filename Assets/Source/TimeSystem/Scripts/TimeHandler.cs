@@ -7,23 +7,30 @@ public class TimeHandler : MonoBehaviour
     [SerializeField] private float _timeMultiplier;
     [SerializeField] private float _startHour;
     [SerializeField] private float _sunriseHour;
+    [SerializeField] private float _dayHour;
     [SerializeField] private float _sunsetHour;
+    [SerializeField] private float _nightHour;
     [SerializeField] private Light _sunLight;
     [SerializeField] private float _maxSunLightIntensity;
     [SerializeField] private Light _moonLight;
     [SerializeField] private float _maxMoonLightIntensity;
     [SerializeField] private Color _dayAmblientLight;
     [SerializeField] private Color _nightAmblientLight;
-    [SerializeField] private AnimationCurve _lightChangeCurve;
+    [SerializeField] private AnimationCurve _sunLightIntensityCurve;
+    [SerializeField] private AnimationCurve _moonLightIntensityCurve;
+    [SerializeField] private AnimationCurve _ambientLightCurve;
     [SerializeField] private ParticleSystem _starsParticle;
 
     private DateTime _currentTime;
     private TimeSpan _sunriseTime;
     private TimeSpan _sunsetTime;
 
+    private bool _isEnabled = true;
+
     public event UnityAction<DateTime> OnTimeUpdate;
     public DateTime StartTime => _currentTime.Date + TimeSpan.FromHours(_startHour);
     public float TimeMultiplier => _timeMultiplier;
+
 
     private void Start()
     {
@@ -34,9 +41,12 @@ public class TimeHandler : MonoBehaviour
 
     private void Update()
     {
-        UpdateTimeDay();
-        RotateSun();
-        UpdateLightSettings();
+        if (_isEnabled)
+        {
+            UpdateTimeDay();
+            RotateSunAndMoon();
+            UpdateLightSettings();
+        }
     }
 
     private void OnEnable()
@@ -63,15 +73,21 @@ public class TimeHandler : MonoBehaviour
         OnTimeUpdate?.Invoke(_currentTime);
     }
 
+    public void ToggleEnable(bool isActive)
+    {
+        _isEnabled = isActive;
+    }
+
     private void UpdateTimeDay()
     {
         _currentTime = _currentTime.AddSeconds(Time.deltaTime * _timeMultiplier);
         OnTimeUpdate?.Invoke(_currentTime);
     }
 
-    private void RotateSun()
+    private void RotateSunAndMoon()
     {
         float sunLightRotation;
+        float moonRotation;
 
         if (_currentTime.TimeOfDay > _sunriseTime && _currentTime.TimeOfDay < _sunsetTime)
         {
@@ -81,6 +97,7 @@ public class TimeHandler : MonoBehaviour
             double percentage = timeSinceSunrise.TotalMinutes / sunriseSunsetDuration.TotalMinutes;
 
             sunLightRotation = Mathf.Lerp(0, 180, (float)percentage);
+            moonRotation = Mathf.Lerp(180, 360, (float)percentage);
 
             _starsParticle.Stop();
         }
@@ -92,19 +109,26 @@ public class TimeHandler : MonoBehaviour
             double percentage = timeSinceSunset.TotalMinutes / sunsetSunsetDuration.TotalMinutes;
 
             sunLightRotation = Mathf.Lerp(180, 360, (float)percentage);
+            moonRotation = Mathf.Lerp(0, 180, (float)percentage);
         }
 
         _sunLight.transform.rotation = Quaternion.AngleAxis(sunLightRotation, Vector3.right);
+        _moonLight.transform.rotation = Quaternion.AngleAxis(moonRotation, Vector3.right);
 
         _starsParticle.Play();
     }
 
     private void UpdateLightSettings()
     {
-        float dotProduct = Vector3.Dot(_sunLight.transform.forward, Vector3.down);
-        _sunLight.intensity = Mathf.Lerp(0, _maxSunLightIntensity, _lightChangeCurve.Evaluate(dotProduct));
-        _moonLight.intensity = Mathf.Lerp(_maxMoonLightIntensity, 0, _lightChangeCurve.Evaluate(dotProduct));
-        RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _lightChangeCurve.Evaluate(dotProduct));
+        // Рассчитываем значение для солнца
+        float sunDotProduct = Vector3.Dot(_sunLight.transform.forward, Vector3.down);
+        _sunLight.intensity = Mathf.Lerp(0, _maxSunLightIntensity, _sunLightIntensityCurve.Evaluate(sunDotProduct));
+
+        // Рассчитываем значение для луны
+        float moonDotProduct = Vector3.Dot(_moonLight.transform.forward, Vector3.down);
+        _moonLight.intensity = Mathf.Lerp(0, _maxMoonLightIntensity, _moonLightIntensityCurve.Evaluate(moonDotProduct));
+
+        RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _ambientLightCurve.Evaluate(sunDotProduct));
     }
 
     private TimeSpan CalculateTimeDifference(TimeSpan fromTime, TimeSpan toTime)
@@ -137,3 +161,4 @@ public class TimeHandler : MonoBehaviour
         _currentTime = ES3.Load<DateTime>("Time", DateTime.Now.Date + TimeSpan.FromHours(_startHour));
     }
 }
+

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -63,7 +63,11 @@ namespace PixelCrushers.QuestMachine
 
         [Tooltip("This entity type's drives. Used by quest generators to decide on targets and actions.")]
         [SerializeField]
-        private List<DriveValue> m_driveValues;
+        private List<DriveValue> m_driveValues = new List<DriveValue>();
+
+        [Tooltip("Multiplier values for reward systems.")]
+        [SerializeField]
+        private float[] m_rewardMultipliers = new float[8] { 1, 1, 1, 1, 1, 1, 1, 1 }; // Must match RewardMultiplier count.
 
         [NonSerialized]
         private StringField m_internalAssetName = null;
@@ -202,8 +206,37 @@ namespace PixelCrushers.QuestMachine
         /// </summary>
         public List<DriveValue> driveValues
         {
-            get { return m_driveValues; }
-            set { m_driveValues = value; }
+            get
+            {
+                ValidateRuntimeDriveValues();
+                return m_runtimeDriveValues;
+            }
+            set
+            {
+                ValidateRuntimeDriveValues();
+                m_runtimeDriveValues = value;
+            }
+        }
+
+        private List<DriveValue> m_runtimeDriveValues;
+        private bool m_validatedRuntimeDriveValues = false;
+
+        private void ValidateRuntimeDriveValues()
+        {
+            if (!m_validatedRuntimeDriveValues)
+            {
+                m_validatedRuntimeDriveValues = true;
+                m_runtimeDriveValues = new List<DriveValue>();
+                for (int i = 0; i < m_driveValues.Count; i++)
+                {
+                    m_runtimeDriveValues.Add(new DriveValue(m_driveValues[i]));
+                }
+            }
+        }
+
+        private void ResetRuntimeValues()
+        {
+            m_validatedRuntimeDriveValues = false;
         }
 
         /// <summary>
@@ -229,6 +262,97 @@ namespace PixelCrushers.QuestMachine
                 if (result != null) return result;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Returns a list of urgency functions, including those inherited from parents.
+        /// </summary>
+        public List<UrgencyFunction> GetUrgencyFunctions()
+        {
+            var list = new List<UrgencyFunction>(urgencyFunctions);
+            if (parents.Count > 0)
+            {
+                var parentsChecked = new HashSet<EntityType>();
+                for (int i = 0; i < parents.Count; i++)
+                {
+                    AddParentUrgencyFunctions(parents[i], parentsChecked, list);
+                }
+            }
+            return list;
+        }
+
+        // Recurse through parents:
+        private void AddParentUrgencyFunctions(EntityType parent, HashSet<EntityType> parentsChecked, List<UrgencyFunction> list)
+        {
+            if (parentsChecked.Contains(parent)) return;
+            parentsChecked.Add(parent);
+            for (int i = 0; i < parent.urgencyFunctions.Count; i++)
+            {
+                var urgencyFunction = parent.urgencyFunctions[i];
+                if (!list.Contains(urgencyFunction))
+                {
+                    list.Add(urgencyFunction);
+                }
+            }
+            for (int i = 0; i < parent.parents.Count; i++)
+            {
+                AddParentUrgencyFunctions(parent.parents[i], parentsChecked, list);
+            }
+        }
+
+        /// <summary>
+        /// Looks up a drive value, first in the entity; failing that, checks parents.
+        /// </summary>
+        public DriveValue LookupDriveValue(Drive drive)
+        {
+            return RecursivelyLookupDriveValue(drive, null);
+        }
+
+        private DriveValue RecursivelyLookupDriveValue(Drive drive, HashSet<EntityType> entitiesChecked)
+        {
+            if (drive == null || driveValues == null) return null;
+            if (entitiesChecked != null && entitiesChecked.Contains(this)) return null;
+            for (int i = 0; i < driveValues.Count; i++)
+            {
+                var driveValue = driveValues[i];
+                if (driveValue == null) continue;
+                if (driveValue.drive == drive) return driveValue;
+            }
+            if (parents.Count > 0)
+            {
+                if (entitiesChecked == null) entitiesChecked = new HashSet<EntityType>();
+                entitiesChecked.Add(this);
+                for (int i = 0; i < parents.Count; i++)
+                {
+                    var parent = parents[i];
+                    if (parent == null) continue;
+                    var driveValue = parent.RecursivelyLookupDriveValue(drive, entitiesChecked);
+                    if (driveValue != null) return driveValue;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the reward multiplier value for a specific category for this entity type.
+        /// </summary>
+        /// <param name="category">The reward multiplier category.</param>
+        /// <returns>The multiplier value.</returns>
+        public float GetRewardMultiplier(RewardMultiplier category)
+        {
+            var i = (int)category;
+            return (0 <= i && i < m_rewardMultipliers.Length) ? m_rewardMultipliers[i] : 1;
+        }
+
+        private void OnEnable()
+        {
+            QuestMachineConfiguration.quitting -= ResetRuntimeValues;
+            QuestMachineConfiguration.quitting += ResetRuntimeValues;
+        }
+
+        private void OnDisable()
+        {
+            QuestMachineConfiguration.quitting -= ResetRuntimeValues;
         }
 
     }

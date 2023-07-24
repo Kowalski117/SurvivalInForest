@@ -5,7 +5,6 @@ using UnityEngine.Events;
 public class InventoryPlayerInput : MonoBehaviour
 {
     [SerializeField] private FirstPersonController _firstPersonController;
-    [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private ManualWorkbench _manualWorkbench;
 
@@ -14,10 +13,8 @@ public class InventoryPlayerInput : MonoBehaviour
     public event UnityAction<InventorySystem, int> SwitchInventory;
     public event UnityAction<Crafting—ategory> OnCraftPlayerWindow;
     public event UnityAction OnToggleInventory;
-    public event UnityAction OnSelectInventoryItem;
-    public event UnityAction OnInteractInventoryItem;
 
-    public event UnityAction InteractKeyPressed;
+    public event UnityAction OnToggleIInteractable;
 
     private void Awake()
     {
@@ -27,25 +24,26 @@ public class InventoryPlayerInput : MonoBehaviour
     private void OnEnable()
     {
         _playerInput.Enable();
-        _playerInput.Player.Inventory.performed += ctx => InteractCrafting();
-        _playerInput.Inventory.SelectInventoryItem.started += ctx => OnSelectInventoryItem?.Invoke();
-        _playerInput.Inventory.InteractItem.started += ctx => OnInteractInventoryItem?.Invoke();
-        _playerInput.Player.Interact.performed += ctx => InteractKeyPressed?.Invoke();
+        _playerInput.Player.Inventory.performed += ctx => ToggleInventory();
+        _playerInput.Player.Interact.performed += ctx => ToggleIInteractable();
     }
 
     private void OnDisable()
     {
-        _playerInput.Player.Inventory.performed -= ctx => InteractCrafting();
-        _playerInput.Inventory.SelectInventoryItem.started -= ctx => OnSelectInventoryItem?.Invoke();
-        _playerInput.Inventory.InteractItem.started -= ctx => OnInteractInventoryItem?.Invoke();
-        _playerInput.Player.Interact.performed -= ctx => InteractKeyPressed?.Invoke();
+        _playerInput.Player.Inventory.performed -= ctx => ToggleInventory();
+        _playerInput.Player.Interact.performed -= ctx => ToggleIInteractable();
         _playerInput.Disable();
     }
 
-    public void InteractCrafting() 
+    public void ToggleInventory() 
     {
         OnToggleInventory?.Invoke();
         SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
         OnCraftPlayerWindow?.Invoke(_manualWorkbench.Crafting—ategory);
+    }
+
+    public void ToggleIInteractable()
+    {
+        OnToggleIInteractable?.Invoke();
     }
 }

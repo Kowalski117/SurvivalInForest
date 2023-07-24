@@ -1,6 +1,8 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
+using System;
+using UnityEngine.Events;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -11,6 +13,8 @@ namespace PixelCrushers.QuestMachine
     [AddComponentMenu("")] // Use wrapper instead.
     public class QuestControl : MonoBehaviour
     {
+
+        #region Serialized Private Fields
 
         [Header("Quest")]
 
@@ -27,6 +31,29 @@ namespace PixelCrushers.QuestMachine
         [Tooltip("Name of quest counter to use in methods such as IncrementQuestCounter.")]
         [SerializeField]
         private StringField m_counterName;
+
+        [Serializable]
+        public class ConditionalEvent
+        {
+            [HelpBox("This component's TryConditionalEvent method checks a quest and required state. If Quest Node ID is non-blank, it also checks a specific node and state. If conditions are met, executes On Condition Met () event.", HelpBoxMessageType.None)]
+            public StringField questID;
+
+            public QuestState requiredQuestState;
+
+            public StringField questNodeID;
+
+            public QuestNodeState requiredQuestNodeState;
+
+            public UnityEvent onConditionMet = new UnityEvent();
+
+        }
+
+        [SerializeField]
+        private ConditionalEvent m_conditionalEvent;
+
+        #endregion
+
+        #region Public Properties
 
         public StringField questID
         {
@@ -45,6 +72,14 @@ namespace PixelCrushers.QuestMachine
             get { return m_counterName; }
             set { m_counterName = value; }
         }
+
+        public ConditionalEvent conditionalEvent
+        {
+            get { return m_conditionalEvent; }
+            set { m_conditionalEvent = value; }
+        }
+
+        #endregion
 
         /// <summary>
         /// Sets the quest to a state. The quest is specified in the 
@@ -148,6 +183,29 @@ namespace PixelCrushers.QuestMachine
         {
             if (QuestMachine.defaultQuestAlertUI == null || string.IsNullOrEmpty(text)) return;
             QuestMachine.defaultQuestAlertUI.ShowAlert(text);
+        }
+
+        /// <summary>
+        /// Checks the conditions of the assigned conditional event
+        /// </summary>
+        public void TryConditionalEvent()
+        {
+            if (IsConditionMet())
+            {
+                conditionalEvent.onConditionMet.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// Checks if the condition event's conditions are met.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsConditionMet()
+        {
+            if (StringField.IsNullOrEmpty(conditionalEvent.questID)) return true;
+            if (QuestMachine.GetQuestState(conditionalEvent.questID) != conditionalEvent.requiredQuestState) return false;
+            if (StringField.IsNullOrEmpty(conditionalEvent.questNodeID)) return true;
+            return QuestMachine.GetQuestNodeState(conditionalEvent.questID, conditionalEvent.questNodeID) == conditionalEvent.requiredQuestNodeState;
         }
 
     }

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -15,13 +15,43 @@ namespace PixelCrushers.QuestMachine
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            property.objectReferenceValue = EditorGUI.ObjectField(position, label, property.objectReferenceValue, typeof(IQuestHUD), true);
+            var newValue = EditorGUI.ObjectField(position, label, property.objectReferenceValue, typeof(UnityEngine.Object), true);
+            TryAssignNewValue(property, newValue);
         }
 
         public static void DoLayout(SerializedProperty property, GUIContent label)
         {
             if (property == null) return;
-            property.objectReferenceValue = EditorGUILayout.ObjectField(label, property.objectReferenceValue, typeof(IQuestHUD), true);
+            var newValue = EditorGUILayout.ObjectField(label, property.objectReferenceValue, typeof(UnityEngine.Object), true);
+            TryAssignNewValue(property, newValue);
+        }
+
+        protected static void TryAssignNewValue(SerializedProperty property, UnityEngine.Object newValue)
+        {
+            if (newValue != property.objectReferenceValue)
+            {
+                if (newValue == null)
+                {
+                    property.objectReferenceValue = null;
+                }
+                else
+                {
+                    IQuestHUD newUI = null;
+                    if (newValue is GameObject)
+                    {
+                        newUI = (newValue as GameObject).GetComponent(typeof(IQuestHUD)) as IQuestHUD;
+                    }
+                    else if (newValue is Component)
+                    {
+                        var go = (newValue as Component).gameObject;
+                        newUI = go.GetComponent(typeof(IQuestHUD)) as IQuestHUD;
+                    }
+                    if (newUI != null)
+                    {
+                        property.objectReferenceValue = newUI as Component;
+                    }
+                }
+            }
         }
 
     }

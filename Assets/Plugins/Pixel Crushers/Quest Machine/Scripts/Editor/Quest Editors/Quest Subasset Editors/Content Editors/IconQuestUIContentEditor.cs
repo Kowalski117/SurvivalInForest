@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -7,7 +7,7 @@ namespace PixelCrushers.QuestMachine
 {
 
     /// <summary>
-    /// Custom inspector for IconQuestUIContent assets.
+    /// Custom inspector for IconQuestContent assets.
     /// </summary>
     [CustomEditor(typeof(IconQuestContent), true)]
     public class IconQuestUIContentEditor : QuestSubassetEditor

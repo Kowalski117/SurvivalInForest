@@ -12,14 +12,17 @@ public class Interactor : Raycast
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private float _liftingDelay = 2f;
+    [SerializeField] private Transform _removeItemPoint;
 
     private IInteractable _currentInteractable;
     private bool _isStartingPick = true;
     private float _lookTimer = 0;
     private ItemPickUp _currentItemPickUp;
+    private ObjectPickUp _currentObjectPickUp;
     private bool _isIconFilled = false;
+    private bool _isInventoryFull = false;
 
-    public event UnityAction<float> OnTimeUpdate;
+    public event UnityAction<float, string> OnTimeUpdate;
 
     public float LookTimerPracent => _lookTimer / _liftingDelay;
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
@@ -28,44 +31,64 @@ public class Interactor : Raycast
     {
         _buildTool.OnCreateBuild += CreateBuild;
         _buildTool.OnCompletedBuild += ClearIInteractable;
-        _playerInputHandler.SelectionPlayerInput.PickUp += PickUpItem;
-        _playerInputHandler.InventoryPlayerInput.InteractKeyPressed += InteractableInventory;
-        _playerInputHandler.InteractionConstructionPlayerInput.OnInteractedConstruction += InteractableConstruction;
+        _playerInputHandler.InteractionPlayerInput.OnPickUp += PickUpItem;
+        _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable += InteractableInventory;
+        _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction += InteractableConstruction;
     }
 
     private void OnDisable()
     {
         _buildTool.OnCreateBuild -= CreateBuild;
         _buildTool.OnCompletedBuild -= ClearIInteractable;
-        _playerInputHandler.SelectionPlayerInput.PickUp -= PickUpItem;
-        _playerInputHandler.InventoryPlayerInput.InteractKeyPressed -= InteractableInventory;
-        _playerInputHandler.InteractionConstructionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
+        _playerInputHandler.InteractionPlayerInput.OnPickUp -= PickUpItem;
+        _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable -= InteractableInventory;
+        _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
     }
 
     private void Update()
     {
         if (IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo))
         {
-            if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
+            if (_isStartingPick && !_isInventoryFull)
             {
-                if(_isStartingPick)
+                _lookTimer += Time.deltaTime;
+
+                OnTimeUpdate?.Invoke(LookTimerPracent, "");
+                if (_lookTimer >= _liftingDelay && !_isIconFilled)
                 {
-                    _lookTimer += Time.deltaTime;
-                    OnTimeUpdate?.Invoke(LookTimerPracent);
-                    if (_lookTimer >= _liftingDelay && !_isIconFilled)
+                    _isIconFilled = true;
+                    _playerAnimation.PickUp();
+
+                    if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
                     {
-                        _isIconFilled = true;
-                        _playerAnimation.PickUp();
+                        OnTimeUpdate?.Invoke(LookTimerPracent, "");
                         _currentItemPickUp = itemPickUp;
+
+                    }
+                    else if (hitInfo.collider.TryGetComponent(out ObjectPickUp objectPickUp))
+                    {
+                        OnTimeUpdate?.Invoke(LookTimerPracent, "");
+                        _currentObjectPickUp = objectPickUp;
+
                     }
                 }
+                else
+                {
+                    _isIconFilled = false;
+                }
+            }
+            else
+            {
+                _lookTimer = 0;
+                _isIconFilled = false;
             }
         }
         else
         {
             _lookTimer = 0;
-            OnTimeUpdate?.Invoke(0f);
+            OnTimeUpdate?.Invoke(0f, "");
             _isIconFilled = false;
+            _isInventoryFull = false;
         }
     }
 
@@ -78,8 +101,31 @@ public class Interactor : Raycast
                 _currentItemPickUp.PicUp();
                 _currentItemPickUp = null;
             }
-            _isStartingPick = true;
+            else
+            {
+                _currentItemPickUp.PicUp();
+                InstantiateItem(_currentItemPickUp.ItemData, _currentItemPickUp.ItemData.Durability);
+                _currentItemPickUp = null;
+                _isInventoryFull = true;
+            }
         }
+        else if(_currentObjectPickUp != null )
+        {
+            foreach (var itemData in _currentObjectPickUp.Items)
+            {
+                for (int i = 0; i < itemData.Amount; i++)
+                {
+                    if (!_playerInventoryHolder.AddToInventory(itemData.ItemData, 1, itemData.ItemData.Durability))
+                    {
+                        InstantiateItem(itemData.ItemData, itemData.ItemData.Durability);
+                    }
+                }
+            }
+            _currentObjectPickUp.PicUp();
+            _currentObjectPickUp = null;
+        }
+        _isIconFilled = false;
+        _isStartingPick = true;
     }
 
     public void StartPickUpAninationEvent()
@@ -87,15 +133,24 @@ public class Interactor : Raycast
         _isStartingPick = false;
     }
 
-    public void RemoveItem(InventorySlot inventorySlot)
+    public void RemoveItem(InventorySlotUI inventorySlot)
     {
-        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.ItemData) >= 0)
+        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
-            ItemPickUp itemPickUp =  Instantiate(inventorySlot.ItemData.ItemPrefab, _buildTool.transform.position + _buildTool.transform.forward * RayDistance, Quaternion.identity);
-            itemPickUp.GenerateNewID();
-            _playerInventoryHolder.RemoveInventory(inventorySlot.ItemData, 1);
+            InstantiateItem(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability);
+            _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, 1);
             //_playerAnimation.RemoveItemAnimationEvent();
+
+            if(inventorySlot.AssignedInventorySlot.ItemData == null)
+                inventorySlot.ToggleHighlight();
         }
+    }
+
+    private void InstantiateItem(InventoryItemData itemData, float durability)
+    {
+        ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
+        itemPickUp.GenerateNewID();
+        itemPickUp.UpdateDurability(durability);
     }
 
     private void InteractableInventory()

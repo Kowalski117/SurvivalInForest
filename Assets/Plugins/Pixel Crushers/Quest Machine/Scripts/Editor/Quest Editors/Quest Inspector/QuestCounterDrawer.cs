@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -97,17 +97,25 @@ namespace PixelCrushers.QuestMachine
 
                 var minValueProperty = property.FindPropertyRelative("m_minValue");
                 UnityEngine.Assertions.Assert.IsNotNull(minValueProperty, "Quest Machine: Internal error - m_minValue is null.");
+                var maxValueProperty = property.FindPropertyRelative("m_maxValue");
+                UnityEngine.Assertions.Assert.IsNotNull(maxValueProperty, "Quest Machine: Internal error - m_maxValue is null.");
                 if (minValueProperty == null) return;
+                if (maxValueProperty == null) return;
+
+                var isMinMaxInvalid = maxValueProperty.intValue <= minValueProperty.intValue;
+
+                var originalColor = GUI.color;
+                if (isMinMaxInvalid) GUI.color = Color.red;
+
                 EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, EditorGUIUtility.singleLineHeight),
                     minValueProperty, new GUIContent("Min Value", "Minimum value counter can have."));
                 y += EditorGUIUtility.singleLineHeight;
 
-                var maxValueProperty = property.FindPropertyRelative("m_maxValue");
-                UnityEngine.Assertions.Assert.IsNotNull(maxValueProperty, "Quest Machine: Internal error - m_maxValue is null.");
-                if (maxValueProperty == null) return;
                 EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, EditorGUIUtility.singleLineHeight),
                     maxValueProperty, new GUIContent("Max Value", "Maximum value counter can have."));
                 y += EditorGUIUtility.singleLineHeight;
+
+                if (isMinMaxInvalid) GUI.color = originalColor;
 
                 var updateModeProperty = property.FindPropertyRelative("m_updateMode");
                 UnityEngine.Assertions.Assert.IsNotNull(updateModeProperty, "Quest Machine: Internal error - m_updateMode is null.");
@@ -177,7 +185,7 @@ namespace PixelCrushers.QuestMachine
                         y += height;
                         var fieldWidth = (rect.width - 30f) / 2f;
                         var operation = (QuestCounterMessageEvent.Operation)operationProperty.enumValueIndex;
-                        if (operation == QuestCounterMessageEvent.Operation.ModifyByParameter || operation == QuestCounterMessageEvent.Operation.SetToParameter)
+                        if (operation == QuestCounterMessageEvent.Operation.ModifyByMessageValue || operation == QuestCounterMessageEvent.Operation.SetToMessageValue)
                         {
                             EditorGUI.PropertyField(new Rect(rect.x, y, rect.width - 30f, EditorGUIUtility.singleLineHeight), operationProperty, GUIContent.none);
                         }
@@ -193,7 +201,7 @@ namespace PixelCrushers.QuestMachine
                         y += EditorGUIUtility.singleLineHeight;
                     }
                     if (indexToDelete != -1) messageEventListProperty.DeleteArrayElementAtIndex(indexToDelete);
-                    if (GUI.Button(new Rect(rect.x + rect.width - 80f, y, 80f, EditorGUIUtility.singleLineHeight),
+                    if (GUI.Button(new Rect(rect.x + rect.width - 120f, y, 120f, EditorGUIUtility.singleLineHeight),
                         new GUIContent("Add Message", "Add a new message event for the counter."), EditorStyles.miniButton))
                     {
                         messageEventListProperty.arraySize++;

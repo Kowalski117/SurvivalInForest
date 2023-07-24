@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace PixelCrushers.QuestMachine.Wrappers
     /// This wrapper class keeps references intact if you switch between the 
     /// compiled assembly and source code versions of the original class.
     /// </summary>
-    [AddComponentMenu("Pixel Crushers/Quest Machine/Generator/Quest Giver")]
+    [AddComponentMenu("Pixel Crushers/Quest Machine/Quest Giver")]
     public class QuestGiver : PixelCrushers.QuestMachine.QuestGiver
     {
     }

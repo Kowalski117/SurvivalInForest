@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -95,11 +95,12 @@ namespace PixelCrushers.QuestMachine
         private void OnAddDropdown(Rect buttonRect, ReorderableList list)
         {
             var subtypes = QuestEditorUtility.GetSubtypes<QuestCondition>();
+            subtypes.Sort((x, y) => string.CompareOrdinal(x.Name, y.Name));
             var menu = new GenericMenu();
             for (int i = 0; i < subtypes.Count; i++)
             {
                 var subtype = subtypes[i];
-                menu.AddItem(new GUIContent(ObjectNames.NicifyVariableName(subtype.Name)), false, OnAddQuestConditionType, subtype);
+                menu.AddItem(new GUIContent(ObjectNames.NicifyVariableName(subtype.Name).Replace("Quest Condition", string.Empty)), false, OnAddQuestConditionType, subtype);
             }
             menu.ShowAsContext();
         }
@@ -118,12 +119,21 @@ namespace PixelCrushers.QuestMachine
                 m_selectedCondition.SetRuntimeReferences(QuestEditorWindow.selectedQuest, null);
             }
             QuestEditorWindow.UpdateSelectedQuestSerializedObject();
-            m_list.serializedProperty.arraySize++;
-            m_list.index = m_list.serializedProperty.arraySize - 1;
-            m_list.serializedProperty.GetArrayElementAtIndex(m_list.serializedProperty.arraySize - 1).objectReferenceValue = condition;
-            m_list.serializedProperty.serializedObject.ApplyModifiedProperties();
+            try
+            {
+                m_list.serializedProperty.arraySize++;
+                m_list.index = m_list.serializedProperty.arraySize - 1;
+                m_list.serializedProperty.GetArrayElementAtIndex(m_list.serializedProperty.arraySize - 1).objectReferenceValue = condition;
+                m_list.serializedProperty.serializedObject.ApplyModifiedProperties();
+            }
+            catch (System.NullReferenceException e)
+            {
+#if UNITY_EDITOR
+                Debug.LogError("Unity's AssetDatabase couldn't add the condition subasset to the quest. The project's AssetDatabase may contain a corrupt asset. Exception: " + e.Message);
+#endif
+            }
             QuestEditorWindow.ApplyModifiedPropertiesFromSelectedQuestSerializedObject();
-            AssetDatabase.SaveAssets();
+            //AssetDatabase.SaveAssets();
         }
 
         private void DrawSelectedCondition()

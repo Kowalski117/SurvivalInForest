@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -53,8 +53,10 @@ namespace PixelCrushers.QuestMachine
             public float runtimeRepaintFrequency = 1;
 
             public bool questListContainerSaveSettingsFoldout = true;
+            public bool questListContainerOtherSettingsFoldout = true;
             public bool questGiverIDFoldout = true;
             public bool questGiverDialogueContentFoldout = true;
+            public bool questListUIFoldout = true;
 
             public bool actionTextFoldout = true;
             public bool actionMotivesFoldout = true;
@@ -66,6 +68,9 @@ namespace PixelCrushers.QuestMachine
             public bool entityTypeUrgencyFoldout = true;
             public bool entityTypeActionsFoldout = true;
             public bool entityTypeDriveFoldout = true;
+            public bool entityTypeRewardMultipliersFoldout = false;
+
+            public bool databaseImagesFoldout = false;
         }
 
         private static Data m_data = null;
@@ -322,6 +327,12 @@ namespace PixelCrushers.QuestMachine
             set { data.questListContainerSaveSettingsFoldout = value; }
         }
 
+        public static bool questListContainerOtherSettingsFoldout
+        {
+            get { return data.questListContainerOtherSettingsFoldout; }
+            set { data.questListContainerOtherSettingsFoldout = value; }
+        }
+
         public static bool questGiverIDFoldout
         {
             get { return data.questGiverIDFoldout; }
@@ -332,6 +343,12 @@ namespace PixelCrushers.QuestMachine
         {
             get { return data.questGiverDialogueContentFoldout; }
             set { data.questGiverDialogueContentFoldout = value; }
+        }
+
+        public static bool questListUIFoldout
+        {
+            get { return data.questListUIFoldout; }
+            set { data.questListUIFoldout = value; }
         }
 
         public static bool actionTextFoldout
@@ -388,6 +405,16 @@ namespace PixelCrushers.QuestMachine
             set { data.entityTypeActionsFoldout = value; }
         }
 
+        public static bool entityTypeRewardMultipliersFoldout
+        {
+            get { return data.entityTypeRewardMultipliersFoldout; }
+            set { data.entityTypeRewardMultipliersFoldout = value; }
+        }
 
+        public static bool databaseImagesFoldout
+        {
+            get { return data.databaseImagesFoldout; }
+            set { data.databaseImagesFoldout = value; }
+        }
     }
 }

@@ -1,9 +1,8 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -28,15 +27,58 @@ namespace PixelCrushers.QuestMachine
             }
             var questAsset = quest.Clone();
             questAsset.isInstance = false;
-            AssetDatabase.CreateAsset(questAsset, filePath);
+            var existingAsset = AssetDatabase.LoadAssetAtPath<Quest>(filePath);
+            if (existingAsset != null)
+            {
+                // If overwriting an existing asset (to keep its GUID intact), use the existing one but copy the new values:
+                CopyQuestValues(questAsset, existingAsset);
+                questAsset = existingAsset;
+                var assets = AssetDatabase.LoadAllAssetsAtPath(filePath);
+                foreach (var asset in assets)
+                {
+                    if (!(asset is Quest)) AssetUtility.DeleteFromAsset(asset as ScriptableObject, questAsset);
+                }
+            }
+            else
+            {
+                // Otherwise we can create it fresh:
+                AssetDatabase.CreateAsset(questAsset, filePath);
+            }
             SaveQuestSubassets(questAsset);
-            AssetDatabase.SaveAssets();
+            //AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(questAsset));
+            //AssetDatabase.SaveAssets();
+            //AssetDatabase.Refresh();
             if (select)
             {
                 EditorUtility.FocusProjectWindow();
                 Selection.activeObject = questAsset;
             }
             return questAsset;
+        }
+
+        private static void CopyQuestValues(Quest source, Quest dest)
+        {
+            dest.originalAsset = null;
+            dest.id = source.id;
+            dest.title = source.title;
+            dest.icon = source.icon;
+            dest.group = source.group;
+            dest.labels = source.labels;
+            dest.questGiverID = source.questGiverID;
+            dest.isTrackable = source.isTrackable;
+            dest.showInTrackHUD = source.showInTrackHUD;
+            dest.isAbandonable = source.isAbandonable;
+            dest.rememberIfAbandoned = source.rememberIfAbandoned;
+            dest.autostartConditionSet = source.autostartConditionSet;
+            dest.offerConditionSet = source.offerConditionSet;
+            dest.offerContentList = source.offerContentList;
+            dest.maxTimes = source.maxTimes;
+            dest.cooldownSeconds = source.cooldownSeconds;
+            dest.SetStateRaw(source.GetState());
+            dest.stateInfoList = source.stateInfoList;
+            dest.counterList = source.counterList;
+            dest.nodeList = source.nodeList;
+            dest.goalEntityTypeName = source.goalEntityTypeName;
         }
 
         private static void SaveQuestSubassets(Quest questAsset)
@@ -54,7 +96,10 @@ namespace PixelCrushers.QuestMachine
             if (subassets == null) return;
             for (int i = 0; i < subassets.Count; i++)
             {
-                AssetUtility.AddToAsset(subassets[i], questAsset);
+                //--- Was: AssetUtility.AddToAsset(subassets[i], questAsset);
+                //--- Don't save until end. Keeps questAsset reference valid, and runs faster.
+                subassets[i].hideFlags = HideFlags.HideInHierarchy;
+                AssetDatabase.AddObjectToAsset(subassets[i], questAsset);
             }
         }
 
@@ -119,6 +164,38 @@ namespace PixelCrushers.QuestMachine
             quest.id.value = filename.Replace(" ", string.Empty);
             quest.title.value = filename;
             return SaveQuestAsAsset(quest, filePath, false);
+        }
+
+        /// <summary>
+        /// Assumes quest is an asset. Adds subassets in node (typically a newly copy-pasted node)
+        /// to the asset.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="quest"></param>
+        public static void AddNodeSubassetsToAsset(QuestNode node, Quest quest)
+        {
+            node.conditionSet.conditionList.ForEach(condition => AddSubassetToAsset(condition, quest));
+            foreach (var stateInfo in node.stateInfoList)
+            {
+                foreach (var category in stateInfo.categorizedContentList)
+                {
+                    category.contentList.ForEach(content => AddSubassetToAsset(content, quest));
+                }
+                foreach (var action in stateInfo.actionList)
+                {
+                    AddSubassetToAsset(action, quest);
+                    if (action is AlertQuestAction)
+                    {
+                        (action as AlertQuestAction).contentList.ForEach(content => AddSubassetToAsset(content, quest));
+                    }
+                }
+            }
+        }
+
+        public static void AddSubassetToAsset(QuestSubasset subasset, Quest quest)
+        {
+            AssetUtility.AddToAsset(subasset, quest);
+            subasset.SetRuntimeReferences(quest, null);
         }
 
         #endregion

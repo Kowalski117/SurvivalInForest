@@ -1,7 +1,6 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -36,6 +35,14 @@ namespace PixelCrushers.QuestMachine
 
         [SerializeField]
         private ActionCompletion m_completion;
+
+        [Tooltip("Send this to Message System when this action's node becomes active. Use ':' to separate parameter from message.")]
+        [SerializeField]
+        private StringField m_sendMessageOnActive = new StringField();
+
+        [Tooltip("Send this to Message System when this action's node is completed. Use ':' to separate parameter from message.")]
+        [SerializeField]
+        private StringField m_sendMessageOnCompletion = new StringField();
 
         /// <summary>
         /// Description field for your own internal reference.
@@ -86,6 +93,18 @@ namespace PixelCrushers.QuestMachine
         {
             get { return m_completion; }
             set { m_completion = value; }
+        }
+
+        public StringField sendMessageOnActive
+        {
+            get { return m_sendMessageOnActive; }
+            set { m_sendMessageOnActive = value; }
+        }
+
+        public StringField sendMessageOnCompletion
+        {
+            get { return m_sendMessageOnCompletion; }
+            set { m_sendMessageOnCompletion = value; }
         }
     }
 

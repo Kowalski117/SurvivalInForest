@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -35,7 +35,7 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private StringField m_parameter;
 
-        public enum Operation { ModifyByParameter, SetToParameter, ModifyByLiteralValue, SetToLiteralValue }
+        public enum Operation { ModifyByMessageValue, SetToMessageValue, ModifyByLiteralValue, SetToLiteralValue }
 
         [SerializeField]
         private Operation m_operation;

@@ -1,3 +1,4 @@
+using StarterAssets;
 using UnityEngine;
 
 public class PlayerInteraction : Raycast
@@ -5,10 +6,11 @@ public class PlayerInteraction : Raycast
     [SerializeField] private PlayerInventoryHolder _inventory;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private ToolItemData _armItemData;
-    [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private LayerMask _creatureLayer;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private PlayerAnimation _playerAnimation;
+    [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
 
     private WeaponItemData _currentWeapon;
     private ToolItemData _currentTool;
@@ -21,14 +23,38 @@ public class PlayerInteraction : Raycast
 
     private float _nextFire;
 
+    private bool _issgsjf;
+
     private void OnEnable()
     {
-        _weaponPlayerInput.OnShoot += UseItem;
+        _playerInputHandler.InteractionPlayerInput.OnAttack += UseItem;
     }
 
     private void OnDisable()
     {
-        _weaponPlayerInput.OnShoot -= UseItem;
+        _playerInputHandler.InteractionPlayerInput.OnAttack -= UseItem;
+    }
+
+    private void Update()
+    {
+        if(_issgsjf)
+        {
+            UpdateItemData();
+            InitWeapon(_currentItemData);
+            InitTool(_currentItemData);
+
+            if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon)
+            {
+                Shoot();
+            }
+            else if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon)
+            {
+                Hit();
+            }
+            else if (_currentTool != null && _currentWeapon == null)
+            {
+                InteractResource();            }
+        }
     }
 
     public void UpdateItemData()
@@ -42,7 +68,6 @@ public class PlayerInteraction : Raycast
             _playerAnimation.GetItem(_currentItemData);
         }
     }
-
 
     public void InitWeapon(InventoryItemData itemData)
     {
@@ -105,17 +130,16 @@ public class PlayerInteraction : Raycast
                             impact.Play();
                         }
 
-                        animals.TakeDamage(_currentWeapon.Damage, 0);
+                        TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
                     }
 
                     if (_currentWeapon.Bullet != null)
                     {
-                        ItemPickUp bullet = Instantiate(_currentWeapon.Bullet, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
+                        ItemPickUp bullet = Instantiate(_currentWeapon.Bullet, spawnPoint, Quaternion.identity, hitInfo.collider.transform);
+                        bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
                         bullet.GenerateNewID();
                     }
                 }
-
-                UpdateDurabilityItem();
             }
         }
     }
@@ -128,16 +152,8 @@ public class PlayerInteraction : Raycast
             _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
             _playerAnimation.Hit(_currentWeapon);
 
-            if (_currentAnim != null)
-            {
-                _currentAnim.TakeDamage(_currentWeapon.Damage, 0);
-                UpdateDurabilityItem();
-            }
-            else if (_currentBrokenObject != null)
-            {
-                _currentBrokenObject.TakeDamage(_currentWeapon.Damage, 0);
-                UpdateDurabilityItem();
-            }
+            TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
+            TakeDamageBrokenObject(_currentWeapon.Damage, 0);
         }
     }
 
@@ -148,52 +164,14 @@ public class PlayerInteraction : Raycast
             _playerAnimation.Hit(_currentTool);
             _nextFire = Time.time + 1 / _currentTool.Speed;
 
-            if (_currentTool != null && _currentTool.Durability > 0)
+            if (_currentTool != null)
             {
                 _audioSource.PlayOneShot(_currentTool.MuzzleSound);
                 //_currentTool.MuzzleFlash.Play();
 
-                if (_currentResoure != null)
-                {
-                    if (_currentResoure.ExtractionType == _currentTool.ToolType)
-                    {
-                        _currentResoure.TakeDamage(_currentTool.DamageResources, 0);
-                        UpdateDurabilityItem();
-
-                        if (_currentResoure.Health <= 0)
-                        {
-                            _currentItemData = null;
-                            _currentResoure = null;
-                        }
-                    }
-                }
-                else if (_currentAnim != null)
-                {
-                    _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
-                    UpdateDurabilityItem();
-                }
-                else if (_currentBrokenObject != null)
-                {
-                    _currentBrokenObject.TakeDamage(_currentTool.DamageResources, 0);
-                    UpdateDurabilityItem();
-                }
-            }
-            else
-            {
-                if (_currentAnim != null)
-                {
-                    _currentAnim.TakeDamage(_currentTool.DamageLiving, 0);
-                }
-                if (_currentResoure != null)
-                {
-                    _currentResoure.TakeDamage(_currentTool.DamageResources, 0);
-
-                    if (_currentResoure.Health <= 0)
-                    {
-                        _currentItemData = null;
-                        _currentResoure = null;
-                    }
-                }
+                TakeDamageResoure(_currentTool.DamageResources, 0);
+                TakeDamageAnimal(_currentTool.DamageLiving, 0);
+                TakeDamageBrokenObject(_currentTool.DamageResources, 0);
             }
         }
     }
@@ -213,23 +191,53 @@ public class PlayerInteraction : Raycast
         }
     }
 
-    private void UseItem()
+    private void UseItem(bool isActive)
     {
-        UpdateItemData();
-        InitWeapon(_currentItemData);
-        InitTool(_currentItemData);
+        _issgsjf = isActive;
+        Debug.Log(_issgsjf);
+    }
 
-        if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon && _currentTool == null)
+    private void TakeDamageAnimal(float damage, float overTimeDamage)
+    {
+        if (_currentAnim != null)
         {
-            Shoot();
+            _currentAnim.TakeDamage(damage, overTimeDamage);
+
+            if(_currentAnim.Health <= 0)
+                _currentAnim = null;
+
+            UpdateDurabilityItem();
         }
-        else if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon && _currentTool == null)
+    }
+    
+    private void TakeDamageBrokenObject(float damage, float overTimeDamage)
+    {
+        if (_currentBrokenObject != null)
         {
-            Hit();
+            _currentBrokenObject.TakeDamage(damage, overTimeDamage);
+            UpdateDurabilityItem();
         }
-        else if (_currentTool != null && _currentWeapon == null)
+    }
+
+    private void TakeDamageResoure(float damage, float overTimeDamage)
+    {
+        if(_currentResoure != null)
         {
-            InteractResource();
+            if (_currentResoure.ExtractionType == _currentTool.ToolType)
+            {
+                _currentResoure.TakeDamage(damage, overTimeDamage);
+                UpdateDurabilityItem();
+            }
+            else if (_currentTool.ToolType == ToolType.Arm)
+            {
+                _currentResoure.TakeDamage(damage, overTimeDamage);
+            }
+
+            if (_currentResoure.Health <= 0)
+            {
+                _currentItemData = null;
+                _currentResoure = null;
+            }
         }
     }
 
@@ -258,19 +266,16 @@ public class PlayerInteraction : Raycast
     {
         if (other.TryGetComponent(out Resource resource))
         {
-            if (_currentResoure != null)
                 _currentResoure = null;
         }
 
         if (other.TryGetComponent(out Animals animals))
         {
-            if (_currentAnim != null)
                 _currentAnim = null;
         }
 
         if (other.TryGetComponent(out BrokenObject brokenObject))
         {
-            if (_currentBrokenObject != null)
                 _currentBrokenObject = null;
         }
     }

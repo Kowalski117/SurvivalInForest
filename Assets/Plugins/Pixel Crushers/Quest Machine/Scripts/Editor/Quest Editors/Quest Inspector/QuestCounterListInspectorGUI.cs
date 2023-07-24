@@ -1,9 +1,8 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
-using System;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -14,8 +13,12 @@ namespace PixelCrushers.QuestMachine
     public class QuestCounterListInspectorGUI
     {
 
+        public const int InitialMaxCounterValue = 999;
+
         private ReorderableList m_list = null;
         private SerializedProperty m_selectedCounter = null;
+
+        private static string s_counterClipboard = string.Empty;
 
         public void Draw(SerializedObject serializedObject, SerializedProperty countersProperty)
         {
@@ -40,6 +43,19 @@ namespace PixelCrushers.QuestMachine
         private void OnDrawHeader(Rect rect)
         {
             EditorGUI.LabelField(rect, new GUIContent("Counters", "Counters used in this quest."));
+            if (Event.current.type == EventType.MouseUp && Event.current.button == 1)
+            {
+                var clickRect = rect;
+                if (m_list.serializedProperty.arraySize == 0)
+                { // If empty, allow click in 'List is Empty' area:
+                    clickRect.height += 1.5f * EditorGUIUtility.singleLineHeight;
+                }
+                if (clickRect.Contains(Event.current.mousePosition))
+                {
+                    Event.current.Use();
+                    ShowContextMenu(-1);
+                }
+            }
         }
 
         private void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused)
@@ -50,6 +66,43 @@ namespace PixelCrushers.QuestMachine
             var currentValueProperty = element.FindPropertyRelative("m_currentValue");
             var currentValue = (currentValueProperty != null) ? currentValueProperty.intValue : 0;
             EditorGUI.LabelField(rect, StringFieldDrawer.GetStringFieldValue(element.FindPropertyRelative("m_name")) + ": " + currentValue);
+            if (Event.current.type == EventType.MouseUp && Event.current.button == 1 && rect.Contains(Event.current.mousePosition))
+            {
+                Event.current.Use();
+                ShowContextMenu(index);
+            }
+        }
+
+        private void ShowContextMenu(int index)
+        {
+            var menu = new GenericMenu();
+            if (index == -1)
+            {
+                menu.AddDisabledItem(new GUIContent("Copy Counter"));
+            }
+            else
+            {
+                menu.AddItem(new GUIContent("Copy Counter"), false, () =>
+                {
+                    s_counterClipboard = JsonUtility.ToJson(QuestEditorWindow.selectedQuest.counterList[index]);
+                });
+            }
+            if (string.IsNullOrEmpty(s_counterClipboard))
+            {
+                menu.AddDisabledItem(new GUIContent("Paste Counter As New"));                
+            }
+            else
+            {
+                menu.AddItem(new GUIContent("Paste Counter As New"), false, () => 
+                {
+                    var newCounter = JsonUtility.FromJson<QuestCounter>(s_counterClipboard);
+                    if (newCounter != null)
+                    {
+                        QuestEditorWindow.selectedQuest.counterList.Add(newCounter);
+                    }
+                });
+            }
+            menu.ShowAsContext();
         }
 
         private void OnSelectElement(ReorderableList list)
@@ -74,6 +127,11 @@ namespace PixelCrushers.QuestMachine
                 if (counterNameProperty != null)
                 {
                     StringFieldDrawer.SetStringFieldValue(counterNameProperty, string.Empty);
+                }
+                var maxValueProperty = newCounterProperty.FindPropertyRelative("m_maxValue");
+                if (maxValueProperty != null)
+                {
+                    maxValueProperty.intValue = InitialMaxCounterValue;
                 }
                 var messageEventListProperty = newCounterProperty.FindPropertyRelative("m_messageEventList");
                 if (messageEventListProperty != null)

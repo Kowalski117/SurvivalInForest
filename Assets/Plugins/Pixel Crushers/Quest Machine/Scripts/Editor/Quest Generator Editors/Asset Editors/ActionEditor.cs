@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -57,16 +57,18 @@ namespace PixelCrushers.QuestMachine
                 var actionTextProperty = serializedObject.FindProperty("m_actionText");
                 if (actionTextProperty == null) return;
                 EditorGUI.indentLevel++;
-                s_activeTextFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Active", "Show this text when the quest is active.", s_activeTextFoldout, false);
+                s_activeTextFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Active", "Show this text when the quest is active. Optionally specify message to send when node becomes active; use ':' to separate message and parameter.", s_activeTextFoldout, false);
                 if (s_activeTextFoldout)
                 {
                     EditorGUILayout.PropertyField(actionTextProperty.FindPropertyRelative("m_activeText"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("m_sendMessageOnActive"));
                 }
-                s_completedTextFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Completed", "Show this text when the quest is completed.", s_completedTextFoldout, false);
+                s_completedTextFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Completed", "Show this text when the quest is completed. Optionally specify message to send when node is completed; use ':' to separate message and parameter.", s_completedTextFoldout, false);
                 if (s_completedTextFoldout)
                 {
                     EditorGUILayout.PropertyField(actionTextProperty.FindPropertyRelative("m_completedText"));
                     EditorGUILayout.PropertyField(actionTextProperty.FindPropertyRelative("m_successText"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("m_sendMessageOnCompletion"));
                 }
                 EditorGUI.indentLevel--;
                 EditorGUILayout.Space();
@@ -171,12 +173,14 @@ namespace PixelCrushers.QuestMachine
         {
             var notWidth = 22;
             var countWidth = 36;
-            var fieldWidth = (rect.width - notWidth - 2 * countWidth - 12) / 2;
+            var funcWidth = 48;
+            var fieldWidth = (rect.width - notWidth - 2 * countWidth - funcWidth - 12) / 2;
             EditorGUI.LabelField(new Rect(12 + rect.x, rect.y, notWidth, rect.height), "Not");
             EditorGUI.LabelField(new Rect(12 + rect.x + notWidth, rect.y, fieldWidth, rect.height), "Entity");
             EditorGUI.LabelField(new Rect(12 + rect.x + notWidth + fieldWidth, rect.y, fieldWidth, rect.height), "Domain");
             EditorGUI.LabelField(new Rect(12 + rect.x + notWidth + 2 * fieldWidth, rect.y, countWidth, rect.height), "Min");
             EditorGUI.LabelField(new Rect(12 + rect.x + notWidth + 2 * fieldWidth + countWidth, rect.y, countWidth, rect.height), "Max");
+            EditorGUI.LabelField(new Rect(12 + rect.x + notWidth + 2 * fieldWidth + 2 * countWidth, rect.y, funcWidth, rect.height), "Func");
         }
 
         private void OnDrawRequirementsListElement(Rect rect, int index, bool isActive, bool isFocused)
@@ -190,15 +194,18 @@ namespace PixelCrushers.QuestMachine
             var entitySpecifierProperty = elementProperty.FindPropertyRelative("m_entitySpecifier");
             var minProperty = elementProperty.FindPropertyRelative("m_min");
             var maxProperty = elementProperty.FindPropertyRelative("m_max");
+            var funcProperty = elementProperty.FindPropertyRelative("m_requirementFunction");
             if (notProperty == null || domainSpecifierProperty == null || entitySpecifierProperty == null || minProperty == null || maxProperty == null) return;
             var notWidth = 22;
             var countWidth = 36;
-            var fieldWidth = (rect.width - notWidth - 2 * countWidth) / 2;
+            var funcWidth = 48;
+            var fieldWidth = (rect.width - notWidth - 2 * countWidth - funcWidth) / 2;
             EditorGUI.PropertyField(new Rect(rect.x, rect.y, notWidth, rect.height), notProperty, GUIContent.none);
             EditorGUI.PropertyField(new Rect(rect.x + notWidth, rect.y, fieldWidth, rect.height), entitySpecifierProperty, GUIContent.none);
             EditorGUI.PropertyField(new Rect(rect.x + notWidth + fieldWidth, rect.y, fieldWidth, rect.height), domainSpecifierProperty, GUIContent.none);
-            EditorGUI.PropertyField(new Rect(rect.x + notWidth + 2 * fieldWidth, rect.y, countWidth, rect.height), minProperty, GUIContent.none);
-            EditorGUI.PropertyField(new Rect(rect.x + notWidth + 2 * fieldWidth + countWidth, rect.y, countWidth, rect.height), maxProperty, GUIContent.none);
+            EditorGUI.PropertyField(new Rect(rect.x + notWidth + 2 * fieldWidth, rect.y, countWidth, EditorGUIUtility.singleLineHeight), minProperty, GUIContent.none);
+            EditorGUI.PropertyField(new Rect(rect.x + notWidth + 2 * fieldWidth + countWidth, rect.y, countWidth, EditorGUIUtility.singleLineHeight), maxProperty, GUIContent.none);
+            EditorGUI.PropertyField(new Rect(rect.x + notWidth + 2 * fieldWidth + 2 * countWidth, rect.y, funcWidth, EditorGUIUtility.singleLineHeight), funcProperty, GUIContent.none);
         }
 
         private void OnAddRequirementsListElement(ReorderableList list)
@@ -334,10 +341,10 @@ namespace PixelCrushers.QuestMachine
                             EditorGUILayout.PropertyField(messageProperty,
                                 new GUIContent("Message", "When this message and the parameter below are sent, update the counter according to the operation below."), true);
                             EditorGUILayout.PropertyField(parameterProperty,
-                                new GUIContent("Parameter", "When the message above and this parameter are sent, update the counter according to the operation below."), true);
+                                new GUIContent("Parameter", "When the message above and this parameter are sent, update the counter according to the operation below. You can use the tags {TARGETENTITY} and {DOMAIN}."), true);
                             EditorGUILayout.BeginHorizontal();
                             var operation = (QuestCounterMessageEvent.Operation)operationProperty.enumValueIndex;
-                            if (operation == QuestCounterMessageEvent.Operation.ModifyByParameter || operation == QuestCounterMessageEvent.Operation.SetToParameter)
+                            if (operation == QuestCounterMessageEvent.Operation.ModifyByMessageValue || operation == QuestCounterMessageEvent.Operation.SetToMessageValue)
                             {
                                 EditorGUILayout.PropertyField(operationProperty, GUIContent.none);
                             }

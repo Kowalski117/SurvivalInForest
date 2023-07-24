@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -17,12 +17,12 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// (Runtime) The quest that this condition belongs to.
         /// </summary>
-        protected Quest quest { get; set; }
+        public Quest quest { get; protected set; }
 
         /// <summary>
         /// (Runtime) The quest node that this condition belongs to.
         /// </summary>
-        protected QuestNode questNode { get; set; }
+        public QuestNode questNode { get; protected set; }
 
         /// <summary>
         /// (Runtime) The quest's tag dictionary.
@@ -142,7 +142,7 @@ namespace PixelCrushers.QuestMachine
                 }
                 else
                 { 
-                    if (Debug.isDebugBuild) Debug.LogWarning("QuestMachine: QuestSubasset.CloneList<" + typeof(T).Name + ">: Element " + i + " is null.");
+                    if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: QuestSubasset.CloneList<" + typeof(T).Name + ">: Element " + i + " is null.");
                 }
             }
             return copy;

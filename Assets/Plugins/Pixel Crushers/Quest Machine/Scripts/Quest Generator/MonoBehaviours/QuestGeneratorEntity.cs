@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -34,11 +34,21 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private bool m_requireReturnToComplete = true;
 
+        [Tooltip("Allow generated quests to be abandoned.")]
+        [SerializeField]
+        private bool m_generateAbandonableQuests = false;
+
+        [SerializeField]
+        private UrgentFactSelectionMode m_goalSelectionMode = new UrgentFactSelectionMode(UrgentFactionSelectionCriterion.SameAsGlobalSetting, 1);
+
         [Tooltip("The UI content to show above the list of rewards offered for a quest.")]
         [SerializeField]
         private BasicUIContent m_rewardsUIContents = new BasicUIContent();
 
-        [Tooltip("Generate a quest on start.")]
+        [SerializeField]
+        private List<RewardSystem> m_rewardSystems = new List<RewardSystem>();
+
+        [Tooltip("Generate a quest on start. Note: Will only generate one quest on start. To generate additional, call GenerateQuest() method.")]
         [SerializeField]
         private bool m_generateQuestOnStart;
 
@@ -48,9 +58,6 @@ namespace PixelCrushers.QuestMachine
 
         [NonSerialized]
         private QuestListContainer m_questListContainer;
-
-        [NonSerialized]
-        private List<RewardSystem> m_rewardSystems = new List<RewardSystem>();
 
         #endregion
 
@@ -84,12 +91,27 @@ namespace PixelCrushers.QuestMachine
         }
 
         /// <summary>
+        /// Allow generated quests to be abandoned
+        /// </summary>
+        public bool generateAbandonableQuests
+        {
+            get { return m_generateAbandonableQuests; }
+            set { m_generateAbandonableQuests = value; }
+        }
+
+        /// <summary>
         /// The domains that this quest giver observes.
         /// </summary>
         public QuestDomain[] domains
         {
             get { return m_domains; }
             set { m_domains = value; }
+        }
+
+        public UrgentFactSelectionMode goalSelectionMode
+        {
+            get { return m_goalSelectionMode; }
+            set { m_goalSelectionMode = value; }
         }
 
         /// <summary>
@@ -146,20 +168,36 @@ namespace PixelCrushers.QuestMachine
 
         public QuestGenerator questGenerator { get; private set; }
 
+        private bool m_isGenerating = false;
+
+        /// <summary>
+        /// Is this QuestGeneratorEntity currently generating a quest?
+        /// </summary>
+        public bool isGenerating
+        {
+            get { return m_isGenerating; }
+            protected set { m_isGenerating = value; }
+        }
+
         #endregion
 
         #region Initialization
 
-        protected virtual void Awake()
+        public override void Awake()
         {
             questGenerator = new QuestGenerator();
             questListContainer = GetComponent<QuestListContainer>();
             RecordRewardSystems();
         }
 
-        protected virtual IEnumerator Start()
+        public virtual void Start()
         {
-            yield return null;
+            StartCoroutine(GenerateQuestOnStart());
+        }
+
+        protected IEnumerator GenerateQuestOnStart()
+        {
+            yield return null; // Give time for entities to spawn and initialize.
             yield return null;
             if (generateQuestOnStart) GenerateQuest();
         }
@@ -167,7 +205,10 @@ namespace PixelCrushers.QuestMachine
         public override void OnDestroy()
         {
             base.OnDestroy();
-            questGenerator.CancelGeneration();
+            if (questGenerator != null)
+            {
+                questGenerator.CancelGeneration();
+            }
         }
 
         /// <summary>
@@ -175,7 +216,6 @@ namespace PixelCrushers.QuestMachine
         /// </summary>
         public void RecordRewardSystems()
         {
-            rewardSystems.Clear();
             foreach (var rewardSystem in GetComponentsInChildren<RewardSystem>())
             {
                 if (!rewardSystems.Contains(rewardSystem) && rewardSystem.enabled)
@@ -207,31 +247,43 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// Generates a quest if the current number of generated quests is under the max.
         /// </summary>
-        public void GenerateQuest()
+        public virtual void GenerateQuest()
         {
-            if (questListContainer == null || questListContainer.questList == null) return;
+            if (m_isGenerating || questListContainer == null || questListContainer.questList == null) return;
             if (GetGeneratedQuestCount() >= maxQuestsToGenerate) return;
             var worldModel = BuildWorldModel();
-            questGenerator.GenerateQuest(this, questGroup, domainType, worldModel, requireReturnToComplete, rewardsUIContents.contentList, rewardSystems, questListContainer.questList, OnGeneratedQuest);
+            questGenerator.GenerateQuest(this, questGroup, domainType, worldModel, requireReturnToComplete, rewardsUIContents.contentList, rewardSystems, questListContainer.questList, OnGeneratedQuest, goalSelectionMode, generateAbandonableQuests);
+            m_isGenerating = true;
         }
 
-        private void OnGeneratedQuest(Quest quest)
+        protected virtual void OnGeneratedQuest(Quest quest)
         {
-            GetComponent<QuestGiver>().AddQuest(quest);
-            generatedQuest(quest);
+            m_isGenerating = false;
+            if (quest != null)
+            {
+                if (GetGeneratedQuestCount() < maxQuestsToGenerate)
+                {
+                    GetComponent<QuestGiver>().AddQuest(quest);
+                    generatedQuest(quest);
+                }
+                else
+                {
+                    Quest.DestroyInstance(quest);
+                }
+            }
         }
 
         /// <summary>
         /// Returns the world model as observed by this entity.
         /// </summary>
-        public WorldModel BuildWorldModel()
+        public virtual WorldModel BuildWorldModel()
         {
             var worldModel = BuildWorldModelFromDomains();
             updateWorldModel(worldModel);
             return worldModel;
         }
 
-        public WorldModel BuildWorldModelFromDomains()
+        public virtual WorldModel BuildWorldModelFromDomains()
         {
             var worldModel = new WorldModel(new Fact(domainType, entityType, 1)); //[TODO] Pool.
             if (domains != null)
@@ -243,6 +295,58 @@ namespace PixelCrushers.QuestMachine
                 }
             }
             return worldModel;
+        }
+
+        #endregion
+
+        #region Start Dialogue
+
+        /// <summary>
+        /// Starts dialogue with the first GameObject in the scene that's tagged as "Player".
+        /// Generates a quest if necessary.
+        /// </summary>
+        public virtual void StartDialogueWithPlayer()
+        {
+            StartDialogue(GameObject.FindWithTag("Player"));
+        }
+
+        /// <summary>
+        /// Starts dialogue with the player. Works like QuestGiver.StartDialogue but generates
+        /// a quest if necessary.
+        /// </summary>
+        /// <param name="player">Player conversing with this QuestGiver. If null, searches the scene for a GameObject tagged Player.</param>
+        public virtual void StartDialogue(GameObject player)
+        {
+            if (player == null) return;
+            StartCoroutine(GenerateQuestThenTalk(player));
+        }
+
+        protected IEnumerator GenerateQuestThenTalk(GameObject player)
+        {
+            if (player == null) yield break;
+            var questJournal = player.GetComponentInChildren<QuestJournal>();
+            var questGiver = GetComponent<QuestGiver>();
+            if (questGiver == null || questJournal == null) yield break;
+            if (questGiver.questList.Count == 0 && !IsMyQuestActive(questJournal))
+            {
+                GenerateQuest();
+                var maxTime = Time.time + 1; // Give 1 second to generate quest.
+                while (questGiver.questList.Count == 0 && Time.time < maxTime)
+                {
+                    yield return null;
+                }
+            }
+            questGiver.StartDialogue(player);
+        }
+
+        /// <summary>
+        /// Checks if the quest journal has an active quest with this GameObject's quest giver ID.
+        /// </summary>
+        public virtual bool IsMyQuestActive(QuestJournal questJournal)
+        {
+            var questGiver = GetComponent<QuestGiver>();
+            if (questGiver == null || questJournal == null) return false;
+            return questJournal.questList.Find(quest => quest.GetState() == QuestState.Active && quest.questGiverID == questGiver.id) != null;
         }
 
         #endregion

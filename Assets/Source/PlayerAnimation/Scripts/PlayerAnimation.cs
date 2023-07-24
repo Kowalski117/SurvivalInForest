@@ -5,6 +5,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] private Animator _handAnimator;
     [SerializeField] private FirstPersonController _firstPersonController;
+    [SerializeField] private StarterAssetsInputs _starterAssets;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
 
     [SerializeField] private ItemAnimation[] _items;
@@ -28,7 +29,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        if (_firstPersonController._isEnable)
+        if (_starterAssets.move != Vector2.zero)
             _handAnimator.SetFloat(_speed, (_firstPersonController.Speed / 10));
         else
             _handAnimator.SetFloat(_speed, 0);
@@ -36,15 +37,15 @@ public class PlayerAnimation : MonoBehaviour
         Init(_hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData);
     }
 
-    private void OnEnable()
-    {
-        _hotbarDisplay.ItemClicked += Init;
-    }
+    //private void OnEnable()
+    //{
+    //    _hotbarDisplay.ItemClicked += Init;
+    //}
 
-    private void OnDisable()
-    {
-        _hotbarDisplay.ItemClicked -= Init;
-    }
+    //private void OnDisable()
+    //{
+    //    _hotbarDisplay.ItemClicked -= Init;
+    //}
 
     public void Init(InventoryItemData itemData)
     {

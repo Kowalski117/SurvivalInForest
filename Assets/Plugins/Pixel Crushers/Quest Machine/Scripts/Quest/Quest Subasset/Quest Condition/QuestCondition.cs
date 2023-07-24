@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -22,10 +22,10 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// True if the condition is currently monitoring the requirements that would make it true.
         /// </summary>
-        protected bool isChecking
+        protected virtual bool isChecking
         {
             get { return m_isChecking; }
-            set { m_isChecking = true; }
+            set { m_isChecking = value; }
         }
 
         public override void SetRuntimeReferences(Quest quest, QuestNode questNode)
@@ -54,10 +54,12 @@ namespace PixelCrushers.QuestMachine
 
         /// <summary>
         /// Sets the condition true, invoking the trueAction.
+        /// Also stops checking.
         /// </summary>
         public virtual void SetTrue()
         {
-            if (QuestMachine.debug) Debug.Log("QuestMachine: " + GetType().Name + ".SetTrue()", quest);
+            if (QuestMachine.debug) Debug.Log("Quest Machine: " + GetType().Name + ".SetTrue()", quest);
+            StopChecking();
             trueAction();
         }
 

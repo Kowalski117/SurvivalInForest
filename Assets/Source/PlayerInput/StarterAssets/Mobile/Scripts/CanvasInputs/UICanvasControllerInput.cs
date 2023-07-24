@@ -4,7 +4,7 @@ namespace StarterAssets
 {
     public class UICanvasControllerInput : MonoBehaviour
     {
-        [SerializeField] private WeaponPlayerInput _weaponPlayerInput;
+        [SerializeField] private PlayerInputHandler _playerInputHandler;
         [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
 
         [Header("Output")]
@@ -30,14 +30,20 @@ namespace StarterAssets
             starterAssetsInputs.StealthInput(virtualSprintState);
         }
 
-        public void Hit()
+        public void Attack(bool virtualSprintState)
         {
-            _weaponPlayerInput.Shoot();
+            _playerInputHandler.InteractionPlayerInput.Attack();
         }
 
         public void ToggleInventory()
         {
-            _inventoryPlayerInput.InteractCrafting();
+            _playerInputHandler.InventoryPlayerInput.ToggleInventory();
+            _playerInputHandler.InventoryPlayerInput.ToggleIInteractable();
+        }
+
+        public void InteractedConstruction()
+        {
+            _playerInputHandler.InteractionPlayerInput.InteractedConstruction();
         }
     }
 }

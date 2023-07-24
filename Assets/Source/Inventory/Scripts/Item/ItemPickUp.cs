@@ -1,8 +1,10 @@
+using PixelCrushers.QuestMachine.Wrappers;
 using UnityEngine;
 
 [RequireComponent(typeof(UniqueID))]
 public class ItemPickUp : MonoBehaviour
 {
+    [SerializeField] private QuestControl _questControl;
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private ItemPickUpSaveData _itemSaveData;
     [SerializeField] private float _durability;
@@ -15,6 +17,7 @@ public class ItemPickUp : MonoBehaviour
 
     private void Awake()
     {
+        _questControl = GetComponent<QuestControl>();
         _uniqueID = GetComponent<UniqueID>();
         _durability = _itemData.Durability;
     }
@@ -36,8 +39,15 @@ public class ItemPickUp : MonoBehaviour
         _uniqueID.Generate();
     }
 
+    public void UpdateDurability(float durability)
+    {
+        _durability = durability;
+    }
+
     public void PicUp()
     {
+        _questControl.SendToMessageSystem("Find:" + _itemData.name);
+
         if (ES3.KeyExists(_item + _uniqueID.Id))
             ES3.DeleteKey(_item + _uniqueID.Id);
         Destroy(this.gameObject);

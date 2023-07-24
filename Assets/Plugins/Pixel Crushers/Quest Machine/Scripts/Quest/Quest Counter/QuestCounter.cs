@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -22,7 +22,7 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private StringField m_name;
 
-        [Tooltip("Current value.")]
+        [Tooltip("Current value. This value is always clamped between Min Value and Max Value. Make sure Min and Max Values are set appropriately.")]
         [SerializeField]
         private int m_currentValue = 0;
 
@@ -153,7 +153,9 @@ namespace PixelCrushers.QuestMachine
 
         public void SetValue(int newValue, QuestCounterSetValueMode setValueMode = QuestCounterSetValueMode.InformListeners)
         {
-            m_currentValue = Mathf.Clamp(newValue, minValue, maxValue);
+            var clampedNewValue = Mathf.Clamp(newValue, minValue, maxValue);
+            if (clampedNewValue == m_currentValue) return;
+            m_currentValue = clampedNewValue;
             if (setValueMode != QuestCounterSetValueMode.DontInformListeners)
             {
                 var informDataSync = (updateMode == QuestCounterUpdateMode.DataSync) && (setValueMode != QuestCounterSetValueMode.DontInformDataSync);
@@ -211,16 +213,17 @@ namespace PixelCrushers.QuestMachine
         public void OnMessage(MessageArgs messageArgs)
         {
             if (QuestMachine.debug) Debug.Log("Quest Machine: QuestCounter[" + name + "].OnMessage(" + messageArgs.message + ", " + messageArgs.parameter + ")", m_quest);
+            var newValue = m_currentValue;
             switch (messageArgs.message)
             {
                 case DataSynchronizer.DataSourceValueChangedMessage:
-                    m_currentValue = messageArgs.intValue;
+                    newValue = messageArgs.intValue;
                     break;
                 case QuestMachineMessages.SetQuestCounterMessage:
-                    m_currentValue = messageArgs.intValue;
+                    newValue = messageArgs.intValue;
                     break;
                 case QuestMachineMessages.IncrementQuestCounterMessage:
-                    m_currentValue += messageArgs.intValue;
+                    newValue += messageArgs.intValue;
                     break;
                 default:
                     if (messageEventList == null) break;
@@ -234,23 +237,23 @@ namespace PixelCrushers.QuestMachine
                             switch (messageEvent.operation)
                             {
                                 case QuestCounterMessageEvent.Operation.ModifyByLiteralValue:
-                                    m_currentValue += messageEvent.literalValue;
+                                    newValue += messageEvent.literalValue;
                                     break;
-                                case QuestCounterMessageEvent.Operation.ModifyByParameter:
-                                    m_currentValue += messageArgs.intValue;
+                                case QuestCounterMessageEvent.Operation.ModifyByMessageValue:
+                                    newValue += messageArgs.intValue;
                                     break;
                                 case QuestCounterMessageEvent.Operation.SetToLiteralValue:
-                                    m_currentValue = messageEvent.literalValue;
+                                    newValue = messageEvent.literalValue;
                                     break;
-                                case QuestCounterMessageEvent.Operation.SetToParameter:
-                                    m_currentValue = messageArgs.intValue;
+                                case QuestCounterMessageEvent.Operation.SetToMessageValue:
+                                    newValue = messageArgs.intValue;
                                     break;
                             }
                         }
                     }
                     break;
             }
-            SetValue(m_currentValue, QuestCounterSetValueMode.DontInformDataSync);
+            SetValue(newValue, QuestCounterSetValueMode.DontInformDataSync);
         }
 
         #endregion

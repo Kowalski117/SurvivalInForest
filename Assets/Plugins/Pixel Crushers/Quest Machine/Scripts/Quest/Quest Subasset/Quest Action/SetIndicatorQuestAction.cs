@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -58,7 +58,7 @@ namespace PixelCrushers.QuestMachine
 
         public override void Execute()
         {
-            var affectedQuest = StringField.IsNullOrEmpty(questID) ? this.quest : QuestMachine.GetQuestInstance(questID);
+            var affectedQuest = StringField.IsNullOrEmpty(questID) ? this.quest : QuestMachine.GetQuestInstance(questID, entityID);
             if (affectedQuest == null) return;
             affectedQuest.SetQuestIndicatorState(runtimeEntityID, questIndicatorState);
         }

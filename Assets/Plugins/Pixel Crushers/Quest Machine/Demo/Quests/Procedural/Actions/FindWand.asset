@@ -11,7 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0593ab854c792944fb2f38bf5f0699b2, type: 3}
   m_Name: FindWand
   m_EditorClassIdentifier: 
-  m_description: This action finds the Polymorph Wand inside a breakable container.
+  m_description: This action finds the Polymorph Wand inside a breakable barrel. When
+    activated, it sends a message to activate the barrel so the player can find it
+    and retrieve the wand.
   m_motives: []
   m_displayName:
     m_text: Find a Wand in
@@ -128,3 +130,13 @@ MonoBehaviour:
     m_counterValueMode: 0
     m_updateMode: 0
     m_messageEventList: []
+  m_sendMessageOnActive:
+    m_text: Activate Wand Barrel
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_sendMessageOnCompletion:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0

@@ -1,9 +1,8 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
-using System;
+using UnityEngine;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -36,6 +35,8 @@ namespace PixelCrushers.QuestMachine
             DrawActionList();
             QuestEditorUtility.EditorGUILayoutVerticalSpace(2);
             DrawDriveValueList();
+            QuestEditorUtility.EditorGUILayoutVerticalSpace(2);
+            DrawRewardMultipliers();
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -316,7 +317,7 @@ namespace PixelCrushers.QuestMachine
             {
                 QuestEditorUtility.EditorGUILayoutBeginGroup();
 
-                EditorGUILayout.HelpBox("Drive values associated with this entity type. Drive values influence how entities are used in quests.", MessageType.None);
+                EditorGUILayout.HelpBox("Drive values associated with this entity type. Drive values influence how entities are used in quests. Design-time values are shown below, not runtime values.", MessageType.None);
                 m_driveValueList.DoLayoutList();
             }
             finally
@@ -375,6 +376,31 @@ namespace PixelCrushers.QuestMachine
             var driveProperty = (elementProperty != null) ? elementProperty.FindPropertyRelative("m_drive") : null;
             if (driveProperty != null) driveProperty.objectReferenceValue = drive;
             serializedObject.ApplyModifiedProperties();
+        }
+
+        #endregion
+
+        #region Reward Multipliers
+
+        private void DrawRewardMultipliers()
+        {
+            QuestEditorPrefs.entityTypeRewardMultipliersFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Reward Multipliers", "Scale points used to give rewards.", QuestEditorPrefs.entityTypeRewardMultipliersFoldout);
+            if (!QuestEditorPrefs.entityTypeRewardMultipliersFoldout) return;
+            try
+            {
+                QuestEditorUtility.EditorGUILayoutBeginGroup();
+                EditorGUILayout.HelpBox("Reward systems give rewards based on an entity's level. Using the multipliers below, " +
+                    "entities can scale reward points. For example, a boss enemy might scale Currency by 10 x its level.", MessageType.None);
+                var multipliers = serializedObject.FindProperty("m_rewardMultipliers");
+                for (int i = 0; i < multipliers.arraySize; i++)
+                {
+                    EditorGUILayout.PropertyField(multipliers.GetArrayElementAtIndex(i), new GUIContent(((RewardMultiplier)i).ToString()), true);
+                }
+            }
+            finally
+            {
+                QuestEditorUtility.EditorGUILayoutEndGroup();
+            }
         }
 
         #endregion

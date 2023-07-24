@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -69,11 +69,11 @@ namespace PixelCrushers.QuestMachine
     public class ActionText
     {
 
-        [Tooltip("Text to use when the task is active.")]
+        [Tooltip("Text to use when the task is active. Optionally specify message to send when node becomes active; use ':' to separate message and parameter.")]
         [SerializeField]
         private ActionStateText m_activeText = new ActionStateText();
 
-        [Tooltip("Text to use when the task is complete.")]
+        [Tooltip("Text to use when the task is complete. Optionally specify message to send when node is completed; use ':' to separate message and parameter.")]
         [SerializeField]
         private ActionStateText m_completedText = new ActionStateText();
 

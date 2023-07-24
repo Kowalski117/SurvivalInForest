@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -21,6 +21,8 @@ namespace PixelCrushers.QuestMachine
 
         [SerializeField]
         private int m_count;
+
+        private float m_urgency;
 
         /// <summary>
         /// The domain containing one or more of an entity.
@@ -49,11 +51,18 @@ namespace PixelCrushers.QuestMachine
             set { m_count = value; }
         }
 
-        public Fact(DomainType domainType, EntityType entityType, int count)
+        public float urgency
+        {
+            get { return m_urgency; }
+            set { m_urgency = value; }
+        }
+
+        public Fact(DomainType domainType, EntityType entityType, int count, float urgency = 0)
         {
             this.domainType = domainType;
             this.entityType = entityType;
             this.count = count;
+            this.urgency = urgency;
         }
 
         public Fact(Fact source)
@@ -61,6 +70,7 @@ namespace PixelCrushers.QuestMachine
             this.domainType = source.domainType;
             this.entityType = source.entityType;
             this.count = source.count;
+            this.urgency = source.urgency;
         }
 
     }

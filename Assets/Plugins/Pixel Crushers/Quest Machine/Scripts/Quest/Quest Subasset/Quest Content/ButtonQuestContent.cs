@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -13,6 +13,12 @@ namespace PixelCrushers.QuestMachine
     public class ButtonQuestContent : IconQuestContent
     {
 
+        public const int NoGroup = -1;
+
+        [Tooltip("Group number this button belongs to, or -1 if none. When one button in group is clicked, all buttons in group become non-interactable.")]
+        [SerializeField]
+        private int m_groupNumber = NoGroup;
+
         [Tooltip("The actions to run when the button is clicked.")]
         [SerializeField]
         private List<QuestAction> m_actionList = new List<QuestAction>();
@@ -20,6 +26,15 @@ namespace PixelCrushers.QuestMachine
         [HideInInspector]
         [SerializeField]
         public QuestActionProxyContainer m_actionsProxy;
+
+        /// <summary>
+        /// Group number this button belongs to, or -1 if none. When one button in the group is clicked, the other buttons become non-interactable.
+        /// </summary>
+        public int groupNumber
+        {
+            get { return m_groupNumber; }
+            set { m_groupNumber = value; }
+        }
 
         /// <summary>
         /// The actions to run when the button is clicked.
@@ -30,7 +45,7 @@ namespace PixelCrushers.QuestMachine
             set { m_actionList = value; }
         }
 
-        public bool interactable { get { return actionList != null && actionList.Count > 0; } }
+        public virtual bool interactable { get { return actionList != null && actionList.Count > 0; } }
 
         public override string GetEditorName()
         {
@@ -69,7 +84,6 @@ namespace PixelCrushers.QuestMachine
             var copyButton = copy as ButtonQuestContent;
             if (copyButton == null) return;
             copyButton.actionList = CloneList(actionList);
-
         }
 
     }

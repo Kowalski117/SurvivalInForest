@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -16,6 +16,8 @@ namespace PixelCrushers.QuestMachine
         protected override void Draw()
         {
             if (serializedObject == null) return;
+            serializedObject.Update();
+
             EditorGUILayout.HelpBox("This action sends a message to the Message System.", MessageType.None);
 
             var senderSpecifierProperty = serializedObject.FindProperty("m_senderSpecifier");
@@ -51,6 +53,8 @@ namespace PixelCrushers.QuestMachine
             EditorGUILayout.PropertyField(messageProperty, true);
             EditorGUILayout.PropertyField(parameterProperty, true);
             EditorGUILayout.PropertyField(valueProperty, true);
+
+            serializedObject.ApplyModifiedProperties();
         }
 
     }

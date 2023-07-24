@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -16,14 +16,17 @@ namespace PixelCrushers.QuestMachine
             ScriptableWizard.DisplayWizard<QuestTagsToTextTableWizard>("Tags To Text Table", "Add Tags");
         }
 
-        void OnWizardUpdate()
+        private void OnWizardUpdate()
         {
-            helpString = "Please select a Text Table.";
+            helpString = "This wizard will add any tags you've used in this quest (for example, '{Hello}') to a Text Table." +
+                "\n\nQuest: " + ((QuestEditorWindow.selectedQuest != null) ? QuestEditorWindow.selectedQuest.name : "(none)");
+            if (textTable == null) helpString += "\n\nPlease select a Text Table.";
         }
 
-        void OnWizardCreate()
+        private void OnWizardCreate()
         {
             QuestMachineTags.AddQuestTagsToTextTable(QuestEditorWindow.selectedQuest, textTable);
+            Debug.Log("Quest Machine: Copied all tags mentioned in " + QuestEditorWindow.selectedQuest + " to " + textTable + ".", textTable);
         }
 
     }

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -284,22 +284,24 @@ namespace PixelCrushers.QuestMachine
                 QuestCondition condition = null;
                 if (string.Equals(conditionProxy.t, CounterTypeString))
                 {
-                    condition = ScriptableObject.CreateInstance<CounterQuestCondition>();
+                    condition = ScriptableObjectUtility.CreateScriptableObject(RuntimeTypeUtility.GetWrapperType(typeof(CounterQuestCondition))) as CounterQuestCondition;
                     ApplyCounterQuestConditionProxyData(condition as CounterQuestCondition, conditionProxy.s);
                 }
                 else if (string.Equals(conditionProxy.t, MessageTypeString))
                 {
-                    condition = ScriptableObject.CreateInstance<MessageQuestCondition>();
+                    condition = ScriptableObjectUtility.CreateScriptableObject(RuntimeTypeUtility.GetWrapperType(typeof(MessageQuestCondition))) as MessageQuestCondition;
                     ApplyMessageQuestConditionProxyData(condition as MessageQuestCondition, conditionProxy.s);
                 }
                 else if (string.Equals(conditionProxy.t, TimerTypeString))
                 {
-                    condition = ScriptableObject.CreateInstance<TimerQuestCondition>();
+                    condition = ScriptableObjectUtility.CreateScriptableObject(RuntimeTypeUtility.GetWrapperType(typeof(TimerQuestCondition))) as TimerQuestCondition;
                     ApplyTimerQuestConditionProxyData(condition as TimerQuestCondition, conditionProxy.s);
                 }
                 else
                 {
-                    condition = ScriptableObject.CreateInstance(RuntimeTypeUtility.GetTypeFromName(conditionProxy.t)) as QuestCondition;
+                    var baseType = RuntimeTypeUtility.GetTypeFromName(conditionProxy.t);
+                    var type = RuntimeTypeUtility.GetWrapperType(baseType) ?? baseType;
+                    condition = ScriptableObject.CreateInstance(type) as QuestCondition;
                     if (condition != null) JsonUtility.FromJsonOverwrite(conditionProxy.s, condition);
                 }
                 if (condition != null)
@@ -490,27 +492,29 @@ namespace PixelCrushers.QuestMachine
                 QuestContent content = null;
                 if (string.Equals(contentProxy.t, HeadingTypeString))
                 {
-                    content = ScriptableObject.CreateInstance<HeadingTextQuestContent>();
+                    content = ScriptableObjectUtility.CreateScriptableObject(RuntimeTypeUtility.GetWrapperType(typeof(HeadingTextQuestContent))) as HeadingTextQuestContent;
                     ApplyHeadingTextQuestContentProxyData(content as HeadingTextQuestContent, contentProxy.s);
                 }
                 else if (string.Equals(contentProxy.t, BodyTypeString))
                 {
-                    content = ScriptableObject.CreateInstance<BodyTextQuestContent>();
+                    content = ScriptableObjectUtility.CreateScriptableObject(RuntimeTypeUtility.GetWrapperType(typeof(BodyTextQuestContent))) as BodyTextQuestContent;
                     ApplyBodyTextQuestContentProxyData(content as BodyTextQuestContent, contentProxy.s);
                 }
                 else if (string.Equals(contentProxy.t, IconTypeString))
                 {
-                    content = ScriptableObject.CreateInstance<IconQuestContent>();
+                    content = ScriptableObjectUtility.CreateScriptableObject(RuntimeTypeUtility.GetWrapperType(typeof(IconQuestContent))) as IconQuestContent;
                     ApplyIconQuestContentProxyData(content as IconQuestContent, contentProxy.s);
                 }
                 else if (string.Equals(contentProxy.t, ButtonTypeString))
                 {
-                    content = ScriptableObject.CreateInstance<ButtonQuestContent>();
+                    content = ScriptableObjectUtility.CreateScriptableObject(RuntimeTypeUtility.GetWrapperType(typeof(ButtonQuestContent))) as ButtonQuestContent;
                     ApplyButtonQuestContentProxyData(content as ButtonQuestContent, contentProxy.s);
                 }
                 else
                 {
-                    content = ScriptableObject.CreateInstance(RuntimeTypeUtility.GetTypeFromName(contentProxy.t)) as QuestContent;
+                    var baseType = RuntimeTypeUtility.GetTypeFromName(contentProxy.t);
+                    var type = RuntimeTypeUtility.GetWrapperType(baseType) ?? baseType;
+                    content = ScriptableObject.CreateInstance(type) as QuestContent;
                     if (content != null) JsonUtility.FromJsonOverwrite(contentProxy.s, content);
                 }
                 if (content != null)
@@ -531,7 +535,9 @@ namespace PixelCrushers.QuestMachine
 
         private static string GetHeadingTextQuestContentProxyData(HeadingTextQuestContent headingTextQuestContent)
         {
-            return headingTextQuestContent.headingLevel + ";" + StringField.GetStringValue(headingTextQuestContent.originalText);
+            return headingTextQuestContent.headingLevel + ";" + 
+                StringField.GetStringValue(headingTextQuestContent.originalText) + ";" + 
+                (headingTextQuestContent.useQuestTitle ? "1" : "0");
         }
 
         private static void ApplyHeadingTextQuestContentProxyData(HeadingTextQuestContent headingTextQuestContent, string s)
@@ -541,6 +547,7 @@ namespace PixelCrushers.QuestMachine
             if (fields.Length < 2) return;
             headingTextQuestContent.headingLevel = SafeConvert.ToInt(fields[0]);
             headingTextQuestContent.originalText = new StringField(fields[1]);
+            headingTextQuestContent.useQuestTitle = (fields.Length == 3) ? (fields[2] == "1") : false;
         }
 
         private static string GetBodyTextQuestContentProxyData(BodyTextQuestContent bodyTextQuestContent)
@@ -926,7 +933,10 @@ namespace PixelCrushers.QuestMachine
             {
                 var actionProxy = actionListProxy[i];
                 if (actionProxy == null || string.IsNullOrEmpty(actionProxy.t) || string.IsNullOrEmpty(actionProxy.s)) continue;
-                var action = ScriptableObject.CreateInstance(RuntimeTypeUtility.GetTypeFromName(actionProxy.t)) as QuestAction;
+
+                var baseType = RuntimeTypeUtility.GetTypeFromName(actionProxy.t);
+                var type = RuntimeTypeUtility.GetWrapperType(baseType) ?? baseType;
+                var action = ScriptableObject.CreateInstance(type) as QuestAction;
                 if (action != null)
                 {
                     JsonUtility.FromJsonOverwrite(actionProxy.s, action);

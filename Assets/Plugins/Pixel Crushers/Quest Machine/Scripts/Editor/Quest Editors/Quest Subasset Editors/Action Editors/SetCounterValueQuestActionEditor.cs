@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -16,16 +16,11 @@ namespace PixelCrushers.QuestMachine
         private string[] m_nameList = null;
         private GUIContent m_operationValueTooltip = null;
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            if (serializedObject == null) return;
-            m_nameList = QuestEditorUtility.GetCounterNames();
-        }
-
         protected override void Draw()
         {
             if (serializedObject == null) return;
+            if (m_nameList == null) m_nameList = QuestEditorUtility.GetCounterNames();
+            serializedObject.Update();
             var counterIndexProperty = serializedObject.FindProperty("m_counterIndex");
             var operationProperty = serializedObject.FindProperty("m_operation");
             var operationValueProperty = serializedObject.FindProperty("m_operationValue");
@@ -46,6 +41,7 @@ namespace PixelCrushers.QuestMachine
             {
                 EditorGUILayout.PropertyField(maxValueProperty);
             }
+            serializedObject.ApplyModifiedProperties();
         }
 
         protected virtual GUIContent GetOperationValueTooltip(SetCounterValueQuestAction.Operation operation)

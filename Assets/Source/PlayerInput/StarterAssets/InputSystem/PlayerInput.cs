@@ -298,7 +298,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""83164a15-28fa-4f91-9fa6-e7b834307468"",
-                    ""path"": ""<Keyboard>/ctrl"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
@@ -374,8 +374,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""95e35ed2-97a3-4789-be58-04532fe35a62"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""id"": ""6cfecbe3-2541-4681-a930-186914a85eca"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -708,10 +708,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ""id"": ""541d161c-eff1-48dc-9394-04c9f75bf750"",
             ""actions"": [
                 {
-                    ""name"": ""Shoot"",
-                    ""type"": ""Button"",
+                    ""name"": ""Attack"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""d84e7900-b330-45f6-baed-0f4af66a4da9"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -725,7 +725,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -814,7 +814,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_BuildSystem_DeleteBuilding = m_BuildSystem.FindAction("DeleteBuilding", throwIfNotFound: true);
         // WeaponSystem
         m_WeaponSystem = asset.FindActionMap("WeaponSystem", throwIfNotFound: true);
-        m_WeaponSystem_Shoot = m_WeaponSystem.FindAction("Shoot", throwIfNotFound: true);
+        m_WeaponSystem_Attack = m_WeaponSystem.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1141,12 +1141,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     // WeaponSystem
     private readonly InputActionMap m_WeaponSystem;
     private IWeaponSystemActions m_WeaponSystemActionsCallbackInterface;
-    private readonly InputAction m_WeaponSystem_Shoot;
+    private readonly InputAction m_WeaponSystem_Attack;
     public struct WeaponSystemActions
     {
         private @PlayerInput m_Wrapper;
         public WeaponSystemActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Shoot => m_Wrapper.m_WeaponSystem_Shoot;
+        public InputAction @Attack => m_Wrapper.m_WeaponSystem_Attack;
         public InputActionMap Get() { return m_Wrapper.m_WeaponSystem; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1156,16 +1156,16 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_WeaponSystemActionsCallbackInterface != null)
             {
-                @Shoot.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnShoot;
-                @Shoot.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnShoot;
-                @Shoot.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnShoot;
+                @Attack.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_WeaponSystemActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Shoot.started += instance.OnShoot;
-                @Shoot.performed += instance.OnShoot;
-                @Shoot.canceled += instance.OnShoot;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
             }
         }
     }
@@ -1241,6 +1241,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     }
     public interface IWeaponSystemActions
     {
-        void OnShoot(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

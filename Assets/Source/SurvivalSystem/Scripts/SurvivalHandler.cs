@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SurvivalHandler : MonoBehaviour
 {
+    [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private PlayerInventoryHolder _playerInventory;
     [SerializeField] private PlayerHealth _health;
     [SerializeField] private SurvivalAttribute _hunger;
@@ -23,12 +24,16 @@ public class SurvivalHandler : MonoBehaviour
     {
         SaveGame.OnSaveGame += SaveSurvivalAttributes;
         SaveGame.OnLoadData += LoadSurvivalAttributes;
+
+        _hotbarDisplay.ItemClicked += Eat;
     }
 
     private void OnDisable()
     {
         SaveGame.OnSaveGame -= SaveSurvivalAttributes;
         SaveGame.OnLoadData -= LoadSurvivalAttributes;
+
+        _hotbarDisplay.ItemClicked -= Eat;
     }
 
     private void Update()
@@ -54,11 +59,27 @@ public class SurvivalHandler : MonoBehaviour
         {
             _hunger.ReplenishValue(foodItemData.AmountSatiety);
             _thirst.ReplenishValue(foodItemData.AmountWater);
+                                                   
+            if (slot.Durability > 0)
+            {
+                slot.LowerStrength(1);
 
-            if (foodItemData.EmptyDishes != null)
-                _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+                if (slot.Durability <= 0)
+                {
+                    if (foodItemData.EmptyDishes != null)
+                        _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+
+                    _playerInventory.RemoveInventory(slot, 1);
+                }
+            }
+            else
+            {
+                if (foodItemData.EmptyDishes != null)
+                    _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+
+                _playerInventory.RemoveInventory(slot, 1);
+            }
         }
-        _playerInventory.RemoveInventory(slot.ItemData, 1);
     }
 
     private void HandleTimeUpdate()

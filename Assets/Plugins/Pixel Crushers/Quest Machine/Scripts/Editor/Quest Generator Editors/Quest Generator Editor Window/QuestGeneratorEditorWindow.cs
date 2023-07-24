@@ -7,7 +7,7 @@ namespace PixelCrushers.QuestMachine
     public class QuestGeneratorEditorWindow : EditorWindow
     {
 
-        [MenuItem("Tools/Pixel Crushers/Quest Machine/Quest Generator")]
+        [MenuItem("Tools/Pixel Crushers/Quest Machine/Quest Generator", false, 2)]
         public static void ShowWindow()
         {
             GetWindow<QuestGeneratorEditorWindow>();

@@ -26,11 +26,27 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
         }
 
+        public void DrawAIBranchingConversationButton(Conversation conversation)
+        {
+        }
+
         private void DrawAIReviseTextButton(Asset asset, DialogueEntry entry, Field field)
         {
         }
 
         private void DrawAILocalizeTextButton(Asset asset, DialogueEntry entry, Field field)
+        {
+        }
+
+        private void DrawAIPortraitSprites(Asset asset)
+        {
+        }
+
+        public void DrawAIVoiceSelection(Actor actor)
+        {
+        }
+
+        public void DrawAISequence(DialogueEntry entry, Field field)
         {
         }
 

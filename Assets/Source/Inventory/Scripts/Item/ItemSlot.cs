@@ -76,8 +76,8 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
         if (ItemId == -1)
             return;
 
-        var dataBase = Resources.Load<DataBase>("Database");
-        InventoryItemData = dataBase.GetItem(ItemId);
+        //var dataBase = Resources.Load<DataBase>("Database");
+        //InventoryItemData = dataBase.GetItem(ItemId);
     }
 
     public void OnBeforeSerialize()

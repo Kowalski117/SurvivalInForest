@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -22,6 +22,8 @@ namespace PixelCrushers.QuestMachine
             QuestEditorUtility.EditorGUILayoutVerticalSpace(2);
             DrawSaveSettings();
             QuestEditorUtility.EditorGUILayoutVerticalSpace(2);
+            DrawOtherSettings();
+            QuestEditorUtility.EditorGUILayoutVerticalSpace(2);
             DrawDialogueContent();
             QuestEditorUtility.EditorGUILayoutVerticalSpace(2);
             DrawQuestList();
@@ -29,7 +31,7 @@ namespace PixelCrushers.QuestMachine
             DrawSelectedQuestInspector();
         }
 
-        private void DrawDialogueContent()
+        protected virtual void DrawDialogueContent()
         {
             QuestEditorPrefs.questGiverDialogueContentFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Dialogue Content", "Quest giver-specific dialogue content.", QuestEditorPrefs.questGiverDialogueContentFoldout);
             if (!QuestEditorPrefs.questGiverDialogueContentFoldout) return;
@@ -53,6 +55,12 @@ namespace PixelCrushers.QuestMachine
             {
                 QuestEditorUtility.EditorGUILayoutEndGroup();
             }
+        }
+
+        protected override void DrawOtherSettingsInterior()
+        {
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_cooldownCheckFrequency"));
+            base.DrawOtherSettingsInterior();
         }
 
     }

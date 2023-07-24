@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// Sent when a quest state or quest node state changes. 
         /// - Parameter: Quest ID. 
-        /// - Argument 0: [StringField] Quest node ID, or blank for main quest state.
+        /// - Argument 0: [StringField] Quest node ID, or null for main quest state.
         /// - Argument 1: [QuestState] / [QuestNodeState] New state.
         /// </summary>
         public const string QuestStateChangedMessage = "Quest State Changed";
@@ -34,6 +34,13 @@ namespace PixelCrushers.QuestMachine
         /// - Parameter: Quest ID. 
         /// </summary>
         public const string QuestAbandonedMessage = "Quest Abandoned";
+
+        /// <summary>
+        /// Sent to tell a quest to re-check its offer conditions in case
+        /// the quest is no longer offerable.
+        /// - Parameter: Quest ID.
+        /// </summary>
+        public const string CheckOfferConditionsMessage = "Check Offer Conditions";
 
         /// <summary>
         /// Sent when a quest's counter changes value.
@@ -138,6 +145,11 @@ namespace PixelCrushers.QuestMachine
         /// - Parameter: [StringField/string] Spawner name.
         /// </summary>
         public const string DespawnSpawnerMessage = "Despawn Spawner";
+
+        /// <summary>
+        /// Argument 0: [int] Group number.
+        /// </summary>
+        public const string GroupButtonClickedMessage = "Group Button Clicked";
 
         #endregion
 
@@ -283,14 +295,18 @@ namespace PixelCrushers.QuestMachine
             if (obj is GameObject)
             {
                 var go = obj as GameObject;
-                var questGiver = go.GetComponentInChildren<QuestGiver>();
-                if (questGiver != null) return questGiver.id;
+                var questList = go.GetComponentInChildren<IdentifiableQuestListContainer>();
+                if (questList != null) return questList.id;
                 var entity = go.GetComponentInChildren<QuestEntity>();
                 if (entity != null) return entity.id;
-                questGiver = go.GetComponentInParent<QuestGiver>();
-                if (questGiver != null) return questGiver.id;
+                var idComponent = go.GetComponentInChildren<IQuestMachineID>();
+                if (idComponent != null) return idComponent.id;
+                questList = go.GetComponentInParent<IdentifiableQuestListContainer>();
+                if (questList != null) return questList.id;
                 entity = go.GetComponentInParent<QuestEntity>();
                 if (entity != null) return entity.id;
+                idComponent = go.GetComponentInParent<IQuestMachineID>();
+                if (idComponent != null) return idComponent.id;
             }
             else if (obj is IdentifiableQuestListContainer)
             {
@@ -299,6 +315,10 @@ namespace PixelCrushers.QuestMachine
             else if (obj is QuestEntity)
             {
                 return (obj as QuestEntity).id;
+            }
+            else if (obj is IQuestMachineID)
+            {
+                return (obj as IQuestMachineID).id;
             }
             else if (obj is StringField)
             {
@@ -320,10 +340,18 @@ namespace PixelCrushers.QuestMachine
             if (obj is GameObject)
             {
                 var go = obj as GameObject;
-                var questGiver = go.GetComponentInChildren<QuestGiver>();
-                if (questGiver != null) return questGiver.displayName;
+                var questList = go.GetComponentInChildren<IdentifiableQuestListContainer>();
+                if (questList != null) return questList.displayName;
                 var entity = go.GetComponentInChildren<QuestEntity>();
                 if (entity != null) return entity.displayName;
+                var idComponent = go.GetComponentInChildren<IQuestMachineID>();
+                if (idComponent != null) return idComponent.displayName;
+                questList = go.GetComponentInParent<IdentifiableQuestListContainer>();
+                if (questList != null) return questList.displayName;
+                entity = go.GetComponentInParent<QuestEntity>();
+                if (entity != null) return entity.displayName;
+                idComponent = go.GetComponentInParent<IQuestMachineID>();
+                if (idComponent != null) return idComponent.displayName;
             }
             else if (obj is IdentifiableQuestListContainer)
             {
@@ -332,6 +360,10 @@ namespace PixelCrushers.QuestMachine
             else if (obj is QuestEntity)
             {
                 return (obj as QuestEntity).displayName;
+            }
+            else if (obj is IQuestMachineID)
+            {
+                return (obj as IQuestMachineID).displayName;
             }
             else if (obj is StringField)
             {
@@ -365,12 +397,20 @@ namespace PixelCrushers.QuestMachine
             var qlc = QuestMachine.GetQuestListContainer(id);
             if (qlc != null) return qlc.gameObject;
 
-            // Otherwise try entities:
-            var entities = GameObject.FindObjectsOfType<QuestEntity>();
-            for (int i = 0; i < entities.Length; i++)
+            //// Otherwise try entities:
+            ////--- Replaced by IQuestMachineID below.
+            //var entities = GameObject.FindObjectsOfType<QuestEntity>();
+            //for (int i = 0; i < entities.Length; i++)
+            //{
+            //    var entity = entities[i];
+            //    if (string.Equals(entity.id, id)) return entity.gameObject;
+            //}
+
+            var monobehaviours = GameObject.FindObjectsOfType<MonoBehaviour>();
+            for (int i = 0; i < monobehaviours.Length; i++)
             {
-                var entity = entities[i];
-                if (string.Equals(entity.id, id)) return entity.gameObject;
+                var identifiable = (monobehaviours[i] as IQuestMachineID);
+                if (identifiable != null && string.Equals(identifiable.id, id)) return monobehaviours[i].gameObject;
             }
 
             // Otherwise search scene for GameObject name:

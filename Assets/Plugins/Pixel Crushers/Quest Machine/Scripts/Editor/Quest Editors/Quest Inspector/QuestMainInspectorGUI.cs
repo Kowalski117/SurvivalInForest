@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -64,6 +64,8 @@ namespace PixelCrushers.QuestMachine
                 var maxTimesProperty = serializedObject.FindProperty("m_maxTimes");
                 var timesAcceptedProperty = serializedObject.FindProperty("m_timesAccepted");
                 var cooldownSecondsProperty = serializedObject.FindProperty("m_cooldownSeconds");
+                var noRepeatIfSuccessfulProperty = serializedObject.FindProperty("m_noRepeatIfSuccessful");
+                var saveAllIfWaitingToStartProperty = serializedObject.FindProperty("m_saveAllIfWaitingToStart");
                 var stateProperty = serializedObject.FindProperty("m_state");
                 UnityEngine.Assertions.Assert.IsNotNull(idProperty, "Quest Machine: Internal error - m_id is null.");
                 UnityEngine.Assertions.Assert.IsNotNull(titleProperty, "Quest Machine: Internal error - m_title is null.");
@@ -78,11 +80,14 @@ namespace PixelCrushers.QuestMachine
                 UnityEngine.Assertions.Assert.IsNotNull(maxTimesProperty, "Quest Machine: Internal error - m_maxTimes is null.");
                 UnityEngine.Assertions.Assert.IsNotNull(timesAcceptedProperty, "Quest Machine: Internal error - m_timesAccepted is null.");
                 UnityEngine.Assertions.Assert.IsNotNull(cooldownSecondsProperty, "Quest Machine: Internal error - m_cooldownSeconds is null.");
+                UnityEngine.Assertions.Assert.IsNotNull(noRepeatIfSuccessfulProperty, "Quest Machine: Internal error - m_noRepeatIfSuccessful is null.");
+                UnityEngine.Assertions.Assert.IsNotNull(saveAllIfWaitingToStartProperty, "Quest Machine: Internal error - m_saveAllIfWaitingToStart is null.");
                 UnityEngine.Assertions.Assert.IsNotNull(stateProperty, "Quest Machine: Internal error - m_state is null.");
                 if (idProperty == null || titleProperty == null || groupProperty == null || labelsProperty == null ||
                     iconProperty == null || questGiverIDProperty == null || isTrackableProperty == null || showInTrackHUDProperty == null ||
                     isAbandonableProperty == null || rememberIfAbandonedProperty == null || maxTimesProperty == null ||
-                    timesAcceptedProperty == null || cooldownSecondsProperty == null || stateProperty == null) return;
+                    timesAcceptedProperty == null || cooldownSecondsProperty == null || noRepeatIfSuccessfulProperty == null ||
+                    saveAllIfWaitingToStartProperty == null || stateProperty == null) return;
 
                 EditorGUILayout.PropertyField(idProperty, true);
                 EditorGUI.BeginChangeCheck();
@@ -98,7 +103,12 @@ namespace PixelCrushers.QuestMachine
                 EditorGUILayout.PropertyField(isAbandonableProperty);
                 if (isAbandonableProperty.boolValue) EditorGUILayout.PropertyField(rememberIfAbandonedProperty);
                 EditorGUILayout.PropertyField(maxTimesProperty);
-                if (maxTimesProperty.intValue > 1) EditorGUILayout.PropertyField(cooldownSecondsProperty);
+                if (maxTimesProperty.intValue > 1)
+                {
+                    EditorGUILayout.PropertyField(cooldownSecondsProperty);
+                    EditorGUILayout.PropertyField(noRepeatIfSuccessfulProperty);
+                }
+                EditorGUILayout.PropertyField(saveAllIfWaitingToStartProperty);
                 var prevState = stateProperty.enumValueIndex;
                 EditorGUILayout.PropertyField(stateProperty, new GUIContent("Current State", "Current quest state."));
                 var newState = stateProperty.enumValueIndex;

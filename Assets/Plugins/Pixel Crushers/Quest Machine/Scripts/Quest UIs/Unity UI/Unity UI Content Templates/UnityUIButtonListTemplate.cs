@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -45,6 +45,7 @@ namespace PixelCrushers.QuestMachine
         {
             var instance = CreateInstance();
             instance.Assign(button.image, button.count, button.runtimeText, button.actionList);
+            instance.groupNumber = button.groupNumber;
             return instance;
         }
 

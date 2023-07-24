@@ -14,6 +14,7 @@ public class InventoryItemData : ScriptableObject
     [SerializeField] private ItemPickUp _itemPrefab;
     [SerializeField] private float _gorenjeTime;
     [SerializeField] private float _durability;
+    [SerializeField] private Color _colorDurability = Color.red;
 
     public int Id => _id;
     public ItemType Type => _type;
@@ -24,6 +25,7 @@ public class InventoryItemData : ScriptableObject
     public ItemPickUp ItemPrefab => _itemPrefab;
     public float GorenjeTime => _gorenjeTime;
     public float Durability => _durability;
+    public Color ColorDurability => _colorDurability;
 
     public void SetId(int id)
     {

@@ -1,7 +1,10 @@
+using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerInventoryHolder : InventoryHolder
 {
+    private InventoryItemData _currentItemData;
+
     public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
     public event UnityAction<InventoryItemData, int> OnItemDataChanged;
     public event UnityAction OnUpdateItemSlot;
@@ -27,6 +30,21 @@ public class PlayerInventoryHolder : InventoryHolder
             return true;
         }
 
+        return false;
+    }
+
+    public bool RemoveInventory(InventorySlot slot, int amount)
+    {
+        _currentItemData = slot.ItemData;
+
+        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount))
+        {
+            OnItemDataChanged?.Invoke(_currentItemData, -amount);
+            OnUpdateItemSlot?.Invoke();
+            _currentItemData = null;
+            return true;
+        }
+        _currentItemData = null;
         return false;
     }
 

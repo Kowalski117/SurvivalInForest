@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -7,7 +7,10 @@ namespace PixelCrushers.QuestMachine
 {
 
     /// <summary>
-    /// Class to build a quest from a plan created by a QuestGenerator.
+    /// Class to build a quest from a plan created by a QuestGenerator. If you want your 
+    /// generators to build quests differently, define a subclass. Then create an instance
+    /// of the subclass and assign it to the QuestGeneratorEntity's 
+    /// questGenerator.planToQuestBuilder property.
     /// </summary>
     public class PlanToQuestBuilder
     {
@@ -29,17 +32,22 @@ namespace PixelCrushers.QuestMachine
             // Build title:
             var mainTargetEntity = goal.fact.entityType.name;
             var mainTargetDescriptor = goal.fact.entityType.GetDescriptor(goal.requiredCounterValue);
-            var title = goal.action.displayName + " " + mainTargetDescriptor;
-            var questID = title + " " + System.Guid.NewGuid();
             var domainName = StringField.GetStringValue(goal.fact.domainType.displayName);
+
+            string title, questID;
+            BuildTitle(goal, mainTargetDescriptor, out title, out questID);
 
             // Start QuestBuilder:
             var questBuilder = new QuestBuilder(title, questID, title);
             SetMainInfo(questBuilder, questID, title, group, goal);
             AddTagsToDictionary(questBuilder.quest.tagDictionary, goal);
 
+            // Position start node:
+            questBuilder.GetStartNode().canvasRect = new Rect(QuestNode.DefaultNodeWidth, QuestNode.DefaultNodeHeight, QuestNode.DefaultNodeWidth, QuestNode.DefaultNodeHeight);
+
             // Offer:
             AddOfferText(questBuilder, mainTargetEntity, mainTargetDescriptor, domainName, goal, motive);
+            var rewardsContentIndex = questBuilder.quest.offerContentList.Count;
             AddRewards(questBuilder, entity, goal, rewardsUIContents, rewardSystems);
 
             // Quest headings:
@@ -54,7 +62,7 @@ namespace PixelCrushers.QuestMachine
             // Add "return to giver" node:
             if (requireReturnToComplete)
             {
-                previousNode = AddReturnNode(questBuilder, previousNode, entity, mainTargetEntity, mainTargetDescriptor, domainName, goal);
+                previousNode = AddReturnNode(questBuilder, previousNode, entity, mainTargetEntity, mainTargetDescriptor, domainName, goal, rewardsContentIndex);
             }
 
             // Success node:
@@ -64,7 +72,17 @@ namespace PixelCrushers.QuestMachine
         }
 
         /// <summary>
-        /// Sets the quest's main info .
+        /// Determine the quest's title and quest ID. By default, it's set to
+        /// goal action + main target (e.g., "Kill" + "3 Orcs").
+        /// </summary>
+        protected virtual void BuildTitle(PlanStep goal, string mainTargetDescriptor, out string title, out string questID)
+        {
+            title = goal.action.displayName + " " + mainTargetDescriptor;
+            questID = title + " " + System.Guid.NewGuid();
+        }
+
+        /// <summary>
+        /// Sets the quest's main info.
         /// </summary>
         /// <param name="questBuilder">QuestBuilder</param>
         /// <param name="questID">Quest ID.</param>
@@ -115,10 +133,12 @@ namespace PixelCrushers.QuestMachine
             questBuilder.AddOfferContents(QuestContent.CloneList<QuestContent>(rewardsUIContents).ToArray());
 
             var pointsRemaining = goal.fact.entityType.level * goal.fact.count;
-            foreach (var rewardSystem in rewardSystems)
+            for (int i = 0; i < rewardSystems.Count; i++)
             {
+                var rewardSystem = rewardSystems[i];
                 if (rewardSystem == null) continue;
-                pointsRemaining = rewardSystem.DetermineReward(pointsRemaining, questBuilder.quest);
+                if (UnityEngine.Random.value > rewardSystem.probability) continue;
+                pointsRemaining = rewardSystem.DetermineReward(pointsRemaining, questBuilder.quest, goal.fact.entityType);
                 if (pointsRemaining <= 0) break;
             }
         }
@@ -197,7 +217,7 @@ namespace PixelCrushers.QuestMachine
 
                 // Create next condition node:
                 var targetEntity = step.fact.entityType.name;
-                var targetDescriptor = step.fact.entityType.GetDescriptor(step.fact.count);
+                var targetDescriptor = step.fact.entityType.GetDescriptor(step.requiredCounterValue);
                 var id = (i + 1).ToString();
                 var internalName = step.action.displayName + " " + targetDescriptor;
                 var conditionNode = questBuilder.AddConditionNode(previousNode, id, internalName, ConditionCountMode.All);
@@ -207,75 +227,139 @@ namespace PixelCrushers.QuestMachine
                 var counterName = string.Empty;
                 int requiredCounterValue = 0;
 
-                var completion = step.action.completion;
-                if (completion.mode == ActionCompletion.Mode.Counter)
-                {
-                    // Setup counter condition:
-                    counterName = goal.fact.entityType.pluralDisplayName.value + completion.baseCounterName.value;
-                    if (!counterNames.Contains(counterName))
-                    {
-                        var counter = questBuilder.AddCounter(counterName, completion.initialValue, completion.minValue, completion.maxValue, false, completion.updateMode);
-                        foreach (var messageEvent in completion.messageEventList)
-                        {
-                            var counterMessageEvent = new QuestCounterMessageEvent(messageEvent.targetID, messageEvent.message,
-                                new StringField(StringField.GetStringValue(messageEvent.parameter).Replace("{TARGETENTITY}", targetEntity)),
-                                messageEvent.operation, messageEvent.literalValue);
-                            counter.messageEventList.Add(counterMessageEvent);
-                        }
-                    }
-                    counterName = goal.fact.entityType.pluralDisplayName.value + completion.baseCounterName.value;
-                    requiredCounterValue = Mathf.Min(step.requiredCounterValue, step.fact.count);
-                    questBuilder.AddCounterCondition(conditionNode, counterName, CounterValueConditionMode.AtLeast, requiredCounterValue);
-                    // Consider: Add action to reset counter to zero in case future nodes repeat the same counter?
-                }
-                else
-                {
-                    // Setup message condition:
-                    questBuilder.AddMessageCondition(conditionNode, QuestMessageParticipant.Any, completion.senderID, QuestMessageParticipant.Any, completion.targetID,
-                        completion.message, new StringField(StringField.GetStringValue(completion.parameter).Replace("{TARGETENTITY}", targetEntity)));
-                }
+                AddStepCondition(questBuilder, conditionNode, targetEntity, targetDescriptor, domainName, counterNames, out counterName, out requiredCounterValue, goal, step);
 
                 var activeState = conditionNode.stateInfoList[(int)QuestNodeState.Active];
 
-                AddStepNodeText(questBuilder, conditionNode, activeState, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue, step);
+                AddStepNodeText(questBuilder, conditionNode, activeState, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue, step, step.action.actionText.activeText);
 
-                // Action when active:
+                // Actions when active:
                 if (!StringField.IsNullOrEmpty(step.action.actionText.activeText.alertText))
                 {
+                    // Alert action:
                     var alertAction = questBuilder.CreateAlertAction(ReplaceStepTags(step.action.actionText.activeText.alertText.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue));
                     activeState.actionList.Add(alertAction);
+                }
+
+                // Send message action:
+                if (!StringField.IsNullOrEmpty(step.action.sendMessageOnActive))
+                {
+                    var messageAction = questBuilder.CreateMessageAction(ReplaceStepTags(step.action.sendMessageOnActive.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue));
+                    activeState.actionList.Add(messageAction);
+                }
+
+                var trueState = conditionNode.stateInfoList[(int)QuestNodeState.True];
+
+                AddStepNodeText(questBuilder, conditionNode, trueState, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue, step, step.action.actionText.completedText);
+
+                // Actions when completed:
+                if (!StringField.IsNullOrEmpty(step.action.sendMessageOnCompletion))
+                {
+                    var messageAction = questBuilder.CreateMessageAction(ReplaceStepTags(step.action.sendMessageOnCompletion.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue));
+                    trueState.actionList.Add(messageAction);
                 }
             }
             return previousNode;
         }
 
+        protected virtual void AddStepCondition(QuestBuilder questBuilder, QuestNode conditionNode,
+            string targetEntity, string targetDescriptor, string domainName, HashSet<string> counterNames,
+            out string counterName, out int requiredCounterValue, PlanStep goal, PlanStep step)
+        {
+            counterName = string.Empty;
+            requiredCounterValue = 0;
+            var completion = step.action.completion;
+            if (completion.mode == ActionCompletion.Mode.Counter)
+            {
+                // Setup counter condition:
+                counterName = goal.fact.entityType.pluralDisplayName.value + completion.baseCounterName.value;
+                if (!counterNames.Contains(counterName))
+                {
+                    var counter = questBuilder.AddCounter(counterName, completion.initialValue, completion.minValue, completion.maxValue, false, completion.updateMode);
+                    foreach (var messageEvent in completion.messageEventList)
+                    {
+                        var parameter = StringField.GetStringValue(messageEvent.parameter).
+                            Replace("{TARGETENTITY}", targetEntity).
+                            Replace("{DOMAIN}", domainName);
+                        var counterMessageEvent = new QuestCounterMessageEvent(messageEvent.targetID,
+                            messageEvent.message, new StringField(parameter),
+                            messageEvent.operation, messageEvent.literalValue);
+                        counter.messageEventList.Add(counterMessageEvent);
+                    }
+                }
+                var counterValueMode = step.action.completion.counterValueMode;
+                requiredCounterValue = (counterValueMode == CounterValueConditionMode.AtLeast)
+                    ? Mathf.Min(step.requiredCounterValue, step.fact.count)
+                    : Mathf.Max(step.requiredCounterValue, step.fact.count);
+                questBuilder.AddCounterCondition(conditionNode, counterName, counterValueMode, requiredCounterValue);
+                // Consider: Add action to reset counter to zero in case future nodes repeat the same counter?
+            }
+            else
+            {
+                // Setup message condition:
+                var parameter = StringField.GetStringValue(completion.parameter).
+                    Replace("{TARGETENTITY}", targetEntity).
+                    Replace("{DOMAIN}", domainName);
+                var senderSpecifier = StringField.IsNullOrEmpty(completion.senderID) ? QuestMessageParticipant.Any : QuestMessageParticipant.Other;
+                var senderID = (senderSpecifier == QuestMessageParticipant.Any) ? completion.senderID
+                    : new StringField(ReplaceStepTags(StringField.GetStringValue(completion.senderID), targetEntity, targetDescriptor, domainName, counterName, 0));
+                var targetSpecifier = StringField.IsNullOrEmpty(completion.targetID) ? QuestMessageParticipant.Any : QuestMessageParticipant.Other;
+                var targetID = (targetSpecifier == QuestMessageParticipant.Any) ? completion.targetID
+                    : new StringField(ReplaceStepTags(StringField.GetStringValue(completion.targetID), targetEntity, targetDescriptor, domainName, counterName, 0));
+                questBuilder.AddMessageCondition(conditionNode, senderSpecifier, senderID, targetSpecifier, targetID,
+                    completion.message, new StringField(parameter));
+                if (StringField.GetStringValue(completion.message) == QuestMachineMessages.DiscussQuestMessage ||
+                    StringField.GetStringValue(completion.message) == QuestMachineMessages.DiscussedQuestMessage)
+                {
+                    if (!StringField.IsNullOrEmpty(targetID))
+                    {
+                        conditionNode.speaker = targetID;
+                    }
+                    else if (!StringField.IsNullOrEmpty(senderID))
+                    {
+                        conditionNode.speaker = senderID;
+                    }
+                }
+            }
+
+        }
+
         /// <summary>
         /// Adds the text for a step.
         /// </summary>
-        protected virtual void AddStepNodeText(QuestBuilder questBuilder, QuestNode conditionNode, QuestStateInfo activeState, string targetEntity, string targetDescriptor, string domainName, string counterName, int requiredCounterValue, PlanStep step)
+        protected virtual void AddStepNodeText(QuestBuilder questBuilder, QuestNode conditionNode, QuestStateInfo state, string targetEntity, string targetDescriptor, string domainName,
+            string counterName, int requiredCounterValue, PlanStep step, ActionStateText actionStateText)
         {
-            // Text for condition node's Active state:
-            var taskText = ReplaceStepTags(step.action.actionText.activeText.dialogueText.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue);
-            var bodyText = questBuilder.CreateBodyContent(taskText);
-            var dialogueList = activeState.categorizedContentList[(int)QuestContentCategory.Dialogue];
-            dialogueList.contentList.Add(bodyText);
+            var taskText = ReplaceStepTags(actionStateText.dialogueText.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue);
+            if (!string.IsNullOrEmpty(taskText))
+            {
+                var bodyText = questBuilder.CreateBodyContent(taskText);
+                var dialogueList = state.categorizedContentList[(int)QuestContentCategory.Dialogue];
+                dialogueList.contentList.Add(bodyText);
+            }
 
-            var jrlText = ReplaceStepTags(step.action.actionText.activeText.journalText.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue);
-            var jrlbodyText = questBuilder.CreateBodyContent(jrlText);
-            var journalList = activeState.categorizedContentList[(int)QuestContentCategory.Journal];
-            journalList.contentList.Add(jrlbodyText);
+            var jrlText = ReplaceStepTags(actionStateText.journalText.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue);
+            if (!string.IsNullOrEmpty(jrlText))
+            {
+                var jrlbodyText = questBuilder.CreateBodyContent(jrlText);
+                var journalList = state.categorizedContentList[(int)QuestContentCategory.Journal];
+                journalList.contentList.Add(jrlbodyText);
+            }
 
-            var hudText = ReplaceStepTags(step.action.actionText.activeText.hudText.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue);
-            var hudbodyText = questBuilder.CreateBodyContent(hudText);
-            var hudList = activeState.categorizedContentList[(int)QuestContentCategory.HUD];
-            hudList.contentList.Add(hudbodyText);
+            var hudText = ReplaceStepTags(actionStateText.hudText.value, targetEntity, targetDescriptor, domainName, counterName, requiredCounterValue);
+            if (!string.IsNullOrEmpty(hudText))
+            {
+                var hudbodyText = questBuilder.CreateBodyContent(hudText);
+                var hudList = state.categorizedContentList[(int)QuestContentCategory.HUD];
+                hudList.contentList.Add(hudbodyText);
+            }
         }
 
         /// <summary>
         /// Adds a final "return to quest giver" step.
         /// </summary>
         /// <returns>The return node.</returns>
-        protected virtual QuestNode AddReturnNode(QuestBuilder questBuilder, QuestNode previousNode, QuestEntity entity, string mainTargetEntity, string mainTargetDescriptor, string domainName, PlanStep goal)
+        protected virtual QuestNode AddReturnNode(QuestBuilder questBuilder, QuestNode previousNode, QuestEntity entity, string mainTargetEntity, string mainTargetDescriptor, string domainName, PlanStep goal, int rewardsContentIndex = 9999) // Default to 9999 to not break any customer code using old signature.
         {
             var questGiver = entity.GetComponent<QuestGiver>();
             var giverID = (questGiver != null) ? questGiver.id : ((entity != null) ? entity.displayName : null);
@@ -288,6 +372,17 @@ namespace PixelCrushers.QuestMachine
 
             // Text when active:
             AddReturnNodeText(questBuilder, returnNode, questGiver, mainTargetEntity, mainTargetDescriptor, domainName, goal, hudText);
+
+            // Add rewards content:
+            var dialogueList = returnNode.stateInfoList[(int)QuestNodeState.Active].categorizedContentList[(int)QuestContentCategory.Dialogue];
+            var offerContentList = questBuilder.quest.offerContentList;
+            for (int i = rewardsContentIndex; i < offerContentList.Count; i++)
+            {
+                var original = offerContentList[i];
+                var copy = QuestContent.Instantiate(original) as QuestContent;
+                original.CloneSubassetsInto(copy);
+                dialogueList.contentList.Add(copy);
+            }
 
             var actionList = returnNode.GetStateInfo(QuestNodeState.Active).actionList;
 
@@ -312,7 +407,7 @@ namespace PixelCrushers.QuestMachine
             var dialogueList = returnNode.stateInfoList[(int)QuestNodeState.Active].categorizedContentList[(int)QuestContentCategory.Dialogue];
             dialogueList.contentList.Add(bodyText);
 
-            var jrlText = "{Return to} " + questGiver.displayName;
+            var jrlText = "{Return to} " + questGiver.displayName + ".";
             var jrlBodyText = questBuilder.CreateBodyContent(jrlText);
             var journalList = returnNode.stateInfoList[(int)QuestNodeState.Active].categorizedContentList[(int)QuestContentCategory.Journal];
             journalList.contentList.Add(jrlBodyText);
@@ -368,15 +463,16 @@ namespace PixelCrushers.QuestMachine
         protected virtual void AddTagsToDictionary(TagDictionary tagDictionary, PlanStep goal)
         {
             if (tagDictionary == null || goal == null) return;
-            tagDictionary.dict.Add(QuestMachineTags.DOMAIN, StringField.GetStringValue(goal.fact.domainType.displayName));
-            tagDictionary.dict.Add(QuestMachineTags.ACTION, StringField.GetStringValue(goal.action.displayName));
-            tagDictionary.dict.Add(QuestMachineTags.TARGET, StringField.GetStringValue(goal.fact.entityType.displayName));
-            tagDictionary.dict.Add(QuestMachineTags.TARGETS, StringField.GetStringValue(goal.fact.entityType.pluralDisplayName));
-            tagDictionary.dict.Add(QuestMachineTags.TARGETDESCRIPTOR, goal.fact.entityType.GetDescriptor(goal.requiredCounterValue));
+            if (tagDictionary.dict == null) tagDictionary.dict = new Dictionary<string, string>();
+            tagDictionary.dict[QuestMachineTags.DOMAIN] = StringField.GetStringValue(goal.fact.domainType.displayName);
+            tagDictionary.dict[QuestMachineTags.ACTION] = StringField.GetStringValue(goal.action.displayName);
+            tagDictionary.dict[QuestMachineTags.TARGET] = StringField.GetStringValue(goal.fact.entityType.displayName);
+            tagDictionary.dict[QuestMachineTags.TARGETS] = StringField.GetStringValue(goal.fact.entityType.pluralDisplayName);
+            tagDictionary.dict[QuestMachineTags.TARGETDESCRIPTOR] = goal.fact.entityType.GetDescriptor(goal.requiredCounterValue);
             var completion = goal.action.completion;
             if (completion.mode == ActionCompletion.Mode.Counter)
             {
-                tagDictionary.dict.Add(QuestMachineTags.COUNTERGOAL, goal.requiredCounterValue.ToString());
+                tagDictionary.dict[QuestMachineTags.COUNTERGOAL] = goal.requiredCounterValue.ToString();
             }
         }
 

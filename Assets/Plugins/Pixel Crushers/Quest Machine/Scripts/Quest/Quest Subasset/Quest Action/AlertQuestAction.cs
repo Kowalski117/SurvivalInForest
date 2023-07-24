@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -46,12 +46,14 @@ namespace PixelCrushers.QuestMachine
 
         public override void Execute()
         {
-            if (quest == null)
+            if (quest != null)
             {
-                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: AlertQuestAction was passed a null quest.");
-                return;
+                QuestMachineMessages.QuestAlert(quest, quest.id, contentList);
             }
-            QuestMachineMessages.QuestAlert(quest, quest.id, contentList);
+            else // We may be at the end of the quest, and it may have been removed, so pass null for the quest:
+            {
+                QuestMachineMessages.QuestAlert(null, StringField.empty, contentList);
+            }
         }
 
         public override Sprite[] GetImages()

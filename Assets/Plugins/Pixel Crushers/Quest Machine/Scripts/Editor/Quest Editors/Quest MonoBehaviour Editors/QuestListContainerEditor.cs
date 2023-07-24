@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -20,6 +20,8 @@ namespace PixelCrushers.QuestMachine
         private ReorderableList questReorderableList { get; set; }
         private QuestInspectorGUI inspectorGUI { get; set; }
         private SerializedObject questSerializedObject { get; set; }
+
+        private bool removedQuest = false;
 
         protected virtual void OnEnable()
         {
@@ -63,6 +65,7 @@ namespace PixelCrushers.QuestMachine
 
             serializedObject.Update();
             DrawSaveSettings();
+            DrawOtherSettings();
             DrawQuestList();
             serializedObject.ApplyModifiedProperties();
             DrawSelectedQuestInspector();
@@ -110,9 +113,9 @@ namespace PixelCrushers.QuestMachine
             try
             {
                 QuestEditorUtility.EditorGUILayoutBeginGroup();
-                EditorGUILayout.LabelField("Save Settings", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("m_includeInSavedGameData"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("m_saveAcrossSceneChanges"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("m_addNewQuestsSinceSavedGame"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("m_key"), new GUIContent("Save Key"));
             }
             finally
@@ -121,13 +124,35 @@ namespace PixelCrushers.QuestMachine
             }
         }
 
+        protected virtual void DrawOtherSettings()
+        {
+            QuestEditorPrefs.questListContainerOtherSettingsFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Other Settings", "Miscellaneous settings.", QuestEditorPrefs.questListContainerOtherSettingsFoldout);
+            if (!QuestEditorPrefs.questListContainerOtherSettingsFoldout) return;
+
+            try
+            {
+                QuestEditorUtility.EditorGUILayoutBeginGroup();
+                DrawOtherSettingsInterior();
+            }
+            finally
+            {
+                QuestEditorUtility.EditorGUILayoutEndGroup();
+            }
+        }
+
+        protected virtual void DrawOtherSettingsInterior()
+        {
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_forwardEventsToListeners"));
+        }
+
         protected virtual void DrawQuestList()
         {
-            if (!(0 <= questReorderableList.index && questReorderableList.index <= questReorderableList.count))
-            {
-                questReorderableList.index = 0;
-                SetQuestInEditorWindow(questReorderableList.index);
-            }
+            //---Changed: Don't auto-focus first quest if no quest is selected:
+            //if (!(0 <= questReorderableList.index && questReorderableList.index <= questReorderableList.count))
+            //{
+            //    questReorderableList.index = 0;
+            //    SetQuestInEditorWindow(questReorderableList.index);
+            //}
 
             questListFoldout = QuestEditorUtility.EditorGUILayoutFoldout("Quests", "Quests on this GameObject.", questListFoldout);
             if (!questListFoldout) return;
@@ -135,11 +160,13 @@ namespace PixelCrushers.QuestMachine
             try
             {
                 QuestEditorUtility.EditorGUILayoutBeginGroup();
+                removedQuest = false;
                 questReorderableList.DoLayoutList();
             }
             finally
             {
-                QuestEditorUtility.EditorGUILayoutEndGroup();
+                if (!removedQuest) QuestEditorUtility.EditorGUILayoutEndGroup();
+                removedQuest = false;
             }
         }
 
@@ -206,6 +233,7 @@ namespace PixelCrushers.QuestMachine
                     "Do you want to remove the quest '" + quest.title.value + "' from this list or permanently delete the quest from your whole project?",
                     "Remove From List", "Permanently Delete", "Cancel");
                 if (option == 2) return; // Cancel.
+                removedQuest = true;
                 permanentlyDelete = (option == 1);
                 ReorderableList.defaultBehaviours.DoRemoveButton(list);
                 if (permanentlyDelete)
@@ -213,7 +241,10 @@ namespace PixelCrushers.QuestMachine
                     AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(quest));
                 }
             }
+#if !UNITY_2020_1_OR_NEWER
+            // Bug in older Unity versions left empty element that also needs to be removed:
             ReorderableList.defaultBehaviours.DoRemoveButton(list);
+#endif
             OnChangeSelection(list);
         }
 
@@ -231,7 +262,13 @@ namespace PixelCrushers.QuestMachine
             serializedObject.ApplyModifiedProperties();
             var questListContainer = target as QuestListContainer;
             if (questListContainer == null) return;
-            if (!(0 <= questListIndex && questListIndex < questListContainer.questList.Count)) return;
+            if (!(0 <= questListIndex && questListIndex < questListContainer.questList.Count))
+            {
+                QuestEditorWindow.instance.SelectQuest(questListContainer, -1);
+                questSerializedObject = null;
+                Repaint();
+                return;
+            }
             QuestEditorWindow.ShowWindow();
             QuestEditorWindow.instance.SelectQuest(questListContainer, questListIndex);
             var quest = questListContainer.questList[questListIndex];
