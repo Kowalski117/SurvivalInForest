@@ -60,7 +60,7 @@ MonoBehaviour:
   - id: 2
     fields:
     - title: Name
-      value: NPC
+      value: Trader
       type: 0
       typeString: 
     - title: Pictures
@@ -729,6 +729,12 @@ MonoBehaviour:
         destinationDialogueID: 13
         isConnector: 0
         priority: 2
+      - originConversationID: 3
+        originDialogueID: 0
+        destinationConversationID: 3
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -736,8 +742,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 360
-        y: 54
+        x: 704
+        y: 50
         width: 160
         height: 30
     - id: 1
@@ -829,8 +835,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 267.4607
-        y: 109.06383
+        x: 1120
+        y: 134
         width: 160
         height: 30
     - id: 2
@@ -913,8 +919,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 190
-        y: 162
+        x: 1016
+        y: 218
         width: 160
         height: 30
     - id: 3
@@ -1019,8 +1025,8 @@ MonoBehaviour:
             m_CallState: 2
       canvasRect:
         serializedVersion: 2
-        x: 360
-        y: 162
+        x: 1328
+        y: 218
         width: 160
         height: 30
     - id: 4
@@ -1106,8 +1112,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 190
-        y: 216
+        x: 1016
+        y: 302
         width: 160
         height: 30
     - id: 5
@@ -1197,8 +1203,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 105
-        y: 270
+        x: 1016
+        y: 386
         width: 160
         height: 30
     - id: 6
@@ -1276,8 +1282,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 20
-        y: 324
+        x: 912
+        y: 470
         width: 160
         height: 30
     - id: 7
@@ -1357,8 +1363,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 190
-        y: 324
+        x: 1120
+        y: 470
         width: 160
         height: 30
     - id: 8
@@ -1445,15 +1451,15 @@ MonoBehaviour:
         destinationDialogueID: 11
         isConnector: 0
         priority: 2
-      conditionsString: HasQuest("find a stick")  ~= true
+      conditionsString: CurrentQuestState("find a stick") == "unassigned"
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 573.5923
-        y: 115.6505
+        x: 184.94339
+        y: 134
         width: 160
         height: 30
     - id: 9
@@ -1531,15 +1537,15 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: CurrentQuestState("find a stick") == "active" and (GetQuestNodeState("find
-        a stick", "find a stick")  == "active")
+        a stick", "FindStick")  == "active")
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 880.047
-        y: 124.82576
+        x: 496
+        y: 133.05661
         width: 160
         height: 30
     - id: 10
@@ -1613,15 +1619,14 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: "GiveQuest(\"NPC\", \"find a stick\");\nShowAlert(\"\u041D\u043E\u0432\u044B\u0439
-        \u043A\u0432\u0435\u0441\u0442: \u043D\u0430\u0439\u0442\u0438 \u043F\u0430\u043B\u043A\u0438\")"
+      userScript: GiveQuest("Trader", "find a stick")
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 533.78644
-        y: 171.47575
+        x: 78.86365
+        y: 218
         width: 160
         height: 30
     - id: 11
@@ -1697,8 +1702,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 703.6894
-        y: 170.50487
+        x: 288
+        y: 218
         width: 160
         height: 30
     - id: 12
@@ -1774,8 +1779,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 884.4426
-        y: 174.86084
+        x: 496
+        y: 218
         width: 160
         height: 30
     - id: 13
@@ -1862,8 +1867,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1081.493
-        y: 127.02359
+        x: 704
+        y: 134
         width: 160
         height: 30
     - id: 14
@@ -1943,13 +1948,13 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1083.6909
-        y: 177.02359
+        x: 704
+        y: 218
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 12.410601, y: 3.8758497}
-    canvasZoom: 0.97
+    canvasScrollPosition: {x: 68.836716, y: 0}
+    canvasZoom: 1.06
   syncInfo:
     syncActors: 0
     syncItems: 0
