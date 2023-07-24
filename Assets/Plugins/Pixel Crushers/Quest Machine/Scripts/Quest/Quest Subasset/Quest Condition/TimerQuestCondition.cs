@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -54,7 +54,6 @@ namespace PixelCrushers.QuestMachine
             if (m_counter.currentValue <= 0)
             {
                 if (QuestMachine.debug) Debug.Log("Quest Machine: TimerQuestCondition '" + m_counter.name + "' timer ran out. Setting condition true.", quest);
-                StopChecking();
                 SetTrue();
             }
         }

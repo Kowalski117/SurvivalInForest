@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -32,6 +32,16 @@ namespace PixelCrushers.QuestMachine
         {
             get { return m_actions; }
             set { m_actions = value; }
+        }
+
+        private int m_groupNumber = ButtonQuestContent.NoGroup;
+        /// <summary>
+        /// Group number this button belongs to, or -1 if none. When one button in the group is clicked, the other buttons become non-interactable.
+        /// </summary>
+        public int groupNumber
+        {
+            get { return m_groupNumber; }
+            set { m_groupNumber = value; }
         }
 
         public override void Awake()
@@ -77,6 +87,11 @@ namespace PixelCrushers.QuestMachine
             for (int i = 0; i < actions.Count; i++)
             {
                 if (actions[i] != null) actions[i].Execute();
+            }
+
+            if (groupNumber != ButtonQuestContent.NoGroup)
+            {
+                MessageSystem.SendMessage(this, QuestMachineMessages.GroupButtonClickedMessage, string.Empty, groupNumber);
             }
         }
 

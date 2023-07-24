@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -12,9 +12,9 @@ namespace PixelCrushers.QuestMachine
     public class XPRewardSystem : RewardSystem
     {
 
-        public override int DetermineReward(int points, Quest quest)
+        public override int DetermineReward(int points, Quest quest, EntityType entityType)
         {
-            var xp = points;
+            var xp = (entityType != null) ? (int)(points * entityType.GetRewardMultiplier(RewardMultiplier.XP)) : points;
 
             var bodyText = BodyTextQuestContent.CreateInstance<BodyTextQuestContent>();
             bodyText.bodyText = new StringField(xp + " XP");
@@ -25,7 +25,7 @@ namespace PixelCrushers.QuestMachine
             xpAction.targetID = new StringField(QuestMachineTags.QUESTERID); // Send to quester (player).
             xpAction.message = new StringField("Add XP");
             xpAction.parameter = new StringField(xp.ToString());
-            xpAction.value = new MessageValue(points);
+            xpAction.value = new MessageValue(xp);
             var successInfo = quest.GetStateInfo(QuestState.Successful);
             successInfo.actionList.Add(xpAction);
 

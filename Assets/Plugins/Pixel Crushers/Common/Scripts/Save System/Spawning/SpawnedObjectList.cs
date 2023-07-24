@@ -13,6 +13,7 @@ namespace PixelCrushers
     /// </summary>
     public class SpawnedObjectList : ScriptableObject
     {
+
         [Tooltip("Save unique data on this spawned object's Saver components.")]
         [SerializeField]
         private List<SpawnedObject> m_spawnedObjectPrefabs;

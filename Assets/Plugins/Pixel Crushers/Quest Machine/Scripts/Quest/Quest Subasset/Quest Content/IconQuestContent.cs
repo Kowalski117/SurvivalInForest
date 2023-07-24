@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -41,7 +41,7 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// The caption. Can be blank.
         /// </summary>
-        public StringField caption
+        public virtual StringField caption
         {
             get { return m_caption; }
             set { m_caption = value; }
@@ -50,7 +50,7 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// The count to show on the count label. If 0 or 1, count is not shown.
         /// </summary>
-        public int count
+        public virtual int count
         {
             get { return m_count; }
             set { m_count = value; }
@@ -62,7 +62,7 @@ namespace PixelCrushers.QuestMachine
             set { caption = value; }
         }
 
-        public string captionText { get { return StringField.GetStringValue(m_caption); } }
+        public virtual string captionText { get { return StringField.GetStringValue(caption); } }
 
         public override string GetEditorName()
         {

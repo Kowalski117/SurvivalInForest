@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -30,7 +30,7 @@ namespace PixelCrushers.QuestMachine
 
         [HideInInspector]
         [SerializeField]
-        private int m_numTrueConditions;
+        private int m_numTrueConditions = 0;
 
         #endregion
 
@@ -113,7 +113,8 @@ namespace PixelCrushers.QuestMachine
         #region Condition Checking
 
         /// <summary>
-        /// Resets the true condition count and starts checking conditions.
+        /// Starts checking conditions. Does not reset true condition count
+        /// because it may have been restored from a saved game.
         /// </summary>
         /// <param name="trueAction"></param>
         public void StartChecking(System.Action trueAction)
@@ -121,10 +122,9 @@ namespace PixelCrushers.QuestMachine
             if (m_isChecking || conditionList == null) return;
             m_isChecking = true;
             m_trueAction = trueAction;
-            numTrueConditions = 0;
             for (int i = 0; i < conditionList.Count; i++)
             {
-                UnityEngine.Assertions.Assert.IsNotNull(conditionList[i], "Quest Machine: conditionList element " + i + " is null. Does your Conditions list have an invalid entry?");
+                //---Suppress warning: UnityEngine.Assertions.Assert.IsNotNull(conditionList[i], "Quest Machine: conditionList element " + i + " is null. Does your Conditions list have an invalid entry?");
                 if (conditionList[i] != null) conditionList[i].StartChecking(OnTrueCondition);
             }
         }

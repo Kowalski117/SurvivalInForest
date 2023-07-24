@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -40,6 +40,10 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         [IQuestDialogueUIInspectorField]
         private UnityEngine.Object m_questDialogueUI;
+
+        [Tooltip("Frequency in seconds at which to check quest cooldowns in case a quest becomes offerable again and should update the indicator UI. Set to zero to bypass checking.")]
+        [SerializeField]
+        private float m_cooldownCheckFrequency = 0;
 
         #endregion
 
@@ -117,6 +121,15 @@ namespace PixelCrushers.QuestMachine
             set { m_questDialogueUI = value as UnityEngine.Object; }
         }
 
+        /// <summary>
+        /// Frequency in seconds at which to check quest cooldowns in case a quest becomes offerable again and should update the indicator UI.
+        /// </summary>
+        public float cooldownCheckFrequency
+        {
+            get { return m_cooldownCheckFrequency; }
+            set { m_cooldownCheckFrequency = value; if (Application.isPlaying) RestartCooldownCheckInvokeRepeating(); }
+        }
+
         public static string GetDisplayName(QuestGiver questGiver)
         {
             return (questGiver != null) ? StringField.GetStringValue(questGiver.displayName) : string.Empty;
@@ -131,21 +144,38 @@ namespace PixelCrushers.QuestMachine
         protected List<Quest> offerableQuests { get; set; }
         protected List<Quest> activeQuests { get; set; }
         protected List<Quest> completedQuests { get; set; }
-        protected QuestEntity questEntity { get; set; }
         protected GameObject player { get; set; }
         protected QuestParticipantTextInfo playerTextInfo { get; set; }
-        protected QuestListContainer playerQuestListContainer { get; set; }
+        protected bool allowBackButton { get; set; }
+
+        private QuestListContainer m_playerQuestListContainer = null;
+        protected QuestListContainer playerQuestListContainer 
+        { 
+            get 
+            {
+                if (m_playerQuestListContainer == null && player != null) m_playerQuestListContainer = player.GetComponent<QuestListContainer>();
+                return m_playerQuestListContainer;
+            }
+            set 
+            { 
+                m_playerQuestListContainer = value; 
+            }
+        }
 
         private QuestParticipantTextInfo m_myQuestGiverTextinfo = null;
-
         protected QuestParticipantTextInfo myQuestGiverTextInfo
         {
             get
             {
-                m_myQuestGiverTextinfo = new QuestParticipantTextInfo(id, displayName, image, textTable);
+                if (m_myQuestGiverTextinfo == null)  m_myQuestGiverTextinfo = new QuestParticipantTextInfo(id, displayName, image, textTable);
                 return m_myQuestGiverTextinfo;
             }
         }
+
+        /// <summary>
+        /// When starting dialogue, show this quest instead of the most relevant quest.
+        /// </summary>
+        protected string overrideQuestIDToShowInDialogue = string.Empty;
 
         #endregion
 
@@ -158,7 +188,34 @@ namespace PixelCrushers.QuestMachine
             offerableQuests = new List<Quest>();
             activeQuests = new List<Quest>();
             completedQuests = new List<Quest>();
-            questEntity = GetComponent<QuestEntity>();
+            allowBackButton = false;
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            if (cooldownCheckFrequency > 0) InvokeRepeating("UpdateCooldowns", cooldownCheckFrequency, cooldownCheckFrequency);
+        }
+
+        public override void OnDisable()
+        {
+            CancelInvoke("UpdateCooldowns");
+            base.OnDisable();
+        }
+
+        protected void RestartCooldownCheckInvokeRepeating()
+        {
+            CancelInvoke("UpdateCooldowns");
+            if (cooldownCheckFrequency > 0) InvokeRepeating("UpdateCooldowns", cooldownCheckFrequency, cooldownCheckFrequency);
+        }
+
+        private void UpdateCooldowns()
+        {
+            for (int i = 0; i < questList.Count; i++)
+            {
+                var quest = questList[i];
+                if (quest != null && quest.GetState() == QuestState.WaitingToStart) quest.UpdateCooldown();
+            }
         }
 
         public override void Start()
@@ -167,6 +224,7 @@ namespace PixelCrushers.QuestMachine
             BackfillInfoFromEntityType();
             DeleteUnavailableQuests();
             AssignGiverIDToQuests();
+            QuestMachineMessages.RefreshIndicators(this);
         }
 
         public override void OnDestroy()
@@ -180,6 +238,17 @@ namespace PixelCrushers.QuestMachine
             if (noQuestsUIContents != null) noQuestsUIContents.DestroyContentList();
             if (offerableQuestsUIContents != null) offerableQuestsUIContents.DestroyContentList();
             if (activeQuestsUIContents != null) activeQuestsUIContents.DestroyContentList();
+        }
+
+        /// <summary>
+        /// Resets quest giver's quest list to its original list.
+        /// </summary>
+        public override void ResetToOriginalState()
+        {
+            base.ResetToOriginalState();
+            BackfillInfoFromEntityType();
+            DeleteUnavailableQuests();
+            AssignGiverIDToQuests();
         }
 
         /// <summary>
@@ -255,6 +324,58 @@ namespace PixelCrushers.QuestMachine
         #endregion
 
         #region Record Quests By State
+
+        public virtual bool HasOfferableOrActiveQuest()
+        {
+            return HasOfferableOrActiveQuest(null);
+        }
+
+        /// <summary>
+        /// Returns the list of quests that this quest giver can currently offer.
+        /// </summary>
+        public virtual List<Quest> GetOfferableQuests()
+        {
+            return GetOfferableQuests(null);
+        }
+
+        /// <summary>
+        /// Returns the list of quests that this quest giver has given player that 
+        /// </summary>
+        public virtual List<Quest> GetActiveQuests()
+        {
+            return GetActiveQuests(null);
+        }
+
+        public virtual bool HasOfferableOrActiveQuest(GameObject player)
+        {
+            RecordQuestsByState(player);
+            return offerableQuests.Count > 0 || activeQuests.Count > 0;
+        }
+
+        /// <summary>
+        /// Returns the list of quests that this quest giver can currently offer.
+        /// </summary>
+        public virtual List<Quest> GetOfferableQuests(GameObject player)
+        {
+            RecordQuestsByState(player);
+            return offerableQuests;
+        }
+
+        /// <summary>
+        /// Returns the list of quests that this quest giver has given player that 
+        /// </summary>
+        public virtual List<Quest> GetActiveQuests(GameObject player)
+        {
+            RecordQuestsByState(player);
+            return activeQuests;
+        }
+
+        protected virtual void RecordQuestsByState(GameObject player)
+        {
+            if (player == null) player = FindPlayerGameObject();
+            this.player = player;
+            RecordQuestsByState();
+        }
 
         /// <summary>
         /// Records the current offerable and player-assigned quests in the runtime lists.
@@ -337,15 +458,27 @@ namespace PixelCrushers.QuestMachine
                 if (IsDoingSimilarGeneratedQuest(quest, playerQuestListContainer)) isPlayerCopyActive = true;
 
                 quest.UpdateCooldown();
-                if (quest.canOffer && !isPlayerCopyActive)
+                if (quest.canOffer && !isPlayerCopyActive && (playerCopy == null || playerCopy.timesAccepted < quest.maxTimes))
                 {
-                    offerableQuests.Add(quest);
+                    // Add to offerable list unless player has already succeeded and quest is no repeat if successful:
+                    if (!(quest.noRepeatIfSuccessful && PlayerHasSuccessfullyCompleted(quest.id)))
+                    {
+                        offerableQuests.Add(quest);
+                    }
                 }
                 else if (playerCopy == null)
                 {
                     nonOfferableQuests.Add(quest);
                 }
             }
+        }
+
+        protected virtual bool PlayerHasSuccessfullyCompleted(StringField questID)
+        {
+            if (StringField.IsNullOrEmpty(questID) || playerQuestListContainer == null) return false;
+            var quest = playerQuestListContainer.FindQuest(questID);
+            return (quest == null) ? false : (quest.GetState() == QuestState.Successful);
+
         }
 
         protected virtual bool IsDoingSimilarGeneratedQuest(Quest quest, QuestListContainer playerQuestListContainer)
@@ -372,11 +505,43 @@ namespace PixelCrushers.QuestMachine
         #region Dialogue
 
         /// <summary>
+        /// Looks for a GameObject tagged Player that has a QuestListContainer.
+        /// Failing that, looks for a QuestJournal on any GameObject.
+        /// </summary>
+        public virtual GameObject FindPlayerJournalGameObject()
+        {
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].GetComponent<QuestListContainer>() != null) return players[i];
+            }
+            var journal = FindObjectOfType<QuestJournal>(); // In case designer forgot to tag player as Player.
+            return (journal != null) ? journal.gameObject : null;
+        }
+
+        /// <summary>
+        /// Looks for a GameObject tagged Player that has a QuestListContainer.
+        /// Failing that, looks for any GameObject tagged Player.
+        /// </summary>
+        public virtual GameObject FindPlayerGameObject()
+        {
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].GetComponent<QuestListContainer>() != null) return players[i];
+            }
+            var player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null) return player;
+            var journal = FindObjectOfType<QuestJournal>(); // In case designer forgot to tag player as Player, find a QuestJournal.
+            return (journal != null) ? journal.gameObject : null;
+        }
+
+        /// <summary>
         /// Starts dialogue with the first GameObject in the scene that's tagged as "Player".
         /// </summary>
         public virtual void StartDialogueWithPlayer()
         {
-            StartDialogue(GameObject.FindWithTag("Player"));
+            StartDialogue(null);
         }
 
         /// <summary>
@@ -386,26 +551,105 @@ namespace PixelCrushers.QuestMachine
         /// <param name="player">Player conversing with this QuestGiver. If null, searches the scene for a GameObject tagged Player.</param>
         public virtual void StartDialogue(GameObject player)
         {
-            if (player == null) player = GameObject.FindGameObjectWithTag("Player");
-            if (questDialogueUI == null || player == null) return;
-
-            // Record quests related to this player and me:
-            this.player = player;
-            playerTextInfo = new QuestParticipantTextInfo(QuestMachineMessages.GetID(player), QuestMachineMessages.GetDisplayName(player), null, null);
-            playerQuestListContainer = player.GetComponent<QuestListContainer>();
-            if (playerQuestListContainer == null && Debug.isDebugBuild)
+            if (questDialogueUI == null && Debug.isDebugBuild)
             {
-                Debug.LogWarning("Quest Machine: Can't start dialogue with " + name + ". Player doesn't have a Quest Journal.", this);
+                Debug.LogWarning("Quest Machine: Can't start dialogue with " + name + ". Quest Giver doesn't have access to a quest dialogue UI.", this);
                 return;
             }
+
+            // If player isn't specified, find it in the scene and find relevant quest journal:
+            if (player == null) player = FindPlayerGameObject();
+            if (player == null && Debug.isDebugBuild)
+            {
+                Debug.LogWarning("Quest Machine: Can't start dialogue with " + name + ". No quester specified.", this);
+                return;
+            }
+            playerQuestListContainer = player.GetComponent<QuestListContainer>();
+            if (playerQuestListContainer == null)
+            {
+                var playerID = player.GetComponent<QuestMachineID>();
+                if (playerID != null && playerID.questListContainer != null)
+                {
+                    playerQuestListContainer = playerID.questListContainer;
+                }
+                else
+                {
+                    var playerJournalObject = FindPlayerJournalGameObject();
+                    playerQuestListContainer = (playerJournalObject != null) ? playerJournalObject.GetComponent<QuestListContainer>() : null;
+                }
+            }
+            if (playerQuestListContainer == null && Debug.isDebugBuild)
+            {
+                Debug.LogWarning("Quest Machine: Can't start dialogue with " + name + ". Quester " + player.name + " doesn't have a Quest Journal and can't find one in scene.", this);
+                return;
+            }
+
+            QuestMachineTags.fallbackTextTable = textTable;
+
+            // Setup player info:
+            this.player = player;
+            playerTextInfo = new QuestParticipantTextInfo(QuestMachineMessages.GetID(player), QuestMachineMessages.GetDisplayName(player), null, null);
+
+            // Greet before recording quests in case Greet message changes a quest state:
+            QuestMachineMessages.Greet(player, this, id);
+
+            // Record quests related to this player and me:
             RecordQuestsByState();
+
+            StartMostRelevantDialogue();
+
+            // Note: Sends Greeted immediately after opening dialogue UI, not when closing it:
+            QuestMachineMessages.Greeted(player, this, id);
+        }
+
+        public virtual void StartSpecifiedQuestDialogueWithPlayer(string questID)
+        {
+            overrideQuestIDToShowInDialogue = questID;
+            StartDialogueWithPlayer();
+        }
+
+        public virtual void StartSpecifiedQuestDialogue(GameObject player, string questID)
+        {
+            overrideQuestIDToShowInDialogue = questID;
+            StartDialogue(player);
+        }
+
+        protected virtual void StartMostRelevantDialogue()
+        {
+            // If specific quest is specified, start it:
+            if (!string.IsNullOrEmpty(overrideQuestIDToShowInDialogue))
+            {
+                var quest = activeQuests.Find(x => string.Equals(StringField.GetStringValue(x.id), overrideQuestIDToShowInDialogue))
+                ?? offerableQuests.Find(x => string.Equals(StringField.GetStringValue(x.id), overrideQuestIDToShowInDialogue))
+                ?? nonOfferableQuests.Find(x => string.Equals(StringField.GetStringValue(x.id), overrideQuestIDToShowInDialogue))
+                ?? completedQuests.Find(x => string.Equals(StringField.GetStringValue(x.id), overrideQuestIDToShowInDialogue));
+                if (quest != null)
+                {
+                    if (activeQuests.Contains(quest))
+                    {
+                        ShowActiveQuest(quest);
+                    }
+                    else if (offerableQuests.Contains(quest))
+                    {
+                        ShowOfferQuest(quest);
+                    }
+                    else if (nonOfferableQuests.Contains(quest))
+                    {
+                        ShowOfferConditionsUnmet(quest);
+                    }
+                    else
+                    {
+                        ShowCompletedQuest(quest);
+                    }
+                    return;
+                }
+            }
 
             // Start the most appropriate dialogue based on the recorded quests:
             if (QuestMachine.debug) Debug.Log("Quest Machine: " + name + ".StartDialogue: #offerable=" + offerableQuests.Count + " #active=" + activeQuests.Count + " #completed=" + completedQuests.Count, this);
-            QuestMachineMessages.Greet(player, this, id);
             if (activeQuests.Count + offerableQuests.Count >= 2)
             {
-                questDialogueUI.ShowQuestList(myQuestGiverTextInfo, activeQuestsUIContents.contentList, activeQuests, offerableQuestsUIContents.contentList, offerableQuests, OnSelectQuest);
+                ShowQuestList();                
             }
             else if (activeQuests.Count == 1)
             {
@@ -417,22 +661,20 @@ namespace PixelCrushers.QuestMachine
             }
             else if (nonOfferableQuests.Count >= 1)
             {
-                questDialogueUI.ShowOfferConditionsUnmet(myQuestGiverTextInfo, noQuestsUIContents.contentList, nonOfferableQuests);
+                ShowOfferConditionsUnmet();                
             }
             else
             {
                 RemoveCompletedQuestsWithNoDialogue();
                 if (completedQuests.Count > 0 && completedQuestDialogueMode == CompletedQuestDialogueMode.ShowCompletedQuest)
                 {
-
-                    questDialogueUI.ShowCompletedQuest(myQuestGiverTextInfo, completedQuests);
+                    ShowCompletedQuest();
                 }
                 else
                 {
-                    questDialogueUI.ShowContents(myQuestGiverTextInfo, noQuestsUIContents.contentList);
+                    ShowNoQuestsToDiscuss();
                 }
             }
-            QuestMachineMessages.Greeted(player, this, id);
         }
 
         /// <summary>
@@ -444,18 +686,89 @@ namespace PixelCrushers.QuestMachine
             questDialogueUI.Hide();
         }
 
+        protected virtual void ShowNoQuestsToDiscuss()
+        {
+            questDialogueUI.ShowContents(myQuestGiverTextInfo, noQuestsUIContents.contentList); 
+        }
+
+        protected virtual void ShowQuestList()
+        {
+            questDialogueUI.ShowQuestList(myQuestGiverTextInfo, activeQuestsUIContents.contentList, activeQuests, offerableQuestsUIContents.contentList, offerableQuests, OnSelectQuest);
+        }
+
+        protected virtual void ShowOfferConditionsUnmet()
+        {
+            questDialogueUI.ShowOfferConditionsUnmet(myQuestGiverTextInfo, noQuestsUIContents.contentList, nonOfferableQuests); 
+        }
+
+        protected virtual void ShowOfferConditionsUnmet(Quest quest)
+        {
+            questDialogueUI.ShowOfferConditionsUnmet(myQuestGiverTextInfo, noQuestsUIContents.contentList, new List<Quest>() { quest });
+        }
+
         protected virtual void ShowOfferQuest(Quest quest)
         {
-            QuestMachineMessages.DiscussQuest(player, this, id, quest.id);
-            questDialogueUI.ShowOfferQuest(myQuestGiverTextInfo, quest, OnAcceptQuest, OnQuestBackButton);
-            QuestMachineMessages.DiscussedQuest(player, this, id, quest.id);
+            if (questDialogueUI == null)
+            {
+                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: There is no Quest Dialogue UI.", this);
+            }
+            else if (quest == null)
+            {
+                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: The quest passed to ShowOfferQuest() is null.", this);
+            }
+            else if (playerQuestListContainer == null)
+            {
+                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: There is no Player Quest List Container. Can't offer quest '" + quest.title + "'.", this);
+            }
+            else
+            {
+                quest.greeterID = StringField.GetStringValue(playerTextInfo.id);
+                quest.greeter = StringField.GetStringValue(playerTextInfo.displayName);
+                QuestMachineMessages.DiscussQuest(player, this, id, quest.id);
+                playerQuestListContainer.DeleteQuest(quest.id); // Clear any old instance of repeatable quests first.
+                questDialogueUI.ShowOfferQuest(myQuestGiverTextInfo, quest, OnAcceptQuest, OnQuestBackButton);
+                QuestMachineMessages.DiscussedQuest(player, this, id, quest.id);
+            }
         }
 
         protected virtual void ShowActiveQuest(Quest quest)
         {
+            QuestParameterDelegate backButtonDelegate = null;
+            if (activeQuests.Count + offerableQuests.Count >= 2)
+            {
+                backButtonDelegate = OnQuestBackButton;
+                allowBackButton = true; // May turn in quest and be left with only 1. In this case, still allow back button.
+            }
+            quest.greeterID = StringField.GetStringValue(playerTextInfo.id);
+            quest.greeter = StringField.GetStringValue(playerTextInfo.displayName);
             QuestMachineMessages.DiscussQuest(player, this, id, quest.id);
-            questDialogueUI.ShowActiveQuest(myQuestGiverTextInfo, quest, OnContinueActiveQuest, OnQuestBackButton);
+            questDialogueUI.ShowActiveQuest(myQuestGiverTextInfo, quest, OnContinueActiveQuest, backButtonDelegate);
             QuestMachineMessages.DiscussedQuest(player, this, id, quest.id);
+
+            // If this was the only quest, check if we have a new quest after discussing this one. 
+            // If so, enable back button:
+            if (backButtonDelegate == null)
+            {
+                RecordQuestsByState();
+                var numOtherActive = activeQuests.Count;
+                if (quest != null && quest.GetState() == QuestState.Active) numOtherActive--;
+                var hasNewQuest = (numOtherActive + offerableQuests.Count) > 0;
+                if (hasNewQuest && (questDialogueUI is UnityUIQuestDialogueUI))
+                {
+                    allowBackButton = true;
+                    (questDialogueUI as UnityUIQuestDialogueUI).SetBackHandler(OnQuestBackButton);
+                }
+            }
+        }
+
+        protected virtual void ShowCompletedQuest()
+        {
+            questDialogueUI.ShowCompletedQuest(myQuestGiverTextInfo, completedQuests);
+        }
+
+        protected virtual void ShowCompletedQuest(Quest quest)
+        {
+            questDialogueUI.ShowCompletedQuest(myQuestGiverTextInfo, new List<Quest>() { quest }); 
         }
 
         protected virtual void OnSelectQuest(Quest quest)
@@ -474,13 +787,27 @@ namespace PixelCrushers.QuestMachine
         protected virtual void OnAcceptQuest(Quest quest)
         {
             GiveQuestToQuester(quest, playerTextInfo, playerQuestListContainer);
+            RecordQuestsByState();
+            if (offerableQuests.Count >= 1 && (activeQuests.Count + offerableQuests.Count) >= 2)
+            {
+                questDialogueUI.ShowQuestList(myQuestGiverTextInfo, activeQuestsUIContents.contentList, activeQuests, offerableQuestsUIContents.contentList, offerableQuests, OnSelectQuest);
+            }
+            else
+            {
+                questDialogueUI.Hide();
+            }
         }
 
         protected virtual void OnQuestBackButton(Quest quest)
         {
-            if (activeQuests.Count + offerableQuests.Count >= 2)
+            if (activeQuests.Contains(quest) && quest.GetState() != QuestState.Active)
+            {
+                activeQuests.Remove(quest);
+            }
+            if (activeQuests.Count + offerableQuests.Count >= 2 || allowBackButton)
             {
                 questDialogueUI.ShowQuestList(myQuestGiverTextInfo, activeQuestsUIContents.contentList, activeQuests, offerableQuestsUIContents.contentList, offerableQuests, OnSelectQuest);
+                allowBackButton = false;
             }
             else
             {
@@ -540,6 +867,7 @@ namespace PixelCrushers.QuestMachine
             // Add the copy to the quester and activate it:
             questInstance.AssignQuestGiver(myQuestGiverTextInfo);
             questInstance.AssignQuester(questerTextInfo);
+            questInstance.timesAccepted = 1;
             if (questerQuestListContainer.questList.Count > 0)
             {
                 for (int i = questerQuestListContainer.questList.Count - 1; i >= 0; i--)
@@ -548,6 +876,7 @@ namespace PixelCrushers.QuestMachine
                     if (inJournal == null) continue;
                     if (StringField.Equals(inJournal.id, quest.id) && inJournal.GetState() != QuestState.Active)
                     {
+                        questInstance.timesAccepted++;
                         questerQuestListContainer.DeleteQuest(inJournal);
                     }
                 }

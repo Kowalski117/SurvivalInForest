@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -17,6 +17,7 @@ namespace PixelCrushers.QuestMachine
         private SerializedObject m_serializedObject = null;
         private bool m_isAsset = false;
         private Editor m_contentEditor = null;
+        private bool m_needToClearFocus = false;
 
         public QuestContentListInspectorGUI(GUIContent guiContent, QuestContentCategory category)
         {
@@ -26,6 +27,11 @@ namespace PixelCrushers.QuestMachine
         public void Draw(SerializedObject serializedObject, SerializedProperty contentListProperty, bool isAsset)
         {
             if (contentListProperty == null || !contentListProperty.isArray) return;
+            if (m_needToClearFocus)
+            {
+                GUIUtility.keyboardControl = 0;
+                m_needToClearFocus = false;
+            }
             m_serializedObject = serializedObject;
             m_isAsset = isAsset;
             if (m_list == null) SetupReorderableList(serializedObject, contentListProperty);
@@ -94,11 +100,12 @@ namespace PixelCrushers.QuestMachine
         private void OnAddDropdown(Rect buttonRect, ReorderableList list)
         {
             var subtypes = QuestEditorUtility.GetSubtypes<QuestContent>();
+            subtypes.Sort((x, y) => string.CompareOrdinal(x.Name, y.Name));
             var menu = new GenericMenu();
             for (int i = 0; i < subtypes.Count; i++)
             {
                 var subtype = subtypes[i];
-                menu.AddItem(new GUIContent(ObjectNames.NicifyVariableName(subtype.Name)), false, OnAddQuestContentType, subtype);
+                menu.AddItem(new GUIContent(ObjectNames.NicifyVariableName(subtype.Name).Replace("Quest Content", string.Empty)), false, OnAddQuestContentType, subtype);
             }
             menu.ShowAsContext();
         }
@@ -120,16 +127,26 @@ namespace PixelCrushers.QuestMachine
                 AssetUtility.AddToAsset(content, QuestEditorWindow.selectedQuestSerializedObject.targetObject);
                 QuestEditorWindow.UpdateSelectedQuestSerializedObject();
             }
-            m_list.serializedProperty.arraySize++;
-            m_list.index = m_list.serializedProperty.arraySize - 1;
-            m_list.serializedProperty.GetArrayElementAtIndex(m_list.serializedProperty.arraySize - 1).objectReferenceValue = content;
-            m_list.serializedProperty.serializedObject.ApplyModifiedProperties();
-            m_serializedObject.ApplyModifiedProperties();
+            try
+            {
+                m_list.serializedProperty.arraySize++;
+                m_list.index = m_list.serializedProperty.arraySize - 1;
+                m_list.serializedProperty.GetArrayElementAtIndex(m_list.serializedProperty.arraySize - 1).objectReferenceValue = content;
+                m_list.serializedProperty.serializedObject.ApplyModifiedProperties();
+                m_serializedObject.ApplyModifiedProperties();
+            }
+            catch (System.NullReferenceException e)
+            {
+#if UNITY_EDITOR
+                Debug.LogError("Unity's AssetDatabase couldn't add the content subasset to the quest. The project's AssetDatabase may contain a corrupt asset. Exception: " + e.Message);
+#endif
+            }
             if (isSelectedQuest)
             {
                 QuestEditorWindow.ApplyModifiedPropertiesFromSelectedQuestSerializedObject();
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.SaveAssets();
             }
+            m_needToClearFocus = true;
         }
 
         private void DrawSelectedContent()

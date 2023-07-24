@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -31,6 +31,23 @@ namespace PixelCrushers.QuestMachine
         {
             get { return m_value; }
             set { m_value = value; }
+        }
+
+        public DriveValue() { }
+
+        public DriveValue(Drive drive, float value)
+        {
+            m_drive = drive;
+            m_value = value;
+        }
+
+        public DriveValue(DriveValue other)
+        {
+            if (other != null)
+            {
+                m_drive = other.drive;
+                m_value = other.value;
+            }
         }
 
     }

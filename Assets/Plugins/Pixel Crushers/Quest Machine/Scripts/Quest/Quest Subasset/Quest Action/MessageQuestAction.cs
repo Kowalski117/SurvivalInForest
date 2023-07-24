@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -17,7 +17,7 @@ namespace PixelCrushers.QuestMachine
 
         [Tooltip("ID of message sender. Can also be {QUESTERID} or {QUESTGIVERID}. If blank, uses quest giver's ID.")]
         [SerializeField]
-        private StringField m_senderID;
+        private StringField m_senderID = new StringField();
 
         [Tooltip("Required message target.")]
         [SerializeField]
@@ -25,7 +25,7 @@ namespace PixelCrushers.QuestMachine
 
         [Tooltip("ID of message target. Can also be {QUESTERID} or {QUESTGIVERID}. Leave blank to broadcast to all listeners.")]
         [SerializeField]
-        private StringField m_targetID;
+        private StringField m_targetID = new StringField();
 
         [Tooltip("Message to send.")]
         [SerializeField]

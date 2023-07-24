@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -19,6 +19,10 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private QuestState m_state;
 
+        [Tooltip("Set all quest nodes to equivalent state.")]
+        [SerializeField]
+        private bool m_setQuestNodesToSame = false;
+
         public StringField questID
         {
             get { return (StringField.IsNullOrEmpty(m_questID) && quest != null) ? quest.id : m_questID; }
@@ -31,6 +35,12 @@ namespace PixelCrushers.QuestMachine
             set { m_state = value; }
         }
 
+        public bool setQuestNodesToSame
+        {
+            get { return m_setQuestNodesToSame; }
+            set { m_setQuestNodesToSame = value; }
+        }
+
         public override string GetEditorName()
         {
             return StringField.IsNullOrEmpty(questID) ? ("Set Quest State: " + state) : ("Set Quest State: Quest '" + questID + "' to " + state);
@@ -38,9 +48,45 @@ namespace PixelCrushers.QuestMachine
 
         public override void Execute()
         {
-            QuestMachine.SetQuestState(questID, state);
+            var useThisQuest = StringField.IsNullOrEmpty(questID) && quest != null;
+            if (useThisQuest)
+            {
+                quest.SetState(state);
+            }
+            else if (QuestMachine.GetQuestState(questID) != state)
+            {
+                QuestMachine.SetQuestState(questID, state);
+            }
+            if (setQuestNodesToSame)
+            {
+                var questToSet = useThisQuest ? quest : QuestMachine.GetQuestInstance(questID);
+                if (questToSet != null)
+                {
+                    var stateToSet = GetEquivalentQuestNodeState(state);
+                    for (int i = 0; i < questToSet.nodeList.Count; i++)
+                    {
+                        questToSet.nodeList[i].SetStateRaw(stateToSet);
+                    }
+                }
+            }
         }
 
+        private QuestNodeState GetEquivalentQuestNodeState(QuestState state)
+        {
+            switch (state)
+            {
+                default:
+                case QuestState.WaitingToStart:
+                case QuestState.Disabled:
+                case QuestState.Abandoned:
+                    return QuestNodeState.Inactive;
+                case QuestState.Active:
+                    return QuestNodeState.Active;
+                case QuestState.Successful:
+                case QuestState.Failed:
+                    return QuestNodeState.True;
+            }
+        }
     }
 
 }

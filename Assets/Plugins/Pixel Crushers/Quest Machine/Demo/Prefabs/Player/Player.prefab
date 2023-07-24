@@ -155,22 +155,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_key: PlayerJournal
+  m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 1
   m_forwardEventsToListeners: 0
   m_includeInSavedGameData: 1
   m_questList: []
   m_deletedStaticQuests: []
   m_id:
-    m_text: 
+    m_text: Player
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_displayName:
-    m_text: 
+    m_text: Player
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
-  m_image: {fileID: 0}
+  m_image: {fileID: 21300000, guid: eb4436191244d13428ceb6904e589af0, type: 3}
   m_questJournalUI: {fileID: 0}
   m_questHUD: {fileID: 0}
   m_rememberCompletedQuests: 0
@@ -186,7 +187,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_key: PlayerPosition
+  m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 0
+  m_usePlayerSpawnpoint: 0
 --- !u!114 &11454586
 MonoBehaviour:
   m_ObjectHideFlags: 1

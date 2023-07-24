@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -55,7 +55,7 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private int m_maxValue = 100;
 
-        [Tooltip("Required value.")]
+        [Tooltip("Required value. If mode is AtLeast, action will require at least this value. If mode is AtMost, action will require no more than this value.")]
         [SerializeField]
         private int m_requiredValue = 1;
 

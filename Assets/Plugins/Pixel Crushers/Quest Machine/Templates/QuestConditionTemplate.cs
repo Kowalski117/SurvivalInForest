@@ -1,4 +1,6 @@
 ﻿/* [REMOVE THIS LINE] 
+ * [REMOVE THIS LINE] If your code references scripts or assets that are outside of the Plugins
+ * [REMOVE THIS LINE] folder, move this script outside of the Plugins folder, too.
 
 using UnityEngine;
 using System;
@@ -25,7 +27,8 @@ namespace PixelCrushers.QuestMachine
             // Add your code here to stop checking your condition.
         }
 
-        // Uncomment and edit if you want to override the name shown in the editor.
+        // Uncomment and edit if you want to override the name shown in the editor
+        // in the quest's Conditions lists.
         //public override string GetEditorName()
         //{
         //    return base.GetEditorName();

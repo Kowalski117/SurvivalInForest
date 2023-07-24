@@ -1,4 +1,6 @@
 ﻿/* [REMOVE THIS LINE] 
+ * [REMOVE THIS LINE] If your code references scripts or assets that are outside of the Plugins
+ * [REMOVE THIS LINE] folder, move this script outside of the Plugins folder, too.
 
 using UnityEngine;
 using System;
@@ -7,14 +9,15 @@ namespace PixelCrushers.QuestMachine
 {
 
     // This is a starter template for reward systems. To use it,
-    /// make a copy, rename it, and remove the line marked above.
-    /// Then fill in your code where indicated below.
+    // make a copy, rename it, and remove the line marked above.
+    // Then fill in your code where indicated below.
     public class RewardSystemTemplate : RewardSystem // Rename this class.
     {
 
         // The quest generator will call this method to try to use up points
-        // by choosing rewards to offer.
-        public override int DetermineReward(int points, Quest quest)
+        // by choosing rewards to offer. The quest generator passes the
+        // target entity type to this method in case you want to vary rewards by entity type.
+        public override int DetermineReward(int points, Quest quest, EntityType entityType)
         {
             // Example code:
 

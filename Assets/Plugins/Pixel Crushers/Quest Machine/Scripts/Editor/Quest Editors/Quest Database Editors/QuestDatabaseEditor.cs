@@ -1,8 +1,9 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
+using System.IO;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -15,6 +16,8 @@ namespace PixelCrushers.QuestMachine
     {
 
         private ReorderableList questReorderableList { get; set; }
+        private string entityTypeFolderPath = string.Empty;
+        private bool showQuestRelations = false;
 
         protected virtual void OnEnable()
         {
@@ -55,6 +58,7 @@ namespace PixelCrushers.QuestMachine
             DrawQuestList();
             serializedObject.ApplyModifiedProperties();
             DrawGetAllInSceneButton();
+            DrawImagesList();
         }
 
         private void DrawDescription()
@@ -66,7 +70,7 @@ namespace PixelCrushers.QuestMachine
 
         private void DrawQuestList()
         {
-            if (!(0 <= questReorderableList.index && questReorderableList.index <= questReorderableList.count))
+            if (!showQuestRelations && !(0 <= questReorderableList.index && questReorderableList.index <= questReorderableList.count))
             {
                 questReorderableList.index = 0;
                 SetQuestInEditorWindow(questReorderableList.index);
@@ -163,6 +167,12 @@ namespace PixelCrushers.QuestMachine
             {
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
+                if (GUILayout.Button(new GUIContent("Show Quest Relations", "Show how all quests in database are linked."), GUILayout.Width(136)))
+                {
+                    showQuestRelations = true;
+                    QuestEditorWindow.ShowWindow();
+                    QuestEditorWindow.instance.ShowQuestRelations(target as QuestDatabase);
+                }
                 if (GUILayout.Button("Add All In Scene", GUILayout.Width(128)))
                 {
                     if (EditorUtility.DisplayDialog("Add All In Scene", "Add all quests assigned in the current scene?", "OK", "Cancel"))
@@ -180,6 +190,8 @@ namespace PixelCrushers.QuestMachine
         private void AddAllInScene()
         {
             var database = target as QuestDatabase;
+            if (database == null) return;
+            Undo.RecordObject(database, "Add Quests In Scene");
             foreach (var questListContainer in FindObjectsOfType<QuestListContainer>())
             {
                 foreach (var quest in questListContainer.questList)
@@ -188,6 +200,53 @@ namespace PixelCrushers.QuestMachine
                     {
                         database.questAssets.Add(quest);
                     }
+                }
+            }
+        }
+
+        private void DrawImagesList()
+        {
+            QuestEditorPrefs.databaseImagesFoldout = QuestEditorUtility.EditorGUILayoutFoldout("EntityType Images", "Images used by procedural entity types. If you're not procedurally generating quests, you can ignore this section.", QuestEditorPrefs.databaseImagesFoldout);
+            if (!QuestEditorPrefs.databaseImagesFoldout) return;
+
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_images"), true);
+            serializedObject.ApplyModifiedProperties();
+            try
+            {
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button(new GUIContent("Scan EntityTypes...", "Adds images used by EntityTypes in a specified folder."), GUILayout.Width(128)))
+                {
+                    if (string.IsNullOrEmpty(entityTypeFolderPath)) entityTypeFolderPath = Application.dataPath;
+                    entityTypeFolderPath = EditorUtility.OpenFolderPanel("Scan EntityTypes In", entityTypeFolderPath, string.Empty);
+                    if (!string.IsNullOrEmpty(entityTypeFolderPath) && Directory.Exists(entityTypeFolderPath))
+                    {
+                        Undo.RecordObject(target, "Add EntityType Images");
+                        ScanEntityTypesInFolder(entityTypeFolderPath);
+                    }
+                }
+            }
+            finally
+            {
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
+        private void ScanEntityTypesInFolder(string path)
+        {
+            var database = target as QuestDatabase;
+            if (database == null) return;
+            Undo.RecordObject(database, "Add Images");
+            var dataPathLength = Application.dataPath.Length - "Assets".Length;
+            var filenames = Directory.GetFiles(path, "*.asset", SearchOption.AllDirectories);
+            foreach (var filename in filenames)
+            {
+                var relativeFilename = filename.Substring(dataPathLength).Replace("\\", "/");
+                var entityType = AssetDatabase.LoadAssetAtPath<EntityType>(relativeFilename);
+                if (entityType != null && entityType.image != null && !database.images.Contains(entityType.image))
+                {
+                    database.images.Add(entityType.image);
                 }
             }
         }

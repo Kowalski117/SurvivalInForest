@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;
@@ -16,19 +16,27 @@ namespace PixelCrushers.QuestMachine
     public class QuestTimerManager : MonoBehaviour
     {
 
-        private static QuestTimerManager m_instance = null;
+        private static QuestTimerManager s_instance = null;
 
         private static QuestTimerManager instance
         {
             get
             {
-                if (m_instance == null) CreateInstance();
-                return m_instance;
+                if (s_instance == null) CreateInstance();
+                return s_instance;
             }
         }
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            s_instance = null;
+        }
+#endif
         private static QuestTimerManager CreateInstance()
         {
+            if (QuestMachineConfiguration.isQuitting) return null;
             var attachTo = (QuestMachineConfiguration.instance != null) ? QuestMachineConfiguration.instance.gameObject : new GameObject("Quest Timer Manager");
             return attachTo.GetComponent<QuestTimerManager>() ?? attachTo.AddComponent<QuestTimerManager>();
         }
@@ -39,7 +47,7 @@ namespace PixelCrushers.QuestMachine
         /// <param name="timer"></param>
         public static void RegisterTimer(IQuestTimer timer)
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || QuestMachineConfiguration.isQuitting) return;
             instance.Register(timer);
         }
 
@@ -49,7 +57,7 @@ namespace PixelCrushers.QuestMachine
         /// <param name="timer"></param>
         public static void UnregisterTimer(IQuestTimer timer)
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || QuestMachineConfiguration.isQuitting) return;
             instance.Unregister(timer);
         }
 
@@ -57,7 +65,7 @@ namespace PixelCrushers.QuestMachine
 
         private void Awake()
         {
-            m_instance = this;
+            s_instance = this;
         }
 
         /// <summary>

@@ -67,6 +67,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
 
         public bool importPortraits = true;
         public bool importGuids = false;
+        public int numPlayers = 1;
+        public string globalVariables;
 
         public string prefsPath;
     }
@@ -94,6 +96,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
 
         public bool boardsFoldout = true;
         public bool componentsFoldout = true;
+        public int numPlayers = 1;
+        public List<string> globalVariables = new List<string>();
 
         public bool importPortraits = true;
         public bool importGuids = false;
@@ -140,6 +144,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         /// <param name="importPortraits">Assign portrait images to actors. (Editor only)</param>
         /// <param name="importGuids">In actors, locations, conversations, and quests, add a field containing Arcweave GUID.</param>
         /// <param name="merge">Merge into existing database, keeping/overwriting existing assets, instead of clearing database first.</param>
+        /// <param name="numPlayers">Set to value greater than 1 to import set of variables for each player.</param>
+        /// <param name="globalVariables">If numPlayers > 1, this is a comma-separated list of global variables that aren't player-specific.</param>
         /// <param name="template">Template to use to create new actors, conversations, etc.</param>
         public void Setup(string arcweaveProjectPath,
             string contentJson,
@@ -153,6 +159,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             bool componentsFoldout,
             bool importPortraits,
             bool importGuids,
+            int numPlayers,
+            string globalVariables,
             bool merge,
             Template template)
         {
@@ -168,8 +176,10 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             this.componentsFoldout = componentsFoldout;
             this.importPortraits = importPortraits;
             this.importGuids = importGuids;
+            this.numPlayers = numPlayers;
+            this.globalVariables = ParseGlobalVariables(globalVariables);
             this.merge = merge;
-            this.template = template;
+            this.template = (template != null) ? template : Template.FromDefault();
         }
 
         /// <summary>
@@ -195,6 +205,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                     prefs.componentsFoldout,
                     prefs.importPortraits,
                     prefs.importGuids,
+                    prefs.numPlayers,
+                    prefs.globalVariables,
                     prefs.merge,
                     template);
                 this.database = database;
@@ -204,6 +216,19 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         public void Clear()
         {
             arcweaveProject = null;
+        }
+
+        protected List<string> ParseGlobalVariables(string s)
+        {
+            var list = new List<string>();
+            if (!string.IsNullOrEmpty(s))
+            {
+                foreach (var v in s.Split(','))
+                {
+                    list.Add(v.Trim());
+                }
+            }
+            return list;
         }
 
         #endregion
@@ -329,7 +354,10 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             if (boardNode == null || boardNode.board == null) return;
             if (boardNode.board.children == null)
             {
-                leafBoards.Add(boardNode.guid, boardNode.board);
+                if (!leafBoards.ContainsKey(boardNode.guid))
+                {
+                    leafBoards.Add(boardNode.guid, boardNode.board);
+                }
             }
             else
             {
@@ -444,13 +472,31 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
 
         protected void AddVariables()
         {
+            AddVariables("");
+            if (numPlayers > 1)
+            {
+                for (var i = 0; i < numPlayers; i++)
+                {
+                    AddVariables("Player" + i + "_");
+                }
+            }
+        }
+
+        protected void AddVariables(string prefix)
+        {
             foreach (var kvp in arcweaveProject.variables)
             {
                 ArcweaveVariable arcweaveVariable = kvp.Value;
                 if (!string.IsNullOrEmpty(arcweaveVariable.name))
                 {
                     if (merge) database.variables.RemoveAll(x => x.Name == arcweaveVariable.name);
-                    var variable = template.CreateVariable(template.GetNextVariableID(database), arcweaveVariable.name, string.Empty);
+                    //---Was: var variable = template.CreateVariable(template.GetNextVariableID(database), arcweaveVariable.name, string.Empty);
+                    var isGlobalVariable = globalVariables.Contains(arcweaveVariable.name);
+                    if ((isGlobalVariable && !string.IsNullOrEmpty(prefix))) // Is global so don't need player-specific version.
+                    {
+                        continue;
+                    }
+                    var variable = template.CreateVariable(template.GetNextVariableID(database), prefix + arcweaveVariable.name, string.Empty);
                     database.variables.Add(variable);
                     switch (arcweaveVariable.type)
                     {
@@ -634,13 +680,16 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                     {
                         var connection = LookupArcweave<Connection>(connectionGuid);
                         if (connection == null) continue;
-                        var isBlank = string.IsNullOrEmpty(connection.label);
+                        string code;
+                        var connectionLabel = ExtractCode(connection.label, out code);
+                        var isBlank = string.IsNullOrEmpty(connectionLabel);
                         var entry = GetOrCreateDialogueEntry(conversation, connectionGuid);
                         entry.ActorID = isBlank ? currentNpcID : currentPlayerID;
                         entry.ConversantID = currentPlayerID;
                         entry.isGroup = isBlank;
-                        entry.DialogueText = connection.label;
-                        if (isBlank) entry.Title = DeleteTag;
+                        entry.DialogueText = TouchUpRichText(connectionLabel);
+                        //--- Added later: entry.userScript = string.IsNullOrEmpty(code) ? string.Empty : ConvertArcscriptToLua(code);
+                        if (isBlank && string.IsNullOrEmpty(code)) entry.Title = DeleteTag;
                     }
 
                     // Add Branches:
@@ -671,15 +720,11 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                     {
                         var branch = LookupArcweave<Branch>(branchGuid);
                         if (branch == null) continue;
-                        var ifEntry = CreateConditionEntry(conversation, branch.conditions.ifCondition);
+                        var currentCumulativeCondition = string.Empty;
+                        var ifEntry = CreateConditionEntry(conversation, branch.conditions.ifCondition, ref currentCumulativeCondition);
                         if (ifEntry != null)
                         {
                             ifEntry.Title = "if " + (arcweaveLookup[branch.conditions.ifCondition] as Condition).script;
-                        }
-                        var elseEntry = CreateConditionEntry(conversation, branch.conditions.elseCondition);
-                        if (elseEntry != null)
-                        {
-                            elseEntry.Title = "else";
                         }
                         if (branch.conditions.elseIfConditions != null)
                         {
@@ -687,12 +732,17 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                             foreach (var jToken in jArray)
                             {
                                 var elseIfConditionGuid = (string)(jToken as Newtonsoft.Json.Linq.JValue).Value;
-                                var elseIfEntry = CreateConditionEntry(conversation, elseIfConditionGuid);
+                                var elseIfEntry = CreateConditionEntry(conversation, elseIfConditionGuid, ref currentCumulativeCondition);
                                 if (elseIfEntry != null)
                                 {
                                     elseIfEntry.Title = "elseif " + (arcweaveLookup[elseIfConditionGuid] as Condition).script;
                                 }
                             }
+                        }
+                        var elseEntry = CreateConditionEntry(conversation, branch.conditions.elseCondition, ref currentCumulativeCondition);
+                        if (elseEntry != null)
+                        {
+                            elseEntry.Title = "else";
                         }
                     }
 
@@ -774,6 +824,24 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             SetElementOrderByOutputs();
 
             DeleteUnnecessaryConnectionEntries();
+        }
+
+        /// <summary>
+        /// Extracts code tags and code (if present) from a connection label.
+        /// It appears that a connection can only have label text or code, not both.
+        /// </summary>
+        /// <param name="label">Original label.</param>
+        /// <param name="code">Extracted code.</param>
+        /// <returns>Full label if no code tag, or empty string if extracted code.</returns>
+        protected string ExtractCode(string label, out string code)
+        {
+            code = string.Empty;
+            if (string.IsNullOrEmpty(label) || !label.Contains("<code>")) return label;
+            var codeOpenTagPos = label.IndexOf("<code>");
+            var codeCloseTagPos = label.IndexOf("</code>");
+            var codePos = codeOpenTagPos + "<code>".Length;
+            code = label.Substring(codePos, codeCloseTagPos - codePos);
+            return string.Empty;
         }
 
         protected void SetElementOrderByOutputs()
@@ -917,6 +985,9 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                 entry = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, string.Empty);
                 conversation.dialogueEntries.Add(entry);
                 dialogueEntryLookup[guid] = entry;
+                entry.DialogueText = string.Empty;
+                entry.MenuText = string.Empty;
+                entry.Sequence = string.Empty;
                 if (importGuids)
                 {
                     entry.fields.Add(new Field("Guid", guid, FieldType.Text));
@@ -925,7 +996,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             return entry;
         }
 
-        protected DialogueEntry CreateConditionEntry(Conversation conversation, string conditionGuid)
+        protected DialogueEntry CreateConditionEntry(Conversation conversation, string conditionGuid, ref string currentCumulativeCondition)
         {
             if (string.IsNullOrEmpty(conditionGuid)) return null;
             ArcweaveType value;
@@ -935,7 +1006,50 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             entry.ActorID = currentNpcID;
             entry.ConversantID = currentPlayerID;
             entry.isGroup = true;
-            entry.conditionsString = condition.script;
+            var doesThisNodeHaveCondition = !string.IsNullOrEmpty(condition.script);
+            var havePreviousConditions = !string.IsNullOrEmpty(currentCumulativeCondition);
+            var sanitizedConditionScript = doesThisNodeHaveCondition ? ConvertArcscriptToLua(condition.script) : string.Empty;
+            if (doesThisNodeHaveCondition && (sanitizedConditionScript.Contains(" and ") || sanitizedConditionScript.Contains(" or ")))
+            {
+                sanitizedConditionScript = $"({sanitizedConditionScript})";
+            }
+            var completeConditions = sanitizedConditionScript;
+            if (havePreviousConditions)
+            {
+                // We have previous conditions in this if..elseif..else block, so prepend them:
+                if (!doesThisNodeHaveCondition)
+                {
+                    // This node doesn't have conditions, so just require that it's not the previous conditions:
+                    completeConditions = $"not ({currentCumulativeCondition})";
+                }
+                else
+                {
+                    // This node has conditions, so require its conditions and that it's not the previous conditions:
+                    if (currentCumulativeCondition.StartsWith("("))
+                    {
+                        completeConditions = $"(not {currentCumulativeCondition}) and {sanitizedConditionScript}";
+                    }
+                    else
+                    {
+                        completeConditions = $"(not ({currentCumulativeCondition})) and {sanitizedConditionScript}";
+                    }
+                }
+            }
+            if (doesThisNodeHaveCondition)
+            {
+                // This node has conditions, so add then to the cumulative conditions for the next node:
+                if (!havePreviousConditions)
+                {
+                    // This is our first cumulative condition, so just set it:
+                    currentCumulativeCondition = sanitizedConditionScript;
+                }
+                else
+                {
+                    // We have previous cumulative conditions, so add this one:
+                    currentCumulativeCondition = $"{currentCumulativeCondition} or {sanitizedConditionScript}";
+                }
+            }
+            entry.conditionsString = completeConditions;
             return entry;
         }
 
@@ -1040,7 +1154,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         protected static Regex CodeEndRegex = new Regex(@"</code></pre>");
         protected static Regex IdentifierRegex = new Regex(@"(?<![^\s+!*/-])\w+(?![^\s+*/-])");
         protected static Regex IncrementorRegex = new Regex(@"\+=|\-=");
-        protected static List<string> ReservedKeywords = new List<string>("if|elseif|else|endif|is|not|and|or|true|false|abs|sqr|sqrt|random|reset|resetAll|roll|show".Split('|'));
+        protected static Regex VisitsRegex = new Regex(@"visits\(<[^\)]+\)");
+        protected static List<string> ReservedKeywords = new List<string>("if|elseif|else|endif|is|not|and|or|true|false|abs|sqr|sqrt|random|reset|resetAll|roll|show|visits".Split('|'));
         protected static string[] CodeFieldPrefixes = new string[] { "_IF", "_ELSEIF", "_ELSE" };
 
         protected enum CodeState { None, InIf, InElseIf, InElse }
@@ -1073,15 +1188,18 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         {
             if (string.IsNullOrEmpty(s)) return string.Empty;
             var matches = BlockRegex.Matches(s);
+
+            // Insert newlines for blocks containing <p>..</p>:
             foreach (var match in matches.Cast<Match>().Reverse())
             {
-                s = s.Insert(match.Index, "\n");
+                if (match.Value.StartsWith("<p>") || match.Value.StartsWith("</p>"))
+                {
+                    s = s.Insert(match.Index, "\n");
+                }
             }
+
             s = BlockRegex.Replace(s, string.Empty);
-            return s.Replace(@"&lt;", "<")
-                .Replace(@"&gt;", ">")
-                .Replace(@"<strong>", "<b>")
-                .Replace(@"</strong>", "</b>").Trim();
+            return Tools.RemoveHtml(s).Trim();
         }
 
         protected enum ContentPieceType { Text, Code }
@@ -1107,7 +1225,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             }
             else if (!content.Contains("<code>"))
             {
-                entry.DialogueText = content;
+                entry.DialogueText = TouchUpRichText(content);
             }
             else
             {
@@ -1258,7 +1376,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                     }
                     else
                     {
-                        postIfEntry.DialogueText = postIfField.value;
+                        postIfEntry.DialogueText = TouchUpRichText(postIfField.value);
                     }
 
                     // Clear entry's links (since postIfEntry now links to them instead):
@@ -1303,7 +1421,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             codeEntry.outgoingLinks.Add(new Link(conversation.id, codeEntry.id, conversation.id, postIfEntry.id));
             codeEntry.isGroup = string.IsNullOrEmpty(textField.value);
             codeEntry.Sequence = codeEntry.isGroup ? string.Empty : ContinueSequence;
-            codeEntry.DialogueText = textField.value;
+            codeEntry.DialogueText = TouchUpRichText(textField.value);
             codeEntry.conditionsString = ConvertArcscriptToLua(codeField.value);
             if (innerCodeField != null) codeEntry.userScript = ConvertArcscriptToLua(innerCodeField.value, true);
             entry.outgoingLinks.Add(new Link(conversation.id, entry.id, conversation.id, codeEntry.id));
@@ -1312,6 +1430,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         protected string ConvertArcscriptToLua(string code, bool convertIncrementors = false)
         {
             if (string.IsNullOrEmpty(code)) return code;
+            code = Tools.RemoveHtml(code);
+            code = ConvertVisits(code);
             if (convertIncrementors) code = ConvertIncrementors(code);
             code = ConvertArcscriptVariablesToLua(code);
             code = code.Replace("!=", "~=")
@@ -1322,19 +1442,41 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             return code;
         }
 
+        // Convert visits() function calls.
+        protected string ConvertVisits(string code)
+        {
+            if (!code.Contains("visits(")) return code; ;
+
+            // Convert visits(...data-id="GUID"...) to visits("GUID")
+            var matches = VisitsRegex.Matches(code);
+            foreach (var match in matches.Cast<Match>().Reverse())
+            {
+                var visitsCall = code.Substring(match.Index, match.Length);
+                var dataIdPos = visitsCall.IndexOf("data-id") + match.Index;
+                var guid = code.Substring(dataIdPos + "data-id=\"".Length + 1);
+                guid = guid.Substring(0, guid.IndexOf("\""));
+                code = Replace(code, match.Index, match.Length, $"visits(\"{guid}\")");
+            }
+
+            return code.Replace("visits()", "visits(\"\")");
+        }
+
         protected string ConvertIncrementors(string code)
         {
             // Convert "x +=" to "x = x +" and same for "-=":
             var matches = IncrementorRegex.Matches(code);
             foreach (var match in matches.Cast<Match>().Reverse())
             {
-                // Get the string (variable name) prior to the incrementor:
-                var s = code.Substring(0, match.Index).TrimEnd(); ;
-                var variableName = s.Contains(' ') ? s.Substring(s.LastIndexOf(' ') + 1) : s;
-
-                // Replace "+=" with "= x +":
+                // Get '+' or '-' of '+=' or '-=':
                 var mathOp = match.Value.Substring(0, 1);
-                code = Replace(code, match.Index, match.Length, $"= {variableName} {mathOp}");
+
+                // Get the variable name prior to the incrementor:
+                var left = code.Substring(0, match.Index).TrimEnd();
+                var variableStartPos = Mathf.Max(0, Mathf.Max(left.LastIndexOf('\n'), left.LastIndexOf(';')));
+                var variableName = code.Substring(variableStartPos, match.Index - variableStartPos).Trim();
+
+                // Replace "+= " with "= x +":
+                code = Replace(code, match.Index, 2, $"= {variableName} {mathOp}");
             }
             return code;
         }
@@ -1348,6 +1490,15 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                 if (ReservedKeywords.Contains(identifier)) continue;
                 if (database.variables.Find(x => x.Name == identifier) == null) continue;
                 var luaVariable = $"Variable[\"{identifier}\"]";
+                if (numPlayers > 1)
+                {
+                    //--- Blue Goo Games contribution to support multiple actors:
+                    // If identifier begins with global, set luaVariable = $"Variable[\"{identifier}\"]";	
+                    // Else set luaVariable = $Variable[Variable[\"ActorIndex\"] .. \"_{identifier}\"]	
+                    // Create string array of words that are considered as global variables	
+                    bool isGlobalVariable = identifier.StartsWith("global") || globalVariables.Contains(identifier);
+                    luaVariable = isGlobalVariable ? $"Variable[\"{identifier}\"]" : $"Variable[Variable[\"ActorIndex\"] .. \"_{identifier}\"]";
+                }
                 code = Replace(code, match.Index, match.Length, luaVariable);
             }
             return code;

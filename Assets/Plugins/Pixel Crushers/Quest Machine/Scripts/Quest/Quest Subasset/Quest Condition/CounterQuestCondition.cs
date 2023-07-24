@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -114,10 +114,10 @@ namespace PixelCrushers.QuestMachine
             if (counter == null) return false;
             if (requiredCounterValue == null)
             {
-                if (Debug.isDebugBuild) Debug.LogWarning("QuestMachine: QuestCounterCondition.OnCounterChanged(" + StringField.GetStringValue(counter.name) + " = " + counter.currentValue + "): requiredCounterValue field is null. Please contact the developer.", quest);
+                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: QuestCounterCondition.OnCounterChanged(" + StringField.GetStringValue(counter.name) + " = " + counter.currentValue + "): requiredCounterValue field is null. Please contact the developer.", quest);
                 return false;
             }
-            if (QuestMachine.debug) Debug.Log("QuestMachine: QuestCounterCondition.OnCounterChanged(" + StringField.GetStringValue(counter.name) + " = " + counter.currentValue + ")", quest);
+            if (QuestMachine.debug) Debug.Log("Quest Machine: QuestCounterCondition.OnCounterChanged(" + StringField.GetStringValue(counter.name) + " = " + counter.currentValue + ")", quest);
             switch (counterValueMode)
             {
                 case CounterValueConditionMode.AtLeast:

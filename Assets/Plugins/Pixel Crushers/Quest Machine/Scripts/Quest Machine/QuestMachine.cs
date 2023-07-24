@@ -1,7 +1,8 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -91,6 +92,18 @@ namespace PixelCrushers.QuestMachine
 
         private static Dictionary<string, AudioClip> audioClips { get { return m_audioClips; } }
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            m_questListContainers = new Dictionary<string, IdentifiableQuestListContainer>(); // key=ID.
+            m_questAssets = new Dictionary<string, Quest>(); //key=questID
+            m_questInstances = new Dictionary<string, List<Quest>>(); // key=questID
+            m_images = new Dictionary<string, Sprite>(); // key=imagePath
+            m_audioClips = new Dictionary<string, AudioClip>(); // key=audioClipPath
+        }
+#endif
+
         #endregion
 
         #region Quest List Container Registry
@@ -157,7 +170,7 @@ namespace PixelCrushers.QuestMachine
                 var journal = kvp.Value as QuestJournal;
                 if (journal != null && (string.IsNullOrEmpty(id) || string.Equals(id, kvp.Key))) return journal;
             }
-            return null;
+            return UnityEngine.Object.FindObjectOfType<QuestJournal>();
         }
 
         /// <summary>
@@ -179,12 +192,78 @@ namespace PixelCrushers.QuestMachine
 
         #endregion
 
+        #region Give Quest
+
+        public static Quest GiveQuest(StringField questID)
+        {
+            return GiveQuestToQuester(questID, StringField.empty);
+        }
+
+        public static Quest GiveQuest(string questID)
+        {
+            return GiveQuestToQuester(questID, string.Empty);
+        }
+
+        public static Quest GiveQuest(Quest quest)
+        {
+            return GiveQuestToQuester(quest, string.Empty);
+        }
+
+        public static Quest GiveQuestToQuester(StringField questID, StringField questerID)
+        {
+            return GiveQuestToQuester(StringField.GetStringValue(questID), StringField.GetStringValue(questerID));
+        }
+
+        public static Quest GiveQuestToQuester(Quest quest, StringField questerID)
+        {
+            return GiveQuestToQuester(quest, GetQuestJournal(questerID));
+        }
+
+        public static Quest GiveQuestToQuester(Quest quest, string questerID)
+        {
+            return GiveQuestToQuester(quest, GetQuestJournal(questerID));
+        }
+
+        public static Quest GiveQuestToQuester(string questID, string questerID)
+        {
+            return GiveQuestToQuester(GetQuestAsset(questID), GetQuestJournal(questerID));
+        }
+
+        public static Quest GiveQuestToQuester(Quest quest, QuestJournal questJournal)
+        {
+            if (quest == null)
+            {
+                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: GiveQuestToQuester() quest is null.");
+                return null;
+            }
+            else if (questJournal == null)
+            {
+                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: GiveQuestToQuester() quest journal is null.");
+                return null;
+            }
+            else
+            {
+                if (quest.isAsset) quest = quest.Clone();
+                // Add the copy to the quester and activate it:
+                var questerTextInfo = new QuestParticipantTextInfo(questJournal.id, questJournal.displayName, questJournal.image, null);
+                quest.AssignQuester(questerTextInfo);
+                quest.timesAccepted = 1;
+                questJournal.deletedStaticQuests.Remove(StringField.GetStringValue(quest.id));
+                questJournal.AddQuest(quest);
+                quest.SetState(QuestState.Active);
+                QuestMachineMessages.RefreshIndicators(quest);
+                return quest;
+            }
+        }
+
+        #endregion
+
         #region Quest Asset Registry
 
         private static string GetQuestKey(Quest quest)
         {
             if (quest == null) return null;
-            return StringField.IsNullOrEmpty(quest.id) ? quest.GetInstanceID().ToString() : StringField.GetStringValue(quest.id); ;
+            return StringField.IsNullOrEmpty(quest.id) ? quest.GetInstanceID().ToString() : StringField.GetStringValue(quest.id);
         }
 
         /// <summary>
@@ -202,14 +281,7 @@ namespace PixelCrushers.QuestMachine
             var key = GetQuestKey(quest);
             if (debug) Debug.Log("Quest Machine: Registering quest asset '" + quest.id + "'.", quest);
             if (string.IsNullOrEmpty(key) && debug) Debug.LogWarning("Quest Machine: " + quest.name + " ID is blank. This may affect registration with Quest Machine.", quest);
-            if (!questAssets.ContainsKey(key))
-            {
-                questAssets[key] = quest;
-            }
-            else
-            {
-                questAssets.Add(key, quest);
-            }
+            questAssets[key] = quest;
             RegisterQuestMedia(quest);
         }
 
@@ -323,15 +395,24 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// Looks up a quest instance by ID.
         /// </summary>
-        /// <param name="id">Quest ID.</param>
+        /// <param name="questID">Quest ID.</param>
         /// <param name="questerID">ID of quester assigned to quest, or blank or null for any quester.</param>
         /// <returns>Quest instance with the specified quest and quester ID, or null if none is found.</returns>
-        public static Quest GetQuestInstance(string id, string questerID)
+        public static Quest GetQuestInstance(string questID, string questerID)
         {
-            var anyQuester = string.IsNullOrEmpty(questerID);
-            if (questInstances.ContainsKey(id) && questInstances[id].Count > 0)
+            // Give preference to instance in a quest journal:
+            var quester = GetQuestJournal(questerID);
+            if (quester != null)
             {
-                var list = questInstances[id];
+                var quest = quester.FindQuest(questID);
+                if (quest != null) return quest;
+            }
+
+            // Otherwise search all quest instances that have questID:
+            var anyQuester = string.IsNullOrEmpty(questerID);
+            if (questInstances.ContainsKey(questID) && questInstances[questID].Count > 0)
+            {
+                var list = questInstances[questID];
                 for (int i = 0; i < list.Count; i++)
                 {
                     var questInstance = list[i];
@@ -342,14 +423,14 @@ namespace PixelCrushers.QuestMachine
                     }
                 }
             }
-            if (debug) Debug.LogWarning("Quest Machine: A quest instance with ID '" + id + "' is not registered with Quest Machine.");
+            if (debug) Debug.LogWarning("Quest Machine: A quest instance with ID '" + questID + "' is not registered with Quest Machine.");
             return null;
         }
 
         /// <summary>
         /// Looks up a quest instance by ID.
         /// </summary>
-        /// <param name="id">Quest ID.</param>
+        /// <param name="questID">Quest ID.</param>
         /// <returns>A quest instance matching the specified ID, or null if none is found.</returns>
         public static Quest GetQuestInstance(string id)
         {
@@ -359,7 +440,7 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// Looks up a quest instance by ID.
         /// </summary>
-        /// <param name="id">Quest ID.</param>
+        /// <param name="questID">Quest ID.</param>
         /// <param name="questerID">ID of quester assigned to quest, or blank or null for any quester.</param>
         /// <returns>Quest instance with the specified quest and quester ID, or null if none is found.</returns>
         public static Quest GetQuestInstance(StringField id, StringField questerID)
@@ -370,7 +451,7 @@ namespace PixelCrushers.QuestMachine
         /// <summary>
         /// Looks up a quest instance by ID.
         /// </summary>
-        /// <param name="id">Quest ID.</param>
+        /// <param name="questID">Quest ID.</param>
         /// <returns>A quest instance matching the specified ID, or null if none is found.</returns>
         public static Quest GetQuestInstance(StringField id)
         {
@@ -500,7 +581,25 @@ namespace PixelCrushers.QuestMachine
 
         public static Sprite GetImage(string imageName)
         {
-            return (images.ContainsKey(imageName)) ? images[imageName] : null;
+            var result = (!string.IsNullOrEmpty(imageName) && images.ContainsKey(imageName)) ? images[imageName] : null;
+            if (result == null && !Application.isPlaying)
+            {
+#if EVALUATION
+                Debug.LogWarning("Quest Machine: The evaluation version cannot copy image references in the editor, but the full version can.");
+#elif UNITY_EDITOR
+                var guids = AssetDatabase.FindAssets("t:Sprite " + imageName);
+                if (guids.Length > 0)
+                {
+                    try
+                    {
+                        var path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                        result = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                    }
+                    catch (System.Exception) { }
+                }
+#endif
+            }
+            return result;
         }
 
         public static string GetImagePath(Sprite image)
@@ -510,7 +609,25 @@ namespace PixelCrushers.QuestMachine
 
         public static AudioClip GetAudioClip(string audioClipName)
         {
-            return (audioClips.ContainsKey(audioClipName)) ? audioClips[audioClipName] : null;
+            var result = (!string.IsNullOrEmpty(audioClipName) && audioClips.ContainsKey(audioClipName)) ? audioClips[audioClipName] : null;
+            if (result == null && !Application.isPlaying)
+            {
+#if EVALUATION
+                Debug.LogWarning("Quest Machine: The evaluation version cannot copy audio clip references in the editor, but the full version can.");
+#elif UNITY_EDITOR
+                var guids = AssetDatabase.FindAssets("t:AudioClip " + audioClipName);
+                if (guids.Length > 0)
+                {
+                    try
+                    {
+                        var path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                        result = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+                    }
+                    catch (System.Exception) { }
+                }
+#endif
+            }
+            return result;
         }
 
         public static string GetAudioClipPath(AudioClip audioClip)
@@ -570,7 +687,8 @@ namespace PixelCrushers.QuestMachine
             var quest = GetQuestInstance(questID, questerID);
             if (quest == null)
             {
-                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: GetQuestState(" + questID + "): Couldn't find a quest with ID '" + questID + "'.");
+                //--- Unnecessary warning. In this case, user probably just wants WaitingToStart.
+                //if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: GetQuestState(" + questID + "): Couldn't find a quest with ID '" + questID + "'.");
                 return QuestState.WaitingToStart;
             }
             return quest.GetState();
@@ -623,7 +741,8 @@ namespace PixelCrushers.QuestMachine
             var quest = GetQuestInstance(questID, questerID);
             if (quest == null)
             {
-                if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: GetQuestNodeState(" + questID + ", " + questNodeID + "): Couldn't find a quest with ID '" + questID + "'.");
+                //--- Unnecessary warning. In this case, user probably just wants Inactive.
+                //if (Debug.isDebugBuild) Debug.LogWarning("Quest Machine: GetQuestNodeState(" + questID + ", " + questNodeID + "): Couldn't find a quest with ID '" + questID + "'.");
                 return QuestNodeState.Inactive;
             }
             var node = quest.GetNode(questNodeID);

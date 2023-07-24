@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -7,7 +7,7 @@ namespace PixelCrushers.QuestMachine
 {
 
     /// <summary>
-    /// Custom inspector for HeadingTextQuestUIContent assets.
+    /// Custom inspector for HeadingTextQuestContent assets.
     /// </summary>
     [CustomEditor(typeof(HeadingTextQuestContent), true)]
     public class HeadingTextQuestUIContentEditor : QuestSubassetEditor

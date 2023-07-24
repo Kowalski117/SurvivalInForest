@@ -1,7 +1,8 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -15,7 +16,7 @@ namespace PixelCrushers.QuestMachine
     public class QuestEditorWindow : EditorWindow
     {
 
-        [MenuItem("Tools/Pixel Crushers/Quest Machine/Quest Editor")]
+        [MenuItem("Tools/Pixel Crushers/Quest Machine/Quest Editor", false, 1)]
         public static void ShowWindow()
         {
             m_instance = GetWindow<QuestEditorWindow>();
@@ -53,13 +54,35 @@ namespace PixelCrushers.QuestMachine
         public static SerializedObject selectedQuestSerializedObject { get { return (m_instance != null) ? m_instance.m_questSerializedObject : null; } }
 
         /// <summary>
-        /// The index of the selected node in the current quest's nodeList.
+        /// The index of the main selected node in the current quest's nodeList.
         /// </summary>
         public static int selectedNodeListIndex
         {
-            get { return (m_instance != null) ? m_instance.m_selectedNodeListIndex : -1; }
-            set { if (m_instance != null) m_instance.m_selectedNodeListIndex = value; }
+            get 
+            {
+                return (m_instance != null) ? m_instance.m_selectedNodeListIndex : -1; 
+            }
+            set
+            {
+                if (m_instance != null)
+                {
+                    m_instance.m_selectedNodeListIndex = value;
+                    if (value == -1) m_instance.m_selectedNodeListIndices.Clear();
+                }
+            }
         }
+        /// <summary>
+        /// The indices of all selected nodes in the current quest's nodeList.
+        /// </summary>
+        public static List<int> selectedNodeListIndices
+        {
+            get { return (m_instance != null) ? m_instance.m_selectedNodeListIndices : null; }
+        }
+
+        public static List<string> nodeClipboard { get { return (m_instance != null) ? m_instance.m_nodeClipboard : null; } }
+        public static List<int> nodeIndexClipboard { get { return (m_instance != null) ? m_instance.m_nodeIndexClipboard : null; } }
+
+        public static QuestListContainer selectedQuestListContainer { get { return (m_instance != null) ? m_instance.m_selectedQuestListContainer : null; } }
 
         public static void RepaintNow()
         {
@@ -104,9 +127,12 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private int m_questInstanceID;
 
-        // Index into current quest's nodeList.
+        // Index into current quest's nodeList of the main selected node.
         [SerializeField]
         private int m_selectedNodeListIndex = -1;
+
+        [SerializeField]
+        private List<int> m_selectedNodeListIndices = new List<int>();
 
         // Instance ID of the current QuestListContainer, or 0 if none.
         [SerializeField]
@@ -115,6 +141,23 @@ namespace PixelCrushers.QuestMachine
         // Index into the current QuestListContainer's questList. Specifies which quest to edit.
         [SerializeField]
         private int m_questListIndex = -1;
+
+        [SerializeField]
+        private Vector2 m_canvasScrollPosition = Vector2.zero;
+        public Vector2 canvasScrollPosition
+        {
+            get { return m_canvasScrollPosition; }
+            set { m_canvasScrollPosition = value; }
+        }
+
+        // These must be kept in sync. nodeClipboard contains serialized nodes. 
+        // nodeIndexClipboard contains original indices of nodeClipboard nodes.
+        [SerializeField]
+        private List<string> m_nodeClipboard = new List<string>();
+        [SerializeField]
+        private List<int> m_nodeIndexClipboard = new List<int>();
+
+        private QuestListContainer m_selectedQuestListContainer;
 
         // The quest currently selected for editing. References don't survive assembly reloads,
         // so it's not serialized. Instead, find it again from instance IDs.
@@ -128,6 +171,8 @@ namespace PixelCrushers.QuestMachine
 
         // At runtime, tracks time until next window update.
         private float elapsedTime;
+
+        private bool showQuestRelations = false;
 
         #endregion
 
@@ -190,6 +235,13 @@ namespace PixelCrushers.QuestMachine
             SelectQuestBasedOnCurrentSelection();
         }
 
+        public void ShowQuestRelations(QuestDatabase database)
+        {
+            if (Selection.activeObject != database) Selection.activeObject = database;
+            showQuestRelations = true;
+            Repaint();
+        }
+
         public void SelectQuest(Quest quest)
         {
             SelectQuest(quest, null, 0);
@@ -203,7 +255,7 @@ namespace PixelCrushers.QuestMachine
                 return;
             }
             var questListIndex = (questListContainer.GetInstanceID() == m_questListContainerInstanceID) ? m_questListIndex : 0;
-            SelectQuest(questListContainer, questListIndex);
+            SelectQuest(questListContainer, Mathf.Max(0, questListIndex));
         }
 
         public void SelectQuest(QuestListContainer questListContainer, int questListIndex)
@@ -219,12 +271,14 @@ namespace PixelCrushers.QuestMachine
 
         public void SelectQuest(Quest quest, QuestListContainer questListContainer, int questListIndex)
         {
+            showQuestRelations = false;
             m_quest = quest;
             m_questSerializedObject = (quest != null) ? new SerializedObject(quest) : null;
             var questInstanceID = (quest != null) ? quest.GetInstanceID() : 0;
             if (quest != null && questInstanceID != m_questInstanceID) m_selectedNodeListIndex = -1;
             m_questInstanceID = questInstanceID;
             m_questListContainerInstanceID = (questListContainer != null) ? questListContainer.GetInstanceID() : 0;
+            m_selectedQuestListContainer = questListContainer;
             m_questListIndex = questListIndex;
             m_canvasGUI.AssignQuest(quest);
 #if DEBUG_QUEST_EDITOR
@@ -248,7 +302,7 @@ namespace PixelCrushers.QuestMachine
             {
                 SelectQuest(selectionAsQuest);
             }
-            else if (selectionAsQuestListContainer != null) 
+            else if (selectionAsQuestListContainer != null)
             {
                 SelectQuest(selectionAsQuestListContainer);
             }
@@ -302,7 +356,7 @@ namespace PixelCrushers.QuestMachine
 
         private void Update()
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || showQuestRelations) return;
             elapsedTime += Time.deltaTime;
             var frequency = QuestEditorPrefs.runtimeRepaintFrequency;
             if (frequency > 0 && elapsedTime > frequency) // Repaint at specified frequency.
@@ -322,7 +376,7 @@ namespace PixelCrushers.QuestMachine
 
         private void CheckCurrentRuntimeSelection()
         {
-            
+
             if (m_questListContainerInstanceID == 0) return;
             var questListContainer = EditorUtility.InstanceIDToObject(m_questListContainerInstanceID) as QuestListContainer;
             if (questListContainer == null || questListContainer.questList == null) return;
@@ -358,7 +412,11 @@ namespace PixelCrushers.QuestMachine
             //    "\nm_questInstanceID=" + m_questInstanceID + "\nm_questListContainerInstanceID=" + m_questListContainerInstanceID);
 #endif
             DrawTitleImage();
-            if (m_canvasGUI.IsQuestAssigned())
+            if (showQuestRelations && Selection.activeObject is QuestDatabase)
+            {
+                m_canvasGUI.DrawQuestRelations(Selection.activeObject as QuestDatabase);
+            }
+            else if (m_canvasGUI.IsQuestAssigned())
             {
                 m_canvasGUI.Draw(position);
             }
@@ -382,7 +440,19 @@ namespace PixelCrushers.QuestMachine
             if (GUILayout.Button(new GUIContent("New quest asset...", "Create a new quest asset file."), GUILayout.Width(160)))
             {
                 var filename = EditorUtility.SaveFilePanelInProject("Create Quest Asset", "New Quest", "asset", "Save new quest asset as:");
-                if (!string.IsNullOrEmpty(filename)) AssetUtility.CreateAssetWithFilename<Quest>(filename, true);
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    var type = System.Type.GetType("PixelCrushers.QuestMachine.Wrappers.Quest, Assembly-CSharp-firstpass");
+                    if (type == null) type = System.Type.GetType("PixelCrushers.QuestMachine.Wrappers.Quest, Assembly-CSharp");
+                    if (type != null)
+                    {
+                        AssetUtility.CreateAssetWithFilename(type, filename, true);
+                    }
+                    else
+                    {
+                        AssetUtility.CreateAssetWithFilename<Quest>(filename, true);
+                    }
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -23,7 +23,7 @@ namespace PixelCrushers.QuestMachine
         public StringField message = new StringField("Get");
         public StringField parameter = new StringField("Coin");
 
-        public override int DetermineReward(int points, Quest quest)
+        public override int DetermineReward(int points, Quest quest, EntityType entityType)
         {
             var val = (int) pointsCurve.Evaluate(points);
 
@@ -34,15 +34,15 @@ namespace PixelCrushers.QuestMachine
                 quest.offerContentList.Add(bodyText);
             }
 
-            var xpAction = MessageQuestAction.CreateInstance<MessageQuestAction>();
-            xpAction.senderID = new StringField(QuestMachineTags.QUESTGIVERID);
-            xpAction.targetID = target;
-            xpAction.message = message;
-            xpAction.parameter = parameter;
-            xpAction.value.valueType = MessageValueType.Int;
-            xpAction.value.intValue = val;
+            var messageQuestAction = MessageQuestAction.CreateInstance<MessageQuestAction>();
+            messageQuestAction.senderID = new StringField(QuestMachineTags.QUESTGIVERID);
+            messageQuestAction.targetID = target;
+            messageQuestAction.message = message;
+            messageQuestAction.parameter = parameter;
+            messageQuestAction.value.valueType = MessageValueType.Int;
+            messageQuestAction.value.intValue = val;
             var successInfo = quest.GetStateInfo(QuestState.Successful);
-            successInfo.actionList.Add(xpAction);
+            successInfo.actionList.Add(messageQuestAction);
 
             return consumePoints ? (points - val) : points;
         }

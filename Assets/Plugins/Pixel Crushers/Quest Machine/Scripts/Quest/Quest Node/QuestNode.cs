@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -461,6 +461,14 @@ namespace PixelCrushers.QuestMachine
         }
 
         /// <summary>
+        /// Sets the internal state value without performing any state change processing.
+        /// </summary>
+        public void SetStateRaw(QuestNodeState state)
+        {
+            m_state = state;
+        }
+
+        /// <summary>
         /// Returns the state info associated with a quest node state.
         /// </summary>
         public QuestStateInfo GetStateInfo(QuestNodeState state)
@@ -499,7 +507,12 @@ namespace PixelCrushers.QuestMachine
         /// <param name="parent">Parent node whose state changed.</param>
         private void OnParentStateChange(QuestNode parent)
         {
-            if (parent != null && parent.GetState() == QuestNodeState.True) SetState(QuestNodeState.Active);
+            if (parent != null && parent.GetState() == QuestNodeState.True && 
+                quest != null && quest.GetState() == QuestState.Active && 
+                GetState() == QuestNodeState.Inactive)
+            {
+                SetState(QuestNodeState.Active);
+            }
         }
 
         #endregion
@@ -515,7 +528,9 @@ namespace PixelCrushers.QuestMachine
         {
             if (!IsContentValidForCurrentSpeaker(category)) return false;
             var stateInfo = QuestStateInfo.GetStateInfo(stateInfoList, m_state);
-            return stateInfo != null && stateInfo.GetContentList(category).Count > 0;
+            if (stateInfo == null) return false;
+            var contentList = stateInfo.GetContentList(category);
+            return contentList != null && contentList.Count > 0;
         }
 
         /// <summary>

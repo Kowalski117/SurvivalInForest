@@ -174,7 +174,6 @@ namespace PixelCrushers.DialogueSystem
         protected Coroutine m_focusWhenOpenCoroutine = null;
         protected Coroutine m_showAfterClosingCoroutine = null;
         protected Coroutine m_setAnimatorCoroutine = null;
-        protected WaitForSeconds m_blockInputDelay = null;
 
         #endregion
 
@@ -186,7 +185,6 @@ namespace PixelCrushers.DialogueSystem
             {
                 addSpeakerNameFormat = addSpeakerNameFormat.Replace("\\n", "\n").Replace("\\t", "\t");
             }
-            if (waitForClose) clearTextOnClose = false;
             m_panelAnimator = GetComponent<Animator>();
         }
 
@@ -241,7 +239,7 @@ namespace PixelCrushers.DialogueSystem
             Open();
             SetUIElementsActive(true);
             SetPortraitImage(portraitSprite);
-            portraitActorName = (dialogueActor != null) ? dialogueActor.actor : portraitName;
+            portraitActorName = (dialogueActor != null) ? dialogueActor.GetActorName() : portraitName;
             if (this.portraitName != null) this.portraitName.text = portraitActorName;
             if (subtitleText.text != null) subtitleText.text = string.Empty;
             CheckDialogueActorAnimator(dialogueActor);
@@ -336,6 +334,7 @@ namespace PixelCrushers.DialogueSystem
         protected override void OnHidden()
         {
             base.OnHidden();
+            if (clearTextOnClose) ClearText();
             if (deactivateOnHidden) DeactivateUIElements();
             currentSubtitle = null;
         }
@@ -355,7 +354,7 @@ namespace PixelCrushers.DialogueSystem
         {
             StopShowAfterClosingCoroutine();
             if (isOpen) base.Close();
-            if (clearTextOnClose) ClearText();
+            if (clearTextOnClose && !waitForClose) ClearText();
             hasFocus = false;
             isFocusing = false;
         }
@@ -471,7 +470,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (blockInputDuration > 0)
             {
-                StartCoroutine(ShowContinueButtonAfterBlockDuration());
+                DialogueManager.instance.StartCoroutine(ShowContinueButtonAfterBlockDuration());
             }
             else
             {
@@ -483,8 +482,15 @@ namespace PixelCrushers.DialogueSystem
         {
             if (continueButton == null) yield break;
             continueButton.interactable = false;
-            if (m_blockInputDelay == null) m_blockInputDelay = new WaitForSeconds(blockInputDuration);
-            yield return m_blockInputDelay;
+
+            // Wait for panel to open, or timeout:
+            var timeout = Time.realtimeSinceStartup + 10f;
+            while (panelState != PanelState.Open && Time.realtimeSinceStartup < timeout)
+            {
+                yield return null;
+            }
+
+            yield return DialogueManager.instance.StartCoroutine(DialogueTime.WaitForSeconds(blockInputDuration));
             continueButton.interactable = true;
             ShowContinueButtonNow();
         }
@@ -568,7 +574,7 @@ namespace PixelCrushers.DialogueSystem
 
             if (waitForOpen && panelState != PanelState.Open)
             {
-                StartCoroutine(SetSubtitleTextContentAfterOpen(subtitle));
+                DialogueManager.instance.StartCoroutine(SetSubtitleTextContentAfterOpen(subtitle));
             }
             else
             {
@@ -605,14 +611,14 @@ namespace PixelCrushers.DialogueSystem
             }
             var previousChars = accumulateText ? UITools.StripRPGMakerCodes(Tools.StripTextMeshProTags(Tools.StripRichTextCodes(previousText))).Length : 0;
             SetFormattedText(subtitleText, previousText, subtitle.formattedText);
-            if (accumulateText) m_accumulatedText = subtitleText.text + "\n";
+            if (accumulateText) m_accumulatedText = UITools.StripRPGMakerCodes(subtitleText.text) + "\n";
             if (scrollbarEnabler != null && !HasTypewriter())
             {
                 scrollbarEnabler.CheckScrollbarWithResetValue(0);
             }
             else if (delayTypewriterUntilOpen && !hasFocus)
             {
-                StartCoroutine(StartTypingWhenFocused(subtitleText, subtitleText.text, previousChars));
+                DialogueManager.instance.StartCoroutine(StartTypingWhenFocused(subtitleText, subtitleText.text, previousChars));
             }
             else
             {
@@ -658,7 +664,9 @@ namespace PixelCrushers.DialogueSystem
             portraitImage.sprite = sprite;
             if (usePortraitNativeSize && sprite != null)
             {
-                portraitImage.rectTransform.sizeDelta = new Vector2(sprite.texture.width, sprite.texture.height);
+                portraitImage.rectTransform.sizeDelta = sprite.packed ?
+                    new Vector2(sprite.rect.width, sprite.rect.height) :
+                    new Vector2(sprite.texture.width, sprite.texture.height);
             }
         }
 
@@ -678,14 +686,14 @@ namespace PixelCrushers.DialogueSystem
                         (speakerPanelNumber == SubtitlePanelNumber.Custom && dialogueActor.standardDialogueUISettings.customSubtitlePanel == this);
                     if (isMyPanel)
                     {
-                        if (m_setAnimatorCoroutine != null) StopCoroutine(m_setAnimatorCoroutine);
-                        m_setAnimatorCoroutine = StartCoroutine(SetAnimatorAtEndOfFrame(dialogueActor.standardDialogueUISettings.portraitAnimatorController));
+                        if (m_setAnimatorCoroutine != null) DialogueManager.instance.StopCoroutine(m_setAnimatorCoroutine);
+                        m_setAnimatorCoroutine = DialogueManager.instance.StartCoroutine(SetAnimatorAtEndOfFrame(dialogueActor.standardDialogueUISettings.portraitAnimatorController));
                     }
                 }
                 else
                 {
-                    if (m_setAnimatorCoroutine != null) StopCoroutine(m_setAnimatorCoroutine);
-                    m_setAnimatorCoroutine = StartCoroutine(SetAnimatorAtEndOfFrame(null));
+                    if (m_setAnimatorCoroutine != null) DialogueManager.instance.StopCoroutine(m_setAnimatorCoroutine);
+                    m_setAnimatorCoroutine = DialogueManager.instance.StartCoroutine(SetAnimatorAtEndOfFrame(null));
                 }
             }
         }
@@ -695,13 +703,14 @@ namespace PixelCrushers.DialogueSystem
             if (dialogueActor != null && useAnimatedPortraits && animator != null &&
                 dialogueActor.standardDialogueUISettings.portraitAnimatorController != null)
             {
-                if (m_setAnimatorCoroutine != null) StopCoroutine(m_setAnimatorCoroutine);
-                m_setAnimatorCoroutine = StartCoroutine(SetAnimatorAtEndOfFrame(dialogueActor.standardDialogueUISettings.portraitAnimatorController));
+                if (m_setAnimatorCoroutine != null) DialogueManager.instance.StopCoroutine(m_setAnimatorCoroutine);
+                m_setAnimatorCoroutine = DialogueManager.instance.StartCoroutine(SetAnimatorAtEndOfFrame(dialogueActor.standardDialogueUISettings.portraitAnimatorController));
             }
         }
 
         protected virtual IEnumerator SetAnimatorAtEndOfFrame(RuntimeAnimatorController animatorController)
         {
+            if (animator == null) yield break;
             if (animator.runtimeAnimatorController != animatorController)
             {
                 animator.runtimeAnimatorController = animatorController;
@@ -710,7 +719,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 Tools.SetGameObjectActive(portraitImage, portraitImage.sprite != null);
             }
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
             if (animator.runtimeAnimatorController != animatorController)
             {
                 animator.runtimeAnimatorController = animatorController;
@@ -719,6 +728,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 Tools.SetGameObjectActive(portraitImage, portraitImage.sprite != null);
             }
+            animator.enabled = animatorController != null;
         }
 
         #endregion

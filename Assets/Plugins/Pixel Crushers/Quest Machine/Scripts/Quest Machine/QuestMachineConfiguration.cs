@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -51,6 +51,18 @@ namespace PixelCrushers.QuestMachine
         [Tooltip("Only allow one instance at a time.")]
         [SerializeField]
         private bool m_allowOnlyOneInstance = true;
+
+        [Tooltip("In most cases, dialogue UI should be hidden on start.")]
+        [SerializeField]
+        private bool m_hideDialogueUIOnStart = true;
+
+        [Tooltip("In most cases, journal UI should be hidden on start.")]
+        [SerializeField]
+        private bool m_hideJournalUIOnStart = true;
+
+        [Tooltip("Set 'Show In Track HUD' false when quest is completed.")]
+        [SerializeField]
+        private bool m_untrackCompletedQuests = true;
 
         [Tooltip("Quest generation performance settings.")]
         [SerializeField]
@@ -126,6 +138,33 @@ namespace PixelCrushers.QuestMachine
         }
 
         /// <summary>
+        /// Make sure dialogue UI is hidden on start.
+        /// </summary>
+        public bool hideDialogueUIOnStart
+        {
+            get { return m_hideDialogueUIOnStart; }
+            set { m_hideDialogueUIOnStart = value; }
+        }
+
+        /// <summary>
+        /// Make sure journal UI is hidden on start.
+        /// </summary>
+        public bool hideJournalUIOnStart
+        {
+            get { return m_hideJournalUIOnStart; }
+            set { m_hideJournalUIOnStart = value; }
+        }
+
+        /// <summary>
+        /// Set 'Show In Track HUD' false when quest is completed.
+        /// </summary>
+        public bool untrackCompletedQuests
+        {
+            get { return m_untrackCompletedQuests; }
+            set { m_untrackCompletedQuests = value; }
+        }
+
+        /// <summary>
         /// What to show in dialogue when quest givers only have completed quests.
         /// </summary>
         public CompletedQuestGlobalDialogueMode completedQuestDialogueMode
@@ -174,6 +213,9 @@ namespace PixelCrushers.QuestMachine
             set { m_debugSettings = value; }
         }
 
+        public static event System.Action quitting = delegate { };
+        public static bool isQuitting = false;
+
         #endregion
 
         #region Private Static Variables
@@ -198,6 +240,14 @@ namespace PixelCrushers.QuestMachine
             get { return m_instance; }
         }
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            m_instances = new List<QuestMachineConfiguration>();
+        }
+#endif
+
         #endregion
 
         #region Initialization
@@ -213,6 +263,7 @@ namespace PixelCrushers.QuestMachine
             QuestMachine.debug = debugSettings.debug;
             RegisterQuestDatabases();
             AddInstance(this);
+            HideUIs();
         }
 
         private void OnDestroy()
@@ -237,7 +288,7 @@ namespace PixelCrushers.QuestMachine
 
         private void SetAsPrimaryInstance()
         {
-            m_instance = instance;
+            m_instance = this;
             QuestMachine.defaultQuestDialogueUI = questDialogueUI as IQuestDialogueUI;
             QuestMachine.defaultQuestJournalUI = questJournalUI as IQuestJournalUI;
             QuestMachine.defaultQuestAlertUI = questAlertUI as IQuestAlertUI;
@@ -250,6 +301,19 @@ namespace PixelCrushers.QuestMachine
             QuestGenerator.maxSimultaneousPlanners = generatorSettings.maxSimultaneousPlanners;
             QuestGenerator.maxGoalActionChecksPerFrame = generatorSettings.maxGoalActionChecksPerFrame;
             QuestGenerator.maxStepsPerFrame = generatorSettings.maxStepsPerFrame;
+            DomainType.SetPlayerDomainInstance(generatorSettings.defaultPlayerDomainType);
+        }
+
+        private void HideUIs()
+        {
+            if (hideDialogueUIOnStart && m_questDialogueUI is MonoBehaviour && (m_questDialogueUI as MonoBehaviour).gameObject.activeSelf)
+            {
+                (m_questDialogueUI as MonoBehaviour).gameObject.SetActive(false);
+            }
+            if (hideJournalUIOnStart && m_questJournalUI is MonoBehaviour && (m_questJournalUI as MonoBehaviour).gameObject.activeSelf)
+            {
+                (m_questJournalUI as MonoBehaviour).gameObject.SetActive(false);
+            }
         }
 
         public void RegisterQuestDatabases()
@@ -263,6 +327,10 @@ namespace PixelCrushers.QuestMachine
                 {
                     QuestMachine.RegisterQuestAsset(database.questAssets[j]);
                 }
+                for (int j = 0; j < database.images.Count; j++)
+                {
+                    QuestMachine.RegisterImage(database.images[j]);
+                }
             }
         }
 
@@ -270,44 +338,47 @@ namespace PixelCrushers.QuestMachine
         {
             QuestMachine.debug = false;
             MessageSystem.debug = false;
+            isQuitting = true;
+            try
+            {
+                quitting();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e, this);
+            }
         }
 
         #endregion
 
         #region Evaluation Version Code
 
-        #if EVALUATION_VERSION
-        private GUIStyle evaluationWatermarkStyle = null;
-        private Rect watermarkRect1;
-        private Rect watermarkRect2;
+#if EVALUATION_VERSION
 
-        public void OnGUI()
+        private GameObject watermark = null;
+
+        protected virtual void LateUpdate()
         {
-            if (Camera.main == null) return;
-            if (Camera.main.GetComponent<GUILayer>() == null) Camera.main.gameObject.AddComponent<GUILayer>();
-            if (evaluationWatermarkStyle == null)
-            {
-                evaluationWatermarkStyle = new GUIStyle(GUI.skin.label);
-                evaluationWatermarkStyle.fontSize = 20;
-                evaluationWatermarkStyle.fontStyle = FontStyle.Bold;
-                evaluationWatermarkStyle.alignment = TextAnchor.MiddleCenter;
-                evaluationWatermarkStyle.normal.textColor = new Color(1, 1, 1, 0.5f);
-                Vector2 size = evaluationWatermarkStyle.CalcSize(new GUIContent("Evaluation Version"));
-                if (UnityEngine.Random.value < 0.5f)
-                {
-                    watermarkRect1 = new Rect(8, 8, size.x, size.y);
-                    watermarkRect2 = new Rect(8, 8 + size.y, size.x, size.y);
-                }
-                else
-                {
-                    watermarkRect1 = new Rect(Screen.width - size.x - 8, Screen.height - 2 * size.y - 8, size.x, size.y);
-                    watermarkRect2 = new Rect(Screen.width - size.x - 8, Screen.height - size.y - 8, size.x, size.y);
-                }
-            }
-            GUI.Label(watermarkRect1, "Quest Machine", evaluationWatermarkStyle);
-            GUI.Label(watermarkRect2, "Evaluation Version", evaluationWatermarkStyle);
+            if (watermark != null) return;
+            watermark = new GameObject(System.Guid.NewGuid().ToString());
+            watermark.transform.SetParent(transform);
+            watermark.hideFlags = HideFlags.HideInHierarchy;
+            var canvas = watermark.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 16383;
+            Destroy(watermark.GetComponent<UnityEngine.UI.GraphicRaycaster>());
+            Destroy(watermark.GetComponent<UnityEngine.UI.CanvasScaler>());
+            var text = watermark.AddComponent<UnityEngine.UI.Text>();
+            text.text = "Quest Machine\nEvaluation Version";
+            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text.fontSize = 24;
+            text.fontStyle = FontStyle.Bold;
+            text.color = new Color(1, 1, 1, 0.75f);
+            text.alignment = (UnityEngine.Random.value < 0.5f) ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
+            text.raycastTarget = false;
         }
-        #endif
+
+#endif
 
         #endregion
 
@@ -321,7 +392,7 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private bool m_debug;
 
-        [Tooltip("Log verbose Message System info to the Console.")]
+        [Tooltip("Log verbose Message System info to the Console. To log Message System info only for a specific GameObject, add a Message System Logger component to the GameObject.")]
         [SerializeField]
         private bool m_debugMessageSystem;
 
@@ -373,6 +444,14 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private int m_maxStepsPerFrame = 100;
 
+        [Tooltip("DomainType asset that abstractly represents the player's inventory.")]
+        [SerializeField]
+        private DomainType m_defaultPlayerDomainType;
+
+        [Tooltip("How facts are evaluated for urgency, and number of top facts to choose from as potential goals for quests.")]
+        [SerializeField]
+        private UrgentFactSelectionMode m_goalSelectionMode = new UrgentFactSelectionMode(UrgentFactionSelectionCriterion.Weighted, 1);
+
         /// <summary>
         /// Limit simultaneous quest-planning processes to this number to control CPU load.
         /// </summary>
@@ -398,6 +477,24 @@ namespace PixelCrushers.QuestMachine
         {
             get { return m_maxStepsPerFrame; }
             set { m_maxStepsPerFrame = value; }
+        }
+
+        /// <summary>
+        /// DomainType asset that abstractly represents the player's inventory.
+        /// </summary>
+        public DomainType defaultPlayerDomainType
+        {
+            get { return m_defaultPlayerDomainType; }
+            set { m_defaultPlayerDomainType = value; }
+        }
+
+        /// <summary>
+        /// How facts are evaluated for urgency, and number of top facts to choose from as potential goals for quests.
+        /// </summary>
+        public UrgentFactSelectionMode goalSelectionCriterion
+        {
+            get { return m_goalSelectionMode; }
+            set { m_goalSelectionMode = value; }
         }
 
     }

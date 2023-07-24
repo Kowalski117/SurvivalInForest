@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;
@@ -26,6 +26,15 @@ namespace PixelCrushers.QuestMachine
         private UnityUIQuestNameButtonTemplate m_activeQuestNameTemplate;
         [SerializeField]
         private UnityUIQuestNameButtonTemplate m_completedQuestNameTemplate;
+        [Tooltip("Show all groups expanded.")]
+        [SerializeField]
+        private bool m_alwaysExpandAllGroups = false;
+        [Tooltip("Show details when pointer hovers quest name.")]
+        [SerializeField]
+        private bool m_showDetailsOnFocus = false;
+        [Tooltip("Include completed quests in selection panel.")]
+        [SerializeField]
+        private bool m_showCompletedQuests = true;
 
         [Header("Details Panel")]
 
@@ -42,6 +51,10 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private UnityUIButtonListTemplate m_buttonListTemplate;
         [SerializeField]
+        private RectTransform m_questDetailsButtonContainer;
+        [SerializeField]
+        private UnityUIButtonTemplate m_trackButtonTemplate;
+        [SerializeField]
         private UnityUIButtonTemplate m_abandonButtonTemplate;
 
         [Header("Abandon Quest Panel")]
@@ -49,12 +62,23 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private UIPanel m_abandonQuestPanel;
         [SerializeField]
-        private UnityEngine.UI.Text m_abandonQuestNameText;
+        private UITextField m_abandonQuestNameText;
 
         [Header("Misc")]
 
         [SerializeField]
+        private bool m_sortAlphabetically = true;
+        [SerializeField]
+        private bool m_showDisplayNameInHeading = false;
+        [SerializeField]
         private bool m_showDialogueContentIfNoJournalContent = false;
+        [SerializeField]
+        private bool m_showQuestsThatHaveNoContent = true;
+        [SerializeField]
+        private bool m_showFirstQuestDetailsOnOpen = false;
+        [Tooltip("Show Track toggle button in quest details panel.")]
+        [SerializeField]
+        private bool m_showTrackButtonInDetails = false;
 
         public enum SendMessageOnOpen { Never, Always, NotWhenUsingMouse }
         [SerializeField]
@@ -88,6 +112,26 @@ namespace PixelCrushers.QuestMachine
             get { return m_completedQuestNameTemplate; }
             set { m_completedQuestNameTemplate = value; }
         }
+        public bool alwaysExpandAllGroups
+        {
+            get { return m_alwaysExpandAllGroups; }
+            set { m_alwaysExpandAllGroups = value; }
+        }
+        public bool showDetailsOnFocus
+        {
+            get { return m_showDetailsOnFocus; }
+            set { m_showDetailsOnFocus = value; }
+        }
+        public bool showTrackButtonInDetails
+        {
+            get { return m_showTrackButtonInDetails; }
+            set { m_showTrackButtonInDetails = value; }
+        }
+        public bool showCompletedQuests
+        {
+            get { return m_showCompletedQuests; }
+            set { m_showCompletedQuests = value; }
+        }
         public RectTransform questDetailsContentContainer
         {
             get { return m_questDetailsContentContainer; }
@@ -118,6 +162,11 @@ namespace PixelCrushers.QuestMachine
             get { return m_buttonListTemplate; }
             set { m_buttonListTemplate = value; }
         }
+        public UnityUIButtonTemplate trackButtonTemplate
+        {
+            get { return m_trackButtonTemplate; }
+            set { m_trackButtonTemplate = value; }
+        }
         public UnityUIButtonTemplate abandonButtonTemplate
         {
             get { return m_abandonButtonTemplate; }
@@ -128,15 +177,30 @@ namespace PixelCrushers.QuestMachine
             get { return m_abandonQuestPanel; }
             set { m_abandonQuestPanel = value; }
         }
-        public UnityEngine.UI.Text abandonQuestNameText
+        public UITextField abandonQuestNameText
         {
             get { return m_abandonQuestNameText; }
             set { m_abandonQuestNameText = value; }
+        }
+        public bool showDisplayNameInHeading
+        {
+            get { return m_showDisplayNameInHeading; }
+            set { m_showDisplayNameInHeading = value; }
         }
         public bool showDialogueContentIfNoJournalContent
         {
             get { return m_showDialogueContentIfNoJournalContent; }
             set { m_showDialogueContentIfNoJournalContent = value; }
+        }
+        public bool showQuestsThatHaveNoContent
+        {
+            get { return m_showQuestsThatHaveNoContent; }
+            set { m_showQuestsThatHaveNoContent = value; }
+        }
+        public bool showFirstQuestDetailsOnOpen
+        {
+            get { return m_showFirstQuestDetailsOnOpen; }
+            set { m_showFirstQuestDetailsOnOpen = value; }
         }
 
         #endregion
@@ -162,6 +226,7 @@ namespace PixelCrushers.QuestMachine
         private Coroutine m_refreshCoroutine = null;
 
         private bool m_mustSendCloseMessage = false;
+        private bool m_hasInitialized = false;
 
         #endregion
 
@@ -170,6 +235,12 @@ namespace PixelCrushers.QuestMachine
             base.Awake();
             selectionPanelContentManager = new UnityUIInstancedContentManager();
             detailsPanelContentManager = new UnityUIInstancedContentManager();
+            m_hasInitialized = true;
+        }
+
+        protected virtual void OnDisable()
+        {
+            m_refreshCoroutine = null;
         }
 
         protected override void InitializeTemplates()
@@ -180,7 +251,7 @@ namespace PixelCrushers.QuestMachine
                 if (questSelectionContentContainer == null) Debug.LogError("Quest Machine: Quest Selection Content Container is unassigned.", this);
                 if (questGroupTemplate == null) Debug.LogError("Quest Machine: Quest Group Template is unassigned.", this);
                 if (activeQuestNameTemplate == null) Debug.LogError("Quest Machine: Active Quest Name Template is unassigned.", this);
-                if (completedQuestNameTemplate == null) Debug.LogError("Quest Machine: Completed Quest Name Template is unassigned.", this);
+                if (completedQuestNameTemplate == null && showCompletedQuests) Debug.LogError("Quest Machine: Completed Quest Name Template is unassigned.", this);
                 if (questDetailsContentContainer == null) Debug.LogError("Quest Machine: Quest Details Content Container is unassigned.", this);
                 if (questHeadingTextTemplate == null) Debug.LogError("Quest Machine: Quest Heading Text Template is unassigned.", this);
                 if (questBodyTextTemplate == null) Debug.LogError("Quest Machine: Quest Body Text Template is unassigned.", this);
@@ -199,6 +270,7 @@ namespace PixelCrushers.QuestMachine
             if (iconListTemplate != null) iconListTemplate.gameObject.SetActive(false);
             if (buttonListTemplate != null) buttonListTemplate.gameObject.SetActive(false);
             if (abandonButtonTemplate != null) abandonButtonTemplate.gameObject.SetActive(false);
+            if (trackButtonTemplate != null) trackButtonTemplate.gameObject.SetActive(false);
         }
 
         public virtual void Toggle(QuestJournal questJournal)
@@ -218,7 +290,7 @@ namespace PixelCrushers.QuestMachine
         /// </summary>
         public virtual bool IsGroupExpanded(string groupName)
         {
-            return expandedGroupNames.Contains(groupName);
+            return alwaysExpandAllGroups || expandedGroupNames.Contains(groupName);
         }
 
         /// <summary>
@@ -237,6 +309,9 @@ namespace PixelCrushers.QuestMachine
             }
         }
 
+        /// <summary>
+        /// Opens the quest journal UI.
+        /// </summary>
         public virtual void Show(QuestJournal questJournal)
         {
             this.questJournal = questJournal;
@@ -244,6 +319,34 @@ namespace PixelCrushers.QuestMachine
             Repaint();
             m_mustSendCloseMessage = ShouldSendOpenCloseMessage();
             if (ShouldSendOpenCloseMessage()) MessageSystem.SendMessage(this, m_openMessage, string.Empty);
+            if (showFirstQuestDetailsOnOpen) selectedQuest = GetFirstQuest();
+        }
+
+        /// <summary>
+        /// Opens the quest journal UI, showing a specified quest's details.
+        /// </summary>
+        public virtual void Show(QuestJournal questJournal, Quest quest)
+        {
+            Show(questJournal);
+            SelectQuest(quest);
+        }
+
+        /// <summary>
+        /// Opens the quest journal UI, showing a specified quest's details.
+        /// </summary>
+        public virtual void Show(QuestJournal questJournal, StringField questID)
+        {
+            Show(questJournal);
+            if (questJournal != null) SelectQuest(questJournal.FindQuest(questID));
+        }
+
+        /// <summary>
+        /// Opens the quest journal UI, showing a specified quest's details.
+        /// </summary>
+        public virtual void Show(QuestJournal questJournal, string questID)
+        {
+            Show(questJournal);
+            if (questJournal != null) SelectQuest(questJournal.FindQuest(questID));
         }
 
         public override void Hide()
@@ -268,6 +371,26 @@ namespace PixelCrushers.QuestMachine
             }
         }
 
+        protected virtual Quest GetFirstQuest()
+        {
+            if (!showCompletedQuests && questJournal.questList != null)
+            {
+                // If we're omitting completed quests, return the first non-completed quest:
+                for (int i = 0; i < questJournal.questList.Count; i++)
+                {
+                    var quest = questJournal.questList[i];
+                    if (quest != null && !IsCompletedQuestState(quest.GetState())) return quest;
+                }
+                return null;
+            }
+            else
+            {
+                // Otherwise we can just return the first quest in the list:
+                var hasQuest = (questJournal != null && questJournal.questList != null && questJournal.questList.Count > 0);
+                return hasQuest ? questJournal.questList[0] : null;
+            }
+        }
+
         public virtual void Repaint(QuestJournal questJournal)
         {
             this.questJournal = questJournal;
@@ -289,45 +412,117 @@ namespace PixelCrushers.QuestMachine
             RefreshNow();
         }
 
-        protected virtual void RefreshNow() //[TODO] Optimize.
+        protected virtual void RefreshNow() //[TODO] Consider pooling.
         {
             isDrawingSelectionPanel = true;
-            selectionPanelContentManager.Clear();            
+            selectionPanelContentManager.Clear();
 
-            // Get group names:
-            var groupNames = new List<string>();
-            int numGroupless = 0;
+            RefreshHeading();
+
+            List<string> groupNames;
+            int numGroupless;
+            GetGroupNames(out groupNames, out numGroupless);
+
+            AddQuestsToUI(groupNames, numGroupless);
+
+            RepaintSelectedQuest();
+
+            RefreshNavigableSelectables();
+        }
+
+        protected virtual void RefreshHeading()
+        {
+            if (entityImage != null) entityImage.sprite = questJournal.image;
+            if (showDisplayNameInHeading && entityName != null && !StringField.IsNullOrEmpty(questJournal.displayName)) entityName.text = questJournal.displayName.value;
+        }
+
+        protected virtual void GetGroupNames(out List<string> groupNames, out int numGroupless)
+        {
+            groupNames = new List<string>();
+            numGroupless = 0;
             foreach (var quest in questJournal.questList)
             {
-                if (quest.GetState() == QuestState.WaitingToStart) continue;
+                if (quest == null) continue;
+                var questState = quest.GetState();
+                if (questState == QuestState.WaitingToStart) continue;
+                if (!showCompletedQuests && IsCompletedQuestState(questState)) continue;
                 var groupName = StringField.GetStringValue(quest.group);
                 if (string.IsNullOrEmpty(groupName)) numGroupless++;
                 if (string.IsNullOrEmpty(groupName) || groupNames.Contains(groupName)) continue;
                 groupNames.Add(groupName);
             }
+            SortGroupNames(groupNames);
+        }
 
-            // Add quests by group:
+        /// <summary>
+        /// You can override this method to sort differently.
+        /// </summary>
+        protected virtual void SortGroupNames(List<string> groupNames)
+        {
+            if (m_sortAlphabetically)
+            {
+                groupNames.Sort();
+            }
+        }
+
+        /// <summary>
+        /// You can override this method to sort differently.
+        /// </summary>
+        protected virtual void SortQuests(List<Quest> quests)
+        {
+            if (m_sortAlphabetically)
+            {
+                quests.Sort((x, y) => string.Compare(StringField.GetStringValue(x.title), StringField.GetStringValue(y.title)));
+            }
+        }
+
+        protected virtual bool IsCompletedQuestState(QuestState questState)
+        {
+            return questState == QuestState.Successful || questState == QuestState.Failed || questState == QuestState.Abandoned;
+        }
+
+        protected virtual void AddQuestsToUI(List<string> groupNames, int numGroupless)
+        {
+            var quests = new List<Quest>(questJournal.questList);
+            SortQuests(quests);
+
+            AddGroupedQuestsToUI(quests, groupNames);
+            if (numGroupless > 0)
+            {
+                AddQuestsToUI(quests, string.Empty, questSelectionContentContainer);
+            }
+        }
+
+        protected virtual void AddGroupedQuestsToUI(List<Quest> quests, List<string> groupNames)
+        {
             foreach (var groupName in groupNames)
             {
-                var groupFoldout = Instantiate<UnityUIFoldoutTemplate>(questGroupTemplate);
-                selectionPanelContentManager.Add(groupFoldout, questSelectionContentContainer);
-                groupFoldout.Assign(groupName, IsGroupExpanded(groupName));
+                AddQuestGroupToUI(quests, groupName);
+            }
+        }
+
+        protected void AddQuestGroupToUI(List<Quest> quests, string groupName)
+        {
+            // Add foldout for group:
+            var groupFoldout = Instantiate<UnityUIFoldoutTemplate>(questGroupTemplate);
+            selectionPanelContentManager.Add(groupFoldout, questSelectionContentContainer);
+            groupFoldout.Assign(groupName, IsGroupExpanded(groupName));
+            if (alwaysExpandAllGroups)
+            {
+                groupFoldout.foldoutButton.interactable = false;
+            }
+            else
+            {
+                groupFoldout.foldoutButton.interactable = true;
                 groupFoldout.foldoutButton.onClick.AddListener(() => { OnClickGroup(groupName, groupFoldout); });
-                foreach (var quest in questJournal.questList)
-                {
-                    if (quest.GetState() == QuestState.WaitingToStart) continue;
-                    if (string.Equals(quest.group.value, groupName))
-                    {
-                        var questName = Instantiate<UnityUIQuestNameButtonTemplate>(GetQuestNameTemplateForState(quest.GetState()));
-                        questName.Assign(quest, OnToggleTracking);
-                        selectionPanelContentManager.Add(questName, groupFoldout.interiorPanel);
-                        var target = quest;
-                        questName.buttonTemplate.button.onClick.AddListener(() => { OnClickQuest(target); });
-                    }
-                }
             }
 
-            // Add groupless quests:
+            // Add group's quests:
+            AddQuestsToUI(quests, groupName, groupFoldout.interiorPanel);
+        }
+
+        protected virtual void AddGrouplessQuestsToUI()
+        {
             foreach (var quest in questJournal.questList)
             {
                 if (quest.GetState() == QuestState.WaitingToStart) continue;
@@ -337,12 +532,68 @@ namespace PixelCrushers.QuestMachine
                 questName.Assign(quest, OnToggleTracking);
                 selectionPanelContentManager.Add(questName, questSelectionContentContainer);
                 var target = quest;
-                questName.buttonTemplate.button.onClick.AddListener(() => { OnClickQuest(target); });
+                SetupQuestNameUIEvents(questName.buttonTemplate.button, target);
             }
+        }
 
-            RepaintSelectedQuest();
+        protected virtual void AddQuestsToUI(List<Quest> quests, string requiredGroupName, RectTransform container)
+        {
+            AddQuestsToUI(quests, requiredGroupName, container, true);
+            AddQuestsToUI(quests, requiredGroupName, container, false);
+        }
 
-            RefreshNavigableSelectables();
+        protected virtual void AddQuestsToUI(List<Quest> quests, string requiredGroupName, RectTransform container, bool onlyAddActive)
+        { 
+            foreach (var quest in quests)
+            {
+                if (quest == null) continue;
+                var questState = quest.GetState();
+                if (questState == QuestState.WaitingToStart) continue;
+                if (!showCompletedQuests && IsCompletedQuestState(questState)) continue;
+                if (onlyAddActive && questState != QuestState.Active) continue;
+                if (!onlyAddActive && questState == QuestState.Active) continue;
+                var groupName = StringField.GetStringValue(quest.group);
+                if (string.Equals(groupName, requiredGroupName))
+                {
+                    AddQuestToUI(quest, container);
+                }
+            }
+        }
+
+        protected virtual void AddQuestToUI(Quest quest, RectTransform container)
+        {
+            if (quest == null || container == null) return;
+            if (!showQuestsThatHaveNoContent)
+            {
+                var contents = GetQuestContents(quest);
+                if (contents == null || contents.Count <= 1) return;
+            }
+            var questName = Instantiate<UnityUIQuestNameButtonTemplate>(GetQuestNameTemplateForState(quest.GetState()));
+            questName.Assign(quest, OnToggleTracking);
+            selectionPanelContentManager.Add(questName, container);
+            var target = quest;
+            SetupQuestNameUIEvents(questName.buttonTemplate.button, target);
+        }
+
+        private void SetupQuestNameUIEvents(UnityEngine.UI.Button button, Quest target)
+        {
+            if (button == null || target == null) return;
+            button.onClick.AddListener(() => { OnClickQuest(target); });
+            if (showDetailsOnFocus)
+            {
+                var trigger = button.GetComponent<UnityEngine.EventSystems.EventTrigger>();
+                if (trigger == null) trigger = button.gameObject.AddComponent<UnityEngine.EventSystems.EventTrigger>();
+                // PointerEnter:
+                var entry = new UnityEngine.EventSystems.EventTrigger.Entry();
+                entry.eventID = UnityEngine.EventSystems.EventTriggerType.PointerEnter;
+                entry.callback.AddListener((eventData) => { OnClickQuest(target); });
+                trigger.triggers.Add(entry);
+                // Select:
+                entry = new UnityEngine.EventSystems.EventTrigger.Entry();
+                entry.eventID = UnityEngine.EventSystems.EventTriggerType.Select;
+                entry.callback.AddListener((eventData) => { OnClickQuest(target); });
+                trigger.triggers.Add(entry);
+            }
         }
 
         private UnityUIQuestNameButtonTemplate GetQuestNameTemplateForState(QuestState state)
@@ -369,24 +620,39 @@ namespace PixelCrushers.QuestMachine
 
         protected virtual void RepaintSelectedQuest()
         {
+            if (!m_hasInitialized) return;
             isDrawingSelectionPanel = false;
             currentContentManager.Clear();
             currentIconList = null;
             currentButtonList = null;
             if (selectedQuest != null)
             {
-                var contents = selectedQuest.GetContentList(QuestContentCategory.Journal);
-                if (contents.Count == 0 && showDialogueContentIfNoJournalContent) contents = selectedQuest.GetContentList(QuestContentCategory.Dialogue);
+                var contents = GetQuestContents(selectedQuest);
                 AddContents(contents);
-                if (selectedQuest.GetState() == QuestState.Active && selectedQuest.isAbandonable)
-                {
-                    var instance = Instantiate<UnityUIButtonTemplate>(abandonButtonTemplate);  //[TODO] Pool.
-                    detailsPanelContentManager.Add(instance, questDetailsContentContainer);
-                }
+                var isQuestActive = selectedQuest.GetState() == QuestState.Active;
+                var showTrack = showTrackButtonInDetails && isQuestActive && selectedQuest.isTrackable;
+                var showAbandon = isQuestActive && selectedQuest.isAbandonable;
+                if (trackButtonTemplate != null) trackButtonTemplate.gameObject.SetActive(showTrack);
+                if (abandonButtonTemplate != null) abandonButtonTemplate.gameObject.SetActive(showAbandon);
+                if (m_questDetailsButtonContainer != null) m_questDetailsButtonContainer.transform.SetAsLastSibling();
+
+                if (m_questDetailsButtonContainer == null) m_questDetailsButtonContainer = null; // Silence warning about never assigned.
+                
+                //{
+                //    var instance = Instantiate<UnityUIButtonTemplate>(abandonButtonTemplate);  //[TODO] Pool.
+                //    detailsPanelContentManager.Add(instance, questDetailsContentContainer);
+                //}
             }
             isDrawingSelectionPanel = true;
 
             RefreshNavigableSelectables();
+        }
+
+        protected virtual List<QuestContent> GetQuestContents(Quest quest)
+        {
+            var contents = quest.GetContentList(QuestContentCategory.Journal);
+            if (contents.Count == 0 && showDialogueContentIfNoJournalContent) contents = quest.GetContentList(QuestContentCategory.Dialogue);
+            return contents;
         }
 
         public void OnToggleTracking(bool value, object data)
@@ -395,6 +661,14 @@ namespace PixelCrushers.QuestMachine
             if (quest == null) return;
             quest.showInTrackHUD = value;
             QuestMachineMessages.RefreshUIs(quest);
+        }
+
+        public void ToggleTracking()
+        {
+            if (selectedQuest != null && selectedQuest.isTrackable)
+            {
+                OnToggleTracking(!selectedQuest.showInTrackHUD, selectedQuest);
+            }
         }
 
         public void OpenAbandonQuestConfirmationDialog()

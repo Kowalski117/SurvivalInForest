@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -63,13 +63,37 @@ namespace PixelCrushers.QuestMachine
 
         public string typeName { get { return isPlayerDomain ? "Player's Domain" : name; } }
 
-        public static DomainType playerDomainInstance { get; private set; }
+        public static DomainType playerDomainInstance { get; set; }
+
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            playerDomainInstance = null;
+        }
+#endif
 
         private void OnEnable()
         {
             if (isPlayerDomain) playerDomainInstance = this;
         }
 
+        public static void SetPlayerDomainInstance(DomainType newInstance)
+        {
+            if (newInstance != null)
+            {
+                playerDomainInstance = newInstance;
+            }
+            if (playerDomainInstance == null && Application.isPlaying)
+            {
+                // If none, create a new runtime instance:
+                playerDomainInstance = ScriptableObject.CreateInstance<DomainType>();
+                playerDomainInstance.isPlayerDomain = true;
+                playerDomainInstance.displayName = new StringField("Player");
+                playerDomainInstance.description = "Represents the player's inventory.";
+            }
+
+        }
 
     }
 

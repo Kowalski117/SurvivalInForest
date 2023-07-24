@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -33,6 +33,9 @@ namespace PixelCrushers.QuestMachine
         private UnityUIIconListTemplate m_iconListTemplate;
         [SerializeField]
         private UnityUIButtonListTemplate m_buttonListTemplate;
+        [Tooltip("Use container template even for single-element content such as a single string.")]
+        [SerializeField]
+        private bool m_alwaysUseContainerTemplate = false;
 
         [Header("Duration")]
 
@@ -43,6 +46,10 @@ namespace PixelCrushers.QuestMachine
         [Tooltip("Duration to show alerts in characters per second.")]
         [SerializeField]
         private int m_charsPerSecDuration = 50;
+
+        [Tooltip("When hiding after last content is done, leave last content visible during hide animation.")]
+        [SerializeField]
+        private bool m_leaveLastContentVisibleDuringHide = false;
 
         [SerializeField]
         private UnityEvent m_onShowAlert = new UnityEvent();
@@ -87,6 +94,11 @@ namespace PixelCrushers.QuestMachine
             get { return m_buttonListTemplate; }
             set { m_buttonListTemplate = value; }
         }
+        public bool alwaysUseContainerTemplate
+        {
+            get { return m_alwaysUseContainerTemplate; }
+            set { m_alwaysUseContainerTemplate = value; }
+        }
 
         /// <summary>
         /// Minimum duration in seconds to show alerts.
@@ -104,6 +116,15 @@ namespace PixelCrushers.QuestMachine
         {
             get { return m_charsPerSecDuration; }
             set { m_charsPerSecDuration = value; }
+        }
+
+        /// <summary>
+        /// When hiding after last content is done, leave last content visible during hide animation.
+        /// </summary>
+        public bool leaveLastContentVisibleDuringHide
+        {
+            get { return m_leaveLastContentVisibleDuringHide; }
+            set { m_leaveLastContentVisibleDuringHide = value; }
         }
 
         public UnityEvent onShowAlert { get { return m_onShowAlert; } }
@@ -132,6 +153,12 @@ namespace PixelCrushers.QuestMachine
             if (alertContainerTemplate == null && Debug.isDebugBuild) Debug.LogError("Quest Machine: Alert Container Template is unassigned.", this);
         }
 
+        public override void Show()
+        {
+            currentContentManager.Clear();
+            base.Show();
+        }
+
         /// <summary>
         /// Shows a quest alert.
         /// </summary>
@@ -142,7 +169,7 @@ namespace PixelCrushers.QuestMachine
             if (contents == null || contents.Count == 0) return;
             if (!isVisible) Show();
             UnityUIContentTemplate alertInstance;
-            if (contents.Count == 1)
+            if (contents.Count == 1 && !alwaysUseContainerTemplate)
             {
                 AddContent(contents[0]);
                 alertInstance = (contentManager.instancedContent.Count == 0) ? null 
@@ -179,11 +206,29 @@ namespace PixelCrushers.QuestMachine
         {
             if (string.IsNullOrEmpty(message)) return;
             if (!isVisible) Show();
-            var instance = Instantiate<UnityUITextTemplate>(bodyTemplate);
-            currentContentManager.Add(instance, currentContentContainer);
-            instance.Assign(message);
-            StartCoroutine(TimedDespawn(instance, GetDisplayDuration(message)));
-            onShowAlert.Invoke();
+            if (alwaysUseContainerTemplate)
+            {
+                var container = Instantiate<UnityUIContainerTemplate>(alertContainerTemplate);
+                var alertInstance = container;
+                contentManager.Add(container, currentContentContainer);
+                var realContentManager = contentManager; // Don't add sub-contents to real content manager.
+                contentManager = new UnityUIInstancedContentManager();
+                AddBodyContent(message);
+                container.AddInstanceToContainer(contentManager.GetLastAdded());
+                contentManager = realContentManager;
+                if (alertInstance != null) StartCoroutine(TimedDespawn(alertInstance, GetDisplayDuration(message)));
+                onShowAlert.Invoke();
+            }
+            else
+            {
+                // If useContainerTemplateForSimpleStrings is false, add body text directly to container
+                // to save the instantiation of an extra GameObject:
+                var alertInstance = Instantiate<UnityUITextTemplate>(bodyTemplate);
+                currentContentManager.Add(alertInstance, currentContentContainer);
+                alertInstance.Assign(message);
+                StartCoroutine(TimedDespawn(alertInstance, GetDisplayDuration(message)));
+                onShowAlert.Invoke();
+            }
         }
 
         /// <summary>
@@ -195,12 +240,19 @@ namespace PixelCrushers.QuestMachine
             ShowAlert(StringField.GetStringValue(stringField));
         }
 
-        protected IEnumerator TimedDespawn(UnityUIContentTemplate instance, float duration)
+        protected virtual IEnumerator TimedDespawn(UnityUIContentTemplate instance, float duration)
         {
             if (instance == null) yield break;
             yield return new WaitForSeconds(duration);
-           contentManager.Remove(instance);
-            if (contentManager.instancedContent.Count == 0) Hide();
+            if (leaveLastContentVisibleDuringHide && contentManager.instancedContent.Count <= 1)
+            {
+                Hide();
+            }
+            else
+            {
+                contentManager.Remove(instance);
+                if (contentManager.instancedContent.Count == 0) Hide();
+            }
         }
 
         protected float GetDisplayDuration(List<QuestContent> contents)
@@ -241,7 +293,7 @@ namespace PixelCrushers.QuestMachine
             return GetDisplayDuration(StringField.GetStringValue(stringField));
         }
 
-        protected float GetDisplayDuration(string text)
+        protected virtual float GetDisplayDuration(string text)
         {
             return Mathf.Max(minDisplayDuration, string.IsNullOrEmpty(text) ? 0 : (float)text.Length / charsPerSecDuration);
         }

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -55,6 +55,16 @@ namespace PixelCrushers.QuestMachine
         public QuestBuilder(string name, string id, string title)
         {
             CreateQuest(name, new StringField(id), new StringField(title));
+        }
+
+        /// <summary>
+        /// Creates a QuestBuilder for an existing quest. Use this form to add
+        /// new content to an existing quest.
+        /// </summary>
+        /// <param name="quest">The quest to edit.</param>
+        public QuestBuilder(Quest quest)
+        {
+            this.quest = quest;
         }
 
         private void CreateQuest(string name, StringField id, StringField title)
@@ -164,6 +174,11 @@ namespace PixelCrushers.QuestMachine
             AddContents(quest.offerContentList, contents);
         }
 
+        public void AddOfferUnmetContents(params QuestContent[] contents)
+        {
+            AddContents(quest.offerConditionsUnmetContentList, contents);
+        }
+
         #endregion
 
         #region Create Content 
@@ -210,7 +225,7 @@ namespace PixelCrushers.QuestMachine
         {
             var content = BodyTextQuestContent.CreateInstance<BodyTextQuestContent>();
             content.name = "text";
-            content.bodyText = new StringField(text.value.Replace("{DOMAIN}", "Forest")); //[TODO] replace text
+            content.bodyText = new StringField(text);
             return content;
         }
 
@@ -266,7 +281,7 @@ namespace PixelCrushers.QuestMachine
 
         public QuestNode AddPassthroughNode(QuestNode parent, StringField id, StringField internalName)
         {
-            return AddNode(parent, id, internalName, QuestNodeType.Failure);
+            return AddNode(parent, id, internalName, QuestNodeType.Passthrough);
         }
 
         public QuestNode AddPassthroughNode(QuestNode parent, string id, string internalName)
@@ -290,7 +305,7 @@ namespace PixelCrushers.QuestMachine
         public QuestNode AddDiscussQuestNode(QuestNode parent, QuestMessageParticipant targetSpecifier, StringField targetID, bool isOptional = false)
         {
             var node = AddConditionNode(parent, "talkTo" + targetID, "Talk to " + targetID, ConditionCountMode.All, isOptional);
-            AddMessageCondition(node, QuestMessageParticipant.Quester, StringField.empty, targetSpecifier, targetID, new StringField(QuestMachineMessages.DiscussedQuestMessage), quest.id);
+            AddMessageCondition(node, QuestMessageParticipant.Quester, new StringField(), targetSpecifier, targetID, new StringField(QuestMachineMessages.DiscussedQuestMessage), quest.id);
             return node;
         }
 
@@ -324,9 +339,9 @@ namespace PixelCrushers.QuestMachine
             return AddCounterCondition(node, new StringField(counterName), conditionMode, new QuestNumber(requiredValue));
         }
 
-        public MessageQuestCondition AddMessageCondition(QuestNode node, 
+        public MessageQuestCondition AddMessageCondition(QuestNode node,
             QuestMessageParticipant senderSpecifier, StringField senderID,
-            QuestMessageParticipant targetSpecifier, StringField targetID, 
+            QuestMessageParticipant targetSpecifier, StringField targetID,
             StringField message, StringField parameter, MessageValue value = null)
         {
             var condition = MessageQuestCondition.CreateInstance<MessageQuestCondition>();
@@ -365,6 +380,37 @@ namespace PixelCrushers.QuestMachine
             var alertAction = AlertQuestAction.CreateInstance<AlertQuestAction>();
             AddContents(alertAction.contentList, CreateBodyContent(text));
             return alertAction;
+        }
+
+        public QuestAction CreateMessageAction(StringField message, StringField parameter)
+        {
+            return CreateMessageAction(StringField.GetStringValue(message), StringField.GetStringValue(parameter));
+        }
+
+        public QuestAction CreateMessageAction(string message, string parameter)
+        {
+            var messageAction = MessageQuestAction.CreateInstance<MessageQuestAction>();
+            messageAction.message = new StringField(message);
+            messageAction.parameter = new StringField(parameter);
+            return messageAction;
+        }
+
+        public QuestAction CreateMessageAction(StringField text)
+        {
+            return CreateMessageAction(StringField.GetStringValue(text));
+        }
+
+        public QuestAction CreateMessageAction(string text)
+        {
+            if (text.Contains(":")) // Parameter?
+            {
+                var colonPos = text.IndexOf(':');
+                return CreateMessageAction(text.Substring(colonPos + 1), text.Substring(0, colonPos));
+            }
+            else
+            {
+                return CreateMessageAction(text, string.Empty);
+            }
         }
 
         public QuestAction CreateSetIndicatorAction(StringField questID, StringField entityID, QuestIndicatorState indicatorState)

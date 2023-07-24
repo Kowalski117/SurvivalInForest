@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;
@@ -20,7 +20,11 @@ namespace PixelCrushers.QuestMachine
         public static int maxSimultaneousPlanners = 5;
         public static int maxGoalActionChecksPerFrame = 100;
         public static int maxStepsPerFrame = 100;
+        public static int defaultMaxSearchDepth = 1000;
         public static bool detailedDebug = false;
+
+        private int m_maxSearchDepth = defaultMaxSearchDepth;
+        public int maxSearchDepth { get { return m_maxSearchDepth; } set { m_maxSearchDepth = value; } }
 
         private QuestEntity entity { get; set; }
         private StringField group { get; set; }
@@ -29,6 +33,8 @@ namespace PixelCrushers.QuestMachine
         private bool requireReturnToComplete { get; set; }
         private List<QuestContent> rewardsUIContents { get; set; }
         private List<RewardSystem> rewardSystems { get; set; }
+        private UrgentFactSelectionMode goalSelectionMode { get; set; }
+        private bool abandonable { get; set; }
         private string[] ignoreList { get; set; }
         private Coroutine coroutine { get; set; }
         private bool cancel { get; set; }
@@ -56,11 +62,12 @@ namespace PixelCrushers.QuestMachine
         #region Entry Points
 
         public void GenerateQuest(QuestEntity entity, StringField group, DomainType domainType, WorldModel worldModel, bool requireReturnToComplete,
-            List<QuestContent> rewardsUIContents, List<RewardSystem> rewardSystems, List<Quest> existingQuests, GeneratedQuestDelegate generatedQuest)
+            List<QuestContent> rewardsUIContents, List<RewardSystem> rewardSystems, List<Quest> existingQuests, GeneratedQuestDelegate generatedQuest,
+            UrgentFactSelectionMode goalSelectionMode, bool generateAbandonableQuests)
         {
             if (entity == null || domainType == null || worldModel == null) return;
             coroutine = entity.StartCoroutine(GenerateQuestCoroutine(entity, group, domainType, worldModel, requireReturnToComplete, 
-                rewardsUIContents, rewardSystems, existingQuests, generatedQuest));
+                rewardsUIContents, rewardSystems, existingQuests, generatedQuest, goalSelectionMode, generateAbandonableQuests));
         }
 
         public void CancelGeneration()
@@ -69,7 +76,8 @@ namespace PixelCrushers.QuestMachine
         }
 
         private IEnumerator GenerateQuestCoroutine(QuestEntity entity, StringField group, DomainType domainType, WorldModel worldModel, bool requireReturnToComplete,
-            List<QuestContent> rewardsUIContents, List<RewardSystem> rewardSystems, List<Quest> existingQuests, GeneratedQuestDelegate generatedQuest)
+            List<QuestContent> rewardsUIContents, List<RewardSystem> rewardSystems, List<Quest> existingQuests, GeneratedQuestDelegate generatedQuest,
+            UrgentFactSelectionMode goalSelectionMode, bool generateAbandonableQuests)
         {
             this.cancel = false;
             this.entity = entity;
@@ -80,6 +88,8 @@ namespace PixelCrushers.QuestMachine
             this.rewardsUIContents = rewardsUIContents;
             this.rewardSystems = rewardSystems;
             this.ignoreList = GenerateIgnoreList(existingQuests);
+            this.goalSelectionMode = goalSelectionMode;
+            this.abandonable = generateAbandonableQuests;
             masterStepList = new List<PlanStep>();
             goal = null;
             plan = null;
@@ -96,6 +106,7 @@ namespace PixelCrushers.QuestMachine
                     quest = planToQuestBuilder.ConvertPlanToQuest(entity, group, goal, motive, plan, requireReturnToComplete, rewardsUIContents, rewardSystems);
                 }
             }
+            if (abandonable && quest != null) quest.isAbandonable = true;
             generatedQuest(quest);
         }
 
@@ -121,9 +132,13 @@ namespace PixelCrushers.QuestMachine
         {
             // Search world model for most urgent fact:
             Fact[] mostUrgentFacts;
-            worldModel.ComputeUrgency(UrgentFactSelectionMode.mostUrgent, out mostUrgentFacts, ignoreList);
-            var mostUrgentFact = (mostUrgentFacts.Length > 0) ? mostUrgentFacts[0] : null;
-            if (mostUrgentFact == null) yield break;
+            var cumulativeUrgency = worldModel.ComputeUrgency(goalSelectionMode, out mostUrgentFacts, ignoreList, detailedDebug);
+            var mostUrgentFact = ChooseWeightedMostUrgentFact(mostUrgentFacts);
+            if (cumulativeUrgency <= 0 || mostUrgentFact == null)
+            {
+                if (QuestMachine.debug || detailedDebug) Debug.Log("Quest Machine: [Generator] " + entity.displayName + ": No facts are currently urgent for " + entity.displayName + ". Not generating a new quest.", entity);
+                yield break;
+            }
             if (QuestMachine.debug || detailedDebug) Debug.Log("Quest Machine: [Generator] " + entity.displayName + ": Most urgent fact: " + mostUrgentFact.count + " " + 
                 mostUrgentFact.entityType.name + " in " + mostUrgentFact.domainType.name, entity);
 
@@ -162,6 +177,31 @@ namespace PixelCrushers.QuestMachine
             goal = new PlanStep(mostUrgentFact, bestAction, Mathf.CeilToInt(mostUrgentFact.entityType.maxCountInAction.Evaluate(mostUrgentFact.count)));
             if (QuestMachine.debug || detailedDebug) Debug.Log("Quest Machine: [Generator] " + entity.displayName + ": Goal: " + bestAction.name + " " + 
                 mostUrgentFact.count + " " + mostUrgentFact.entityType.name, entity);
+        }
+
+        private Fact ChooseWeightedMostUrgentFact(Fact[] mostUrgentFacts)
+        {
+            if (mostUrgentFacts == null || mostUrgentFacts.Length == 0) return null;
+            float totalWeight = 0;
+            for (int i = 0; i < mostUrgentFacts.Length; i++)
+            {
+                var fact = mostUrgentFacts[i];
+                if (fact == null) continue;
+                totalWeight += fact.urgency;
+            }
+            var randomValue = Random.value * totalWeight;
+            float min = 0;
+            for (int i = 0; i < mostUrgentFacts.Length; i++)
+            {
+                var fact = mostUrgentFacts[i];
+                if (fact == null) continue;
+                var max = min + fact.urgency;
+                if (min <= randomValue && randomValue <= max)
+                {
+                    return fact;
+                }
+            }
+            return null;
         }
 
         #endregion
@@ -212,14 +252,8 @@ namespace PixelCrushers.QuestMachine
 
         private DriveValue LookupEntityDriveValue(Drive drive)
         {
-            if (drive == null || entity == null || entity.entityType == null || entity.entityType.driveValues == null) return null;
-            for (int i = 0; i < entity.entityType.driveValues.Count; i++)
-            {
-                var driveValue = entity.entityType.driveValues[i];
-                if (driveValue == null) continue;
-                if (driveValue.drive == drive) return driveValue;
-            }
-            return null;
+            if (drive == null || entity == null || entity.entityType == null) return null;
+            return entity.entityType.LookupDriveValue(drive);
         }
 
         #endregion
@@ -243,7 +277,7 @@ namespace PixelCrushers.QuestMachine
 
             int numStepsChecked = 0;
             int safeguard = 0;
-            while (Q.Count > 0 && safeguard < 1000)
+            while (Q.Count > 0 && safeguard < maxSearchDepth)
             {
                 safeguard++;
 
@@ -263,7 +297,7 @@ namespace PixelCrushers.QuestMachine
                 //Debug.Log(indent + "Goal met (lastStep=" + lastStep + ")? " + current.worldModel.AreRequirementsMet(goal.action.requirements));
 
                 // If the current state meets the goal requirements, return a finished plan:
-                if (current.worldModel.AreRequirementsMet(goal.action.requirements))
+                if (current.worldModel.AreRequirementsMet(goal.action.requirements, goal.fact))
                 {
                     plan = new Plan(current, goal, null);
                     yield break;
@@ -371,7 +405,7 @@ namespace PixelCrushers.QuestMachine
                 var step = plan.steps[i];
                 if (step.action.completion.mode != ActionCompletion.Mode.Counter) continue;
                 var stepCounterName = StringField.GetStringValue(step.action.completion.baseCounterName);
-                step.action.completion.requiredValue = requiredCounterValue[stepCounterName];
+                step.requiredCounterValue = Mathf.Max(step.requiredCounterValue, requiredCounterValue[stepCounterName]);
             }
         }
 

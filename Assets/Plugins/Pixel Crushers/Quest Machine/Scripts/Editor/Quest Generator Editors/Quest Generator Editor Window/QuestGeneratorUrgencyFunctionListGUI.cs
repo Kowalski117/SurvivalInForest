@@ -32,12 +32,24 @@ namespace PixelCrushers.QuestMachine
         {
             // Create a list of all urgency function types, excluding abstract types and 
             // types that have wrappers:
-            var list = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
-                        from assemblyType in domainAssembly.GetExportedTypes()
+            var list = new List<System.Type>();
+            var assemblies = RuntimeTypeUtility.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                try
+                {
+                    var assemblyList = (from assemblyType in assembly.GetExportedTypes()
                         where typeof(UrgencyFunction).IsAssignableFrom(assemblyType)
                         select assemblyType).ToArray();
+                    list.AddRange(assemblyList);
+                }
+                catch (System.Exception)
+                {
+                    // Ignore exceptions and move on to next assembly.
+                }
+            }
             var menu = new GenericMenu();
-            for (int i = 0; i < list.Length; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 var type = list[i];
                 if (type == null) continue;

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -28,6 +28,10 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private QuestIndicatorState m_hasQuestButCannotOfferState = QuestIndicatorState.None;
 
+        [Tooltip("Single player game. Check player's QuestJournal for active/completed quests.")]
+        [SerializeField]
+        private bool m_checkSinglePlayerJournal = true;
+
         /// <summary>
         /// Quest Indicator UI containing visual indicators for each indicator state. Can be a prefab.
         /// </summary>
@@ -55,6 +59,15 @@ namespace PixelCrushers.QuestMachine
             set { m_hasQuestButCannotOfferState = value; }
         }
 
+        /// <summary>
+        /// Single player game. Check player's QuestJournal for active/completed quests.
+        /// </summary>
+        public bool checkSinglePlayerJournal
+        {
+            get { return m_checkSinglePlayerJournal; }
+            set { m_checkSinglePlayerJournal = value; }
+        }
+
         private string m_id = null;
 
         private List<string>[] m_states;
@@ -67,7 +80,7 @@ namespace PixelCrushers.QuestMachine
             set { m_id = value; }
         }
 
-        protected List<string>[] states
+        public List<string>[] states
         {
             get { return m_states; }
             set { m_states = value; }
@@ -91,11 +104,22 @@ namespace PixelCrushers.QuestMachine
             Repaint();
         }
 
+        protected virtual void OnEnable()
+        {
+            Repaint();
+        }
+
+        protected virtual void OnDisable()
+        {
+            m_refreshCoroutine = null;
+        }
+
         protected virtual void InitializeQuestIndicatorUI()
         {
             if (questIndicatorUI == null) questIndicatorUI = GetComponentInChildren<QuestIndicatorUI>();
             if (questIndicatorUI == null) return;
-            if (!questIndicatorUI.gameObject.activeInHierarchy || questIndicatorUI.transform.parent == null)
+            if (questIndicatorUI.gameObject != this.gameObject && 
+                (!questIndicatorUI.gameObject.activeInHierarchy || questIndicatorUI.transform.parent == null))
             {
                 // Instantiate from prefab:
                 questIndicatorUI = Instantiate(questIndicatorUI, transform.position, transform.rotation) as QuestIndicatorUI;
@@ -171,6 +195,7 @@ namespace PixelCrushers.QuestMachine
 
         public virtual void RefreshFromAllQuests()
         {
+            QuestJournal playerQuestJournal = checkSinglePlayerJournal ? QuestMachine.GetQuestJournal() : null;
             InitializeStates();
             var allQuests = QuestMachine.GetAllQuestInstances();
             foreach (var kvp in allQuests)
@@ -190,13 +215,25 @@ namespace PixelCrushers.QuestMachine
                     }
                     else if (questState == QuestState.WaitingToStart && StringField.Equals(quest.questGiverID, myID) && string.IsNullOrEmpty(quest.questerID))
                     {
-                        // Otherwise if it's offerable by me, record it:
-                        var state = quest.canOffer ? hasQuestToOfferState : hasQuestButCannotOfferState;
-                        states[(int)state].Add(StringField.GetStringValue(quest.id));
+                        // Otherwise if it's offerable by me, record it unless single player already has it:
+                        if (!(checkSinglePlayerJournal && DoesJournalHaveQuest(playerQuestJournal, quest)))
+                        {
+                            var state = quest.canOffer ? hasQuestToOfferState : hasQuestButCannotOfferState;
+                            states[(int)state].Add(StringField.GetStringValue(quest.id));
+                        }
                     }
                 }
             }
             ShowHighestPriorityIndicator();
+        }
+
+        protected virtual bool DoesJournalHaveQuest(QuestJournal questJournal, Quest quest)
+        {
+            if (quest == null || questJournal == null) return false;
+            var questInJournal = questJournal.FindQuest(quest.id);
+            if (questInJournal == null) return false;
+            var state = questInJournal.GetState();
+            return (state == QuestState.Active) ||(state == QuestState.Successful && quest.timesAccepted < quest.maxTimes);
         }
 
         public virtual void ShowHighestPriorityIndicator()

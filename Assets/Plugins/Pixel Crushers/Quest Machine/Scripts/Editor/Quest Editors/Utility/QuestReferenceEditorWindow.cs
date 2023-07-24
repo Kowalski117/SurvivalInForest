@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -14,7 +14,7 @@ namespace PixelCrushers.QuestMachine
     public class QuestReferenceEditorWindow : EditorWindow
     {
 
-        [MenuItem("Tools/Pixel Crushers/Quest Machine/Quest Reference")]
+        [MenuItem("Tools/Pixel Crushers/Quest Machine/Quest Reference", false, 3)]
         public static void ShowWindow()
         {
             GetWindow<QuestReferenceEditorWindow>();
@@ -41,7 +41,7 @@ namespace PixelCrushers.QuestMachine
         private const float MaxTagWidth = 150;
 
         private List<Info> m_messages;
-        private const float MaxMessageWidth = 140;
+        private const float MaxMessageWidth = 150;
 
         private const float MaxCounterWidth = 140;
 
@@ -219,10 +219,14 @@ namespace PixelCrushers.QuestMachine
         }
 
         private const string TagsText =
+            "{QUEST}|Quest's title.\n" +
+            "{QUESTID}|Quest's ID.\n" +
             "{QUESTGIVER}|Quest giver's display name.\n" +
             "{QUESTGIVERID}|Quest giver's ID.\n" +
             "{QUESTER}|Quester's (player's) display name.\n" +
             "{QUESTERID}|Quester's (player's) ID.\n" +
+            "{GREETER}|Display name of quester (player) greeting quest giver. Use if quester hasn't accepted quest yet.\n" +
+            "{GREETERID}|ID of quester (player) greeting quest giver.\n" +
             "{#COUNTERNAME}|(Generator) Current value of action's counter.\n" +
             "{#COUNTERGOAL}|(Generator) Required value of action's counter.\n" +
             "{TARGETENTITY}|(Generator) Entity name of quest target.\n" +
@@ -235,6 +239,7 @@ namespace PixelCrushers.QuestMachine
             "Discuss Quest|Sent prior to starting discussion of a quest. Parameter is quest ID. Value is quest giver's ID.\n" +
             "Discussed Quest|Sent after starting discussion of a quest. Parameter is quest ID. Value is quest giver's ID.\n" +
             "Quest State Changed|Sent when a quest state changes. Parameter is quest ID. Value is quest node ID or blank. Value 2 is state.\n" +
+            "Check Offer Conditions|Send to recheck offer conditions in case quest is no longer offerable. Parameter is quest ID.\n" +
             "Start Spawner|Send to start a spawner. Parameter is spawner name.\n" +
             "Stop Spawner|Send to stop a spawner. Parameter is spawner name.\n" +
             "Despawn Spawner|Send to stop a spawner and despawn all spawned objects. Parameter is spawner name.\n";

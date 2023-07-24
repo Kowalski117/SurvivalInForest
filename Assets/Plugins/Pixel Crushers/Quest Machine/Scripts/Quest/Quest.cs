@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -100,6 +100,14 @@ namespace PixelCrushers.QuestMachine
         [SerializeField]
         private float m_cooldownSecondsRemaining;
 
+        [Tooltip("Do not offer again if quester already has successful completion in its journal.")]
+        [SerializeField]
+        private bool m_noRepeatIfSuccessful = false;
+
+        [Tooltip("Save counters, node states, & indicator states if waiting to start. Normally omitted to reduce save file size/time.")]
+        [SerializeField]
+        private bool m_saveAllIfWaitingToStart = false;
+
         [Tooltip("The current state of the quest.")]
         [SerializeField]
         private QuestState m_state;
@@ -119,6 +127,10 @@ namespace PixelCrushers.QuestMachine
         [HideInInspector]
         [SerializeField]
         private string m_goalEntityTypeName = null;
+
+        [HideInInspector]
+        [SerializeField]
+        private int m_nextContentID = 0;
 
         #endregion
 
@@ -228,6 +240,26 @@ namespace PixelCrushers.QuestMachine
         public string questerID
         {
             get { return tagDictionary.GetTagValue(QuestMachineTags.QUESTERID, string.Empty); }
+        }
+
+        /// <summary>
+        /// ID of the quester who is greeting the quest giver. For quests that can be accepted
+        /// by quester A and turned in by quester B, this is the ID of quester B.
+        /// </summary>
+        public string greeterID
+        {
+            get { return tagDictionary.GetTagValue(QuestMachineTags.GREETERID, string.Empty); }
+            set { tagDictionary.SetTag(QuestMachineTags.GREETERID, value); }
+        }
+
+        /// <summary>
+        /// Display name of the quester who is greeting the quest giver. For quests that can be accepted
+        /// by quester A and turned in by quester B, this is the name of quester B.
+        /// </summary>
+        public string greeter
+        {
+            get { return tagDictionary.GetTagValue(QuestMachineTags.GREETER, string.Empty); }
+            set { tagDictionary.SetTag(QuestMachineTags.GREETER, value); }
         }
 
         /// <summary>
@@ -370,6 +402,24 @@ namespace PixelCrushers.QuestMachine
         }
 
         /// <summary>
+        /// Do not offer again if quester already has successful completion in its journal.
+        /// </summary>
+        public bool noRepeatIfSuccessful
+        {
+            get { return m_noRepeatIfSuccessful; }
+            set { m_noRepeatIfSuccessful = value; }
+        }
+
+        /// <summary>
+        /// Save counters, node states, & indicator states if waiting to start. Normally omitted to reduce save file size/time.
+        /// </summary>
+        public bool saveAllIfWaitingToStart
+        {
+            get { return m_saveAllIfWaitingToStart; }
+            set { m_saveAllIfWaitingToStart = value; }
+        }
+
+        /// <summary>
         /// Info for each state, indexed by the int value of the QuestState enum.
         /// </summary>
         public List<QuestStateInfo> stateInfoList
@@ -413,6 +463,15 @@ namespace PixelCrushers.QuestMachine
             set { m_goalEntityTypeName = value; }
         }
 
+        /// <summary>
+        /// Used by QuestContent to assign a unique ID number usable by LinkQuestContent.
+        /// </summary>
+        public int nextContentID
+        {
+            get { return m_nextContentID; }
+            set { m_nextContentID = value; }
+        }
+
         #endregion
 
         #region Runtime References
@@ -428,6 +487,9 @@ namespace PixelCrushers.QuestMachine
 
         [NonSerialized]
         private HashSet<string> m_speakers = new HashSet<string>();
+
+        [NonSerialized]
+        private Dictionary<int, QuestContent> m_questContentByID = new Dictionary<int, QuestContent>();
 
         /// <summary>
         /// Dictionary of tags defined in this quest and their values.
@@ -544,6 +606,7 @@ namespace PixelCrushers.QuestMachine
             SetRuntimeReferences(); // Fix original's references since Instantiate calls OnEnable > SetRuntimeReferences while clone's fields still point to original.
             clone.isInstance = true;
             clone.originalAsset = originalAsset;
+            clone.cooldownSecondsRemaining = 0;
             autostartConditionSet.CloneSubassetsInto(clone.autostartConditionSet);
             offerConditionSet.CloneSubassetsInto(clone.offerConditionSet);
             clone.offerConditionsUnmetContentList = QuestSubasset.CloneList(offerConditionsUnmetContentList);
@@ -557,7 +620,7 @@ namespace PixelCrushers.QuestMachine
 
         private void OnDestroy()
         {
-            if (isInstance)
+            if (isInstance && Application.isPlaying)
             {
                 QuestMachine.UnregisterQuestInstance(this);
                 SetState(QuestState.Disabled);
@@ -707,13 +770,16 @@ namespace PixelCrushers.QuestMachine
             {
                 SetRandomCounterValues();
                 if (hasAutostartConditions) autostartConditionSet.StartChecking(Autostart);
-                if (hasOfferConditions)
+                if (GetState() == QuestState.WaitingToStart) // Autostart check above might set quest active.
                 {
-                    offerConditionSet.StartChecking(BecomeOfferable);
-                }
-                else
-                {
-                    BecomeOfferable();
+                    if (hasOfferConditions)
+                    {
+                        offerConditionSet.StartChecking(BecomeOfferable);
+                    }
+                    else
+                    {
+                        BecomeOfferable();
+                    }
                 }
             }
             else
@@ -732,8 +798,22 @@ namespace PixelCrushers.QuestMachine
         {
             try
             {
+                if (GetState() != QuestState.WaitingToStart) SetState(QuestState.WaitingToStart);
                 questOfferable(this);
                 SetQuestIndicatorState(questGiverID, QuestIndicatorState.Offer);
+            }
+            catch (Exception e) // Don't let exceptions in user-added events break our code.
+            {
+                if (Debug.isDebugBuild) Debug.LogException(e);
+            }
+        }
+
+        public void BecomeUnofferable()
+        {
+            try
+            {
+                if (GetState() != QuestState.Disabled) SetState(QuestState.Disabled);
+                SetQuestIndicatorState(questGiverID, QuestIndicatorState.None);
             }
             catch (Exception e) // Don't let exceptions in user-added events break our code.
             {
@@ -760,6 +840,7 @@ namespace PixelCrushers.QuestMachine
             var elapsed = GameTime.time - m_timeCooldownLastChecked;
             m_timeCooldownLastChecked = GameTime.time;
             cooldownSecondsRemaining = Mathf.Max(0, cooldownSecondsRemaining - elapsed);
+            if (cooldownSecondsRemaining <= 0) BecomeOfferable();
         }
 
         #endregion
@@ -785,21 +866,14 @@ namespace PixelCrushers.QuestMachine
 
             m_state = newState;
 
-            SetStartChecking(newState == QuestState.WaitingToStart);
-            SetCounterListeners(newState == QuestState.Active);
-            if (newState != QuestState.Active) StopNodeListeners();
+            SetStartChecking(m_state == QuestState.WaitingToStart);
+            SetCounterListeners(m_state == QuestState.Active || (m_state == QuestState.WaitingToStart && (hasAutostartConditions || hasOfferConditions)));
+            if (m_state != QuestState.Active) StopNodeListeners();
 
             if (!informListeners) return;
 
             // Execute state actions:
-            var stateInfo = GetStateInfo(m_state);
-            if (stateInfo != null && stateInfo.actionList != null)
-            {
-                for (int i = 0; i < stateInfo.actionList.Count; i++)
-                {
-                    if (stateInfo.actionList[i] != null) stateInfo.actionList[i].Execute();
-                }
-            }
+            ExecuteStateActions(m_state);
 
             // Notify that state changed:
             QuestMachineMessages.QuestStateChanged(this, id, m_state);
@@ -817,6 +891,28 @@ namespace PixelCrushers.QuestMachine
 
             // If inactive, clear the indicators:
             if (m_state != QuestState.Active) ClearQuestIndicatorStates();
+
+            // If done, set all active nodes to inactive:
+            if (m_state == QuestState.Successful || m_state == QuestState.Failed || m_state == QuestState.Abandoned)
+            {
+                for (int i = 0; i < nodeList.Count; i++)
+                {
+                    if (nodeList[i].GetState() == QuestNodeState.Active) nodeList[i].SetState(QuestNodeState.Inactive);
+                }
+
+                if (QuestMachineConfiguration.instance != null && QuestMachineConfiguration.instance.untrackCompletedQuests)
+                {
+                    showInTrackHUD = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the internal state value without performing any state change processing.
+        /// </summary>
+        public void SetStateRaw(QuestState state)
+        {
+            m_state = state;
         }
 
         /// <summary>
@@ -833,6 +929,18 @@ namespace PixelCrushers.QuestMachine
             for (int i = 0; i < nodeList.Count; i++)
             {
                 if (nodeList[i] != null) nodeList[i].SetConditionChecking(false);
+            }
+        }
+
+        public void ExecuteStateActions(QuestState state)
+        {
+            var stateInfo = GetStateInfo(state);
+            if (stateInfo != null && stateInfo.actionList != null)
+            {
+                for (int i = 0; i < stateInfo.actionList.Count; i++)
+                {
+                    if (stateInfo.actionList[i] != null) stateInfo.actionList[i].Execute();
+                }
             }
         }
 
@@ -972,17 +1080,105 @@ namespace PixelCrushers.QuestMachine
             var contentList = new List<QuestContent>();
             currentSpeaker = IsSpeakerQuestGiver(speaker) ? null : speaker;
             var stateInfo = GetStateInfo(GetState());
-            if (stateInfo != null) contentList.AddRange(stateInfo.GetContentList(category));
+            if (stateInfo != null) AddToContentList(contentList, stateInfo.GetContentList(category));
             if (nodeList != null)
             {
                 for (int i = 0; i < nodeList.Count; i++)
                 {
                     var node = nodeList[i];
                     var nodeContentList = (node != null) ? node.GetContentList(category) : null;
-                    if (nodeContentList != null) contentList.AddRange(nodeContentList);
+                    if (nodeContentList != null) AddToContentList(contentList, nodeContentList);
                 }
             }
             return contentList;
+        }
+
+        // Adds to contentList, replacing links with the linked content.
+        private void AddToContentList(List<QuestContent> contentList, List<QuestContent> add)
+        {
+            if (add == null) return;
+            for (int i = 0; i < add.Count; i++)
+            {
+                var content = add[i];
+                if (content == null) continue;
+                if (content is LinkQuestContent)
+                {
+                    var linkedContent = GetContentByID((content as LinkQuestContent).linkedContentID);
+                    if (linkedContent != null) contentList.Add(linkedContent);
+                }
+                else
+                {
+                    contentList.Add(content);
+                }
+            }
+        }
+
+        public void AssignContentID(QuestContent content)
+        {
+            if (content == null) return;
+            content.contentID = m_nextContentID++;
+        }
+
+        public QuestContent GetContentByID(int contentID)
+        {
+            QuestContent content;
+            if (!m_questContentByID.TryGetValue(contentID, out content))
+            {
+                content = FindContentByID(contentID);
+                if (content != null) m_questContentByID[contentID] = content;
+            }
+            return content;
+        }
+
+        protected QuestContent FindContentByID(int contentID)
+        {
+            return FindContentByID(contentID, offerContentList) ??
+                FindContentByID(contentID, offerConditionsUnmetContentList) ??
+                FindContentByIDInMainQuest(contentID) ??
+                FindContentByIDInNodes(contentID);
+        }
+
+        protected QuestContent FindContentByID(int contentID, List<QuestContent> contentList)
+        {
+            if (contentList == null) return null;
+            for (int i = 0; i < contentList.Count; i++)
+            {
+                var content = contentList[i];
+                if (content != null && content.contentID == contentID) return content;
+            }
+            return null;
+        }
+
+        protected QuestContent FindContentByIDInStateInfo(int contentID, QuestStateInfo stateInfo)
+        {
+            if (stateInfo == null) return null;
+            return FindContentByID(contentID, stateInfo.GetContentList(QuestContentCategory.Dialogue)) ??
+                FindContentByID(contentID, stateInfo.GetContentList(QuestContentCategory.Journal)) ??
+                FindContentByID(contentID, stateInfo.GetContentList(QuestContentCategory.HUD));
+        }
+
+        protected QuestContent FindContentByIDInMainQuest(int contentID)
+        {
+            for (int i = 0; i <= (int)QuestState.Abandoned; i++)
+            {
+                var content = FindContentByIDInStateInfo(contentID, GetStateInfo((QuestState)i));
+                if (content != null) return content;
+            }
+            return null;
+        }
+
+        protected QuestContent FindContentByIDInNodes(int contentID)
+        {
+            for (int i = 0; i < nodeList.Count; i++)
+            {
+                var node = nodeList[i];
+                if (node == null) continue;
+                var content = FindContentByIDInStateInfo(contentID, node.GetStateInfo(QuestNodeState.Inactive)) ??
+                    FindContentByIDInStateInfo(contentID, node.GetStateInfo(QuestNodeState.Active)) ??
+                    FindContentByIDInStateInfo(contentID, node.GetStateInfo(QuestNodeState.True));
+                if (content != null) return content;
+            }
+            return null;
         }
 
         #endregion

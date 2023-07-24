@@ -1,10 +1,11 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
-using UnityEditor;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.Graphs;
+using UnityEngine;
 
 namespace PixelCrushers.QuestMachine
 {
@@ -24,17 +25,26 @@ namespace PixelCrushers.QuestMachine
                 if (string.Equals(type.Namespace, "PixelCrushers.QuestMachine"))
                 {
                     var wrapperName = "PixelCrushers.QuestMachine.Wrappers." + type.Name;
-                    var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(p => !(p.ManifestModule is System.Reflection.Emit.ModuleBuilder)); // Exclude dynamic assemblies.
-                    var wrapperList = (from domainAssembly in assemblies
-                                       from assemblyType in domainAssembly.GetExportedTypes()
-                                       where string.Equals(assemblyType.FullName, wrapperName)
-                                       select assemblyType).ToArray();
-                    if (wrapperList.Length > 0) return wrapperList[0];
+                    var assemblies = RuntimeTypeUtility.GetAssemblies();
+                    foreach (var assembly in assemblies)
+                    {
+                        try
+                        {
+                            var wrapperList = (from assemblyType in assembly.GetExportedTypes()
+                                               where string.Equals(assemblyType.FullName, wrapperName)
+                                               select assemblyType).ToArray();
+                            if (wrapperList.Length > 0) return wrapperList[0];
+                        }
+                        catch (System.Exception)
+                        {
+                            // Ignore exceptions and try next assembly.
+                        }
+                    }
                 }
             }
-            catch (NotSupportedException)
+            catch (System.Exception)
             {
-                // If an assembly complains, ignore it and move on.
+                // Ignore exceptions.
             }
             return null;
         }
@@ -61,7 +71,11 @@ namespace PixelCrushers.QuestMachine
             {
                 GUILayout.BeginHorizontal();
                 GUI.backgroundColor = foldout ? QuestEditorStyles.collapsibleHeaderOpenColor : QuestEditorStyles.collapsibleHeaderClosedColor;
+#if UNITY_2019_1_OR_NEWER
+                var text = label;
+#else
                 var text = topLevel ? ("<b>" + label + "</b>") : label;
+#endif
                 var guiContent = new GUIContent((foldout ? QuestEditorStyles.FoldoutOpenArrow : QuestEditorStyles.FoldoutClosedArrow) + text, tooltip);
                 var guiStyle = topLevel ? QuestEditorStyles.CollapsibleHeaderButtonStyleName : QuestEditorStyles.CollapsibleSubheaderButtonStyleName;
                 if (!GUILayout.Toggle(true, guiContent, guiStyle))
@@ -134,7 +148,7 @@ namespace PixelCrushers.QuestMachine
             }
             UnityEditorInternal.ReorderableList.defaultBehaviours.DoRemoveButton(list);
         }
-        
+
         public static string[] GetCounterNames()
         {
             if (QuestEditorWindow.selectedQuest == null || QuestEditorWindow.selectedQuest.counterList == null) return null;
@@ -199,6 +213,213 @@ namespace PixelCrushers.QuestMachine
             if (textProperty != null) textProperty.stringValue = value;
             if (stringAssetProperty != null) stringAssetProperty.objectReferenceValue = null;
             if (textTableProperty != null) textTableProperty.objectReferenceValue = null;
+        }
+
+        #endregion
+
+        #region Destroy Quest Immediate
+
+        /// <summary>
+        /// Call this to destroy quest instances in the editor (i.e., using DestroyImmediate).
+        /// </summary>
+        public static void DestroyQuestImmediate(Quest quest)
+        {
+            if (quest.isInstance)
+            {
+                quest.isInstance = false;
+                DestroyImmediateConditionSetSubassets(quest.autostartConditionSet);
+                DestroyImmediateConditionSetSubassets(quest.offerConditionSet);
+                DestroyImmediateUIContentListSubassets(quest.offerConditionsUnmetContentList);
+                DestroyImmediateUIContentListSubassets(quest.offerContentList);
+                DestroyImmediateStateInfoListSubassets(quest.stateInfoList);
+                DestroyImmediateNodeListSubassets(quest.nodeList);
+                UnityEngine.Object.DestroyImmediate(quest);
+            }
+        }
+
+        private static void DestroyImmediateQuestSubassetsList<T>(List<T> subassets) where T : QuestSubasset
+        {
+            if (subassets == null) return;
+            for (int i = 0; i < subassets.Count; i++)
+            {
+                UnityEngine.Object.DestroyImmediate(subassets[i]);
+            }
+        }
+
+        private static void DestroyImmediateConditionSetSubassets(QuestConditionSet conditionSet)
+        {
+            if (conditionSet == null || conditionSet.conditionList == null) return;
+            DestroyImmediateQuestSubassetsList(conditionSet.conditionList);
+        }
+
+        private static void DestroyImmediateUIContentListSubassets(List<QuestContent> uiContentList)
+        {
+            DestroyImmediateQuestSubassetsList(uiContentList);
+        }
+
+        private static void DestroyImmediateActionListSubassets(List<QuestAction> actions)
+        {
+            DestroyImmediateQuestSubassetsList(actions);
+        }
+
+        private static void DestroyImmediateStateInfoListSubassets(List<QuestStateInfo> stateInfoList)
+        {
+            if (stateInfoList == null) return;
+            for (int i = 0; i < stateInfoList.Count; i++)
+            {
+                DestroyImmediateActionListSubassets(stateInfoList[i].actionList);
+                if (stateInfoList[i].categorizedContentList == null) continue;
+                for (int j = 0; j < stateInfoList[i].categorizedContentList.Count; j++)
+                {
+                    DestroyImmediateUIContentListSubassets(stateInfoList[i].categorizedContentList[j].contentList);
+                }
+            }
+        }
+
+        private static void DestroyImmediateNodeListSubassets(List<QuestNode> nodes)
+        {
+            if (nodes == null) return;
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                DestroyImmediateConditionSetSubassets(nodes[i].conditionSet);
+                DestroyImmediateStateInfoListSubassets(nodes[i].stateInfoList);
+            }
+        }
+
+        #endregion
+
+        #region Arrange Nodes
+
+        public static void ArrangeNodes(Quest quest, List<int> nodeIndicesToArrange)
+        {
+            if (quest == null) return;
+            Undo.RecordObject(quest, "Arrange Nodes");
+
+            var allNodes = nodeIndicesToArrange.Count <= 1;
+            var nodeIndices = new List<int>();
+            var offset = Vector2.zero;
+
+            // Prepare the list of nodes that we need to arrange:
+            if (allNodes)
+            {
+                for (int i = 1; i < quest.nodeList.Count; i++)
+                {
+                    nodeIndices.Add(i);
+                }
+            }
+            else
+            {
+                nodeIndices.AddRange(nodeIndicesToArrange);
+                offset = new Vector2(QuestCanvasGUI.CanvasWidth, QuestCanvasGUI.CanvasHeight);
+                foreach (var index in nodeIndices)
+                {
+                    if (!(0 <= index && index < quest.nodeList.Count)) continue;
+                    var node = quest.nodeList[index];
+                    offset.x = Mathf.Min(offset.x, node.canvasRect.x);
+                    offset.y = Mathf.Min(offset.y, node.canvasRect.y);
+                }
+            }
+
+            // Prepare to build tree:
+            var tree = new List<List<int>>();
+            int rootIndex = 0;
+            if (!allNodes)
+            {
+                // If arranging a subset, find a root node that isn't linked from others in the subset:
+                var childNodeIndices = new HashSet<int>();
+                foreach (var index in nodeIndices)
+                {
+                    if (!(0 <= index && index < quest.nodeList.Count)) continue;
+                    var node = quest.nodeList[index];
+                    foreach (var childIndex in node.childIndexList)
+                    {
+                        childNodeIndices.Add(childIndex);
+                    }
+                }
+                foreach (var index in nodeIndices)
+                {
+                    if (!childNodeIndices.Contains(index))
+                    {
+                        rootIndex = index;
+                        break;
+                    }
+                }
+            }
+
+            // Build tree:
+            tree.Add(new List<int>(new int[] { rootIndex }));
+            var unassigned = new List<int>();
+            unassigned.AddRange(nodeIndices);
+            unassigned.Remove(rootIndex);
+            var maxLevelSize = ArrangeNodes_BuildTree(quest, nodeIndices, tree, unassigned, 0);
+
+            // Place nodes:
+            var padding = QuestNode.DefaultNodeWidth / 4;
+            var treeWidth = maxLevelSize * (QuestNode.DefaultNodeWidth + padding);
+            for (int i = 0; i < tree.Count; i++)
+            {
+                var level = tree[i];
+                var levelWidth = level.Count * (QuestNode.DefaultNodeWidth + padding);
+                var left = padding + ((treeWidth - levelWidth) / 2);
+                var top = QuestNode.DefaultNodeHeight + i * (1.5f * QuestNode.DefaultNodeHeight);
+                for (int j = 0; j < level.Count; j++)
+                {
+                    var node = quest.nodeList[level[j]];
+                    var nodeLeft = left + j * (QuestNode.DefaultNodeWidth + padding);
+                    node.canvasRect = new Rect(nodeLeft + offset.x, top + offset.y, node.canvasRect.width, node.canvasRect.height);
+                }
+            }
+
+            // Place unassigned nodes:
+            if (unassigned.Count > 0)
+            {
+                float farthestRight = 0;
+                for (int i = 0; i < quest.nodeList.Count; i++)
+                {
+                    if (!unassigned.Contains(i))
+                    {
+                        var placedNode = quest.nodeList[i];
+                        farthestRight = Mathf.Max(farthestRight, placedNode.canvasRect.x);
+                    }
+                }
+                float unassignedNodeLeft = farthestRight + padding + QuestNode.DefaultNodeWidth + padding;
+                for (int i = 0; i < unassigned.Count; i++)
+                {
+                    var top = QuestNode.DefaultNodeHeight + i * (1.5f * QuestNode.DefaultNodeHeight);
+                    var unassignedNode = quest.nodeList[unassigned[i]];
+                    unassignedNode.canvasRect = new Rect(unassignedNodeLeft, top, unassignedNode.canvasRect.width, unassignedNode.canvasRect.height);
+                }
+            }
+        }
+
+        private static int ArrangeNodes_BuildTree(Quest quest, List<int> nodeIndices, List<List<int>> tree, List<int> unassigned, int safeguard)
+        {
+            if (safeguard > 9999) return 0; // Prevent infinite recursion in case of bug.
+            var level = tree[tree.Count - 1];
+            var children = new List<int>();
+            for (int i = 0; i < level.Count; i++)
+            {
+                var parentIndex = level[i];
+                var parentNode = quest.nodeList[parentIndex];
+                foreach (var childIndex in parentNode.childIndexList)
+                {
+                    if (!nodeIndices.Contains(childIndex)) continue;
+                    if (unassigned.Contains(childIndex))
+                    {
+                        unassigned.Remove(childIndex);
+                        children.Add(childIndex);
+                    }
+                }
+            }
+            if (children.Count > 0)
+            {
+                tree.Add(children);
+                return Mathf.Max(level.Count, ArrangeNodes_BuildTree(quest, nodeIndices, tree, unassigned, safeguard++));
+            }
+            else
+            {
+                return level.Count;
+            }
         }
 
         #endregion

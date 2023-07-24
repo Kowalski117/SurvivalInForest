@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -61,6 +61,16 @@ namespace PixelCrushers.QuestMachine
         public const string CounterTagQuestNameSeparator = @":";
 
         /// <summary>
+        /// The quest's ID.
+        /// </summary>
+        public const string QUESTID = @"{QUESTID}";
+
+        /// <summary>
+        /// The quest's title.
+        /// </summary>
+        public const string QUEST= @"{QUEST}";
+
+        /// <summary>
         /// The display name of the quest's giver.
         /// </summary>
         public const string QUESTGIVER = @"{QUESTGIVER}";
@@ -79,6 +89,16 @@ namespace PixelCrushers.QuestMachine
         /// The ID of the quest's quester.
         /// </summary>
         public const string QUESTERID = @"{QUESTERID}";
+
+        /// <summary>
+        /// The ID of the quester who is greeting the quest giver.
+        /// </summary>
+        public const string GREETERID = @"{GREETERID}";
+
+        /// <summary>
+        /// The display name of the quester who is greeting the quest giver.
+        /// </summary>
+        public const string GREETER = @"{GREETER}";
 
         // Generator tags:
         public const string DOMAIN = @"{DOMAIN}";
@@ -239,6 +259,9 @@ namespace PixelCrushers.QuestMachine
         private static TagDictionary questTagDictionary { get; set; }
         private static TagDictionary nodeTagDictionary { get; set; }
 
+        private static TextTable m_fallbackTextTable = null;
+        public static TextTable fallbackTextTable { get { return m_fallbackTextTable; } set { m_fallbackTextTable = value; } }
+
         /// <summary>
         /// Replaces the tags in a StringField.
         /// </summary>
@@ -256,7 +279,7 @@ namespace PixelCrushers.QuestMachine
         {
             if (!ContainsAnyTag(s)) return s;
             currentQuest = quest;
-            currentTextTable = (quest != null && quest.currentSpeaker != null) ? quest.currentSpeaker.textTable : null;
+            currentTextTable = (quest != null && quest.currentSpeaker != null) ? quest.currentSpeaker.textTable : fallbackTextTable;
             questTagDictionary = (quest != null) ? quest.tagDictionary : null;
             nodeTagDictionary = GetActiveNodeTagDictionary(quest);
             var regex = new Regex(@"\{[^\}]+\}");
@@ -281,7 +304,15 @@ namespace PixelCrushers.QuestMachine
         {
             string tag = m.ToString();
 
-            if (tag.StartsWith(CounterValueTagPrefix))
+            if (tag.Equals(QUEST)) // Handle QUEST and QUESTID manually; no need to put in dictionary.
+            {
+                return StringField.GetStringValue(currentQuest.title);
+            }
+            else if (tag.Equals(QUESTID))
+            {
+                return StringField.GetStringValue(currentQuest.id);
+            }
+            else if (tag.StartsWith(CounterValueTagPrefix))
             {
                 // Replace {#counter} tags:
                 return ReplaceCounterTag(tag, CounterTagType.Current);
@@ -303,13 +334,6 @@ namespace PixelCrushers.QuestMachine
             }
             else
             {
-                // Otherwise try to use quest's current speaker text table:
-                var fieldName = tag.Substring(1, tag.Length - 2).Trim();
-                if (currentTextTable != null && currentTextTable.HasField(fieldName))
-                {
-                    return currentTextTable.GetFieldText(fieldName);
-                }
-
                 // Otherwise try from active node tag dictionary:
                 if (nodeTagDictionary != null && nodeTagDictionary.ContainsTag(tag))
                 {
@@ -322,13 +346,20 @@ namespace PixelCrushers.QuestMachine
                     return questTagDictionary.dict[tag];
                 }
 
+                // Otherwise try to use quest's current speaker text table:
+                var fieldName = tag.Substring(1, tag.Length - 2).Trim();
+                if (currentTextTable != null && currentTextTable.HasField(fieldName))
+                {
+                    return currentTextTable.GetFieldText(fieldName);
+                }
+
                 // Otherwise try global text table:
                 if (QuestMachine.textTable != null && QuestMachine.textTable.HasField(fieldName))
                 {
                     return QuestMachine.textTable.GetFieldText(fieldName);
                 }
 
-                // Otherwise return tag itself :
+                // Otherwise return tag itself:
                 return fieldName;
             }
         }
@@ -478,8 +509,6 @@ namespace PixelCrushers.QuestMachine
                 if (!textTable.HasField(fieldName)) textTable.AddField(fieldName);
             }
         }
-
-
 
         #endregion
 

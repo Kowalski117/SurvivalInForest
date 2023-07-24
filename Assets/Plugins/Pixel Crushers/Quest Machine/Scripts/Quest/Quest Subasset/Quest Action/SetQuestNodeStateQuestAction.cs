@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -69,7 +69,10 @@ namespace PixelCrushers.QuestMachine
 
         public override void Execute()
         {
-            QuestMachine.SetQuestNodeState(questID, questNodeID, state);
+            if (QuestMachine.GetQuestNodeState(questID, questNodeID) != state)
+            {
+                QuestMachine.SetQuestNodeState(questID, questNodeID, state);
+            }
         }
 
     }

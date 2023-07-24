@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;
@@ -11,11 +11,13 @@ namespace PixelCrushers.QuestMachine
     /// Unity UI implementation of QuestDialogueUI.
     /// </summary>
     [AddComponentMenu("")] // Use wrapper.
-    public class UnityUIQuestDialogueUI : UnityUIBaseUI, IQuestDialogueUI
+    public class UnityUIQuestDialogueUI : UnityUIBaseUI, IQuestDialogueUI, IMessageHandler
     {
 
         #region Serialized Fields
 
+        [SerializeField]
+        private UnityEngine.UI.Button m_cancelButton;
         [SerializeField]
         private UnityEngine.UI.Button m_closeButton;
         [SerializeField]
@@ -44,6 +46,11 @@ namespace PixelCrushers.QuestMachine
 
         #region Accessor Properties for Serialized Fields
 
+        public UnityEngine.UI.Button cancelButton
+        {
+            get { return m_cancelButton; }
+            set { m_cancelButton = value; }
+        }
         public UnityEngine.UI.Button closeButton
         {
             get { return m_closeButton; }
@@ -109,10 +116,12 @@ namespace PixelCrushers.QuestMachine
         protected override UnityUITextTemplate currentBodyTemplate { get { return bodyTemplate; } }
         protected override UnityUIIconListTemplate currentIconListTemplate { get { return iconListTemplate; } }
         protected override UnityUIButtonListTemplate currentButtonListTemplate { get { return buttonListTemplate; } }
+        protected UIScrollbarEnabler scrollbarEnabler { get; set; }
 
         protected Quest selectedQuest { get; set; }
         protected QuestParameterDelegate acceptHandler { get; set; }
         protected QuestParameterDelegate declineHandler { get; set; }
+        protected QuestParameterDelegate backHandler { get; set; }
         protected Coroutine selectCoroutine { get; set; }
 
         #endregion
@@ -122,6 +131,17 @@ namespace PixelCrushers.QuestMachine
             base.Awake();
             contentManager = new UnityUIInstancedContentManager();
             if (contentContainer == null && Debug.isDebugBuild) Debug.LogError("Quest Machine: Content Container is unassigned.", this);
+            scrollbarEnabler = GetComponentInChildren<UIScrollbarEnabler>();
+        }
+
+        protected virtual void OnEnable()
+        {
+            MessageSystem.AddListener(this, QuestMachineMessages.GroupButtonClickedMessage, string.Empty);
+        }
+
+        protected virtual void OnDisable()
+        {
+            MessageSystem.RemoveListener(this);
         }
 
         public virtual void ShowContents(QuestParticipantTextInfo speaker, List<QuestContent> contents)
@@ -130,10 +150,23 @@ namespace PixelCrushers.QuestMachine
             mainPanel.gameObject.SetActive(true);
             SetContents(speaker, contents);
             SetControlButtons(true, false, false);
+            if (scrollbarEnabler != null) scrollbarEnabler.CheckScrollbarWithResetValue(1);
+        }
+
+        protected virtual bool ContainsGroupButton(List<QuestContent> contents)
+        {
+            if (contents == null) return false;
+            for (int i = 0; i < contents.Count; i++)
+            {
+                var buttonContent = contents[i] as ButtonQuestContent;
+                if (buttonContent != null && buttonContent.groupNumber != ButtonQuestContent.NoGroup) return true;
+            }
+            return false;
         }
 
         protected virtual void SetControlButtons(bool enableClose, bool enableBack, bool enableAcceptDecline)
         {
+            SetControlButtonsInteractable(true);            
             closeButton.gameObject.SetActive(enableClose);
             backButton.gameObject.SetActive(enableBack);
             acceptButton.gameObject.SetActive(enableAcceptDecline);
@@ -148,6 +181,15 @@ namespace PixelCrushers.QuestMachine
             RefreshNavigableSelectables();
         }
 
+        protected virtual void SetControlButtonsInteractable(bool value)
+        {
+            if (cancelButton != null) cancelButton.interactable = value;
+            closeButton.interactable = value;
+            backButton.interactable = value;
+            acceptButton.interactable = value;
+            declineButton.interactable = value;
+        }
+
         protected IEnumerator SelectAfterOneFrame(UnityEngine.UI.Selectable selectable)
         {
             yield return null;
@@ -160,9 +202,17 @@ namespace PixelCrushers.QuestMachine
 
         public virtual void ShowOfferConditionsUnmet(QuestParticipantTextInfo speaker, List<QuestContent> contents, List<Quest> quests)
         {
+            // Show a quest's unofferable contents:
+            foreach (var quest in quests)
+            {
+                if (quest.offerConditionsUnmetContentList != null && quest.offerConditionsUnmetContentList.Count > 0)
+                {
+                    ShowContents(speaker, quest.offerConditionsUnmetContentList);
+                    return;
+                }
+            }
+            // If no quests have unofferable contents, show 'no offerable quests' text:
             ShowContents(speaker, contents);
-            //--- Don't show the unofferable quests:
-            // ShowQuestList(speaker, null, null, quests, null, null); 
 
         }
 
@@ -185,19 +235,35 @@ namespace PixelCrushers.QuestMachine
             declineHandler(selectedQuest);
         }
 
+        public void Back()
+        {
+            backHandler(selectedQuest);
+        }
+
+        public void SetBackHandler(QuestParameterDelegate backHandler)
+        {
+            this.backHandler = backHandler;
+            backButton.gameObject.SetActive(backHandler != null);
+        }
+
         public virtual void ShowActiveQuest(QuestParticipantTextInfo speaker, Quest quest, QuestParameterDelegate continueHandler, QuestParameterDelegate backHandler)
         {
             selectedQuest = quest;
-            ShowContents(speaker, quest.GetContentList(QuestContentCategory.Dialogue, speaker));
-            SetControlButtons(true, false, false);
+            this.backHandler = backHandler;
+            var contents = quest.GetContentList(QuestContentCategory.Dialogue, speaker);
+            ShowContents(speaker, contents);
+            SetControlButtons(true, backHandler != null, false);
+            if (ContainsGroupButton(contents)) SetControlButtonsInteractable(false);
         }
 
         public virtual void ShowCompletedQuest(QuestParticipantTextInfo speaker, List<Quest> quests)
         {
             if (quests == null || quests.Count == 0) return;
             var quest = quests[0];
-            ShowContents(speaker, quest.GetContentList(QuestContentCategory.Dialogue));
+            var contents = quest.GetContentList(QuestContentCategory.Dialogue);
+            ShowContents(speaker, contents);
             SetControlButtons(true, false, false);
+            if (ContainsGroupButton(contents)) SetControlButtonsInteractable(false);
         }
 
         public virtual void ShowQuestList(QuestParticipantTextInfo speaker, List<QuestContent> activeQuestsContents, List<Quest> activeQuests,
@@ -237,6 +303,29 @@ namespace PixelCrushers.QuestMachine
             }
         }
 
+        public void OnMessage(MessageArgs messageArgs)
+        {
+            if (string.Equals(messageArgs.message, QuestMachineMessages.GroupButtonClickedMessage))
+            {
+                SetControlButtonsInteractable(true);
+                var clickedGroupNumber = messageArgs.intValue;
+                for (int i = 0; i < contentManager.instancedContent.Count; i++)
+                {
+                    var buttonList = contentManager.instancedContent[i] as UnityUIButtonListTemplate;
+                    if (buttonList != null && buttonList.instances != null)
+                    {
+                        for (int j = 0; j < buttonList.instances.Count; j++)
+                        {
+                            var button = buttonList.instances[j] as UnityUIButtonTemplate;
+                            if (button != null && button.groupNumber == clickedGroupNumber && button.button != null)
+                            {
+                                button.button.interactable = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

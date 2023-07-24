@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -59,6 +60,8 @@ MonoBehaviour:
   m_timesAccepted: 0
   m_cooldownSeconds: 3600
   m_cooldownSecondsRemaining: 0
+  m_noRepeatIfSuccessful: 0
+  m_saveAllIfWaitingToStart: 0
   m_state: 0
   m_stateInfoList:
   - m_actionList: []
@@ -141,8 +144,8 @@ MonoBehaviour:
     m_childIndexList: 0100000002000000
     m_canvasRect:
       serializedVersion: 2
-      x: 200
-      y: 20
+      x: 105
+      y: 48
       width: 120
       height: 48
   - m_id:
@@ -188,8 +191,8 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 113
-      y: 88
+      x: 30
+      y: 120
       width: 120
       height: 48
   - m_id:
@@ -238,8 +241,8 @@ MonoBehaviour:
     m_childIndexList: 0300000004000000
     m_canvasRect:
       serializedVersion: 2
-      x: 287
-      y: 86
+      x: 180
+      y: 120
       width: 120
       height: 48
   - m_id:
@@ -285,8 +288,8 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 203
-      y: 160
+      x: 101
+      y: 199
       width: 120
       height: 48
   - m_id:
@@ -337,8 +340,8 @@ MonoBehaviour:
     m_childIndexList: 05000000
     m_canvasRect:
       serializedVersion: 2
-      x: 377
-      y: 158
+      x: 251
+      y: 199
       width: 120
       height: 48
   - m_id:
@@ -383,16 +386,18 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 377
-      y: 226
+      x: 250
+      y: 274
       width: 120
       height: 35
   m_goalEntityTypeName: 
+  m_nextContentID: 0
 --- !u!114 &11402898
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -408,14 +413,16 @@ MonoBehaviour:
 --- !u!114 &11409426
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Let Johann know that I received the carrots.
     m_stringAsset: {fileID: 0}
@@ -424,14 +431,16 @@ MonoBehaviour:
 --- !u!114 &11409856
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -442,14 +451,16 @@ MonoBehaviour:
 --- !u!114 &11413300
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: '{Hello}! Me carrots! Thanks for delivering them, matey!'
     m_stringAsset: {fileID: 0}
@@ -458,14 +469,16 @@ MonoBehaviour:
 --- !u!114 &11414738
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -476,14 +489,16 @@ MonoBehaviour:
 --- !u!114 &11415048
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Return to Johann.
     m_stringAsset: {fileID: 0}
@@ -492,14 +507,16 @@ MonoBehaviour:
 --- !u!114 &11419604
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Thanks for delivering those carrots to Molly!
     m_stringAsset: {fileID: 0}
@@ -508,14 +525,16 @@ MonoBehaviour:
 --- !u!114 &11443982
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -526,14 +545,16 @@ MonoBehaviour:
 --- !u!114 &11446856
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Please bring Captain Molly the crate of carrots before she sets sail.
     m_stringAsset: {fileID: 0}
@@ -542,8 +563,9 @@ MonoBehaviour:
 --- !u!114 &11451936
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -579,14 +601,16 @@ MonoBehaviour:
 --- !u!114 &11453408
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Thanks for helping me with the harvest. I have a delivery for Captain
       Molly. Would you please bring her this crate of carrots?
@@ -596,14 +620,16 @@ MonoBehaviour:
 --- !u!114 &11455128
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Return to Johann
     m_stringAsset: {fileID: 0}
@@ -612,14 +638,16 @@ MonoBehaviour:
 --- !u!114 &11458670
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: You delivered a crate of carrots to Captain Molly.
     m_stringAsset: {fileID: 0}
@@ -628,8 +656,9 @@ MonoBehaviour:
 --- !u!114 &11459432
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -665,8 +694,9 @@ MonoBehaviour:
 --- !u!114 &11465272
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -687,8 +717,9 @@ MonoBehaviour:
 --- !u!114 &11466020
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -709,14 +740,16 @@ MonoBehaviour:
 --- !u!114 &11471210
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -727,8 +760,9 @@ MonoBehaviour:
 --- !u!114 &11475918
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -741,14 +775,16 @@ MonoBehaviour:
 --- !u!114 &11484112
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Talk to Captain
     m_stringAsset: {fileID: 0}
@@ -757,8 +793,9 @@ MonoBehaviour:
 --- !u!114 &11491952
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -773,14 +810,16 @@ MonoBehaviour:
 --- !u!114 &11493080
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -791,14 +830,16 @@ MonoBehaviour:
 --- !u!114 &11494714
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Deliver a crate of carrots to Captain Molly.
     m_stringAsset: {fileID: 0}
