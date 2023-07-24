@@ -35,7 +35,7 @@ public class InteractionPlayerInput : MonoBehaviour
         _playerInput.Disable();
     }
 
-    private void InteractedConstruction()
+    public void InteractedConstruction()
     {
         OnInteractedConstruction?.Invoke();
     }

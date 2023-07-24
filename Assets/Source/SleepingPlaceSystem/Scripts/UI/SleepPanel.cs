@@ -17,7 +17,8 @@ public class SleepPanel : MonoBehaviour
     private DateTime _sleepTime;
     private bool _isSleepWindowOpen = false;
 
-    public static UnityAction<float> OnSleepButton;
+    public static UnityAction<bool> OnStoppedTime;
+    public static UnityAction<float> OnSubtractTime;
 
     private void Start()
     {
@@ -55,14 +56,16 @@ public class SleepPanel : MonoBehaviour
         ExitButtonClick();
         _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, string.Empty, ActionType.Sleep);
         _survivalHandler.TimeHandler.ToggleEnable(false);
+        OnStoppedTime?.Invoke(false);
         _loadingWindow.OnLoadingComplete += OnLoadingComplete;
     }
 
     private void OnLoadingComplete()
     {
+        OnSubtractTime?.Invoke(_survivalHandler.Sleep.MissingValue);
         _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue);
-        OnSleepButton?.Invoke(_survivalHandler.Sleep.MissingValue);
         _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue);
+        OnStoppedTime?.Invoke(true);
         _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }

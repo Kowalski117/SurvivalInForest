@@ -90,7 +90,6 @@ namespace StarterAssets
 
 
         public float Speed => _speed;
-
         private bool IsCurrentDeviceMouse
         {
             get

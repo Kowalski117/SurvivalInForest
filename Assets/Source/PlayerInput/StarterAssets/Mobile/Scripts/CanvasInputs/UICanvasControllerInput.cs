@@ -32,12 +32,18 @@ namespace StarterAssets
 
         public void Attack(bool virtualSprintState)
         {
-            //_playerInputHandler.InteractionPlayerInput.Attack(virtualSprintState);
+            _playerInputHandler.InteractionPlayerInput.Attack();
         }
 
         public void ToggleInventory()
         {
-            _inventoryPlayerInput.ToggleInventory();
+            _playerInputHandler.InventoryPlayerInput.ToggleInventory();
+            _playerInputHandler.InventoryPlayerInput.ToggleIInteractable();
+        }
+
+        public void InteractedConstruction()
+        {
+            _playerInputHandler.InteractionPlayerInput.InteractedConstruction();
         }
     }
 }

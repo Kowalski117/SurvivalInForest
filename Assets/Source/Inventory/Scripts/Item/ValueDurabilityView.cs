@@ -12,6 +12,7 @@ public class ValueDurabilityView : MonoBehaviour
         {
             if (_itemSlot.AssignedInventorySlot.DurabilityPercent > 0)
             {
+                _image.color = _itemSlot.AssignedInventorySlot.ItemData.ColorDurability;
                 _image.enabled = true;
             }
             else

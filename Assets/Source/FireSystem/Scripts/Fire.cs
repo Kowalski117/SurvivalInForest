@@ -1,3 +1,4 @@
+using PixelCrushers;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,6 +16,7 @@ public class Fire : MonoBehaviour
     private DateTime _maxTimer;
     private TimeHandler _timeHandler;
     private bool _isFire = false;
+    private bool _isEnable = true;
     private SphereCollider _collider;
 
     public event UnityAction<DateTime> OnCompletionTimeUpdate;
@@ -30,19 +32,21 @@ public class Fire : MonoBehaviour
 
     private void OnEnable()
     {
-        SleepPanel.OnSleepButton += ReduceTime;
+        SleepPanel.OnStoppedTime += ToggleEnable;
+        SleepPanel.OnSubtractTime += ReduceTime;
         _building.OnCompletedBuild += StartFire;
     }
 
     private void OnDisable()
     {
-        SleepPanel.OnSleepButton -= ReduceTime;
+        SleepPanel.OnStoppedTime -= ToggleEnable;
+        SleepPanel.OnSubtractTime -= ReduceTime;
         _building.OnCompletedBuild -= StartFire;
     }
 
     private void Update()
     {
-        if (_isFire)
+        if (_isFire && _isEnable)
         {
             UpdateTimer(_timeHandler.TimeMultiplier);
         }
@@ -63,10 +67,19 @@ public class Fire : MonoBehaviour
 
     private void UpdateTimer(float time)
     {
-        _currentTime = _currentTime.AddSeconds(-Time.deltaTime * time);
-        OnCompletionTimeUpdate?.Invoke(_currentTime);
+        if(_currentTime.TimeOfDay.TotalSeconds >= time)
+        {
+            _currentTime = _currentTime.AddSeconds(-Time.deltaTime * time);
+            OnCompletionTimeUpdate?.Invoke(_currentTime);
+        }
+        else
+        {
+            _currentTime = DateTime.MinValue;
+            OnCompletionTimeUpdate?.Invoke(_currentTime);
+        }
 
-        if (_currentTime.TimeOfDay.TotalMilliseconds < 10000)
+
+        if (_currentTime == DateTime.MinValue)
         {
             _fireParticle.gameObject.SetActive(false);
             _craftObject.TurnOff();
@@ -93,13 +106,19 @@ public class Fire : MonoBehaviour
 
     private void ReduceTime(float time)
     {
-        if(_currentTime.TimeOfDay.TotalMilliseconds > 10000)
+        if (_currentTime.TimeOfDay.Hours >= time)
         {
-            _currentTime = _currentTime - TimeSpan.FromSeconds(time);
+            _currentTime = _currentTime.AddHours(-time);
             OnCompletionTimeUpdate?.Invoke(_currentTime);
+            return;
+        }
+        else
+        {
+            _currentTime = DateTime.MinValue;
+            OnCompletionTimeUpdate?.Invoke(_currentTime);
+            return;
         }
     }
-
 
     private bool AddTime(float time)
     {
@@ -116,5 +135,10 @@ public class Fire : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void ToggleEnable(bool value)
+    {
+        _isEnable = value;
     }
 }

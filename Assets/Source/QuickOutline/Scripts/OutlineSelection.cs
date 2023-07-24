@@ -6,33 +6,60 @@ public class OutlineSelection : Raycast
     [SerializeField] private Color _outlineColor;
     [SerializeField] private Outline.Mode _outlineMode = Outline.Mode.OutlineVisible;
     [SerializeField] private LayerMask _outlineLayerMask;
-
+    [SerializeField] private bool _isTrigger = true;
     private Outline _previousOutline;
 
     void Update()
     {
-        if(IsRayHittingSomething(_outlineLayerMask, out RaycastHit hitInfo))
+        if (!_isTrigger)
         {
-            if (hitInfo.collider.TryGetComponent(out Outline outline))
+            if (IsRayHittingSomething(_outlineLayerMask, out RaycastHit hitInfo))
+            {
+                if (hitInfo.collider.TryGetComponent(out Outline outline))
+                {
+                    if (_previousOutline != null)
+                    {
+                        _previousOutline.OutlineWidth = 0f;
+                    }
+
+                    outline.OutlineWidth = _outlineWidth;
+                    outline.OutlineMode = _outlineMode;
+                    outline.OutlineColor = _outlineColor;
+
+                    _previousOutline = outline;
+                }
+            }
+            else
             {
                 if (_previousOutline != null)
                 {
                     _previousOutline.OutlineWidth = 0f;
+                    _previousOutline = null;
                 }
+            }
+        }
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (_isTrigger)
+        {
+            if (other.TryGetComponent(out Outline outline))
+            {
                 outline.OutlineWidth = _outlineWidth;
                 outline.OutlineMode = _outlineMode;
                 outline.OutlineColor = _outlineColor;
-
-                _previousOutline = outline;
             }
         }
-        else
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (_isTrigger)
         {
-            if (_previousOutline != null)
+            if (other.TryGetComponent(out Outline outline))
             {
-                _previousOutline.OutlineWidth = 0f;
-                _previousOutline = null;
+                outline.OutlineWidth = 0;
             }
         }
     }

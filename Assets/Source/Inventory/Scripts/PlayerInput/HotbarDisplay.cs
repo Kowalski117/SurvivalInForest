@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -49,6 +50,8 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.Hotbar5.performed += ctx => Hotbar(4);
         _playerInput.Inventory.Hotbar6.performed += ctx => Hotbar(5);
         _playerInput.Inventory.UseItem.performed += ctx => UseItem();
+
+        OnSlotSelected += HandleSlotSelected;
     }
 
     protected override void OnDisable()
@@ -62,6 +65,8 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.Hotbar6.performed -= ctx => Hotbar(5);
         _playerInput.Inventory.UseItem.performed -= ctx => UseItem();
         _playerInput.Disable();
+
+        OnSlotSelected -= HandleSlotSelected;
     }
 
     private void UseItem()
@@ -122,5 +127,14 @@ public class HotbarDisplay : StaticInventoryDisplay
     {
         if(_isActive)
             SetIndex(index);
+    }
+
+    private void HandleSlotSelected(InventorySlotUI clickedSlot)
+    {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            if (Slots[i] == clickedSlot)
+                _currentIndex = i;
+        }
     }
 }

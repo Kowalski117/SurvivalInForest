@@ -53,8 +53,7 @@ public class PlayerInteraction : Raycast
             }
             else if (_currentTool != null && _currentWeapon == null)
             {
-                InteractResource();
-            }
+                InteractResource();            }
         }
     }
 
@@ -195,6 +194,7 @@ public class PlayerInteraction : Raycast
     private void UseItem(bool isActive)
     {
         _issgsjf = isActive;
+        Debug.Log(_issgsjf);
     }
 
     private void TakeDamageAnimal(float damage, float overTimeDamage)

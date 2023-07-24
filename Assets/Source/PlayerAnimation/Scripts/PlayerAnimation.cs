@@ -5,6 +5,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] private Animator _handAnimator;
     [SerializeField] private FirstPersonController _firstPersonController;
+    [SerializeField] private StarterAssetsInputs _starterAssets;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
 
     [SerializeField] private ItemAnimation[] _items;
@@ -28,7 +29,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        if (_firstPersonController._isEnable)
+        if (_starterAssets.move != Vector2.zero)
             _handAnimator.SetFloat(_speed, (_firstPersonController.Speed / 10));
         else
             _handAnimator.SetFloat(_speed, 0);

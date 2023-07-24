@@ -28,6 +28,7 @@ public class InventorySystem
                 {
                     slot.AddToStack(amount);
                     OnInventorySlotChanged?.Invoke(slot);
+                    Debug.Log("1");
                     return true;
                 }
             }
@@ -42,8 +43,10 @@ public class InventorySystem
                 return true;
             }
         }
+
         return false;
     }
+
 
     public bool RemoveItemsInventory(InventoryItemData data, int amount)
     {
@@ -75,6 +78,29 @@ public class InventorySystem
         }
 
         return false;
+    }
+
+    public bool RemoveItemsInventory(InventorySlot slot, int amount)
+    {
+        if (slot != null && slot.ItemData != null)
+        {
+            int stackSize = slot.Size;
+
+            if (stackSize >= amount)
+            {
+                slot.RemoveFromStack(amount); // Удаляем предметы из слота
+                OnInventorySlotChanged?.Invoke(slot);
+                return true;
+            }
+            else if (stackSize > 0)
+            {
+                slot.RemoveFromStack(stackSize); // Удаляем предметы из слота
+                OnInventorySlotChanged?.Invoke(slot);
+                return true; // Возвращаем false, чтобы показать, что предметы в слоте закончились
+            }
+        }
+
+        return false; // Возвращаем false, если слот пуст или не содержит нужного количества предметов
     }
 
     public bool ContainsItem(InventoryItemData itemToAdd, out List<InventorySlot> inventorySlots)

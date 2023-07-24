@@ -59,11 +59,26 @@ public class SurvivalHandler : MonoBehaviour
         {
             _hunger.ReplenishValue(foodItemData.AmountSatiety);
             _thirst.ReplenishValue(foodItemData.AmountWater);
+                                                   
+            if (slot.Durability > 0)
+            {
+                slot.LowerStrength(1);
 
-            if (foodItemData.EmptyDishes != null)
-                _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+                if (slot.Durability <= 0)
+                {
+                    if (foodItemData.EmptyDishes != null)
+                        _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
 
-            _playerInventory.RemoveInventory(slot.ItemData, 1);
+                    _playerInventory.RemoveInventory(slot, 1);
+                }
+            }
+            else
+            {
+                if (foodItemData.EmptyDishes != null)
+                    _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+
+                _playerInventory.RemoveInventory(slot, 1);
+            }
         }
     }
 
