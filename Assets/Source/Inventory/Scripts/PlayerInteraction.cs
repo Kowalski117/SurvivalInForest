@@ -129,7 +129,7 @@ public class PlayerInteraction : Raycast
                             ParticleSystem impact = Instantiate(_currentWeapon.HitEffect, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
                             impact.Play();
                         }
-
+                        _currentAnim = animals;
                         TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
                     }
 
@@ -194,13 +194,13 @@ public class PlayerInteraction : Raycast
     private void UseItem(bool isActive)
     {
         _issgsjf = isActive;
-        Debug.Log(_issgsjf);
     }
 
     private void TakeDamageAnimal(float damage, float overTimeDamage)
     {
         if (_currentAnim != null)
         {
+            Debug.Log("2");
             _currentAnim.TakeDamage(damage, overTimeDamage);
 
             if(_currentAnim.Health <= 0)
