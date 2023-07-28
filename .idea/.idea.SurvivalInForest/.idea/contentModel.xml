@@ -9,6 +9,7 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="ButtonScenes.cs" t="Include" />
         <e p="Dialogue" t="Include" />
         <e p="Editor Default Resources" t="Include">
           <e p="Dialogue System" t="Include" />
@@ -1637,21 +1638,6 @@
               </e>
               <e p="readme.txt" t="Include" />
               <e p="Textures" t="Include" />
-            </e>
-          </e>
-        </e>
-        <e p="Pixel Crushers" t="Include">
-          <e p="Dialogue System" t="Include">
-            <e p="Third Party Support" t="Include">
-              <e p="Localization Package Support" t="Include">
-                <e p="_README.txt" t="Include" />
-                <e p="Scripts" t="Include">
-                  <e p="DialogueSystemLocalizationPackageBridge.cs" t="Include" />
-                  <e p="Editor" t="Include">
-                    <e p="DialogueToLocalizationTableWindow.cs" t="Include" />
-                  </e>
-                </e>
-              </e>
             </e>
           </e>
         </e>
@@ -5175,138 +5161,6 @@
           <e p="AnimalsTestScene" t="Include" />
           <e p="SampleScene" t="Include" />
           <e p="TestScene" t="Include" />
-        </e>
-        <e p="ScifiFacility" t="Include">
-          <e p="PostProcessing" t="Include">
-            <e p="Editor" t="Include">
-              <e p="Attributes" t="Include">
-                <e p="PostProcessingModelEditorAttribute.cs" t="Include" />
-              </e>
-              <e p="Models" t="Include">
-                <e p="AmbientOcclusionModelEditor.cs" t="Include" />
-                <e p="AntialiasingModelEditor.cs" t="Include" />
-                <e p="BloomModelEditor.cs" t="Include" />
-                <e p="BuiltinDebugViewsEditor.cs" t="Include" />
-                <e p="ChromaticAberrationEditor.cs" t="Include" />
-                <e p="ColorGradingModelEditor.cs" t="Include" />
-                <e p="DefaultPostFxModelEditor.cs" t="Include" />
-                <e p="DepthOfFieldModelEditor.cs" t="Include" />
-                <e p="DitheringModelEditor.cs" t="Include" />
-                <e p="EyeAdaptationModelEditor.cs" t="Include" />
-                <e p="FogModelEditor.cs" t="Include" />
-                <e p="GrainModelEditor.cs" t="Include" />
-                <e p="MotionBlurModelEditor.cs" t="Include" />
-                <e p="ScreenSpaceReflectionModelEditor.cs" t="Include" />
-                <e p="UserLutModelEditor.cs" t="Include" />
-                <e p="VignetteModelEditor.cs" t="Include" />
-              </e>
-              <e p="Monitors" t="Include">
-                <e p="HistogramMonitor.cs" t="Include" />
-                <e p="ParadeMonitor.cs" t="Include" />
-                <e p="VectorscopeMonitor.cs" t="Include" />
-                <e p="WaveformMonitor.cs" t="Include" />
-              </e>
-              <e p="PostProcessingBehaviourEditor.cs" t="Include" />
-              <e p="PostProcessingFactory.cs" t="Include" />
-              <e p="PostProcessingInspector.cs" t="Include" />
-              <e p="PostProcessingModelEditor.cs" t="Include" />
-              <e p="PostProcessingMonitor.cs" t="Include" />
-              <e p="PropertyDrawers" t="Include">
-                <e p="GetSetDrawer.cs" t="Include" />
-                <e p="MinDrawer.cs" t="Include" />
-                <e p="TrackballGroupDrawer.cs" t="Include" />
-              </e>
-              <e p="Utils" t="Include">
-                <e p="CurveEditor.cs" t="Include" />
-                <e p="EditorGUIHelper.cs" t="Include" />
-                <e p="EditorResources.cs" t="Include" />
-                <e p="FxStyles.cs" t="Include" />
-                <e p="ReflectionUtils.cs" t="Include" />
-              </e>
-            </e>
-            <e p="Runtime" t="Include">
-              <e p="Attributes" t="Include">
-                <e p="GetSetAttribute.cs" t="Include" />
-                <e p="MinAttribute.cs" t="Include" />
-                <e p="TrackballAttribute.cs" t="Include" />
-                <e p="TrackballGroupAttribute.cs" t="Include" />
-              </e>
-              <e p="Components" t="Include">
-                <e p="AmbientOcclusionComponent.cs" t="Include" />
-                <e p="BloomComponent.cs" t="Include" />
-                <e p="BuiltinDebugViewsComponent.cs" t="Include" />
-                <e p="ChromaticAberrationComponent.cs" t="Include" />
-                <e p="ColorGradingComponent.cs" t="Include" />
-                <e p="DepthOfFieldComponent.cs" t="Include" />
-                <e p="DitheringComponent.cs" t="Include" />
-                <e p="EyeAdaptationComponent.cs" t="Include" />
-                <e p="FogComponent.cs" t="Include" />
-                <e p="FxaaComponent.cs" t="Include" />
-                <e p="GrainComponent.cs" t="Include" />
-                <e p="MotionBlurComponent.cs" t="Include" />
-                <e p="ScreenSpaceReflectionComponent.cs" t="Include" />
-                <e p="TaaComponent.cs" t="Include" />
-                <e p="UserLutComponent.cs" t="Include" />
-                <e p="VignetteComponent.cs" t="Include" />
-              </e>
-              <e p="Models" t="Include">
-                <e p="AmbientOcclusionModel.cs" t="Include" />
-                <e p="AntialiasingModel.cs" t="Include" />
-                <e p="BloomModel.cs" t="Include" />
-                <e p="BuiltinDebugViewsModel.cs" t="Include" />
-                <e p="ChromaticAberrationModel.cs" t="Include" />
-                <e p="ColorGradingModel.cs" t="Include" />
-                <e p="DepthOfFieldModel.cs" t="Include" />
-                <e p="DitheringModel.cs" t="Include" />
-                <e p="EyeAdaptationModel.cs" t="Include" />
-                <e p="FogModel.cs" t="Include" />
-                <e p="GrainModel.cs" t="Include" />
-                <e p="MotionBlurModel.cs" t="Include" />
-                <e p="ScreenSpaceReflectionModel.cs" t="Include" />
-                <e p="UserLutModel.cs" t="Include" />
-                <e p="VignetteModel.cs" t="Include" />
-              </e>
-              <e p="PostProcessingBehaviour.cs" t="Include" />
-              <e p="PostProcessingComponent.cs" t="Include" />
-              <e p="PostProcessingContext.cs" t="Include" />
-              <e p="PostProcessingModel.cs" t="Include" />
-              <e p="PostProcessingProfile.cs" t="Include" />
-              <e p="Utils" t="Include">
-                <e p="ColorGradingCurve.cs" t="Include" />
-                <e p="GraphicsUtils.cs" t="Include" />
-                <e p="MaterialFactory.cs" t="Include" />
-                <e p="RenderTextureFactory.cs" t="Include" />
-              </e>
-            </e>
-            <e p="Utilities" t="Include">
-              <e p="CustomMotionTexture" t="Include">
-                <e p="ExampleWheelController.cs" t="Include" />
-              </e>
-            </e>
-          </e>
-          <e p="Scripts" t="Include">
-            <e p="ColorConverter.cs" t="Include" />
-            <e p="Door_01.cs" t="Include" />
-            <e p="Door_02.cs" t="Include" />
-            <e p="FPController.cs" t="Include" />
-            <e p="FPSCounter.cs" t="Include" />
-            <e p="ThemeManager.cs" t="Include" />
-            <e p="UIKeys.cs" t="Include" />
-          </e>
-          <e p="SplineMesh" t="Include">
-            <e p="Scripts" t="Include">
-              <e p="CubicBezierCurve.cs" t="Include" />
-              <e p="Editor" t="Include">
-                <e p="SplineEditor.cs" t="Include" />
-                <e p="SplineExtrusionEditor.cs" t="Include" />
-              </e>
-              <e p="MeshBender.cs" t="Include" />
-              <e p="Pipe.cs" t="Include" />
-              <e p="Spline.cs" t="Include" />
-              <e p="SplineExtrusion.cs" t="Include" />
-              <e p="SplineNode.cs" t="Include" />
-            </e>
-          </e>
         </e>
         <e p="Source" t="Include">
           <e p="Animals" t="Include">
