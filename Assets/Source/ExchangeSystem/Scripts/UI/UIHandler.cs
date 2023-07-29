@@ -13,7 +13,7 @@ public class UIHandler : MonoBehaviour
     private void Awake()
     {
         _inventoryPanel.gameObject.SetActive(false);
-        _playerBackpackPanel.ParentTransform.gameObject.SetActive(false);
+        _playerBackpackPanel.CanvasGroup.alpha = 0;
     }
 
     private void OnEnable()
@@ -51,7 +51,7 @@ public class UIHandler : MonoBehaviour
         {
             _playerInputHandler.ToggleBuildPlayerInput(false);
             _playerInputHandler.ToggleInteractionConstructionInput(false);
-            _playerBackpackPanel.ParentTransform.gameObject.SetActive(true);
+            _playerBackpackPanel.CanvasGroup.alpha = 1;
             _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
             _playerInputHandler.ToggleHotbarDisplay(false);
@@ -60,7 +60,7 @@ public class UIHandler : MonoBehaviour
         {
             _playerBackpackPanel.ResetSelection();
             _playerHotbarInventory.ResetSelection();
-            _playerBackpackPanel.ParentTransform.gameObject.SetActive(false);
+            _playerBackpackPanel.CanvasGroup.alpha = 0;
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInteractionConstructionInput(true);
