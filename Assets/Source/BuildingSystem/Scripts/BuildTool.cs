@@ -16,6 +16,7 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private Material _buildingMatPositive;
     [SerializeField] private Material _buildingMatNegative;
     [SerializeField] private Transform _containerBuildings;
+    [SerializeField] private SphereCollider _selectionCollider;
 
     private bool _deleteModeEnabled;
     private Camera _camera;
@@ -153,6 +154,7 @@ public class BuildTool : MonoBehaviour
             _spawnBuilding.PlaceBuilding();
             _spawnBuilding = null;
             _playerAnimation.TurnOffAnimations();
+            _selectionCollider.enabled = true;
         }
     }
 
@@ -209,5 +211,6 @@ public class BuildTool : MonoBehaviour
         _spawnBuilding.transform.rotation = _lastRotation;
         OnCreateBuild?.Invoke();
         _playerAnimation.Build();
+        _selectionCollider.enabled = false;
     }
 }

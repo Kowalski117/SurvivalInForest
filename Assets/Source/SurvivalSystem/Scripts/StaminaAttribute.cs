@@ -15,6 +15,16 @@ public class StaminaAttribute : MonoBehaviour
     public float ValuePercent => _currentValue / _maxValue;
     public bool IsNotEmpty => _currentValue > 0;
 
+    public float MaxValue
+    {
+        get => _maxValue;
+        set
+        {
+            _maxValue = value;
+            _currentValue = Mathf.Clamp(_currentValue, 0, _maxValue);
+        }
+    }
+
     private void Start()
     {
         _currentValue = _maxValue;
@@ -46,5 +56,10 @@ public class StaminaAttribute : MonoBehaviour
                     _currentValue = _maxValue;
             }
         }
+    }
+
+    public void AddMaxValueStamina(float value)
+    {
+        MaxValue += value;
     }
 }
