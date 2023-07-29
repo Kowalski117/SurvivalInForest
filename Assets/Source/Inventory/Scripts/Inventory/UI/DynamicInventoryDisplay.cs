@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class DynamicInventoryDisplay : InventoryDisplay
 {
+    [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private Transform _parentTransform;
 
-    public Transform ParentTransform => _parentTransform;
+    public CanvasGroup CanvasGroup => _canvasGroup;
 
     protected override void Start()
     {
@@ -74,5 +75,19 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
         if (slotDictionary != null)
             slotDictionary.Clear();
+    }
+
+    public override void HandleSwap(InventorySlotUI inventorySlotUI)
+    {
+        int index = Array.IndexOf(Slots, inventorySlotUI);
+
+
+        if (index == -1)
+        {
+            return;
+        }
+;
+        SlotClicked(inventorySlotUI);
+        HandleItemSelection(inventorySlotUI);
     }
 }

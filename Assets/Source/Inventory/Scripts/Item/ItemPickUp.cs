@@ -1,5 +1,6 @@
 using PixelCrushers.QuestMachine.Wrappers;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(UniqueID))]
 public class ItemPickUp : MonoBehaviour
@@ -8,18 +9,24 @@ public class ItemPickUp : MonoBehaviour
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private ItemPickUpSaveData _itemSaveData;
     [SerializeField] private float _durability;
+    [SerializeField] private int _layerMask = 6;
 
+    private Outline _outline;
+    private Rigidbody _rigidbody;
     private UniqueID _uniqueID;
     private string _item = "Item_";
 
     public InventoryItemData ItemData => _itemData;
     public float Durability => _durability;
+    public Rigidbody Rigidbody => _rigidbody;
 
     private void Awake()
     {
+        _outline = GetComponent<Outline>();
         _questControl = GetComponent<QuestControl>();
         _uniqueID = GetComponent<UniqueID>();
         _durability = _itemData.Durability;
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -51,6 +58,21 @@ public class ItemPickUp : MonoBehaviour
         if (ES3.KeyExists(_item + _uniqueID.Id))
             ES3.DeleteKey(_item + _uniqueID.Id);
         Destroy(this.gameObject);
+    }
+
+    public void TurnOff()
+    {
+        _rigidbody.isKinematic = true;
+        _outline.enabled = false;
+        gameObject.layer = default;
+        enabled = false;
+    }
+
+    public void Enable()
+    {
+        enabled = true;
+        _outline.enabled = true;
+        gameObject.layer = _layerMask;
     }
 
     private void Save()

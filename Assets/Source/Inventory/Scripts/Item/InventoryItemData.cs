@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Inventory System/Inventory Item", order = 51)]
+[CreateAssetMenu(menuName = "Inventory System/Item Data/Item", order = 51)]
 public class InventoryItemData : ScriptableObject
 {
     [SerializeField] private int _id = -1;
@@ -40,14 +40,16 @@ public class InventoryItemData : ScriptableObject
 
 public enum ItemType
 {
-    Build,
-    InteractBuilding,
-    Weapon,
-    Tool,
-    Food,
-    Decor,
-    Clothing,
-    Item
+    Build = 1,
+    InteractBuilding = 2,
+    Weapon = 3,
+    Tool = 4,
+    Food = 5,
+    Decor = 6,
+    Clothes = 7,
+    Item = 8,
+    Seed = 9,
+    None = 10,
 }
 
 #if UNITY_EDITOR

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -9,6 +8,7 @@ public abstract class InventoryDisplay : MonoBehaviour
 {
     [SerializeField] protected MouseItemData MouseInventoryItem;
     [SerializeField] protected InventoryDescriptionUI InventoryDescription;
+    [SerializeField] protected Interactor _interactor;
     [SerializeField] protected InventorySlotUI[] Slots;
 
     private InventorySlotUI _currentSlot;
@@ -26,6 +26,7 @@ public abstract class InventoryDisplay : MonoBehaviour
     }
 
     public abstract void AssingSlot(InventorySystem inventoryToDisplay, int offSet);
+    public abstract void HandleSwap(InventorySlotUI inventorySlotUI);
 
     protected virtual void UpdateSlot(InventorySlot updatedSlot)
     {
@@ -40,27 +41,21 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     protected void HandleEndDrag(InventorySlotUI inventorySlotUI)
     {
-        if(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null && _currentSlot != null)
+        if (MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null && _currentSlot != null)
         {
-            _currentSlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
-            _currentSlot.UpdateUiSlot();
+            if (MouseInventoryItem.IsPointerOverUIObject())
+            {
+                _currentSlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
+                _currentSlot.UpdateUiSlot();
+            }
+            else
+            {
+                _interactor.RemoveItem(MouseInventoryItem.InventorySlotUI);
+            }
+
             MouseInventoryItem.CleanSlot();
             ResetDraggedItem();
         }
-    }
-
-    protected void HandleSwap(InventorySlotUI inventorySlotUI)
-    {
-        int index = Array.IndexOf(Slots, inventorySlotUI);
-
-
-        if (index == -1)
-        {
-            return;
-        }
-;
-        SlotClicked(inventorySlotUI);
-        HandleItemSelection(inventorySlotUI);
     }
 
     protected void HandleBeginDrag(InventorySlotUI inventorySlotUI)
@@ -96,6 +91,7 @@ public abstract class InventoryDisplay : MonoBehaviour
                 MouseInventoryItem.UpdateMouseSlot(halfStackSlot);
                 MouseInventoryItem.UpdateCurrentInventorySlot(inventorySlotUI);
                 inventorySlotUI.UpdateUiSlot();
+                inventorySlotUI.UpdateUiSlotEvent();
                 _currentSlot = inventorySlotUI;
                 return;
             }
@@ -104,6 +100,7 @@ public abstract class InventoryDisplay : MonoBehaviour
                 MouseInventoryItem.UpdateMouseSlot(inventorySlotUI.AssignedInventorySlot);
                 MouseInventoryItem.UpdateCurrentInventorySlot(inventorySlotUI);
                 _currentSlot = inventorySlotUI;
+                inventorySlotUI.CleanUiSlotEvent();
                 inventorySlotUI.CleanSlot();
                 return;
             }
@@ -149,32 +146,39 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     public void SlotClicked(InventorySlotUI clickedUISlot)
     {
-        if (clickedUISlot.AssignedInventorySlot.ItemData == null && MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null)
+        if (MouseInventoryItem.CurrentItemData != null &&
+        (clickedUISlot.AllowedItemTypes == MouseInventoryItem.CurrentItemData.Type ||
+         clickedUISlot.AllowedItemTypes == ItemType.None))
         {
-            clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
-            clickedUISlot.UpdateUiSlot();
-            ResetDraggedItem();
-            return;
-        }
-        else if (clickedUISlot.AssignedInventorySlot.ItemData != null && MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null)
-        {
-            bool isSameItem = clickedUISlot.AssignedInventorySlot.ItemData == MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData;
-            if (isSameItem && clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.Size))
+            if (clickedUISlot.AssignedInventorySlot.ItemData == null && MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null)
             {
                 clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
                 clickedUISlot.UpdateUiSlot();
+                clickedUISlot.UpdateUiSlotEvent();
                 ResetDraggedItem();
                 return;
             }
-            else if (isSameItem && !clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.Size, out int leftInStack))
+            else if (clickedUISlot.AssignedInventorySlot.ItemData != null && MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null)
             {
-                SwapSlots(clickedUISlot);
-                return;
-            }
-            else if (!isSameItem)
-            {
-                SwapSlots(clickedUISlot);
-                return;
+                bool isSameItem = clickedUISlot.AssignedInventorySlot.ItemData == MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData;
+                if (isSameItem && clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.Size))
+                {
+                    clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
+                    clickedUISlot.UpdateUiSlot();
+                    clickedUISlot.UpdateUiSlotEvent();
+                    ResetDraggedItem();
+                    return;
+                }
+                else if (isSameItem && !clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.Size, out int leftInStack))
+                {
+                    SwapSlots(clickedUISlot);
+                    return;
+                }
+                else if (!isSameItem)
+                {
+                    SwapSlots(clickedUISlot);
+                    return;
+                }
             }
         }
     }
@@ -188,9 +192,11 @@ public abstract class InventoryDisplay : MonoBehaviour
 
         MouseInventoryItem.CurrentSlot.AssignedInventorySlot.AssignItem(clickedUISlot.AssignedInventorySlot);
         MouseInventoryItem.CurrentSlot.UpdateUiSlot();
+        clickedUISlot.CleanUiSlotEvent();
         clickedUISlot.CleanSlot();
         clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
         clickedUISlot.UpdateUiSlot();
+        clickedUISlot.UpdateUiSlotEvent();
         MouseInventoryItem.CleanSlot();
         ResetDraggedItem();
     }
