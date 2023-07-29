@@ -7,14 +7,14 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Collider))]
 public abstract class Resource : MonoBehaviour, IDamagable
 {
-    [SerializeField] private int _health;
+    [SerializeField] private float _maxHealth = 100;
     [SerializeField] private ToolType _extractionType;
     [SerializeField] private GameObject _loot;
     [SerializeField] private int _lootsCount;
     [SerializeField] private ParticleSystem _takeDamage;
     [SerializeField] private GameObject _parent;
 
-    private int _curenntHealth;
+    private float _curenntHealth;
     private float _radiusSpawnLoots = 1;
     private float _spawnLootUp = 1;
     private float _disappearanceTime = 5;
@@ -22,18 +22,20 @@ public abstract class Resource : MonoBehaviour, IDamagable
     private Rigidbody _rigidbody;
     private Collider _collider;
     public event Action Died;
-    public int Health => _curenntHealth;
+    public float Health => _curenntHealth;
+    public float MaxHealth => _maxHealth;
     public ToolType ExtractionType => _extractionType;
 
     public virtual void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
+
     }
 
     public virtual void OnEnable()
     {
-        _curenntHealth = _health;
+        _curenntHealth = _maxHealth;
     }
 
     public virtual void TakeDamage(float damage, float overTimeDamage)
@@ -49,6 +51,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
 
     public virtual void Die()
     {
+        _curenntHealth = 0;
         _rigidbody.isKinematic = false;
         SpawnLoot(_loot, _radiusSpawnLoots, _spawnLootUp, _lootsCount);
         _isDead = true;
