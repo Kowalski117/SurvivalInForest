@@ -211,8 +211,8 @@ public class PlayerInteraction : Raycast
 
             if (_currentAnim.Health <= 0)
             {
+                OnValueChanged?.Invoke(_currentAnim.Health);
                 _currentAnim = null;
-                OnTurnOffBarValue?.Invoke();
             }
         }
     }
@@ -229,8 +229,8 @@ public class PlayerInteraction : Raycast
 
             if (_currentBrokenObject.Endurance <= 0)
             {
+                OnValueChanged?.Invoke(_currentBrokenObject.Endurance);
                 _currentBrokenObject = null;
-                OnTurnOffBarValue?.Invoke();
             }
         }
     }
@@ -253,8 +253,8 @@ public class PlayerInteraction : Raycast
 
             if (_currentResoure.Health <= 0)
             {
+                OnValueChanged?.Invoke(_currentResoure.Health);
                 _currentResoure = null;
-                OnTurnOffBarValue?.Invoke();
             }
         }
     }

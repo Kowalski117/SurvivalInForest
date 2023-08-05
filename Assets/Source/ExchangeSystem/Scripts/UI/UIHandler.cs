@@ -13,6 +13,10 @@ public class UIHandler : MonoBehaviour
     private void Awake()
     {
         _inventoryPanel.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
         _playerBackpackPanel.CanvasGroup.alpha = 0;
     }
 

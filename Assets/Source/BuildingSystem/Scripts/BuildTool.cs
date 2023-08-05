@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class BuildTool : MonoBehaviour
 {
+    [SerializeField] private BaseHandler _baseHandler;
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private LoadingWindow _loadingWindow;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
@@ -141,7 +142,7 @@ public class BuildTool : MonoBehaviour
             float terrainHeight = Terrain.activeTerrain.SampleHeight(hitPoint);
 
             gridPosition.y = terrainHeight;
-            _spawnBuilding.transform.position = gridPosition;
+            _spawnBuilding.transform.position = gridPosition; //поменять
         }
     }
 
@@ -152,6 +153,7 @@ public class BuildTool : MonoBehaviour
             OnCompletedBuild?.Invoke();
             CraftingItem(_recipe);
             _spawnBuilding.PlaceBuilding();
+            _baseHandler.AddId(_spawnBuilding.UniqueID.Id);
             _spawnBuilding = null;
             _playerAnimation.TurnOffAnimations();
             _selectionCollider.enabled = true;

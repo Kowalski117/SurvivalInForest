@@ -24,6 +24,7 @@ public class Building : MonoBehaviour
 
     public event UnityAction OnCompletedBuild;
 
+    public UniqueID UniqueID => _uniqueID;
     public BuildingData AssignedData => _assignedData;
     public bool FlaggedForDelete => _flaggedForDelete;
     public bool IsOverlapping => _isOverlapping;
@@ -117,7 +118,6 @@ public class Building : MonoBehaviour
     {
         if (ES3.KeyExists(_buildingId + _uniqueID.Id))
             ES3.DeleteKey(_buildingId + _uniqueID.Id);
-        Destroy(this.gameObject);
     }
 
     private void Save()

@@ -1,6 +1,5 @@
 using PixelCrushers.QuestMachine.Wrappers;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(UniqueID))]
 public class ItemPickUp : MonoBehaviour

@@ -11,7 +11,7 @@ public class GardenBed : MonoBehaviour
 
     public void Init(InventoryItemData inventoryItemData)
     {
-        //if(inventoryItemData.Type == ItemType.Seed)
+        if(_currentItem == null && inventoryItemData != null)
         {
             _currentItem = Instantiate(inventoryItemData.ItemPrefab, _spawnPoint.position, Quaternion.identity, transform);
             _currentItem.gameObject.transform.localScale = new Vector3(0, 0, 0);
@@ -25,5 +25,6 @@ public class GardenBed : MonoBehaviour
         _currentItem.transform.DOScale(new Vector3(1, 1, 1), _spawnTime);
         yield return new WaitForSeconds(_spawnTime);
         _currentItem.Enable();
+        _currentItem = null;
     }
 }

@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class ValueBar : MonoBehaviour
 {
@@ -32,6 +31,12 @@ public class ValueBar : MonoBehaviour
         _valueText.text = value.ToString();
 
         _bar.fillAmount = value / _maxValue;
+
+        if(_bar.fillAmount <= 0)
+        {
+            _bar.fillAmount = 0;
+            TurnOffBar();
+        }
     }
 
     public void EnableBar(float maxValue, float currentCalue)

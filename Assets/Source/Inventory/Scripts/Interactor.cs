@@ -160,9 +160,12 @@ public class Interactor : Raycast
 
     private void InstantiateItem(InventoryItemData itemData, float durability)
     {
-        ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
-        itemPickUp.GenerateNewID();
-        itemPickUp.UpdateDurability(durability);
+        if(itemData != null)
+        {
+            ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
+            itemPickUp.GenerateNewID();
+            itemPickUp.UpdateDurability(durability);
+        }
     }
 
     private void InteractableInventory()

@@ -1,41 +1,41 @@
 using System.Collections.Generic;
-using System.Xml;
 using UnityEngine;
 
 public class BaseHandler : MonoBehaviour
 {
-    //[SerializeField] private List<BuildingSaveData> _buildingDataList;
+    [SerializeField] private List<BuildingSaveData> _buildingDataList;
+    [SerializeField] private Transform _buildingContainer; 
 
-    //private List<string> _ids = new List<string>();
+    private List<string> _ids = new List<string>();
 
-    //private void OnEnable()
-    //{
-    //    SaveGame.OnLoadData += LoadBase;
-    //}
+    private BuildingData _currentBuildingData;
+    private Building _currentBuilding;
 
-    //private void OnDisable()
-    //{
-    //    SaveGame.OnLoadData -= LoadBase;
-    //}
+    private void OnEnable()
+    {
+        SaveGame.OnLoadData += LoadBase;
+    }
 
-    //public static void AddId(string id)
-    //{
-    //    _ids.Add(id);
-    //}
+    private void OnDisable()
+    {
+        SaveGame.OnLoadData -= LoadBase;
+    }
 
-    //private void LoadBase()
-    //{
-    //    foreach (var buildingData in _ids)
-    //    {
-    //        if (ES3.KeyExists(buildingData))
-    //        {
-    //            Building building = Instantiate();
+    public void AddId(string id)
+    {
+        _ids.Add(id);
+    }
 
-    //            BuildingSaveData itemSaveData = ES3.Load(_buildingId + _uniqueID.Id, new BuildingSaveData(_assignedData, transform.position, transform.rotation));
-    //            _assignedData = itemSaveData.AssignedData;
-    //            transform.position = itemSaveData.Position;
-    //            transform.rotation = itemSaveData.Rotation;
-    //        }
-    //    }
-    //}
+    private void LoadBase()
+    {
+        //    foreach (var buildingData in _ids)
+        //    {
+        //        if (ES3.KeyExists(buildingData))
+        //        {
+        //            BuildingSaveData itemSaveData = ES3.Load(buildingData, new BuildingSaveData(_currentBuildingData, _currentBuilding.transform.position, _currentBuilding.transform.rotation));
+        //            _currentBuilding = Instantiate(itemSaveData.AssignedData.Prefab, itemSaveData.Position, itemSaveData.Rotation, _buildingContainer);\
+        //            _currentBuilding = null;
+        //        }
+        //    }
+    }
 }
