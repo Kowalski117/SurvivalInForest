@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,8 +11,13 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     [SerializeField] private Image _borderImage;
     [SerializeField] private TMP_Text _itemCount;
     [SerializeField] private InventorySlot _assignedInventorySlot;
+    [SerializeField] public ItemType _allowedItemTypes = ItemType.None;
 
     private bool _empty = true;
+
+    public event UnityAction<InventorySlotUI> OnItemUpdate;
+    public event UnityAction<InventorySlotUI> OnItemClear;
+    public static UnityAction<InventorySlotUI> OnItemRemove;
 
     public event Action<InventorySlotUI> OnItemClicked;
     public event Action<InventorySlotUI> OnItemDroppedOn;
@@ -21,6 +25,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     public event Action<InventorySlotUI> OnItemEndDrag;
 
     public InventorySlot AssignedInventorySlot => _assignedInventorySlot;
+    public ItemType AllowedItemTypes => _allowedItemTypes;
 
     private void Awake()
     {
@@ -28,6 +33,12 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         Deselect();
         _iconImage.preserveAspect = true;
     }
+
+    //private void Update()
+    //{
+    //    if(_assignedInventorySlot.ItemData != null && _allowedItemTypes != ItemType.None)
+    //        OnItemRemove?.Invoke(this);
+    //}
 
     public void Init(InventorySlot slot)
     {
@@ -37,12 +48,14 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     public void Deselect()
     {
-        _borderImage.enabled = false;
+        if (_borderImage != null)
+            _borderImage.enabled = false;
     }
 
     public void Select()
     {
-        _borderImage.enabled = true;
+        if (_borderImage != null)
+            _borderImage.enabled = true;
     }
 
     public void UpdateUiSlot()
@@ -65,6 +78,23 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
             _itemCount.text = "";
     }
 
+    public void UpdateUiSlotEvent()
+    {
+        if (_assignedInventorySlot.ItemData != null)
+        {
+            OnItemUpdate?.Invoke(this);
+        }
+        else
+        {
+            CleanUiSlotEvent();
+        }
+    }
+    
+    public void CleanUiSlotEvent()
+    {
+        OnItemClear?.Invoke(this);
+    }
+
     public void CleanSlot()
     {
         _assignedInventorySlot?.ClearSlot();
@@ -77,12 +107,14 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     public void ToggleHighlight()
     {
-        _borderImage.enabled = !_borderImage.enabled;
+        if(_borderImage != null)
+            _borderImage.enabled = !_borderImage.enabled;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _borderImage.enabled = true;
+        if (_borderImage != null)
+            _borderImage.enabled = true;
         OnItemClicked?.Invoke(this);
     }
 
@@ -91,6 +123,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         if (_empty)
             return;
         OnItemBeginDrag?.Invoke(this);
+
     }
 
     public void OnEndDrag(PointerEventData eventData)

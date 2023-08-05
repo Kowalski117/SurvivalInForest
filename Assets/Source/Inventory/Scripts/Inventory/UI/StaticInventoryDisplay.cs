@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,5 +48,19 @@ public class StaticInventoryDisplay : InventoryDisplay
             Debug.LogWarning($"No inventory assigned to {this.gameObject}");
 
         AssingSlot(inventorySystem, 0);
+    }
+
+    public override void HandleSwap(InventorySlotUI inventorySlotUI)
+    {
+        int index = Array.IndexOf(Slots, inventorySlotUI);
+
+
+        if (index == -1)
+        {
+            return;
+        }
+;
+        SlotClicked(inventorySlotUI);
+        HandleItemSelection(inventorySlotUI);
     }
 }

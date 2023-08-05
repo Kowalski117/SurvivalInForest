@@ -16,6 +16,8 @@ public class TimeHandler : MonoBehaviour
     [SerializeField] private float _maxMoonLightIntensity;
     [SerializeField] private Color _dayAmblientLight;
     [SerializeField] private Color _nightAmblientLight;
+    [SerializeField] private Material _dayMaterial;
+    [SerializeField] private Material _nightMaterial;
     [SerializeField] private AnimationCurve _sunLightIntensityCurve;
     [SerializeField] private AnimationCurve _moonLightIntensityCurve;
     [SerializeField] private AnimationCurve _ambientLightCurve;
@@ -110,12 +112,13 @@ public class TimeHandler : MonoBehaviour
 
             sunLightRotation = Mathf.Lerp(180, 360, (float)percentage);
             moonRotation = Mathf.Lerp(0, 180, (float)percentage);
+
+            _starsParticle.Play();
         }
 
         _sunLight.transform.rotation = Quaternion.AngleAxis(sunLightRotation, Vector3.right);
         _moonLight.transform.rotation = Quaternion.AngleAxis(moonRotation, Vector3.right);
 
-        _starsParticle.Play();
     }
 
     private void UpdateLightSettings()
@@ -129,6 +132,7 @@ public class TimeHandler : MonoBehaviour
         _moonLight.intensity = Mathf.Lerp(0, _maxMoonLightIntensity, _moonLightIntensityCurve.Evaluate(moonDotProduct));
 
         RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _ambientLightCurve.Evaluate(sunDotProduct));
+        RenderSettings.skybox.Lerp(_dayMaterial, _nightMaterial, _ambientLightCurve.Evaluate(moonDotProduct));
     }
 
     private TimeSpan CalculateTimeDifference(TimeSpan fromTime, TimeSpan toTime)

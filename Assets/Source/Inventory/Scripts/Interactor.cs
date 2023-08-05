@@ -29,20 +29,26 @@ public class Interactor : Raycast
 
     private void OnEnable()
     {
-        _buildTool.OnCreateBuild += CreateBuild;
         _buildTool.OnCompletedBuild += ClearIInteractable;
         _playerInputHandler.InteractionPlayerInput.OnPickUp += PickUpItem;
         _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable += InteractableInventory;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction += InteractableConstruction;
+
+        _hotbarDisplay.ItemClicked += PlantSeed;
+
+        InventorySlotUI.OnItemRemove += RemoveItem;
     }
 
     private void OnDisable()
     {
-        _buildTool.OnCreateBuild -= CreateBuild;
         _buildTool.OnCompletedBuild -= ClearIInteractable;
         _playerInputHandler.InteractionPlayerInput.OnPickUp -= PickUpItem;
         _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable -= InteractableInventory;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
+
+        _hotbarDisplay.ItemClicked -= PlantSeed;
+
+        InventorySlotUI.OnItemRemove -= RemoveItem;
     }
 
     private void Update()
@@ -61,9 +67,11 @@ public class Interactor : Raycast
 
                     if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
                     {
-                        OnTimeUpdate?.Invoke(LookTimerPracent, "");
-                        _currentItemPickUp = itemPickUp;
-
+                        if(itemPickUp.enabled == true)
+                        {
+                            OnTimeUpdate?.Invoke(LookTimerPracent, "");
+                            _currentItemPickUp = itemPickUp;
+                        }
                     }
                     else if (hitInfo.collider.TryGetComponent(out ObjectPickUp objectPickUp))
                     {
@@ -137,11 +145,15 @@ public class Interactor : Raycast
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
-            InstantiateItem(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability);
-            _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, 1);
+            Debug.Log(inventorySlot.AssignedInventorySlot.Size);
+            for (int i = 0; i < inventorySlot.AssignedInventorySlot.Size; i++)
+            {
+                InstantiateItem(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability);
+            }
+            _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, inventorySlot.AssignedInventorySlot.Size);
             //_playerAnimation.RemoveItemAnimationEvent();
 
-            if(inventorySlot.AssignedInventorySlot.ItemData == null)
+            if (inventorySlot.AssignedInventorySlot.ItemData == null)
                 inventorySlot.ToggleHighlight();
         }
     }
@@ -218,8 +230,14 @@ public class Interactor : Raycast
         }
     }
 
-    private void CreateBuild()
+    private void PlantSeed(InventorySlot slot)
     {
-        //enabled = false;
+        if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hitInfo))
+        {
+            if (hitInfo.collider.TryGetComponent(out GardenBed gardenBed))
+            {
+                gardenBed.Init(slot.ItemData);
+            }
+        }
     }
 }

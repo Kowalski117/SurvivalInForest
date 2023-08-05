@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Stone : Resource
 {
-    private int _maxHealth;
+    private float _maxHealth;
     private int[] _array = new int[] {75, 50, 25,0};
     private int _index;
 
@@ -19,7 +19,7 @@ public class Stone : Resource
     {
         
         base.TakeDamage(damage, overTimeDamage);
-        float damagePercentage = Health.ToFloat()/_maxHealth.ToFloat()*100;
+        float damagePercentage = Health / _maxHealth*100;
 
         if (damagePercentage < _array[_index])
         {

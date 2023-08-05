@@ -32,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4977536056611314500}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 149.94254, y: 15.815998, z: 209.66415}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -128,13 +128,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _questControl: {fileID: 0}
-  _itemData: {fileID: 11400000, guid: 4a306080b2fa20643819a80f27861a30, type: 2}
+  _itemData: {fileID: 11400000, guid: a1f5c0aa8c3270044bc4ebf610bf84a9, type: 2}
   _itemSaveData:
     _itemData: {fileID: 0}
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &4689545674523007721
 MonoBehaviour:
   m_ObjectHideFlags: 0

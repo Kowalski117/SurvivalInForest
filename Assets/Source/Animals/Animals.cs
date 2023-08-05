@@ -22,8 +22,10 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private bool _isDead = false;
     private Coroutine _coroutineOverTimeDamage;
     private Collider _collider;
+    private float _maxHealth;
 
     public float Health => _healh;
+    public float MaxHealth => _maxHealth;
     public bool IsDead => _isDead;
 
     public event Action Died;
@@ -33,6 +35,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
         _behaviorTree = GetComponent<BehaviorTree>();
         _agent = GetComponent<NavMeshAgent>();
         _collider = GetComponent<Collider>();
+        _maxHealth = _healh;
     }
     
     public void TakeDamage(float damage,float overTimeDamage)

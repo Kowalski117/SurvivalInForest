@@ -1,5 +1,6 @@
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInteraction : Raycast
 {
@@ -22,8 +23,11 @@ public class PlayerInteraction : Raycast
     private InventorySlot _currentInventorySlot;
 
     private float _nextFire;
-
     private bool _issgsjf;
+
+    public event UnityAction<float> OnValueChanged;
+    public event UnityAction<float, float> OnEnableBarValue;
+    public event UnityAction OnTurnOffBarValue;
 
     private void OnEnable()
     {
@@ -200,13 +204,16 @@ public class PlayerInteraction : Raycast
     {
         if (_currentAnim != null)
         {
-            Debug.Log("2");
             _currentAnim.TakeDamage(damage, overTimeDamage);
-
-            if(_currentAnim.Health <= 0)
-                _currentAnim = null;
-
             UpdateDurabilityItem();
+
+            OnValueChanged?.Invoke(_currentAnim.Health);
+
+            if (_currentAnim.Health <= 0)
+            {
+                _currentAnim = null;
+                OnTurnOffBarValue?.Invoke();
+            }
         }
     }
     
@@ -214,8 +221,17 @@ public class PlayerInteraction : Raycast
     {
         if (_currentBrokenObject != null)
         {
+            Debug.Log(damage);
             _currentBrokenObject.TakeDamage(damage, overTimeDamage);
             UpdateDurabilityItem();
+
+            OnValueChanged?.Invoke(_currentBrokenObject.Endurance);
+
+            if (_currentBrokenObject.Endurance <= 0)
+            {
+                _currentBrokenObject = null;
+                OnTurnOffBarValue?.Invoke();
+            }
         }
     }
 
@@ -233,10 +249,12 @@ public class PlayerInteraction : Raycast
                 _currentResoure.TakeDamage(damage, overTimeDamage);
             }
 
+            OnValueChanged?.Invoke(_currentResoure.Health);
+
             if (_currentResoure.Health <= 0)
             {
-                _currentItemData = null;
                 _currentResoure = null;
+                OnTurnOffBarValue?.Invoke();
             }
         }
     }
@@ -246,19 +264,29 @@ public class PlayerInteraction : Raycast
         if (other.TryGetComponent(out Animals animals))
         {
             if (animals != null)
+            {
                 _currentAnim = animals;
+                OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
+            }
         }
 
         if (other.TryGetComponent(out Resource resource))
         {
             if (resource != null)
+            {
                 _currentResoure = resource;
+                OnEnableBarValue?.Invoke(_currentResoure.MaxHealth, _currentResoure.Health);
+            }
+
         }
 
         if (other.TryGetComponent(out BrokenObject brokenObject))
         {
             if (brokenObject != null)
+            {
                 _currentBrokenObject = brokenObject;
+                OnEnableBarValue?.Invoke(_currentBrokenObject.MaxEndurance, _currentBrokenObject.Endurance);
+            }
         }
     }
 
@@ -266,17 +294,20 @@ public class PlayerInteraction : Raycast
     {
         if (other.TryGetComponent(out Resource resource))
         {
-                _currentResoure = null;
+            _currentResoure = null;
+            OnTurnOffBarValue?.Invoke();
         }
 
         if (other.TryGetComponent(out Animals animals))
         {
-                _currentAnim = null;
+            _currentAnim = null;
+            OnTurnOffBarValue?.Invoke();
         }
 
         if (other.TryGetComponent(out BrokenObject brokenObject))
         {
-                _currentBrokenObject = null;
+            _currentBrokenObject = null;
+            OnTurnOffBarValue?.Invoke();
         }
     }
 }

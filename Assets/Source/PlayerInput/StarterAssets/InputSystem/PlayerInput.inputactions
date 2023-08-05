@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CreativeMode",
+                    "type": "Button",
+                    "id": "33f29512-2aae-4310-a6ef-4129386875aa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -380,6 +389,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "InteractionConstruction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "68345e19-cee3-449e-9fa0-bad770c1e6e4",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "CreativeMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
