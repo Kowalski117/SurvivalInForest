@@ -7,23 +7,23 @@ public class GardenBed : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private float _spawnTime = 10f;
 
-    private ItemPickUp _currentItem;
+    private ObjectPickUp _currentItem;
 
     public void Init(InventoryItemData inventoryItemData)
     {
-        if(_currentItem == null && inventoryItemData != null)
+        if(_currentItem == null && inventoryItemData != null && inventoryItemData is SeedItemData seedItemData)
         {
-            _currentItem = Instantiate(inventoryItemData.ItemPrefab, _spawnPoint.position, Quaternion.identity, transform);
+            _currentItem = Instantiate(seedItemData.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
             _currentItem.gameObject.transform.localScale = new Vector3(0, 0, 0);
             _currentItem.TurnOff();
-            StartCoroutine(SpawnOverTime());
+            StartCoroutine(SpawnOverTime(seedItemData.GrowthTime));
         }
     }
 
-    IEnumerator SpawnOverTime()
+    private IEnumerator SpawnOverTime(float time)
     {
-        _currentItem.transform.DOScale(new Vector3(1, 1, 1), _spawnTime);
-        yield return new WaitForSeconds(_spawnTime);
+        _currentItem.transform.DOScale(new Vector3(1, 1, 1), time);
+        yield return new WaitForSeconds(time);
         _currentItem.Enable();
         _currentItem = null;
     }
