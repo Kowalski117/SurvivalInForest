@@ -56,6 +56,7 @@ public class UIHandler : MonoBehaviour
             _playerInputHandler.ToggleBuildPlayerInput(false);
             _playerInputHandler.ToggleInteractionConstructionInput(false);
             _playerBackpackPanel.CanvasGroup.alpha = 1;
+            _playerBackpackPanel.CanvasGroup.blocksRaycasts = true;
             _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
             _playerInputHandler.ToggleHotbarDisplay(false);
@@ -65,6 +66,7 @@ public class UIHandler : MonoBehaviour
             _playerBackpackPanel.ResetSelection();
             _playerHotbarInventory.ResetSelection();
             _playerBackpackPanel.CanvasGroup.alpha = 0;
+            _playerBackpackPanel.CanvasGroup.blocksRaycasts = false;
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInteractionConstructionInput(true);
