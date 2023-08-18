@@ -50,6 +50,11 @@ public enum ItemType
     Item = 8,
     Seed = 9,
     None = 10,
+    ClothesOnHead = 11,
+    ClothesOnTorso = 12,
+    ClothesOnFeet = 13,
+    ClothingShoes = 13,
+
 }
 
 #if UNITY_EDITOR

@@ -26,6 +26,7 @@ public class SurvivalHandler : MonoBehaviour
         SaveGame.OnLoadData += LoadSurvivalAttributes;
 
         _hotbarDisplay.ItemClicked += Eat;
+        _health.OnRevived += Reborn;
     }
 
     private void OnDisable()
@@ -34,6 +35,7 @@ public class SurvivalHandler : MonoBehaviour
         SaveGame.OnLoadData -= LoadSurvivalAttributes;
 
         _hotbarDisplay.ItemClicked -= Eat;
+        _health.OnRevived -= Reborn;
     }
 
     private void Update()
@@ -50,6 +52,18 @@ public class SurvivalHandler : MonoBehaviour
                 _health.LowerHealth(_healthDamage);
                 _lookTimer = 0;
             }
+
+            _health.SetCanRestoreHealth(false);
+        }
+        else
+        {
+            if (_health.HealthPercent > 0)
+            {
+                _health.SetCanRestoreHealth(true);
+                _health.RestoringHealth();
+            }
+            else
+                _health.SetCanRestoreHealth(false);
         }
     }
 
@@ -87,6 +101,13 @@ public class SurvivalHandler : MonoBehaviour
         _hunger.LowerValue(_timeHandler.TimeMultiplier);
         _thirst.LowerValue(_timeHandler.TimeMultiplier);
         _sleep.LowerValue(_timeHandler.TimeMultiplier);
+    }
+
+    private void Reborn()
+    {
+        _hunger.SetValue(_hunger.MaxValueInSeconds * 30 / 100);
+        _thirst.SetValue(_thirst.MaxValueInSeconds * 30 / 100);
+        _sleep.SetValue(_sleep.MaxValueInSeconds * 30 / 100);
     }
 
     public void SaveSurvivalAttributes()

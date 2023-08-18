@@ -87,19 +87,19 @@ public class InventorySystem
 
             if (stackSize >= amount)
             {
-                slot.RemoveFromStack(amount); // Удаляем предметы из слота
+                slot.RemoveFromStack(amount);
                 OnInventorySlotChanged?.Invoke(slot);
                 return true;
             }
             else if (stackSize > 0)
             {
-                slot.RemoveFromStack(stackSize); // Удаляем предметы из слота
+                slot.RemoveFromStack(stackSize); 
                 OnInventorySlotChanged?.Invoke(slot);
-                return true; // Возвращаем false, чтобы показать, что предметы в слоте закончились
+                return true; 
             }
         }
 
-        return false; // Возвращаем false, если слот пуст или не содержит нужного количества предметов
+        return false;
     }
 
     public bool ContainsItem(InventoryItemData itemToAdd, out List<InventorySlot> inventorySlots)
@@ -148,6 +148,11 @@ public class InventorySystem
             count = 0;
 
         return count;
+    }
+
+    public List<InventorySlot> GetAllFilledSlots()
+    {
+        return _inventorySlots.Where(slot => slot.ItemData != null).ToList();
     }
 
     private void CreateInventory(int size)

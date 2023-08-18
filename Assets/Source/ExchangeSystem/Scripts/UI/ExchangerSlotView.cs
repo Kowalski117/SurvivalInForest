@@ -92,7 +92,8 @@ public class ExchangerSlotView : MonoBehaviour
             }
             else
             {
-                itemViewArray[i].gameObject.SetActive(false);
+                itemViewArray[i].gameObject.SetActive(true);
+                itemViewArray[i].Clear();
             }
         }
     }

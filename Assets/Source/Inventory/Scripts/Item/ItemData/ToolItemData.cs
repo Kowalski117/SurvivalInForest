@@ -25,7 +25,8 @@ public enum ToolType
 {
     Axe,
     Pickaxe,
-    Arm
+    Arm,
+    FishingRod,
 }
 
 #if UNITY_EDITOR

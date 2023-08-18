@@ -23,8 +23,9 @@ public class PlayerInteraction : Raycast
     private InventorySlot _currentInventorySlot;
 
     private float _nextFire;
-    private bool _issgsjf;
+    private bool _isEnable;
 
+    public event UnityAction<InventoryItemData> OnUpdateItemData;
     public event UnityAction<float> OnValueChanged;
     public event UnityAction<float, float> OnEnableBarValue;
     public event UnityAction OnTurnOffBarValue;
@@ -41,7 +42,7 @@ public class PlayerInteraction : Raycast
 
     private void Update()
     {
-        if(_issgsjf)
+        if(_isEnable)
         {
             UpdateItemData();
             InitWeapon(_currentItemData);
@@ -57,7 +58,8 @@ public class PlayerInteraction : Raycast
             }
             else if (_currentTool != null && _currentWeapon == null)
             {
-                InteractResource();            }
+                InteractResource();          
+            }
         }
     }
 
@@ -66,6 +68,7 @@ public class PlayerInteraction : Raycast
         _previousItemData = _currentItemData;
         _currentItemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
         _currentInventorySlot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+        OnUpdateItemData?.Invoke(_currentItemData);
 
         if (_currentItemData != _previousItemData)
         {
@@ -165,12 +168,14 @@ public class PlayerInteraction : Raycast
     {
         if (Time.time > _nextFire)
         {
+            Debug.Log("Удар1");
             _playerAnimation.Hit(_currentTool);
             _nextFire = Time.time + 1 / _currentTool.Speed;
 
             if (_currentTool != null)
             {
-                _audioSource.PlayOneShot(_currentTool.MuzzleSound);
+                Debug.Log("Удар2");
+                //_audioSource.PlayOneShot(_currentTool.MuzzleSound);
                 //_currentTool.MuzzleFlash.Play();
 
                 TakeDamageResoure(_currentTool.DamageResources, 0);
@@ -189,7 +194,7 @@ public class PlayerInteraction : Raycast
             if (_currentInventorySlot.Durability <= 0)
             {
                 _currentInventorySlot.UpdateDurabilityIfNeeded();
-                _inventory.RemoveInventory(_currentInventorySlot.ItemData, 1);
+                _inventory.RemoveInventory(_currentInventorySlot, 1);
                 _currentInventorySlot = null;
             }
         }
@@ -197,7 +202,7 @@ public class PlayerInteraction : Raycast
 
     private void UseItem(bool isActive)
     {
-        _issgsjf = isActive;
+        _isEnable = isActive;
     }
 
     private void TakeDamageAnimal(float damage, float overTimeDamage)

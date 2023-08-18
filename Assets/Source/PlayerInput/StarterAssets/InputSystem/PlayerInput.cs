@@ -735,6 +735,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ThrowFishingRod"",
+                    ""type"": ""Button"",
+                    ""id"": ""334f5c1f-daab-47a5-99e2-d3c1ef79b5b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -746,6 +755,45 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""36eef06c-3878-4246-83e7-489cc67ffa59"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""ThrowFishingRod"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UIScreen"",
+            ""id"": ""8ad551f7-96ca-48d7-ad26-53f657e35702"",
+            ""actions"": [
+                {
+                    ""name"": ""TogglePauseScreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b30d7f0-4304-46d5-b84e-42339ed54962"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7006c95b-0080-41d8-962b-682bf981d514"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePauseScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -836,6 +884,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // WeaponSystem
         m_WeaponSystem = asset.FindActionMap("WeaponSystem", throwIfNotFound: true);
         m_WeaponSystem_Attack = m_WeaponSystem.FindAction("Attack", throwIfNotFound: true);
+        m_WeaponSystem_ThrowFishingRod = m_WeaponSystem.FindAction("ThrowFishingRod", throwIfNotFound: true);
+        // UIScreen
+        m_UIScreen = asset.FindActionMap("UIScreen", throwIfNotFound: true);
+        m_UIScreen_TogglePauseScreen = m_UIScreen.FindAction("TogglePauseScreen", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1171,11 +1223,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_WeaponSystem;
     private IWeaponSystemActions m_WeaponSystemActionsCallbackInterface;
     private readonly InputAction m_WeaponSystem_Attack;
+    private readonly InputAction m_WeaponSystem_ThrowFishingRod;
     public struct WeaponSystemActions
     {
         private @PlayerInput m_Wrapper;
         public WeaponSystemActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_WeaponSystem_Attack;
+        public InputAction @ThrowFishingRod => m_Wrapper.m_WeaponSystem_ThrowFishingRod;
         public InputActionMap Get() { return m_Wrapper.m_WeaponSystem; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1188,6 +1242,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
+                @ThrowFishingRod.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnThrowFishingRod;
+                @ThrowFishingRod.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnThrowFishingRod;
+                @ThrowFishingRod.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnThrowFishingRod;
             }
             m_Wrapper.m_WeaponSystemActionsCallbackInterface = instance;
             if (instance != null)
@@ -1195,10 +1252,46 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @ThrowFishingRod.started += instance.OnThrowFishingRod;
+                @ThrowFishingRod.performed += instance.OnThrowFishingRod;
+                @ThrowFishingRod.canceled += instance.OnThrowFishingRod;
             }
         }
     }
     public WeaponSystemActions @WeaponSystem => new WeaponSystemActions(this);
+
+    // UIScreen
+    private readonly InputActionMap m_UIScreen;
+    private IUIScreenActions m_UIScreenActionsCallbackInterface;
+    private readonly InputAction m_UIScreen_TogglePauseScreen;
+    public struct UIScreenActions
+    {
+        private @PlayerInput m_Wrapper;
+        public UIScreenActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TogglePauseScreen => m_Wrapper.m_UIScreen_TogglePauseScreen;
+        public InputActionMap Get() { return m_Wrapper.m_UIScreen; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIScreenActions set) { return set.Get(); }
+        public void SetCallbacks(IUIScreenActions instance)
+        {
+            if (m_Wrapper.m_UIScreenActionsCallbackInterface != null)
+            {
+                @TogglePauseScreen.started -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnTogglePauseScreen;
+                @TogglePauseScreen.performed -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnTogglePauseScreen;
+                @TogglePauseScreen.canceled -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnTogglePauseScreen;
+            }
+            m_Wrapper.m_UIScreenActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @TogglePauseScreen.started += instance.OnTogglePauseScreen;
+                @TogglePauseScreen.performed += instance.OnTogglePauseScreen;
+                @TogglePauseScreen.canceled += instance.OnTogglePauseScreen;
+            }
+        }
+    }
+    public UIScreenActions @UIScreen => new UIScreenActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1272,5 +1365,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IWeaponSystemActions
     {
         void OnAttack(InputAction.CallbackContext context);
+        void OnThrowFishingRod(InputAction.CallbackContext context);
+    }
+    public interface IUIScreenActions
+    {
+        void OnTogglePauseScreen(InputAction.CallbackContext context);
     }
 }

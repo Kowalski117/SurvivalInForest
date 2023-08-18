@@ -713,6 +713,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ThrowFishingRod",
+                    "type": "Button",
+                    "id": "334f5c1f-daab-47a5-99e2-d3c1ef79b5b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -724,6 +733,45 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "36eef06c-3878-4246-83e7-489cc67ffa59",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "ThrowFishingRod",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UIScreen",
+            "id": "8ad551f7-96ca-48d7-ad26-53f657e35702",
+            "actions": [
+                {
+                    "name": "TogglePauseScreen",
+                    "type": "Button",
+                    "id": "4b30d7f0-4304-46d5-b84e-42339ed54962",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7006c95b-0080-41d8-962b-682bf981d514",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TogglePauseScreen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
