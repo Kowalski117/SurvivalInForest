@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class BuildTool : MonoBehaviour
 {
+    [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private BaseHandler _baseHandler;
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private LoadingWindow _loadingWindow;
@@ -42,6 +43,8 @@ public class BuildTool : MonoBehaviour
         _buildPlayerInput.OnRotateBuilding += RotateBuilding;
         _buildPlayerInput.OnDeleteModeBuilding += DeleteMobeBuilding;
         _buildPlayerInput.OnDeleteBuilding += DeleteBuilding;
+
+        _playerHealth.OnDied += DeleteBuilding;
     }
 
     private void OnDisable()
@@ -52,6 +55,8 @@ public class BuildTool : MonoBehaviour
         _buildPlayerInput.OnRotateBuilding -= RotateBuilding;
         _buildPlayerInput.OnDeleteModeBuilding -= DeleteMobeBuilding;
         _buildPlayerInput.OnDeleteBuilding -= DeleteBuilding;
+
+        _playerHealth.OnDied -= DeleteBuilding;
     }
 
     private void Update()
@@ -142,7 +147,7 @@ public class BuildTool : MonoBehaviour
             float terrainHeight = Terrain.activeTerrain.SampleHeight(hitPoint);
 
             gridPosition.y = terrainHeight;
-            _spawnBuilding.transform.position = gridPosition; //поменять
+            _spawnBuilding.transform.position = hitPoint; //поменять
         }
     }
 
@@ -153,7 +158,7 @@ public class BuildTool : MonoBehaviour
             OnCompletedBuild?.Invoke();
             CraftingItem(_recipe);
             _spawnBuilding.PlaceBuilding();
-            _baseHandler.AddId(_spawnBuilding.UniqueID.Id);
+            //_baseHandler.AddId(_spawnBuilding.UniqueID.Id);
             _spawnBuilding = null;
             _playerAnimation.TurnOffAnimations();
             _selectionCollider.enabled = true;
