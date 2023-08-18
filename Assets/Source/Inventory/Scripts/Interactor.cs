@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,9 +11,11 @@ public class Interactor : Raycast
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
+    [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private float _liftingDelay = 2f;
     [SerializeField] private Transform _removeItemPoint;
+    [SerializeField] private Transform _playerTransform;
 
     private IInteractable _currentInteractable;
     private bool _isStartingPick = true;
@@ -21,11 +24,18 @@ public class Interactor : Raycast
     private ObjectPickUp _currentObjectPickUp;
     private bool _isIconFilled = false;
     private bool _isInventoryFull = false;
+    private SleepPointSaveData _sleepPointSaveData;
 
     public event UnityAction<float, string> OnTimeUpdate;
 
     public float LookTimerPracent => _lookTimer / _liftingDelay;
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
+    public SleepPointSaveData SleepPointSaveData => _sleepPointSaveData;
+
+    private void Start()
+    {
+        _sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
+    }
 
     private void OnEnable()
     {
@@ -37,6 +47,7 @@ public class Interactor : Raycast
         _hotbarDisplay.ItemClicked += PlantSeed;
 
         InventorySlotUI.OnItemRemove += RemoveItem;
+        _clothesSlotsHandler.OnItemRemove += RemoveItem;
     }
 
     private void OnDisable()
@@ -49,6 +60,8 @@ public class Interactor : Raycast
         _hotbarDisplay.ItemClicked -= PlantSeed;
 
         InventorySlotUI.OnItemRemove -= RemoveItem;
+        _clothesSlotsHandler.OnItemRemove -= RemoveItem;
+
     }
 
     private void Update()
@@ -145,7 +158,6 @@ public class Interactor : Raycast
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
-            Debug.Log(inventorySlot.AssignedInventorySlot.Size);
             for (int i = 0; i < inventorySlot.AssignedInventorySlot.Size; i++)
             {
                 InstantiateItem(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability);
@@ -195,6 +207,7 @@ public class Interactor : Raycast
             if (hitInfo.collider.TryGetComponent(out SleepingPlace interactable))
             {
                 interactable.Interact(this, out bool interactSuccessful);
+                _sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
             }
 
             if (hitInfo.collider.TryGetComponent(out Fire fire))
@@ -203,7 +216,7 @@ public class Interactor : Raycast
 
                 if (fire.AddFire(slot))
                 {
-                    _playerInventoryHolder.RemoveInventory(slot.ItemData, 1);
+                    _playerInventoryHolder.RemoveInventory(slot, 1);
                 }
             }
         }
@@ -240,7 +253,24 @@ public class Interactor : Raycast
             if (hitInfo.collider.TryGetComponent(out GardenBed gardenBed))
             {
                 gardenBed.Init(slot.ItemData);
+                _playerInventoryHolder.RemoveInventory(slot, 1);
             }
         }
+    }
+}
+
+[System.Serializable]
+public struct SleepPointSaveData
+{
+    [SerializeField] private Vector3 _position;
+    [SerializeField] private Quaternion _rotation;
+
+    public Vector3 Position => _position;
+    public Quaternion Rotation => _rotation;
+
+    public SleepPointSaveData(Vector3 position, Quaternion rotation)
+    {
+        _position = position;
+        _rotation = rotation;
     }
 }

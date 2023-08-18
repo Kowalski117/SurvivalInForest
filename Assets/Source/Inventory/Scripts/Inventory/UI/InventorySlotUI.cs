@@ -11,12 +11,13 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     [SerializeField] private Image _borderImage;
     [SerializeField] private TMP_Text _itemCount;
     [SerializeField] private InventorySlot _assignedInventorySlot;
-    [SerializeField] public ItemType _allowedItemTypes = ItemType.None;
+    [SerializeField] private ItemType _allowedItemTypes = ItemType.None;
+    [SerializeField] private bool _isMouseSlot = false;
 
     private bool _empty = true;
 
     public event UnityAction<InventorySlotUI> OnItemUpdate;
-    public event UnityAction<InventorySlotUI> OnItemClear;
+    public event UnityAction<InventorySlot> OnItemClear;
     public static UnityAction<InventorySlotUI> OnItemRemove;
 
     public event Action<InventorySlotUI> OnItemClicked;
@@ -34,11 +35,25 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         _iconImage.preserveAspect = true;
     }
 
-    //private void Update()
-    //{
-    //    if(_assignedInventorySlot.ItemData != null && _allowedItemTypes != ItemType.None)
-    //        OnItemRemove?.Invoke(this);
-    //}
+    private void Update()
+    {
+        if (_assignedInventorySlot.ItemData != null && _assignedInventorySlot.ItemData.Type != _allowedItemTypes && _allowedItemTypes != ItemType.None && !_isMouseSlot)
+        {
+            if (CanDropItem())
+                OnItemRemove?.Invoke(this);
+        }
+    }
+
+    private bool CanDropItem()
+    {
+        if (_allowedItemTypes == ItemType.None)
+            return false;
+
+        if(_assignedInventorySlot.ItemData.Type == _allowedItemTypes) 
+            return false;
+        else
+            return true;
+    }
 
     public void Init(InventorySlot slot)
     {
@@ -92,7 +107,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     
     public void CleanUiSlotEvent()
     {
-        OnItemClear?.Invoke(this);
+        OnItemClear?.Invoke(this._assignedInventorySlot);
     }
 
     public void CleanSlot()

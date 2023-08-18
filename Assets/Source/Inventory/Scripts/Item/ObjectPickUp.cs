@@ -1,12 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(UniqueID))]
 public class ObjectPickUp : MonoBehaviour
 {
+    [SerializeField] private int _layerMask = 6;
     [SerializeField] private InventoryItem[] _items;
 
     private UniqueID _uniqueID;
+    private Outline _outline;
+    private Rigidbody _rigidbody;
     private string _object = "Object_";
 
     public InventoryItem[] Items => _items;
@@ -14,6 +18,8 @@ public class ObjectPickUp : MonoBehaviour
     private void Awake()
     {
         _uniqueID = GetComponent<UniqueID>();
+        _outline = GetComponent<Outline>();
+        _rigidbody= GetComponent<Rigidbody>();
     }
 
     public void PicUp()
@@ -21,6 +27,21 @@ public class ObjectPickUp : MonoBehaviour
         if (ES3.KeyExists(_object + _uniqueID.Id))
             ES3.DeleteKey(_object + _uniqueID.Id);
         Destroy(this.gameObject);
+    }
+
+    public void TurnOff()
+    {
+        _rigidbody.isKinematic = true;
+        _outline.enabled = false;
+        gameObject.layer = default;
+        enabled = false;
+    }
+
+    public void Enable()
+    {
+        enabled = true;
+        _outline.enabled = true;
+        gameObject.layer = _layerMask;
     }
 
     private void Save()

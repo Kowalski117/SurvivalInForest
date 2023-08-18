@@ -8,6 +8,7 @@ public class PlayerInventoryHolder : InventoryHolder
     public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
     public event UnityAction<InventoryItemData, int> OnItemDataChanged;
     public event UnityAction OnUpdateItemSlot;
+    public event UnityAction<InventorySlot, InventoryItemData> OnClearItemSlot;
 
     public bool AddToInventory(InventoryItemData data, int amount, float durability = 0)
     {
@@ -41,6 +42,7 @@ public class PlayerInventoryHolder : InventoryHolder
         {
             OnItemDataChanged?.Invoke(_currentItemData, -amount);
             OnUpdateItemSlot?.Invoke();
+            OnClearItemSlot?.Invoke(slot, _currentItemData);
             _currentItemData = null;
             return true;
         }
@@ -60,8 +62,17 @@ public class PlayerInventoryHolder : InventoryHolder
             if (amountHeld < ingredient.AmountRequured)
                 return false;
         }
-
         return true;
+    }
+
+    public void DeletePartOfInventory(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int index = Random.Range(0, PrimaryInventorySystem.GetAllFilledSlots().Count);
+            int amountRandom = Random.Range(1, PrimaryInventorySystem.GetAllFilledSlots()[index].Size);
+            RemoveInventory(PrimaryInventorySystem.GetAllFilledSlots()[index], amountRandom);
+        }
     }
 
     protected override void SaveInventory()
