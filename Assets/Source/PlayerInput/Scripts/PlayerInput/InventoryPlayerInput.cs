@@ -1,10 +1,8 @@
-using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class InventoryPlayerInput : MonoBehaviour
 {
-    [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private ManualWorkbench _manualWorkbench;
 
