@@ -16,21 +16,27 @@ public class LoadingWindow : MonoBehaviour
 
     private DateTime _time;
     private Coroutine _coroutine;
+    private bool _isLoading = false;
+
     public event UnityAction OnLoadingComplete;
 
     public void ShowLoadingWindow(float delay, float skipTime, string name, ActionType actionType)
     {
-        if (_coroutine != null)
+        if (!_isLoading)
         {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+                _coroutine = null;
+            }
 
-        _coroutine = StartCoroutine(LoadingRoutine(delay, skipTime, name, actionType));
+            _coroutine = StartCoroutine(LoadingRoutine(delay, skipTime, name, actionType));
+        }
     }
 
     private IEnumerator LoadingRoutine(float delay, float skipTime, string name, ActionType actionType)
     {
+        _isLoading = true;
         _playerInputHandler.ToggleAllInput(false);
         _loadingPanel.gameObject.SetActive(true);
 
@@ -54,7 +60,7 @@ public class LoadingWindow : MonoBehaviour
         _loadingBar.fillAmount = 1f;
 
         yield return new WaitForSeconds(0.5f);
-
+        _isLoading = false;
         _timeHandler.AddTimeInHours(skipTime);
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);
