@@ -168,13 +168,11 @@ public class PlayerInteraction : Raycast
     {
         if (Time.time > _nextFire)
         {
-            Debug.Log("Удар1");
             _playerAnimation.Hit(_currentTool);
             _nextFire = Time.time + 1 / _currentTool.Speed;
 
             if (_currentTool != null)
             {
-                Debug.Log("Удар2");
                 //_audioSource.PlayOneShot(_currentTool.MuzzleSound);
                 //_currentTool.MuzzleFlash.Play();
 
