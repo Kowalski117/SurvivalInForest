@@ -1,20 +1,23 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class ProtectionValue : MonoBehaviour
 {
-    [SerializeField] private Image _imageValue;
     [SerializeField] private float _maxProtectionValue;
     [SerializeField] private float _protectionValue;
 
-    private void Awake()
+    public event UnityAction<float> OnValueChanged;
+
+    public float Protection => _protectionValue;
+
+    private void Start()
     {
-        _imageValue.fillAmount = _protectionValue / _maxProtectionValue;
+        OnValueChanged?.Invoke(_protectionValue / _maxProtectionValue);
     }
 
     public void UpdateProtectionValue(float value)
     {
         _protectionValue += value;
-        _imageValue.fillAmount = _protectionValue / _maxProtectionValue;
+        OnValueChanged?.Invoke(_protectionValue / _maxProtectionValue);
     }
 }
