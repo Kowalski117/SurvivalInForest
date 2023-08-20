@@ -19,7 +19,7 @@ public class CraftBuildSlotView : CraftSlotView
         CraftedButton.onClick.RemoveListener(OnCreateRecipeButton);
     }
 
-    public void Init(PlayerInventoryHolder playerInventory, BuildingRecipe craftRecipe, Crafting—ategory Òategory, LoadingWindow loadingWindow)
+    public void Init(PlayerInventoryHolder playerInventory, BuildingRecipe craftRecipe, Crafting—ategory Òategory, DelayWindow loadingWindow)
     {
         CraftedTime = DateTime.MinValue;
         _recipe = craftRecipe;

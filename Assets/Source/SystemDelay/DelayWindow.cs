@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class LoadingWindow : MonoBehaviour
+public class DelayWindow : MonoBehaviour
 {
     [SerializeField] private Transform _loadingPanel;
     [SerializeField] private Image _loadingBar;

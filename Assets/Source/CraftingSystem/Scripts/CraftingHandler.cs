@@ -9,7 +9,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private ManualWorkbench _manualWorkbench;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private BuildTool _buildTool;
-    [SerializeField] private LoadingWindow _loadingWindow;
+    [SerializeField] private DelayWindow _loadingWindow;
     [SerializeField] private Crafting—ategory[] _crafting—ategories;
     [SerializeField] private Transform _containerForSlots;
     [SerializeField] private Transform _craftingWindow;

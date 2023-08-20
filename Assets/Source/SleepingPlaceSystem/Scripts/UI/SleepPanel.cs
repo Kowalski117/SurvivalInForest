@@ -12,7 +12,7 @@ public class SleepPanel : MonoBehaviour
     [SerializeField] private Transform _sleepWindow;
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-    [SerializeField] private LoadingWindow _loadingWindow;
+    [SerializeField] private DelayWindow _loadingWindow;
 
     private DateTime _sleepTime;
     private bool _isSleepWindowOpen = false;
