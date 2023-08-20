@@ -9,7 +9,7 @@ public class GardenBed : MonoBehaviour
 
     private ObjectPickUp _currentItem;
 
-    public void Init(InventoryItemData inventoryItemData)
+    public bool StartGrowingSeed(InventoryItemData inventoryItemData)
     {
         if(_currentItem == null && inventoryItemData != null && inventoryItemData is SeedItemData seedItemData)
         {
@@ -17,7 +17,9 @@ public class GardenBed : MonoBehaviour
             _currentItem.gameObject.transform.localScale = new Vector3(0, 0, 0);
             _currentItem.TurnOff();
             StartCoroutine(SpawnOverTime(seedItemData.GrowthTime));
+            return true;
         }
+        return false;
     }
 
     private IEnumerator SpawnOverTime(float time)

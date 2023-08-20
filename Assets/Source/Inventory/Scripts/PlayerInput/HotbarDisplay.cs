@@ -33,10 +33,10 @@ public class HotbarDisplay : StaticInventoryDisplay
     private void Update()
     {
         if (_playerInput.Inventory.MouseWheel.ReadValue<float>() > 0.1f)
-            ChangeIndex(1);
+            ChangeIndex(-1);
 
         if (_playerInput.Inventory.MouseWheel.ReadValue<float>() < -0.1f)
-            ChangeIndex(-1);
+            ChangeIndex(1);
     }
 
     protected override void OnEnable()

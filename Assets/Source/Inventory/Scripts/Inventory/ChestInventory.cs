@@ -14,7 +14,6 @@ public class ChestInventory : InventoryHolder, IInteractable
     protected override void Awake()
     {
         _uniqueId = GetComponent<UniqueID>();
-
         base.Awake();
     }
 
@@ -26,7 +25,6 @@ public class ChestInventory : InventoryHolder, IInteractable
         }
 
     }
-
     public void Interact(Interactor interactor, out bool interactSuccessfull)
     {
         OnDinamicInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, 0);

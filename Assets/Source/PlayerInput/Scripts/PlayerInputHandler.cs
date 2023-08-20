@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityRenderer;
 using StarterAssets;
 using UnityEngine;
 
@@ -56,6 +57,7 @@ public class PlayerInputHandler : MonoBehaviour
         _interactionPlayerInput.TurnOff();
         _interactionPlayerInput.enabled = visible;
     }
+
     public void ToggleBuildPlayerInput(bool visible)
     {
         _buildPlayerInput.enabled = visible;

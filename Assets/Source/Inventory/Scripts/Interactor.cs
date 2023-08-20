@@ -252,8 +252,10 @@ public class Interactor : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out GardenBed gardenBed))
             {
-                gardenBed.Init(slot.ItemData);
-                _playerInventoryHolder.RemoveInventory(slot, 1);
+                if(gardenBed.StartGrowingSeed(slot.ItemData))
+                {
+                    _playerInventoryHolder.RemoveInventory(slot, 1);
+                }
             }
         }
     }

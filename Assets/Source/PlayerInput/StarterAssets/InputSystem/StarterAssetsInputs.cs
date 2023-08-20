@@ -19,9 +19,9 @@ namespace StarterAssets
         [Header("Movement Settings")]
         public bool analogMovement;
 
-        [Header("Mouse Cursor Settings")]
-        public bool cursorLocked = true;
-        public bool cursorInputForLook = true;
+        //[Header("Mouse Cursor Settings")]
+        //public bool cursorLocked = true;
+        //public bool cursorInputForLook = true;
 
 #if ENABLE_INPUT_SYSTEM
         public void OnMove(InputValue value)
@@ -31,7 +31,7 @@ namespace StarterAssets
 
         public void OnLook(InputValue value)
         {
-            if (cursorInputForLook)
+            //if (cursorInputForLook)
             {
                 LookInput(value.Get<Vector2>());
             }
@@ -98,14 +98,14 @@ namespace StarterAssets
             attack = newAttackState;
         }
 
-        private void OnApplicationFocus(bool hasFocus)
-        {
-            SetCursorState(cursorLocked);
-        }
+        //private void OnApplicationFocus(bool hasFocus)
+        //{
+        //    SetCursorState(cursorLocked);
+        //}
 
-        public void SetCursorState(bool newState)
-        {
-            Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-        }
+        //public void SetCursorState(bool newState)
+        //{
+        //    Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+        //}
     }
 }

@@ -5,15 +5,17 @@ public class CraftObject : MonoBehaviour
     [SerializeField] private Crafting—ategory _crafting—ategory;
 
     private Building _building;
-    private SphereCollider _collider;
+    private SphereCollider _sphereCollider;
     private ManualWorkbench _workbench;
 
     private void Awake()
     {
         _building = GetComponentInParent<Building>();
-        _collider = GetComponent<SphereCollider>();
-        if(_building != null )
-            _collider.enabled = false;
+        _sphereCollider = GetComponent<SphereCollider>();
+        if(_building != null)
+        {
+            _sphereCollider.enabled = false;
+        }
     }
 
     private void OnEnable()
@@ -34,7 +36,7 @@ public class CraftObject : MonoBehaviour
 
     public void TurnOff()
     {
-        _collider.enabled = false;
+        _sphereCollider.enabled = false;
 
         if(_workbench != null)
         {
@@ -47,7 +49,7 @@ public class CraftObject : MonoBehaviour
 
     private void EnableCollider()
     {
-        _collider.enabled = true;
+        _sphereCollider.enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
