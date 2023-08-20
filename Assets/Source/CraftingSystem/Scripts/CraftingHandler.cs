@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CraftingHandler : MonoBehaviour
@@ -16,6 +17,9 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private CraftItemSlotView _craftItemSlotPrefab;
     [SerializeField] private CraftBuildSlotView _craftBuildingSlotPrefab;
     [SerializeField] private CraftingCategoryButton[] _craftingCategoryButtons;
+    [SerializeField] private Color _selectColor;
+    [SerializeField] private Color _defoultColor;
+
 
     private List<CraftItemSlotView> _craftItemSlots = new List<CraftItemSlotView>();
     private List<CraftBuildSlotView> _craftBuildSlots = new List<CraftBuildSlotView>();
@@ -59,6 +63,11 @@ public class CraftingHandler : MonoBehaviour
             CreateCraftSlots(craftingCategory);
         }
 
+        foreach (var button in _craftingCategoryButtons)
+        {
+            button.SelectButton(_defoultColor);
+        }
+
         DisplayCraftWindow(_manualWorkbench.Crafting—ategory);
     }
 
@@ -94,6 +103,14 @@ public class CraftingHandler : MonoBehaviour
 
     public void SwitchCraftingCategory(ItemType itemType)
     {
+        foreach (var button in _craftingCategoryButtons)
+        {
+            if (button.ItemType == itemType)
+                button.SelectButton(_selectColor);
+            else
+                button.SelectButton(_defoultColor);
+        }
+
         foreach (var slot in _craftItemSlots)
         {
             if (slot.Recipe.CraftedItem.Type == itemType && _currentCategory == slot.Category)

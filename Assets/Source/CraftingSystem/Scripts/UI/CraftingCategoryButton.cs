@@ -5,6 +5,7 @@ public class CraftingCategoryButton : MonoBehaviour
 {
     [SerializeField] private CraftingHandler _craftingHandler;
     [SerializeField] private ItemType _itemType;
+    [SerializeField] private Image _image;
 
     private Button _button;
 
@@ -23,6 +24,11 @@ public class CraftingCategoryButton : MonoBehaviour
     private void OnDisable()
     {
         _button.onClick.RemoveListener(OpenCategory);
+    }
+
+    public void SelectButton(Color color)
+    {
+        _image.color = color;
     }
 
     private void OpenCategory()
