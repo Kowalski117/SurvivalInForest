@@ -31,7 +31,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         if(CurrentValue > 0)
         {
-            CurrentValue -= value /*- (value / 100 * _protectionValue.Protection))*/;
+            CurrentValue -= value - (value / 100 * _protectionValue.Protection);
 
             OnDamageDone?.Invoke();
             OnHealthChanged?.Invoke(HealthPercent);

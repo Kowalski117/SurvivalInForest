@@ -60,7 +60,7 @@ public class BloodyScreen : MonoBehaviour
             StopCoroutine(_removeBloodCoroutine);
         }
 
-        _removeBloodCoroutine = StartCoroutine(ChangeAlpha(_screen, 0, _speenAlpha));
+        _removeBloodCoroutine = StartCoroutine(ChangeAlpha(_screen, -_screen.alpha, _speenAlpha));
     }
 
     private IEnumerator ChangeAlpha(CanvasGroup canvasGroup, float targetAlpha, float delay)
