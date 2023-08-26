@@ -14,6 +14,8 @@ public class ClothesSlotsHandler : MonoBehaviour
     private List<ClothesItemData> _clothesItems = new List<ClothesItemData>();
 
     public event UnityAction<InventorySlotUI> OnItemRemove;
+    public event UnityAction OnInteractionBackpack;
+    public event UnityAction OnRemoveBackpack;
 
     private void OnEnable()
     {
@@ -24,6 +26,7 @@ public class ClothesSlotsHandler : MonoBehaviour
         }
 
         _inventoryHolder.OnClearItemSlot += UpdateClothesItems;
+        _mouseItemData.OnClearSlot += AddClothesItems;
     }
 
     private void OnDisable()
@@ -35,6 +38,7 @@ public class ClothesSlotsHandler : MonoBehaviour
         }
 
         _inventoryHolder.OnClearItemSlot += UpdateClothesItems;
+        _mouseItemData.OnClearSlot += AddClothesItems;
     }
 
     public void AddClothesItems(InventorySlotUI inventorySlotUI)
@@ -54,6 +58,11 @@ public class ClothesSlotsHandler : MonoBehaviour
                 _clothesItems.Add(clothesItemData);
                 _protectionValue.UpdateProtectionValue(clothesItemData.Protection);
                 _stiminaAttribute.AddMaxValueStamina(clothesItemData.Boost);
+            }
+
+            if(clothesItemData.ClothingType == ClothingType.Backpack)
+            {
+                OnInteractionBackpack?.Invoke();
             }
         }
     }
@@ -86,6 +95,11 @@ public class ClothesSlotsHandler : MonoBehaviour
                 _clothesItems.Remove(clothesItemData);
                 _protectionValue.UpdateProtectionValue(-clothesItemData.Protection);
                 _stiminaAttribute.AddMaxValueStamina(-clothesItemData.Boost);
+
+                if (clothesItemData.ClothingType == ClothingType.Backpack)
+                {
+                    OnRemoveBackpack?.Invoke();
+                }
             }
         }
     }

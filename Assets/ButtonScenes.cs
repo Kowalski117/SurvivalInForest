@@ -3,8 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class ButtonScenes : MonoBehaviour
 {
-  public void StartSceneForest()
-  {
-    SceneManager.LoadScene(1);
-  }
+    [SerializeField] private LoadPanel _loadPanel;
+
+    public void StartSceneForest()
+    {
+        _loadPanel.gameObject.SetActive(true);
+        _loadPanel.Load(1, () => SceneManager.LoadScene(1));
+    }
 }

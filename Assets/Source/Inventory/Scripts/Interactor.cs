@@ -12,7 +12,7 @@ public class Interactor : Raycast
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
-    [SerializeField] private PlayerAnimation _playerAnimation;
+    [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private float _liftingDelay = 2f;
     [SerializeField] private Transform _removeItemPoint;
     [SerializeField] private Transform _playerTransform;
@@ -170,9 +170,9 @@ public class Interactor : Raycast
         }
     }
 
-    private void InstantiateItem(InventoryItemData itemData, float durability)
+    public void InstantiateItem(InventoryItemData itemData, float durability)
     {
-        if(itemData != null)
+        if(itemData.ItemPrefab != null)
         {
             ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
             itemPickUp.GenerateNewID();

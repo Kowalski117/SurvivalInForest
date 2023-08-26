@@ -53,7 +53,8 @@ public enum ItemType
     ClothesOnHead = 11,
     ClothesOnTorso = 12,
     ClothesOnFeet = 13,
-    ClothingShoes = 13,
+    ClothingShoes = 14,
+    Backpack = 15,
 
 }
 

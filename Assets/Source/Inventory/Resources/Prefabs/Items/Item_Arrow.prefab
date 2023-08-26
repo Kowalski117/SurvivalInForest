@@ -32,14 +32,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4929775080031539959}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4905709081202520603
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -47,7 +47,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4929775080031539959}
-  m_Mesh: {fileID: 4300000, guid: 6f21d4e230db4ff41b65f3770d35ae8f, type: 3}
+  m_Mesh: {fileID: -7929139438592967118, guid: 5296be2981c7dea49a8f5fafcc616bc7, type: 3}
 --- !u!23 &4917806525064964495
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c0273817d9b557c4cbe78d17e9f64976, type: 2}
+  - {fileID: 6698179007370564091, guid: 5296be2981c7dea49a8f5fafcc616bc7, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: eec86d03-4f73-48d3-94ce-76d1c047b945
+  _id: 38b0c304-876f-4815-9518-adfead1b3661
 --- !u!114 &4930481544469696358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,9 +123,7 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!54 &4930481544469696353
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -170,10 +168,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.0125
-  m_Height: 0.3
-  m_Direction: 1
-  m_Center: {x: -0.00010016188, y: 0, z: -0.0021339953}
+  m_Radius: 0.015
+  m_Height: 0.6
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.3}
 --- !u!114 &708953938
 MonoBehaviour:
   m_ObjectHideFlags: 0

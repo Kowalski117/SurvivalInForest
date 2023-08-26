@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CreativeModeWindow : MonoBehaviour
@@ -13,6 +14,8 @@ public class CreativeModeWindow : MonoBehaviour
 
     private bool _isCreativeModeOpen = false;
     private PlayerInput _playerInput;
+
+    public PlayerInventoryHolder PlayerInventoryHolder => _inventoryHolder;
 
     private void Start()
     {

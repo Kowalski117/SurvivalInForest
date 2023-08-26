@@ -20,10 +20,8 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput = new PlayerInput();
     }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         _currentIndex = 0;
         _maxIndexSize = Slots.Length - 1;
 

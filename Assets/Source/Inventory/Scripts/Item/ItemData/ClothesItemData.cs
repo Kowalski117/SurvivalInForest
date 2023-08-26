@@ -16,5 +16,6 @@ public enum ClothingType
 {
     Headdress,
     Torso,
-    Legs
+    Legs,
+    Backpack,
 }

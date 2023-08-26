@@ -20,7 +20,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Start()
     {
-        SetCursorVisible(false);
+        //SetCursorVisible(false);
     }
 
     public void SetCursorVisible(bool visible)
@@ -53,7 +53,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void ToggleInteractionConstructionInput(bool visible)
     {
-        _interactionPlayerInput.TurnOff();
+        _interactionPlayerInput.PressedButton();
         _interactionPlayerInput.enabled = visible;
     }
 

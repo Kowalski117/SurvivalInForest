@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,7 +7,7 @@ public class InteractionPlayerInput : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private bool _isButtonPressed;
-
+    private Coroutine _coroutine;
 
     public event UnityAction OnInteractedConstruction;
     public event UnityAction OnHit;
@@ -70,5 +71,22 @@ public class InteractionPlayerInput : MonoBehaviour
     public void ThrowFishingRod()
     {
         OnThrowFishingRod?.Invoke();
+    }
+
+    public void PressedButton()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _coroutine = StartCoroutine(Pressed());
+    }
+
+    private IEnumerator Pressed()
+    {
+        yield return new WaitForSeconds(1f);
+        TurnOff();
     }
 }

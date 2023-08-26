@@ -10,7 +10,7 @@ public class PlayerInteraction : Raycast
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private LayerMask _creatureLayer;
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private PlayerAnimation _playerAnimation;
+    [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
 
     private WeaponItemData _currentWeapon;
@@ -70,10 +70,10 @@ public class PlayerInteraction : Raycast
         _currentInventorySlot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
         OnUpdateItemData?.Invoke(_currentItemData);
 
-        if (_currentItemData != _previousItemData)
-        {
-            _playerAnimation.GetItem(_currentItemData);
-        }
+        //if (_currentItemData != _previousItemData)
+        //{
+        //    _playerAnimation.GetItem(_currentItemData);
+        //}
     }
 
     public void InitWeapon(InventoryItemData itemData)
@@ -143,7 +143,6 @@ public class PlayerInteraction : Raycast
                     if (_currentWeapon.Bullet != null)
                     {
                         ItemPickUp bullet = Instantiate(_currentWeapon.Bullet, spawnPoint, Quaternion.identity, hitInfo.collider.transform);
-                        bullet.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
                         bullet.GenerateNewID();
                     }
                 }
@@ -157,7 +156,7 @@ public class PlayerInteraction : Raycast
         {
             _nextFire = Time.time + 1 / _currentWeapon.Speed;
             _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
-            _playerAnimation.Hit(_currentWeapon);
+            _playerAnimation.Hit();
 
             TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
             TakeDamageBrokenObject(_currentWeapon.Damage, 0);
@@ -168,7 +167,7 @@ public class PlayerInteraction : Raycast
     {
         if (Time.time > _nextFire)
         {
-            _playerAnimation.Hit(_currentTool);
+            _playerAnimation.Hit();
             _nextFire = Time.time + 1 / _currentTool.Speed;
 
             if (_currentTool != null)
