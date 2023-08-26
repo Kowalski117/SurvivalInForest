@@ -21,10 +21,6 @@ public abstract class InventoryDisplay : MonoBehaviour
     public InventorySlotUI[] SlotsUI => Slots;
     public Dictionary<InventorySlotUI, InventorySlot> SlotDictionary => slotDictionary;
 
-    protected virtual void Start()
-    {
-    }
-
     public abstract void AssingSlot(InventorySystem inventoryToDisplay, int offSet);
     public abstract void HandleSwap(InventorySlotUI inventorySlotUI);
 
@@ -74,13 +70,6 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     private void CreateDraggedItem(InventorySlotUI inventorySlotUI)
     {
-        //int index = Array.IndexOf(Slots, inventorySlotUI);
-        //MouseInventoryItem.CleanSlot();
-        //MouseInventoryItem.UpdateMouseSlot(inventorySlotUI.AssignedInventorySlot);
-
-        //_currentSlot = Slots[index];
-        //Slots[index].CleanSlot();
-
         MouseInventoryItem.Toggle(true);
         bool isShiftPressed = Keyboard.current.leftShiftKey.isPressed;
 
@@ -91,7 +80,6 @@ public abstract class InventoryDisplay : MonoBehaviour
                 MouseInventoryItem.UpdateMouseSlot(halfStackSlot);
                 MouseInventoryItem.UpdateCurrentInventorySlot(inventorySlotUI);
                 inventorySlotUI.UpdateUiSlot();
-                inventorySlotUI.UpdateUiSlotEvent();
                 _currentSlot = inventorySlotUI;
                 return;
             }
@@ -154,7 +142,6 @@ public abstract class InventoryDisplay : MonoBehaviour
             {
                 clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
                 clickedUISlot.UpdateUiSlot();
-                clickedUISlot.UpdateUiSlotEvent();
                 ResetDraggedItem();
                 return;
             }
@@ -165,7 +152,6 @@ public abstract class InventoryDisplay : MonoBehaviour
                 {
                     clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
                     clickedUISlot.UpdateUiSlot();
-                    clickedUISlot.UpdateUiSlotEvent();
                     ResetDraggedItem();
                     return;
                 }
@@ -189,14 +175,12 @@ public abstract class InventoryDisplay : MonoBehaviour
         {
             return;
         }
-
         MouseInventoryItem.CurrentSlot.AssignedInventorySlot.AssignItem(clickedUISlot.AssignedInventorySlot);
         MouseInventoryItem.CurrentSlot.UpdateUiSlot();
         clickedUISlot.CleanUiSlotEvent();
         clickedUISlot.CleanSlot();
         clickedUISlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
         clickedUISlot.UpdateUiSlot();
-        clickedUISlot.UpdateUiSlotEvent();
         MouseInventoryItem.CleanSlot();
         ResetDraggedItem();
     }

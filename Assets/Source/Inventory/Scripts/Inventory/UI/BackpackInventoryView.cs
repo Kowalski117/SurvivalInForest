@@ -1,0 +1,40 @@
+using UnityEngine;
+
+public class BackpackInventoryView : MonoBehaviour
+{
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private DynamicInventoryDisplay _miniBackpackDisplay;
+    [SerializeField] private BackpackInventory _backpackInventory;
+
+    private bool _isOpenBackpack = false;
+
+    private void Start()
+    {
+        _miniBackpackDisplay.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        _backpackInventory.OnDinamicInventoryDisplayInventory += ToggleDisplay;
+    }
+
+    private void OnDisable()
+    {
+        _backpackInventory.OnDinamicInventoryDisplayInventory -= ToggleDisplay;
+    }
+
+    public void ToggleDisplay(InventorySystem inventoryDisplay, int offset)
+    {
+        _isOpenBackpack = !_isOpenBackpack;
+
+        if (_isOpenBackpack)
+        {
+            _miniBackpackDisplay.gameObject.SetActive(true);
+            _miniBackpackDisplay.RefreshDynamicInventory(inventoryDisplay, offset);
+        }
+        else
+        {
+            _miniBackpackDisplay.gameObject.SetActive(false);
+        }
+    }
+}

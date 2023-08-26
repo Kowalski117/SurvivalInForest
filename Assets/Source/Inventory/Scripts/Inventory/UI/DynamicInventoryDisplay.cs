@@ -9,11 +9,6 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     public CanvasGroup CanvasGroup => _canvasGroup;
 
-    protected override void Start()
-    {
-        base.Start();
-    }
-
     private void OnEnable()
     {
         if (inventorySystem != null)

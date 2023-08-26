@@ -91,9 +91,11 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
             _itemCount.text = _assignedInventorySlot.Size.ToString();
         else
             _itemCount.text = "";
+
+        UpdateUiSlotEvent();
     }
 
-    public void UpdateUiSlotEvent()
+    private void UpdateUiSlotEvent()
     {
         if (_assignedInventorySlot.ItemData != null)
         {

@@ -6,7 +6,7 @@ public class StaticInventoryDisplay : InventoryDisplay
 {
     [SerializeField] private InventoryHolder _inventoryHolder;
 
-    protected override void Start()
+    private void Start()
     {
         RefreshStaticDisplay();
     }

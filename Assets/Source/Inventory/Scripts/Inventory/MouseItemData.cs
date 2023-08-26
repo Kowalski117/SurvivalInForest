@@ -16,6 +16,7 @@ public class MouseItemData : MonoBehaviour
     private InventoryItemData _currentItemData;
 
     public static UnityAction OnUpdatedSlots;
+    public event UnityAction<InventorySlotUI> OnClearSlot;
 
     public InventorySlotUI InventorySlotUI => _inventorySlotUI;
     public InventorySlotUI CurrentSlot => _currentSlot;
@@ -41,6 +42,8 @@ public class MouseItemData : MonoBehaviour
 
     public void CleanSlot()
     {
+        _currentSlot = null;
+        _currentItemData = null;
         _isUpdateSlot = false;
         _inventorySlotUI.CleanSlot();
         OnUpdatedSlots?.Invoke();
@@ -58,6 +61,7 @@ public class MouseItemData : MonoBehaviour
     {
         _currentSlot = inventorySlot;
         _currentItemData = inventorySlot.AssignedInventorySlot.ItemData;
+        //OnClearSlot?.Invoke(_currentSlot);
     }
 
     public void UpdateMouseSlot()
