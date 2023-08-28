@@ -155,14 +155,22 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
         {
-            OnCompletedBuild?.Invoke();
-            CraftingItem(_recipe);
-            _spawnBuilding.PlaceBuilding();
-            //_baseHandler.AddId(_spawnBuilding.UniqueID.Id);
-            _spawnBuilding = null;
-            _playerAnimation.TurnOffAnimations();
-            _selectionCollider.enabled = true;
+            _loadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.BuildingData.DisplayName, ActionType.CraftBuild);
+            _loadingWindow.OnLoadingComplete += OnLoadingComplete;
         }
+    }
+
+    private void OnLoadingComplete()
+    {
+        OnCompletedBuild?.Invoke();
+        CraftingItem(_recipe);
+        _spawnBuilding.PlaceBuilding();
+        _baseHandler.AddId(_spawnBuilding.UniqueID);
+        _spawnBuilding = null;
+        _playerAnimation.TurnOffAnimations();
+        _selectionCollider.enabled = true;
+
+        _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
     private void RotateBuilding()

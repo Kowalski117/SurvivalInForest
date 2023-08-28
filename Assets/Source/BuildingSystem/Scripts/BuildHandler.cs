@@ -27,7 +27,7 @@ public class BuildHandler : MonoBehaviour
 
         if (_isTurnOffWindows)
         {
-            _playerInputHandler.ToggleInventoryPanels(false);
+            _playerInputHandler.InventoryPlayerInput.ToggleInventory();
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInventoryInput(false);
@@ -39,8 +39,8 @@ public class BuildHandler : MonoBehaviour
     {
         if (_isTurnOffWindows)
         {
-            _playerInputHandler.SetCursorVisible(true);
-            _playerInputHandler.ToggleInventoryPanels(true);
+            //_playerInputHandler.SetCursorVisible(true);
+            //_playerInputHandler.ToggleInventoryPanels(true);
             _playerInputHandler.ToggleBuildPlayerInput(false);
             _playerInputHandler.ToggleInventoryInput(true);
             _isTurnOffWindows = false;
