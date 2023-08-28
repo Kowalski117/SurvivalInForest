@@ -1,17 +1,12 @@
-using Michsky.UI.Dark;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PauseScreen : ScreenUI
 {
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
-
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _saveButton;
     [SerializeField] private Button _exitButton;
-
-    private bool _isOpenScreen = false;
 
     public event UnityAction OnContinueButton;
     public event UnityAction OnSaveButton;
@@ -23,7 +18,7 @@ public class PauseScreen : ScreenUI
         _saveButton.onClick.AddListener(SaveButtonClick);
         _exitButton.onClick.AddListener(ExitButtonClick);
 
-        _playerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleScreen;
+        PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleScreen;
     }
 
     private void OnDisable()
@@ -32,7 +27,7 @@ public class PauseScreen : ScreenUI
         _saveButton.onClick.RemoveListener(SaveButtonClick);
         _exitButton.onClick.RemoveListener(ExitButtonClick);
 
-        _playerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleScreen;
+        PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleScreen;
     }
 
     public void ContinueButtonClick()
@@ -49,23 +44,5 @@ public class PauseScreen : ScreenUI
     public void ExitButtonClick()
     {
         OnExitButton?.Invoke();
-    }
-
-    public void ToggleScreen()
-    {
-        _isOpenScreen = !_isOpenScreen;
-
-        if (_isOpenScreen)
-        {
-            OpenScreen();
-            _playerInputHandler.SetCursorVisible(true);
-            _playerInputHandler.ToggleAllInput(false);
-        }
-        else
-        {
-            CloseScreen();
-            _playerInputHandler.SetCursorVisible(false);
-            _playerInputHandler.ToggleAllInput(true);
-        }
     }
 }
