@@ -121,7 +121,7 @@ public class PlayerInteraction : Raycast
             if (_inventory.RemoveInventory(_currentWeapon.Bullet.ItemData, 1))
             {
                 _nextFire = Time.time + 1 / _currentWeapon.Speed;
-
+                _playerAnimation.Hit();
                 _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
                 //_currentWeapon.MuzzleFlash.Play();
 

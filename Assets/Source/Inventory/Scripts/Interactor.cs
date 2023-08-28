@@ -77,7 +77,6 @@ public class Interactor : Raycast
                 {
                     _isIconFilled = true;
                     _playerAnimation.PickUp();
-
                     if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
                     {
                         if(itemPickUp.enabled == true)
@@ -92,6 +91,8 @@ public class Interactor : Raycast
                         _currentObjectPickUp = objectPickUp;
 
                     }
+
+                    PickUpAninationEvent();
                 }
                 else
                 {

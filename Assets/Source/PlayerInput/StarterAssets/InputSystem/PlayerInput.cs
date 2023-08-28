@@ -783,6 +783,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleShopScreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""6044b8f0-2dc4-4d28-b85b-0e7b8b716c7f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -794,6 +803,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TogglePauseScreen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4760fd54-dfe9-4390-bf48-b478282a81dd"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleShopScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -888,6 +908,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // UIScreen
         m_UIScreen = asset.FindActionMap("UIScreen", throwIfNotFound: true);
         m_UIScreen_TogglePauseScreen = m_UIScreen.FindAction("TogglePauseScreen", throwIfNotFound: true);
+        m_UIScreen_ToggleShopScreen = m_UIScreen.FindAction("ToggleShopScreen", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1264,11 +1285,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UIScreen;
     private IUIScreenActions m_UIScreenActionsCallbackInterface;
     private readonly InputAction m_UIScreen_TogglePauseScreen;
+    private readonly InputAction m_UIScreen_ToggleShopScreen;
     public struct UIScreenActions
     {
         private @PlayerInput m_Wrapper;
         public UIScreenActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @TogglePauseScreen => m_Wrapper.m_UIScreen_TogglePauseScreen;
+        public InputAction @ToggleShopScreen => m_Wrapper.m_UIScreen_ToggleShopScreen;
         public InputActionMap Get() { return m_Wrapper.m_UIScreen; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1281,6 +1304,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @TogglePauseScreen.started -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnTogglePauseScreen;
                 @TogglePauseScreen.performed -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnTogglePauseScreen;
                 @TogglePauseScreen.canceled -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnTogglePauseScreen;
+                @ToggleShopScreen.started -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleShopScreen;
+                @ToggleShopScreen.performed -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleShopScreen;
+                @ToggleShopScreen.canceled -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleShopScreen;
             }
             m_Wrapper.m_UIScreenActionsCallbackInterface = instance;
             if (instance != null)
@@ -1288,6 +1314,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @TogglePauseScreen.started += instance.OnTogglePauseScreen;
                 @TogglePauseScreen.performed += instance.OnTogglePauseScreen;
                 @TogglePauseScreen.canceled += instance.OnTogglePauseScreen;
+                @ToggleShopScreen.started += instance.OnToggleShopScreen;
+                @ToggleShopScreen.performed += instance.OnToggleShopScreen;
+                @ToggleShopScreen.canceled += instance.OnToggleShopScreen;
             }
         }
     }
@@ -1370,5 +1399,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IUIScreenActions
     {
         void OnTogglePauseScreen(InputAction.CallbackContext context);
+        void OnToggleShopScreen(InputAction.CallbackContext context);
     }
 }

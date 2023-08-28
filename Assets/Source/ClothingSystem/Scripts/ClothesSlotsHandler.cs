@@ -26,7 +26,6 @@ public class ClothesSlotsHandler : MonoBehaviour
         }
 
         _inventoryHolder.OnClearItemSlot += UpdateClothesItems;
-        _mouseItemData.OnClearSlot += AddClothesItems;
     }
 
     private void OnDisable()
@@ -38,7 +37,6 @@ public class ClothesSlotsHandler : MonoBehaviour
         }
 
         _inventoryHolder.OnClearItemSlot += UpdateClothesItems;
-        _mouseItemData.OnClearSlot += AddClothesItems;
     }
 
     public void AddClothesItems(InventorySlotUI inventorySlotUI)
@@ -46,6 +44,12 @@ public class ClothesSlotsHandler : MonoBehaviour
         if (inventorySlotUI.AssignedInventorySlot.ItemData != null && inventorySlotUI.AssignedInventorySlot.ItemData is ClothesItemData clothesItemData)
         {
             bool isClothesAlreadyAdded = _clothesItems.Any(clothes => clothes.ClothingType == clothesItemData.ClothingType);
+
+            foreach (var item in _clothesItems)
+            {
+                if (item == clothesItemData)
+                    return;
+            }
 
             if (isClothesAlreadyAdded)
             {

@@ -43,14 +43,7 @@ public class CraftBuildSlotView : CraftSlotView
     {
         if (InventoryHolder.CheckIfCanCraft(_recipe))
         {
-            LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.BuildingData.DisplayName, ActionType.CraftBuild);
-            LoadingWindow.OnLoadingComplete += OnLoadingComplete;
+            OnCreateRecipeButtonClick?.Invoke(_recipe);
         }
-    }
-
-    private void OnLoadingComplete()
-    {
-        OnCreateRecipeButtonClick?.Invoke(_recipe);
-        LoadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 }

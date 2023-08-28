@@ -761,6 +761,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleShopScreen",
+                    "type": "Button",
+                    "id": "6044b8f0-2dc4-4d28-b85b-0e7b8b716c7f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -772,6 +781,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TogglePauseScreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4760fd54-dfe9-4390-bf48-b478282a81dd",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleShopScreen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -13,19 +13,4 @@ public class ItemAnimator : MonoBehaviour
         if (_animatorHand != null)
             _animatorHand.gameObject.SetActive(isActive);
     }
-
-    public void SetTrigger(string name)
-    {
-        _animatorHand.SetTrigger(name);
-    }
-
-    public void SetBool(string name, bool value)
-    {
-        _animatorHand.SetBool(name, value);
-    }
-
-    public void SetFloat(string name, float value)
-    {
-        _animatorHand.SetFloat(name, value);
-    }
 }

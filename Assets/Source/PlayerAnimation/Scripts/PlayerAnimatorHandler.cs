@@ -1,59 +1,39 @@
 using StarterAssets;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerAnimatorHandler : MonoBehaviour
 {
-    [SerializeField] private ItemAnimator _handAnimator;
-    [SerializeField] private Animator _currentAnimator;
     [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private StarterAssetsInputs _starterAssets;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
 
     [SerializeField] private ItemAnimator[] _itemsAnimator;
-    [SerializeField] private InventoryItemData _defoultItem;
+    [SerializeField] private ItemAnimator _defoultItem;
+
+    private ItemAnimator _handAnimator;
 
     private string _speed = "Speed";
     private string _pickUp = "PickUp";
     private string _build = "Build";
     private string _hit = "Hit";
-
-    private string _pullItem = "GetItem";
-    private string _removeItem = "RemoveItem";
-
-    private string _axeBlow = "AxeBlow";
-    private string _blowPickaxe = "BlowPickaxe";
-
-    private string _pullBow = "PullBow";
-
-    private bool _isItemInHand = false;
+    private string _pullItem = "PullItem";
 
     private InventoryItemData _currentItemData;
     private InventoryItemData _previousItemData;
 
-    private void Start()
-    {
-        PullItemAnimation();
-    }
-
     private void Update()
     {
-        if (_starterAssets.move != Vector2.zero)
-            _handAnimator.SetFloat(_speed, (_firstPersonController.Speed / 10));
-        else
-            _handAnimator.SetFloat(_speed, 0);
+        if(_handAnimator != null)
+        {
+            if (_starterAssets.move != Vector2.zero)
+                _handAnimator.HandAnimator.SetFloat(_speed, (_firstPersonController.Speed / 10));
+            else
+                _handAnimator.HandAnimator.SetFloat(_speed, 0);
+        }
 
         Init(_hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData);
     }
-
-    //private void OnEnable()
-    //{
-    //    _hotbarDisplay.ItemClicked += Init;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    _hotbarDisplay.ItemClicked -= Init;
-    //}
 
     public void Init(InventoryItemData itemData)
     {
@@ -65,75 +45,63 @@ public class PlayerAnimatorHandler : MonoBehaviour
         }
         else
         {
-            _currentItemData = _defoultItem;
+            _currentItemData = _defoultItem.ItemData;
         }
 
         if (_currentItemData != _previousItemData)
         {
             PullItemAnimation();
-            Debug.Log("È");
         }
     }
 
     public void PickUp()
     {
-        _handAnimator.SetTrigger(_pickUp);
+        _handAnimator.HandAnimator.SetTrigger(_pickUp);
     }
 
     public void Build()
     {
         TurnOffAnimations();
-        _handAnimator.SetBool(_build, true);
+        _handAnimator.HandAnimator.SetBool(_build, true);
     }
 
     public void Hit()
     {
-        if(_currentAnimator != null)
-        {
-            Debug.Log(_currentAnimator);
-            _currentAnimator.SetTrigger(_hit);
-        }
-        else
-        {
-            Debug.Log(_currentAnimator);
-        }
+        _handAnimator.HandAnimator.SetTrigger(_hit);
     }
 
     public void PullItemAnimation()
     {
+        if (_handAnimator != null && _handAnimator.ItemData == _currentItemData && _handAnimator.ItemData == _defoultItem)
+            return;
+
+        bool foundMatch = false;
+
         foreach (var item in _itemsAnimator)
         {
             if (_currentItemData == item.ItemData)
             {
                 item.ToggleItem(true);
                 _handAnimator = item;
-                _currentAnimator = item.HandAnimator;
-                Debug.Log("1");
-                _currentAnimator.SetTrigger(_pullItem);
+                _handAnimator.HandAnimator.SetTrigger(_pullItem);
+                foundMatch = true;
             }
             else
             {
                 item.ToggleItem(false);
             }
         }
+
+        if (!foundMatch && _handAnimator != _defoultItem)
+        {
+            _handAnimator = _defoultItem;
+            _handAnimator.ToggleItem(true);
+            _handAnimator.HandAnimator.SetTrigger(_pullItem);
+        }
     }
-
-    //public void RemoveItemAnimationEvent()
-    //{
-    //    if (_currentItemData == null)
-    //        RemoveItemsAnimationEvent();
-    //}
-
-    //public void RemoveItemsAnimationEvent()
-    //{
-    //    foreach (var item in _itemsAnimator)
-    //    {
-    //        item.ToggleItem(false);
-    //    }
-    //}
 
     public void TurnOffAnimations()
     {
-        _handAnimator.SetBool(_build, false);
+        _handAnimator.HandAnimator.SetBool(_build, false);
     }
 }
