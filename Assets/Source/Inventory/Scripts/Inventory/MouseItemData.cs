@@ -72,12 +72,21 @@ public class MouseItemData : MonoBehaviour
         gameObject.SetActive(toggle);
     }
 
-    public bool IsPointerOverUIObject()
+    public bool IsPointerOverUIObject(string tagToCheck)
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
         eventDataCurrentPosition.position = Mouse.current.position.ReadValue();
         List<RaycastResult> result = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, result);
-        return result.Count > 0;
+
+        foreach (RaycastResult raycastResult in result)
+        {
+            if (raycastResult.gameObject.CompareTag(tagToCheck))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

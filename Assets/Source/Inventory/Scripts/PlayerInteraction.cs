@@ -26,6 +26,8 @@ public class PlayerInteraction : Raycast
     private bool _isEnable;
 
     public event UnityAction<InventoryItemData> OnUpdateItemData;
+    public event UnityAction<WeaponItemData> OnUpdateWeaponItemData;
+    public event UnityAction<ToolItemData> OnUpdateToolItemData;
     public event UnityAction<float> OnValueChanged;
     public event UnityAction<float, float> OnEnableBarValue;
     public event UnityAction OnTurnOffBarValue;
@@ -42,17 +44,17 @@ public class PlayerInteraction : Raycast
 
     private void Update()
     {
-        if(_isEnable)
-        {
-            UpdateItemData();
-            InitWeapon(_currentItemData);
-            InitTool(_currentItemData);
+        UpdateItemData();
+        InitWeapon(_currentInventorySlot.ItemData);
+        InitTool(_currentInventorySlot.ItemData);
 
-            if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon)
-            {
-                Shoot();
-            }
-            else if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon)
+        if (_isEnable)
+        {
+            //if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon)
+            //{
+            //    Shoot();
+            //}
+            /*else*/ if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon)
             {
                 Hit();
             }
@@ -66,14 +68,9 @@ public class PlayerInteraction : Raycast
     public void UpdateItemData()
     {
         _previousItemData = _currentItemData;
-        _currentItemData = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData;
         _currentInventorySlot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+        _currentItemData = _currentInventorySlot.ItemData;
         OnUpdateItemData?.Invoke(_currentItemData);
-
-        //if (_currentItemData != _previousItemData)
-        //{
-        //    _playerAnimation.GetItem(_currentItemData);
-        //}
     }
 
     public void InitWeapon(InventoryItemData itemData)
@@ -93,6 +90,8 @@ public class PlayerInteraction : Raycast
         {
             _currentWeapon = null;
         }
+
+        OnUpdateWeaponItemData?.Invoke(_currentWeapon);
     }
 
     public void InitTool(InventoryItemData itemData)
@@ -112,9 +111,11 @@ public class PlayerInteraction : Raycast
         {
             _currentTool = _armItemData;
         }
+
+        OnUpdateToolItemData?.Invoke(_currentTool);
     }
 
-    private void Shoot()
+    public bool IsShoot()
     {
         if (Time.time > _nextFire)
         {
@@ -125,29 +126,25 @@ public class PlayerInteraction : Raycast
                 _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
                 //_currentWeapon.MuzzleFlash.Play();
 
-                if (IsRayHittingSomething(_creatureLayer, out RaycastHit hitInfo))
-                {
-                    Vector3 spawnPoint = hitInfo.collider.ClosestPointOnBounds(hitInfo.point);
+                //if (IsRayHittingSomething(_creatureLayer, out RaycastHit hitInfo))
+                //{
+                //    Vector3 spawnPoint = hitInfo.collider.ClosestPointOnBounds(hitInfo.point);
 
-                    if (hitInfo.collider.TryGetComponent(out Animals animals))
-                    {
-                        if (_currentWeapon.HitEffect != null)
-                        {
-                            ParticleSystem impact = Instantiate(_currentWeapon.HitEffect, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
-                            impact.Play();
-                        }
-                        _currentAnim = animals;
-                        TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
-                    }
-
-                    if (_currentWeapon.Bullet != null)
-                    {
-                        ItemPickUp bullet = Instantiate(_currentWeapon.Bullet, spawnPoint, Quaternion.identity, hitInfo.collider.transform);
-                        bullet.GenerateNewID();
-                    }
-                }
+                //    if (hitInfo.collider.TryGetComponent(out Animals animals))
+                //    {
+                //        if (_currentWeapon.HitEffect != null)
+                //        {
+                //            ParticleSystem impact = Instantiate(_currentWeapon.HitEffect, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
+                //            impact.Play();
+                //        }
+                //        _currentAnim = animals;
+                //        TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
+                //    }
+                //}
+                return true;
             }
         }
+        return false;
     }
 
     private void Hit()
@@ -158,7 +155,7 @@ public class PlayerInteraction : Raycast
             _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
             _playerAnimation.Hit();
 
-            TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
+            TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
             TakeDamageBrokenObject(_currentWeapon.Damage, 0);
         }
     }
@@ -176,7 +173,7 @@ public class PlayerInteraction : Raycast
                 //_currentTool.MuzzleFlash.Play();
 
                 TakeDamageResoure(_currentTool.DamageResources, 0);
-                TakeDamageAnimal(_currentTool.DamageLiving, 0);
+                TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
                 TakeDamageBrokenObject(_currentTool.DamageResources, 0);
             }
         }
@@ -202,19 +199,19 @@ public class PlayerInteraction : Raycast
         _isEnable = isActive;
     }
 
-    private void TakeDamageAnimal(float damage, float overTimeDamage)
+    public void TakeDamageAnimal(Animals animals,float damage, float overTimeDamage)
     {
-        if (_currentAnim != null)
+        if (animals != null)
         {
-            _currentAnim.TakeDamage(damage, overTimeDamage);
+            animals.TakeDamage(damage, overTimeDamage);
             UpdateDurabilityItem();
 
-            OnValueChanged?.Invoke(_currentAnim.Health);
+            OnValueChanged?.Invoke(animals.Health);
 
-            if (_currentAnim.Health <= 0)
+            if (animals.Health <= 0)
             {
-                OnValueChanged?.Invoke(_currentAnim.Health);
-                _currentAnim = null;
+                OnValueChanged?.Invoke(animals.Health);
+                animals = null;
             }
         }
     }

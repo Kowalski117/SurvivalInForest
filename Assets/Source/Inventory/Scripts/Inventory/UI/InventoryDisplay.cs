@@ -11,6 +11,8 @@ public abstract class InventoryDisplay : MonoBehaviour
     [SerializeField] protected Interactor _interactor;
     [SerializeField] protected InventorySlotUI[] Slots;
 
+    private string _invetoryTag = "Inventory";
+
     private InventorySlotUI _currentSlot;
     protected InventorySystem inventorySystem;
     protected Dictionary<InventorySlotUI, InventorySlot> slotDictionary;
@@ -39,7 +41,7 @@ public abstract class InventoryDisplay : MonoBehaviour
     {
         if (MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null && _currentSlot != null)
         {
-            if (MouseInventoryItem.IsPointerOverUIObject())
+            if (MouseInventoryItem.IsPointerOverUIObject(_invetoryTag))
             {
                 _currentSlot.AssignedInventorySlot.AssignItem(MouseInventoryItem.InventorySlotUI.AssignedInventorySlot);
                 _currentSlot.UpdateUiSlot();
