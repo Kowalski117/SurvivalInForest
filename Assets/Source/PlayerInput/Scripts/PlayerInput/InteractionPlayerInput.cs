@@ -13,7 +13,8 @@ public class InteractionPlayerInput : MonoBehaviour
     public event UnityAction OnHit;
     public event UnityAction OnPickUp;
     public event UnityAction<bool> OnAttack;
-    public event UnityAction OnThrowFishingRod;
+    public event UnityAction OnUse;
+    public event UnityAction OnAim;
 
 
     private void Awake()
@@ -28,7 +29,8 @@ public class InteractionPlayerInput : MonoBehaviour
         _playerInput.Player.Hit.performed += ctx => Hit();
         _playerInput.Player.PickUp.performed += ctx => PickUp();
         _playerInput.WeaponSystem.Attack.performed += ctx => Attack();
-        _playerInput.WeaponSystem.ThrowFishingRod.performed += ctx => ThrowFishingRod();
+        _playerInput.WeaponSystem.Use.performed += ctx => Use();
+        _playerInput.WeaponSystem.Aim.performed += ctx => Aim();
     }
 
     private void OnDisable()
@@ -37,7 +39,8 @@ public class InteractionPlayerInput : MonoBehaviour
         _playerInput.Player.Hit.performed -= ctx => Hit();
         _playerInput.Player.PickUp.performed -= ctx => PickUp();
         _playerInput.WeaponSystem.Attack.performed -= ctx => Attack();
-        _playerInput.WeaponSystem.ThrowFishingRod.performed -= ctx => ThrowFishingRod();
+        _playerInput.WeaponSystem.Use.performed -= ctx => Use();
+        _playerInput.WeaponSystem.Aim.performed -= ctx => Aim();
         _playerInput.Disable();
     }
 
@@ -68,9 +71,14 @@ public class InteractionPlayerInput : MonoBehaviour
         OnAttack?.Invoke(_isButtonPressed);
     }
 
-    public void ThrowFishingRod()
+    public void Use()
     {
-        OnThrowFishingRod?.Invoke();
+        OnUse?.Invoke();
+    }
+
+    public void Aim()
+    {
+        OnAim?.Invoke();
     }
 
     public void PressedButton()

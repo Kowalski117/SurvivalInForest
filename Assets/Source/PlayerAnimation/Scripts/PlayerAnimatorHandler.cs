@@ -17,6 +17,7 @@ public class PlayerAnimatorHandler : MonoBehaviour
     private string _pickUp = "PickUp";
     private string _build = "Build";
     private string _hit = "Hit";
+    private string _aim = "Aim";
     private string _pullItem = "PullItem";
 
     private InventoryItemData _currentItemData;
@@ -70,12 +71,22 @@ public class PlayerAnimatorHandler : MonoBehaviour
         _handAnimator.HandAnimator.SetTrigger(_hit);
     }
 
+    public void Aim(bool value)
+    {
+        _handAnimator.HandAnimator.SetBool(_aim, value);
+    }
+
     public void PullItemAnimation()
     {
-        if (_handAnimator != null && _handAnimator.ItemData == _currentItemData && _handAnimator.ItemData == _defoultItem)
-            return;
+        if(!_itemsAnimator.Any(item => _currentItemData == item.ItemData) || _currentItemData == null)
+        {
+            if(_handAnimator != _defoultItem)
+                _handAnimator.ToggleItem(false);
 
-        bool foundMatch = false;
+            _handAnimator = _defoultItem;
+            _handAnimator.ToggleItem(true);
+            return;
+        }
 
         foreach (var item in _itemsAnimator)
         {
@@ -84,21 +95,14 @@ public class PlayerAnimatorHandler : MonoBehaviour
                 item.ToggleItem(true);
                 _handAnimator = item;
                 _handAnimator.HandAnimator.SetTrigger(_pullItem);
-                foundMatch = true;
             }
             else
             {
                 item.ToggleItem(false);
             }
         }
-
-        if (!foundMatch && _handAnimator != _defoultItem)
-        {
-            _handAnimator = _defoultItem;
-            _handAnimator.ToggleItem(true);
-            _handAnimator.HandAnimator.SetTrigger(_pullItem);
-        }
     }
+
 
     public void TurnOffAnimations()
     {

@@ -6,8 +6,11 @@ public class Arrow : MonoBehaviour
     [SerializeField] private TrailRenderer _trailRenderer;
 
     private Rigidbody _rigidbody;
+    private bool _isFlying = false;
 
-    public event UnityAction<Vector3, Quaternion, GameObject> OnEnteredCollider;
+    public event UnityAction<Arrow,Vector3, Quaternion, GameObject> OnEnteredCollider;
+
+    public bool IsFlying => _isFlying;
 
     private void Awake()
     {
@@ -30,6 +33,7 @@ public class Arrow : MonoBehaviour
         _rigidbody.velocity = transform.forward * velocity;
         _trailRenderer.enabled = true;
         _trailRenderer.Clear();
+        _isFlying = true;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -37,7 +41,8 @@ public class Arrow : MonoBehaviour
         if (collision.collider != null)
         {
             _rigidbody.isKinematic = true;
-            OnEnteredCollider?.Invoke(transform.position, transform.rotation, collision.gameObject);
+            _isFlying = false;
+            OnEnteredCollider?.Invoke(this, transform.position, transform.rotation, collision.gameObject);
         }
     }
 }

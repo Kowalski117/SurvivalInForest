@@ -715,9 +715,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ThrowFishingRod",
+                    "name": "Use",
                     "type": "Button",
                     "id": "334f5c1f-daab-47a5-99e2-d3c1ef79b5b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "73cdd62c-38c2-47fb-91ea-16c1c968b4f1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -743,7 +752,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "ThrowFishingRod",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c93ceb4f-d6a7-4ded-8cca-0df5f4c4335c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

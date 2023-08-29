@@ -737,9 +737,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ThrowFishingRod"",
+                    ""name"": ""Use"",
                     ""type"": ""Button"",
                     ""id"": ""334f5c1f-daab-47a5-99e2-d3c1ef79b5b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""73cdd62c-38c2-47fb-91ea-16c1c968b4f1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -765,7 +774,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""ThrowFishingRod"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c93ceb4f-d6a7-4ded-8cca-0df5f4c4335c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -904,7 +924,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // WeaponSystem
         m_WeaponSystem = asset.FindActionMap("WeaponSystem", throwIfNotFound: true);
         m_WeaponSystem_Attack = m_WeaponSystem.FindAction("Attack", throwIfNotFound: true);
-        m_WeaponSystem_ThrowFishingRod = m_WeaponSystem.FindAction("ThrowFishingRod", throwIfNotFound: true);
+        m_WeaponSystem_Use = m_WeaponSystem.FindAction("Use", throwIfNotFound: true);
+        m_WeaponSystem_Aim = m_WeaponSystem.FindAction("Aim", throwIfNotFound: true);
         // UIScreen
         m_UIScreen = asset.FindActionMap("UIScreen", throwIfNotFound: true);
         m_UIScreen_TogglePauseScreen = m_UIScreen.FindAction("TogglePauseScreen", throwIfNotFound: true);
@@ -1244,13 +1265,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_WeaponSystem;
     private IWeaponSystemActions m_WeaponSystemActionsCallbackInterface;
     private readonly InputAction m_WeaponSystem_Attack;
-    private readonly InputAction m_WeaponSystem_ThrowFishingRod;
+    private readonly InputAction m_WeaponSystem_Use;
+    private readonly InputAction m_WeaponSystem_Aim;
     public struct WeaponSystemActions
     {
         private @PlayerInput m_Wrapper;
         public WeaponSystemActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_WeaponSystem_Attack;
-        public InputAction @ThrowFishingRod => m_Wrapper.m_WeaponSystem_ThrowFishingRod;
+        public InputAction @Use => m_Wrapper.m_WeaponSystem_Use;
+        public InputAction @Aim => m_Wrapper.m_WeaponSystem_Aim;
         public InputActionMap Get() { return m_Wrapper.m_WeaponSystem; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1263,9 +1286,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAttack;
-                @ThrowFishingRod.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnThrowFishingRod;
-                @ThrowFishingRod.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnThrowFishingRod;
-                @ThrowFishingRod.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnThrowFishingRod;
+                @Use.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnUse;
+                @Aim.started -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAim;
+                @Aim.performed -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAim;
+                @Aim.canceled -= m_Wrapper.m_WeaponSystemActionsCallbackInterface.OnAim;
             }
             m_Wrapper.m_WeaponSystemActionsCallbackInterface = instance;
             if (instance != null)
@@ -1273,9 +1299,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
-                @ThrowFishingRod.started += instance.OnThrowFishingRod;
-                @ThrowFishingRod.performed += instance.OnThrowFishingRod;
-                @ThrowFishingRod.canceled += instance.OnThrowFishingRod;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
+                @Aim.started += instance.OnAim;
+                @Aim.performed += instance.OnAim;
+                @Aim.canceled += instance.OnAim;
             }
         }
     }
@@ -1394,7 +1423,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IWeaponSystemActions
     {
         void OnAttack(InputAction.CallbackContext context);
-        void OnThrowFishingRod(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
     }
     public interface IUIScreenActions
     {

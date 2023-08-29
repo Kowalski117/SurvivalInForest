@@ -4,6 +4,7 @@ public class FishingRod : MonoBehaviour
 {
     [SerializeField] private Float _float;
     [SerializeField] private FishingRodRenderer _renderer;
+    [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] private PlayerInputHandler _inputHandler;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
@@ -18,24 +19,22 @@ public class FishingRod : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputHandler.InteractionPlayerInput.OnThrowFishingRod += ThrowFishingRod;
-
+        _inputHandler.InteractionPlayerInput.OnUse += ThrowFishingRod;
+        _playerInteraction.OnUpdateItemData += Init;
         _float.FishCaught += CatchFish;
         _float.FishMissed += MissFish;
     }
 
     private void OnDisable()
     {
-        _inputHandler.InteractionPlayerInput.OnThrowFishingRod += ThrowFishingRod;
-
+        _inputHandler.InteractionPlayerInput.OnUse += ThrowFishingRod;
+        _playerInteraction.OnUpdateItemData -= Init;
         _float.FishCaught -= CatchFish;
         _float.FishMissed -= MissFish;
     }
 
     private void Update()
     {
-        Init(_hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData);
-
         if (Vector3.Distance(transform.position, _float.transform.position) > _distance && _isEnable)
         {
             _float.ReturnToRod(transform);
