@@ -9,6 +9,7 @@ public class Interactor : Raycast
     [SerializeField] private LayerMask _interactionConstructionLayer;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private SaveItemHandler _saveItemHandler;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
@@ -177,8 +178,15 @@ public class Interactor : Raycast
         {
             ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
             itemPickUp.GenerateNewID();
+            UpdateItem(itemPickUp);
             itemPickUp.UpdateDurability(durability);
         }
+    }
+
+    public void UpdateItem(ItemPickUp itemPickUp)
+    {
+        itemPickUp.GenerateNewID();
+        _saveItemHandler.AddId(itemPickUp.Id);
     }
 
     private void InteractableInventory()

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class BuildTool : MonoBehaviour
 {
     [SerializeField] private PlayerHealth _playerHealth;
-    [SerializeField] private BaseHandler _baseHandler;
+    [SerializeField] private SaveBuildingHandler _baseHandler;
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private DelayWindow _loadingWindow;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;

@@ -7,6 +7,7 @@ public class Bow : MonoBehaviour
     [SerializeField] private PlayerInputHandler _inputHandler;
     [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] private PlayerAnimatorHandler _playerAnimatorHandler;
+    [SerializeField] private Interactor  _interactor;
 
     private WeaponItemData _currentWeapon;
     private bool _isShoot = false;
@@ -97,7 +98,7 @@ public class Bow : MonoBehaviour
     {
         ItemPickUp arrowItem = Instantiate(_currentWeapon.Bullet, position, rotation, parent.transform);
         arrowItem.Rigidbody.isKinematic = true;
-        arrowItem.GenerateNewID();
+        _interactor.UpdateItem(arrowItem);
 
         arrow.SetRope(transform);
         arrow.gameObject.SetActive(false);

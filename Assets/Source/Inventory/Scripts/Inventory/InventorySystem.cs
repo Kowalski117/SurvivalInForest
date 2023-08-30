@@ -18,6 +18,11 @@ public class InventorySystem
         CreateInventory(size);
     }
 
+    public void SetSlots(List<InventorySlot> inventorySlots)
+    {
+        _inventorySlots = inventorySlots;
+    }
+
     public bool AddToInventory(InventoryItemData item, int amount, float durability)
     {
         if (ContainsItem(item, out List<InventorySlot> inventorySlots))

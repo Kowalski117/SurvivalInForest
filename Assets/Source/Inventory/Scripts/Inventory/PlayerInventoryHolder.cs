@@ -1,8 +1,12 @@
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerInventoryHolder : InventoryHolder
 {
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
+
+    private string _invetoryId = "InventoryData";
     private InventoryItemData _currentItemData;
 
     public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
@@ -77,16 +81,22 @@ public class PlayerInventoryHolder : InventoryHolder
 
     protected override void SaveInventory()
     {
-        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation);
-        ES3.Save("InventoryData", saveData);
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots, transform.position, transform.rotation);
+        ES3.Save(_invetoryId, saveData);
     }
 
     protected override void LoadInventory()
     {
-        InventorySaveData saveData = ES3.Load<InventorySaveData>("InventoryData", new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation));
+        InventorySaveData saveData = ES3.Load<InventorySaveData>(_invetoryId);
+        _playerInputHandler.FirstPersonController.enabled = false;
         PrimaryInventorySystem = saveData.InventorySystem;
+        //for (int i = 0;i < PrimaryInventorySystem.InventorySlots.Count;)
+        //{
+        //    PrimaryInventorySystem.InventorySlots[i].UpdateInventorySlot(saveData.InventorySlots[i].ItemData, saveData.InventorySlots[i].Size, saveData.InventorySlots[i].Durability);
+        //}
         transform.position = saveData.Position;
         transform.rotation = saveData.Rotation;
+        _playerInputHandler.FirstPersonController.enabled = true;
         OnPlayerInventoryChanged?.Invoke();
     }
 }

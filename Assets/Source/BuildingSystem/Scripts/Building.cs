@@ -24,7 +24,7 @@ public class Building : MonoBehaviour
 
     public event UnityAction OnCompletedBuild;
 
-    public string UniqueID => _buildingId + _uniqueID.Id;
+    public string UniqueID =>  _uniqueID.Id;
     public BuildingData AssignedData => _assignedData;
     public bool FlaggedForDelete => _flaggedForDelete;
     public bool IsOverlapping => _isOverlapping;
@@ -55,7 +55,7 @@ public class Building : MonoBehaviour
         SaveGame.OnLoadData -= Load;
     }
 
-    public void Init(BuildingData data, BuildingSaveData saveData = null)
+    public void Init(BuildingData data, string id = null)
     {
         _assignedData = data;
         _colliders = transform.Find("Colliders");
@@ -63,10 +63,10 @@ public class Building : MonoBehaviour
         if(_colliders != null )
             _colliders.gameObject.SetActive(false);
 
-        if(saveData != null)
-            _saveData = saveData;
-
-        _uniqueID.Generate();
+        if (id != null)
+            _uniqueID.SetId(id);
+        else
+            _uniqueID.Generate();
     }
 
     public void PlaceBuilding()
@@ -134,19 +134,16 @@ public class Building : MonoBehaviour
 
     public void Save()
     {
-        BuildingSaveData itemSaveData = new BuildingSaveData(_assignedData.Prefab, transform.position, transform.rotation);
-        Debug.Log(itemSaveData);
-        Debug.Log(itemSaveData.BuildingPrefab);
-        Debug.Log(itemSaveData.Position);
-        Debug.Log(itemSaveData.Rotation);
-        ES3.Save(UniqueID, itemSaveData);
-        Debug.Log(ES3.Load<BuildingSaveData>(UniqueID).BuildingPrefab);
-        Debug.Log(UniqueID);
+        if (ES3.KeyExists(_uniqueID.Id))
+            ES3.DeleteKey(_uniqueID.Id);
+
+        BuildingSaveData itemSaveData = new BuildingSaveData(_assignedData.Id, transform.position, transform.rotation);
+        ES3.Save(_uniqueID.Id, itemSaveData);
     }
 
     private void Load()
     {
-        if (!ES3.KeyExists(UniqueID))
+        if (!ES3.KeyExists(_uniqueID.Id))
         {
             Destroy(gameObject);
         }
@@ -157,18 +154,18 @@ public class Building : MonoBehaviour
 public class BuildingSaveData
 {
     [SerializeField] private string _buildingName;
-    [SerializeField] private Building _buildingPrefab;
+    [SerializeField] private int _id;
     [SerializeField] private Vector3 _position;
     [SerializeField] private Quaternion _rotation;
 
     public string BuildingName => _buildingName;
-    public Building BuildingPrefab => _buildingPrefab;
+    public int Id => _id;
     public Vector3 Position => _position;
     public Quaternion Rotation => _rotation;
 
-    public BuildingSaveData(Building buildingPrefab, Vector3 position, Quaternion rotation)
+    public BuildingSaveData(int id, Vector3 position, Quaternion rotation)
     {
-        _buildingPrefab = buildingPrefab;
+        _id = id;
         _position = position;
         _rotation = rotation;
     }

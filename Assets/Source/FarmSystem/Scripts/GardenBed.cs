@@ -5,9 +5,15 @@ using UnityEngine;
 public class GardenBed : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private float _spawnTime = 10f;
+    [SerializeField] private SeedItemData _seedItem;
 
     private ObjectPickUp _currentItem;
+
+    private void Start()
+    {
+        if (_seedItem != null)
+            _currentItem = Instantiate(_seedItem.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
+    }
 
     public bool StartGrowingSeed(InventoryItemData inventoryItemData)
     {
