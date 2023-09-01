@@ -128,6 +128,12 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
             _borderImage.enabled = !_borderImage.enabled;
     }
 
+    public void TurnOffHighlight()
+    {
+        if (_borderImage != null && _borderImage.enabled == true)
+            _borderImage.enabled = false;
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_borderImage != null)

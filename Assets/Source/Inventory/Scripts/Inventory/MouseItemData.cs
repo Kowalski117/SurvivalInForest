@@ -12,13 +12,13 @@ public class MouseItemData : MonoBehaviour
     private bool _isUpdateSlot = false;
 
     private InventorySlotUI _inventorySlotUI;
-    private InventorySlotUI _currentSlot;
+    private InventorySlotUI _previousSlot;
     private InventoryItemData _currentItemData;
 
     public static UnityAction OnUpdatedSlots;
 
     public InventorySlotUI InventorySlotUI => _inventorySlotUI;
-    public InventorySlotUI CurrentSlot => _currentSlot;
+    public InventorySlotUI CurrentSlot => _previousSlot;
     public InventoryItemData CurrentItemData => _currentItemData;
 
     private void Awake()
@@ -41,7 +41,7 @@ public class MouseItemData : MonoBehaviour
 
     public void CleanSlot()
     {
-        _currentSlot = null;
+        _previousSlot = null;
         _currentItemData = null;
         _isUpdateSlot = false;
         _inventorySlotUI.CleanSlot();
@@ -58,7 +58,8 @@ public class MouseItemData : MonoBehaviour
 
     public void UpdateCurrentInventorySlot(InventorySlotUI inventorySlot)
     {
-        _currentSlot = inventorySlot;
+        _previousSlot = inventorySlot;
+        _previousSlot.TurnOffHighlight();
         _currentItemData = inventorySlot.AssignedInventorySlot.ItemData;
     }
 
