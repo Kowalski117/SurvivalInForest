@@ -14,10 +14,11 @@ public class Compass : MonoBehaviour
     private List<QuestMaker>  _questMakers = new List<QuestMaker>();
 
     private float _compassUnit;
+    private float _rotationNumber = 360;
 
     private void Awake()
     {
-        _compassUnit = _compassImage.rectTransform.rect.width / 360;
+        _compassUnit = _compassImage.rectTransform.rect.width / _rotationNumber;
     }
 
     private void Start()
@@ -27,7 +28,7 @@ public class Compass : MonoBehaviour
 
     private void Update()
     {
-        _compassImage.uvRect = new Rect(_playerTransform.localEulerAngles.y / 360f, 0f, 1f, 1f);
+        _compassImage.uvRect = new Rect(_playerTransform.localEulerAngles.y / _rotationNumber, 0f, 1f, 1f);
 
         foreach (var marker in _questMakers)
         {

@@ -20,7 +20,6 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private Color _selectColor;
     [SerializeField] private Color _defoultColor;
 
-
     private List<CraftItemSlotView> _craftItemSlots = new List<CraftItemSlotView>();
     private List<CraftBuildSlotView> _craftBuildSlots = new List<CraftBuildSlotView>();
 
@@ -40,7 +39,6 @@ public class CraftingHandler : MonoBehaviour
         _buildTool.OnCompletedBuild += UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate += UpdateSlot;
         CrafBuildSlot.OnCraftSlotUpdate += UpdateSlot;
-        //MouseItemData.OnUpdatedSlots += UpdateSlot;
 
         _inventoryHolder.OnUpdateItemSlot += UpdateSlot;
     }
@@ -51,8 +49,7 @@ public class CraftingHandler : MonoBehaviour
         _buildTool.OnCompletedBuild -= UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate -= UpdateSlot;
         CrafBuildSlot.OnCraftSlotUpdate -= UpdateSlot;
-        //MouseItemData.OnUpdatedSlots -= UpdateSlot;
-
+        
         _inventoryHolder.OnUpdateItemSlot -= UpdateSlot;
     }
 

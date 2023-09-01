@@ -7,6 +7,7 @@ public class FishingRodRenderer : MonoBehaviour
     [SerializeField] private Float _float;
 
     private bool _isDrawing = false;
+    private int _maxPositionCount = 2;
 
     private void LateUpdate()
     {
@@ -20,7 +21,7 @@ public class FishingRodRenderer : MonoBehaviour
     public void DrawRope()
     {
         _isDrawing = true;
-        _lineRenderer.positionCount = 2;
+        _lineRenderer.positionCount = _maxPositionCount;
     }
 
     public void Disable()

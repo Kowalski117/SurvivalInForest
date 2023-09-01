@@ -147,7 +147,7 @@ public class BuildTool : MonoBehaviour
             float terrainHeight = Terrain.activeTerrain.SampleHeight(hitPoint);
 
             gridPosition.y = terrainHeight;
-            _spawnBuilding.transform.position = hitPoint; //поменять
+            _spawnBuilding.transform.position = hitPoint;
         }
     }
 
@@ -169,7 +169,6 @@ public class BuildTool : MonoBehaviour
         _spawnBuilding = null;
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
-
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
@@ -213,7 +212,6 @@ public class BuildTool : MonoBehaviour
             if (_targetBuilding != null && _targetBuilding.FlaggedForDelete)
             {
                 _targetBuilding.RemoveDeleteFlag();
-
                 _targetBuilding = null;
                 _deleteModeEnabled = false;
             }

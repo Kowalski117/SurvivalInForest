@@ -1,4 +1,3 @@
-using System.Xml;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,8 +5,6 @@ using UnityEngine.Events;
 public class Building : MonoBehaviour
 {
     [SerializeField] private int _defoultLayerInt = 12;
-
-    private string _buildingId = "Building_";
 
     private BuildingData _assignedData;
     private BoxCollider _boxCollider;
@@ -116,22 +113,6 @@ public class Building : MonoBehaviour
         _flaggedForDelete = false;
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        _isOverlapping = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        _isOverlapping = false;
-    }
-
-    private void OnDestroy()
-    {
-        //if (ES3.KeyExists(UniqueID))
-        //    ES3.DeleteKey(UniqueID);
-    }
-
     public void Save()
     {
         if (ES3.KeyExists(_uniqueID.Id))
@@ -147,6 +128,22 @@ public class Building : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        _isOverlapping = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _isOverlapping = false;
+    }
+
+    private void OnDestroy()
+    {
+        //if (ES3.KeyExists(UniqueID))
+        //    ES3.DeleteKey(UniqueID);
     }
 }
 

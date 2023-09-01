@@ -10,6 +10,8 @@ public class ItemButton : MonoBehaviour
     private InventoryItemData _inventoryItemData;
     private PlayerInventoryHolder _inventoryHolder;
 
+    private int _amount = 1;
+
     private void Awake()
     {
         _button = GetComponent<Button>();
@@ -34,6 +36,6 @@ public class ItemButton : MonoBehaviour
 
     private void AddItem()
     {
-        _inventoryHolder.AddToInventory(_inventoryItemData, 1, _inventoryItemData.Durability);
+        _inventoryHolder.AddToInventory(_inventoryItemData, _amount, _inventoryItemData.Durability);
     }
 }
