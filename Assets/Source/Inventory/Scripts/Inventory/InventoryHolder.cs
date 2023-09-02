@@ -9,7 +9,7 @@ public abstract class InventoryHolder : MonoBehaviour
     [SerializeField] protected InventorySystem PrimaryInventorySystem;
     [SerializeField] private int _offset = 6;
 
-    public static UnityAction OnPlayerInventoryChanged;
+    public event UnityAction OnInventoryChanged;
     public static UnityAction<InventorySystem, int> OnDinamicInventoryDisplayRequested;
 
     public InventorySystem InventorySystem => PrimaryInventorySystem;
@@ -33,7 +33,10 @@ public abstract class InventoryHolder : MonoBehaviour
     }
 
     protected abstract void SaveInventory();
-    protected abstract void LoadInventory();
+    protected virtual void LoadInventory()
+    {
+        OnInventoryChanged?.Invoke();
+    }
 }
 
 [System.Serializable]

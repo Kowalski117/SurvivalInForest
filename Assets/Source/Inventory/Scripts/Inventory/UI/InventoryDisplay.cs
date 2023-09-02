@@ -109,7 +109,7 @@ public abstract class InventoryDisplay : MonoBehaviour
         if (Slots[index].AssignedInventorySlot.ItemData != null)
         {
             InventoryDescription.SetDescription(Slots[index]);
-            OnSlotSelected?.Invoke(Slots[index]);
+            OnSlotSelected?.Invoke(inventorySlotUI);
         }
     }
 

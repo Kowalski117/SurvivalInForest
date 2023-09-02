@@ -97,6 +97,7 @@ public class PlayerInventoryHolder : InventoryHolder
         transform.position = saveData.Position;
         transform.rotation = saveData.Rotation;
         _playerInputHandler.FirstPersonController.enabled = true;
-        OnPlayerInventoryChanged?.Invoke();
+
+        base.LoadInventory();
     }
 }
