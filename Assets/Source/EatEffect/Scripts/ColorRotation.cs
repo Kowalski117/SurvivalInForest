@@ -2,26 +2,20 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ColorRotation : MonoBehaviour
+public class ColorRotation : FoodEffect
 {
     [SerializeField] private Image _targetImage;
     [SerializeField] private float _rotationSpeed = 30f;
     [SerializeField] private float _alphaValue = 0.3f;
-    [SerializeField] private float _effectDuration = 5f;
 
     private float _startTime;
 
-    private void Start()
+    protected override IEnumerator RotateColors(float duration)
     {
         _startTime = Time.time;
-        StartCoroutine(RotateColors());
-    }
-
-    private IEnumerator RotateColors()
-    {
         _targetImage.enabled = true;
 
-        while (Time.time - _startTime < _effectDuration)
+        while (Time.time - _startTime < duration)
         {
             float hue = ((Time.time - _startTime) * _rotationSpeed) % 1f;
             Color newColor = Color.HSVToRGB(hue, 1f, 1f);

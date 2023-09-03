@@ -12,6 +12,7 @@ public class ExchangerSlotView : MonoBehaviour
     private ExchangerInventoryItem _shopSlot;
     private PlayerInventoryHolder _inventoryHolder;
     private int _amount = 1;
+    private int _index = 1;
 
     private void OnEnable()
     {
@@ -48,8 +49,8 @@ public class ExchangerSlotView : MonoBehaviour
                     _inventoryHolder.AddToInventory(itemToReceive.ItemData, itemToReceive.Amount * _amount, itemToReceive.ItemData.Durability);
                 }
 
-                gameObject.SetActive(false);
-                _amount = 1;
+                //gameObject.SetActive(false);
+                _amount = _index;
                 break;
             }
         }
@@ -63,7 +64,7 @@ public class ExchangerSlotView : MonoBehaviour
 
     private void RemoveAmount()
     {
-        if (_amount > 1)
+        if (_amount > _index)
             _amount--;
         UpdateAmount();
     }

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(UniqueID))]
 public class ObjectPickUp : MonoBehaviour
@@ -20,6 +19,7 @@ public class ObjectPickUp : MonoBehaviour
         _uniqueID = GetComponent<UniqueID>();
         _outline = GetComponent<Outline>();
         _rigidbody= GetComponent<Rigidbody>();
+        _rigidbody.isKinematic = true;
     }
 
     public void PicUp()

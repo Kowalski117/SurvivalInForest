@@ -27,6 +27,7 @@ public enum ToolType
     Pickaxe,
     Arm,
     FishingRod,
+    Torch,
 }
 
 #if UNITY_EDITOR

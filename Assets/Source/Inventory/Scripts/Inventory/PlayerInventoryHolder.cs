@@ -3,6 +3,10 @@ using UnityEngine.Events;
 
 public class PlayerInventoryHolder : InventoryHolder
 {
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private BackpackInventory _backpackInventory;
+
+    private string _invetoryId = "InventoryData";
     private InventoryItemData _currentItemData;
 
     public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
@@ -12,19 +16,18 @@ public class PlayerInventoryHolder : InventoryHolder
 
     public bool AddToInventory(InventoryItemData data, int amount, float durability = 0)
     {
-        if (PrimaryInventorySystem.AddToInventory(data, amount, durability))
+        if (PrimaryInventorySystem.AddToInventory(data, amount, durability) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.AddToInventory(data, amount, durability))
         {
             OnItemDataChanged?.Invoke(data, amount);
             OnUpdateItemSlot?.Invoke();
             return true;
         }
-
         return false;
     }
 
     public bool RemoveInventory(InventoryItemData data, int amount)
     {
-        if(PrimaryInventorySystem.RemoveItemsInventory(data, amount))
+        if(PrimaryInventorySystem.RemoveItemsInventory(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(data, amount))
         {
             OnItemDataChanged?.Invoke(data, -amount);
             OnUpdateItemSlot?.Invoke();
@@ -38,7 +41,7 @@ public class PlayerInventoryHolder : InventoryHolder
     {
         _currentItemData = slot.ItemData;
 
-        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount))
+        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(slot, amount))
         {
             OnItemDataChanged?.Invoke(_currentItemData, -amount);
             OnUpdateItemSlot?.Invoke();
@@ -46,6 +49,7 @@ public class PlayerInventoryHolder : InventoryHolder
             _currentItemData = null;
             return true;
         }
+
         _currentItemData = null;
         return false;
     }
@@ -77,16 +81,19 @@ public class PlayerInventoryHolder : InventoryHolder
 
     protected override void SaveInventory()
     {
-        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation);
-        ES3.Save("InventoryData", saveData);
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots, transform.position, transform.rotation);
+        ES3.Save(_invetoryId, saveData);
     }
 
     protected override void LoadInventory()
     {
-        InventorySaveData saveData = ES3.Load<InventorySaveData>("InventoryData", new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation));
+        InventorySaveData saveData = ES3.Load<InventorySaveData>(_invetoryId);
+        _playerInputHandler.FirstPersonController.enabled = false;
         PrimaryInventorySystem = saveData.InventorySystem;
         transform.position = saveData.Position;
         transform.rotation = saveData.Rotation;
-        OnPlayerInventoryChanged?.Invoke();
+        _playerInputHandler.FirstPersonController.enabled = true;
+
+        base.LoadInventory();
     }
 }

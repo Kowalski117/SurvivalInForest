@@ -18,6 +18,11 @@ public class InventorySystem
         CreateInventory(size);
     }
 
+    public void SetSlots(List<InventorySlot> inventorySlots)
+    {
+        _inventorySlots = inventorySlots;
+    }
+
     public bool AddToInventory(InventoryItemData item, int amount, float durability)
     {
         if (ContainsItem(item, out List<InventorySlot> inventorySlots))
@@ -32,7 +37,6 @@ public class InventorySystem
                 }
             }
         }
-
         if (HasFreeSlot(out InventorySlot freeSlot))
         {
             if (freeSlot.EnoughRoomLeftInStack(amount))
@@ -42,7 +46,6 @@ public class InventorySystem
                 return true;
             }
         }
-
         return false;
     }
 
@@ -81,24 +84,29 @@ public class InventorySystem
 
     public bool RemoveItemsInventory(InventorySlot slot, int amount)
     {
-        if (slot != null && slot.ItemData != null)
+        foreach (var inventorySlot in _inventorySlots)
         {
-            int stackSize = slot.Size;
+            if(inventorySlot == slot)
+            {
+                if (slot != null && slot.ItemData != null)
+                {
+                    int stackSize = slot.Size;
 
-            if (stackSize >= amount)
-            {
-                slot.RemoveFromStack(amount);
-                OnInventorySlotChanged?.Invoke(slot);
-                return true;
-            }
-            else if (stackSize > 0)
-            {
-                slot.RemoveFromStack(stackSize); 
-                OnInventorySlotChanged?.Invoke(slot);
-                return true; 
+                    if (stackSize >= amount)
+                    {
+                        slot.RemoveFromStack(amount);
+                        OnInventorySlotChanged?.Invoke(slot);
+                        return true;
+                    }
+                    else if (stackSize > 0)
+                    {
+                        slot.RemoveFromStack(stackSize);
+                        OnInventorySlotChanged?.Invoke(slot);
+                        return true;
+                    }
+                }
             }
         }
-
         return false;
     }
 
@@ -158,7 +166,7 @@ public class InventorySystem
     private void CreateInventory(int size)
     {
         _inventorySlots = new List<InventorySlot>(size);
-
+ 
         for (int i = 0; i < size; i++)
         {
             _inventorySlots.Add(new InventorySlot());

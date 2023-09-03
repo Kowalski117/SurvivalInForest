@@ -9,6 +9,7 @@ public class FishingRod : MonoBehaviour
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private float _distance = 10;
+    [SerializeField] private float _velocityForse = 50;
 
     private bool _isFishing = false;
     private bool _isAllowedFishing = true;
@@ -16,6 +17,8 @@ public class FishingRod : MonoBehaviour
     private FishingRodItemData _currentFishingRod;
     private float _fishingDelay = 1.5f;
     private float _timer = 0;
+    private int _maxRandomNumder = 100;
+    private int _addAmount = 1;
 
     private void OnEnable()
     {
@@ -54,7 +57,6 @@ public class FishingRod : MonoBehaviour
             }
         }
 
-
         if (_currentFishingRod == null && _float.transform.position != transform.position)
         {
             _float.ReturnToRod(transform);
@@ -71,7 +73,7 @@ public class FishingRod : MonoBehaviour
             {
                 _isFishing = true;
                 _renderer.DrawRope();
-                _float.StartFishing(50, _currentFishingRod.RandomTime, GetRandomItem());
+                _float.StartFishing(_velocityForse, _currentFishingRod.RandomTime, GetRandomItem());
             }
             else
             {
@@ -84,12 +86,12 @@ public class FishingRod : MonoBehaviour
 
     private InventoryItemData GetRandomItem() 
     {
-        int randomValue = Random.Range(0, 100);
+        int randomValue = Random.Range(0, _maxRandomNumder);
         int currentProbability = 0;
 
         foreach (var extraction in _currentFishingRod.Extractions)
         {
-            currentProbability += (int)(extraction.Chance * 100);
+            currentProbability += (int)(extraction.Chance * _maxRandomNumder);
 
             if (randomValue < currentProbability)
             {
@@ -102,7 +104,7 @@ public class FishingRod : MonoBehaviour
     private void CatchFish(InventoryItemData inventoryItemData)
     {
         if (inventoryItemData != null)
-            _inventoryHolder.AddToInventory(inventoryItemData, 1);
+            _inventoryHolder.AddToInventory(inventoryItemData, _addAmount);
     }
 
     private void MissFish()

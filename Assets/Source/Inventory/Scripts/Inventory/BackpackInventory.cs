@@ -6,7 +6,12 @@ public class BackpackInventory : InventoryHolder
     [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
     [SerializeField] private Interactor _interactor;
 
-    public event UnityAction<InventorySystem, int> OnDinamicInventoryDisplayInventory;
+    private string _backpackInventory = "BackpackInventory";
+    private bool _isEnable = false;
+
+    public event UnityAction<InventorySystem, int> OnDinamicDisplayInventory;
+
+    public bool IsEnable => _isEnable;
 
     private void OnEnable()
     {
@@ -24,7 +29,8 @@ public class BackpackInventory : InventoryHolder
 
     public void Show()
     {
-        OnDinamicInventoryDisplayInventory?.Invoke(PrimaryInventorySystem, 0);
+        OnDinamicDisplayInventory?.Invoke(PrimaryInventorySystem, 0);
+        _isEnable = !_isEnable;
     }
 
     public void RemoveAllItems()
@@ -39,13 +45,16 @@ public class BackpackInventory : InventoryHolder
         }
     }
 
-    protected override void LoadInventory()
-    {
-        
-    }
-
     protected override void SaveInventory()
     {
-        
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots, transform.position, transform.rotation);
+        ES3.Save(_backpackInventory, saveData);
+    }
+
+    protected override void LoadInventory()
+    {
+        Debug.Log(_backpackInventory);
+        InventorySaveData saveData = ES3.Load<InventorySaveData>(_backpackInventory);
+        PrimaryInventorySystem = saveData.InventorySystem;
     }
 }

@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +8,7 @@ public class Interactor : Raycast
     [SerializeField] private LayerMask _interactionConstructionLayer;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private SaveItemHandler _saveItemHandler;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
@@ -25,6 +25,8 @@ public class Interactor : Raycast
     private bool _isIconFilled = false;
     private bool _isInventoryFull = false;
     private SleepPointSaveData _sleepPointSaveData;
+
+    private int _addAmount = 1;
 
     public event UnityAction<float, string> OnTimeUpdate;
 
@@ -61,7 +63,6 @@ public class Interactor : Raycast
 
         InventorySlotUI.OnItemRemove -= RemoveItem;
         _clothesSlotsHandler.OnItemRemove -= RemoveItem;
-
     }
 
     private void Update()
@@ -89,7 +90,6 @@ public class Interactor : Raycast
                     {
                         OnTimeUpdate?.Invoke(LookTimerPracent, "");
                         _currentObjectPickUp = objectPickUp;
-
                     }
 
                     PickUpAninationEvent();
@@ -118,7 +118,7 @@ public class Interactor : Raycast
     {
         if (_currentItemPickUp != null)
         {
-            if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, 1, _currentItemPickUp.Durability))
+            if (_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, _addAmount, _currentItemPickUp.Durability))
             {
                 _currentItemPickUp.PicUp();
                 _currentItemPickUp = null;
@@ -137,7 +137,7 @@ public class Interactor : Raycast
             {
                 for (int i = 0; i < itemData.Amount; i++)
                 {
-                    if (!_playerInventoryHolder.AddToInventory(itemData.ItemData, 1, itemData.ItemData.Durability))
+                    if (!_playerInventoryHolder.AddToInventory(itemData.ItemData, _addAmount, itemData.ItemData.Durability))
                     {
                         InstantiateItem(itemData.ItemData, itemData.ItemData.Durability);
                     }
@@ -167,7 +167,7 @@ public class Interactor : Raycast
             //_playerAnimation.RemoveItemAnimationEvent();
 
             if (inventorySlot.AssignedInventorySlot.ItemData == null)
-                inventorySlot.ToggleHighlight();
+                inventorySlot.TurnOffHighlight();
         }
     }
 
@@ -177,8 +177,15 @@ public class Interactor : Raycast
         {
             ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
             itemPickUp.GenerateNewID();
+            UpdateItem(itemPickUp);
             itemPickUp.UpdateDurability(durability);
         }
+    }
+
+    public void UpdateItem(ItemPickUp itemPickUp)
+    {
+        itemPickUp.GenerateNewID();
+        _saveItemHandler.AddId(itemPickUp.Id);
     }
 
     private void InteractableInventory()
@@ -217,7 +224,7 @@ public class Interactor : Raycast
 
                 if (fire.AddFire(slot))
                 {
-                    _playerInventoryHolder.RemoveInventory(slot, 1);
+                    _playerInventoryHolder.RemoveInventory(slot, _addAmount);
                 }
             }
         }
@@ -255,7 +262,7 @@ public class Interactor : Raycast
             {
                 if(gardenBed.StartGrowingSeed(slot.ItemData))
                 {
-                    _playerInventoryHolder.RemoveInventory(slot, 1);
+                    _playerInventoryHolder.RemoveInventory(slot, _addAmount);
                 }
             }
         }

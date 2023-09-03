@@ -11,7 +11,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     [SerializeField] private Image _borderImage;
     [SerializeField] private TMP_Text _itemCount;
     [SerializeField] private InventorySlot _assignedInventorySlot;
-    [SerializeField] private ItemType _allowedItemTypes = ItemType.None;
+    [SerializeField] private ItemType _allowedItemTypes;
     [SerializeField] private bool _isMouseSlot = false;
 
     private bool _empty = true;
@@ -126,6 +126,12 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     {
         if(_borderImage != null)
             _borderImage.enabled = !_borderImage.enabled;
+    }
+
+    public void TurnOffHighlight()
+    {
+        if (_borderImage != null && _borderImage.enabled == true)
+            _borderImage.enabled = false;
     }
 
     public void OnPointerClick(PointerEventData eventData)

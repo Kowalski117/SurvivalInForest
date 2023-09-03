@@ -15,6 +15,7 @@ public class InventoryDescriptionUI : MonoBehaviour
     [SerializeField] private SurvivalHandler _survivalHandler;
 
     private InventorySlotUI _currentSlot;
+    private InventorySlotUI _previousSlot;
 
     private void Awake()
     {
@@ -44,12 +45,23 @@ public class InventoryDescriptionUI : MonoBehaviour
 
     public void SetDescription(InventorySlotUI inventorySlotUI)
     {
+
         if(_currentSlot != null && _currentSlot.AssignedInventorySlot.ItemData != null && _currentSlot != inventorySlotUI)
+        {
             _currentSlot.ToggleHighlight();
+        }
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData != null)
         {
+            _previousSlot = _currentSlot;
+
+            if(_previousSlot != null)
+                _previousSlot.TurnOffHighlight();
+
             _currentSlot = inventorySlotUI;
+
+            if(_currentSlot != null)
+                _currentSlot.ToggleHighlight();
 
             _iconImage.gameObject.SetActive(true);
             _iconImage.sprite = inventorySlotUI.AssignedInventorySlot.ItemData.Icon;

@@ -49,7 +49,10 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.Hotbar6.performed += ctx => Hotbar(5);
         _playerInput.Inventory.UseItem.performed += ctx => UseItem();
 
-        OnSlotSelected += HandleSlotSelected;
+        foreach (var slot in Slots)
+        {
+            slot.OnItemClicked += HandleSlotSelected;
+        }
     }
 
     protected override void OnDisable()
@@ -64,7 +67,10 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.UseItem.performed -= ctx => UseItem();
         _playerInput.Disable();
 
-        OnSlotSelected -= HandleSlotSelected;
+        foreach (var slot in Slots)
+        {
+            slot.OnItemClicked -= HandleSlotSelected;
+        }
     }
 
     private void UseItem()
@@ -131,8 +137,10 @@ public class HotbarDisplay : StaticInventoryDisplay
     {
         for (int i = 0; i < Slots.Length; i++)
         {
-            if (Slots[i] == clickedSlot)
+            if (Slots[i] == clickedSlot && clickedSlot.AssignedInventorySlot.ItemData != null)
+            {
                 _currentIndex = i;
+            }
         }
     }
 }

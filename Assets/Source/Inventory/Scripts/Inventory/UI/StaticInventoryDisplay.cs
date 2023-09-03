@@ -13,12 +13,12 @@ public class StaticInventoryDisplay : InventoryDisplay
 
     protected virtual void OnEnable()
     {
-        PlayerInventoryHolder.OnPlayerInventoryChanged += RefreshStaticDisplay;
+        _inventoryHolder.OnInventoryChanged += RefreshStaticDisplay;
     }
 
     protected virtual void OnDisable()
     {
-        PlayerInventoryHolder.OnPlayerInventoryChanged -= RefreshStaticDisplay;
+        _inventoryHolder.OnInventoryChanged -= RefreshStaticDisplay;
     }
 
     public override void AssingSlot(InventorySystem inventoryToDisplay, int offSet)

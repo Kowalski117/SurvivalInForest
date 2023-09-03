@@ -33,4 +33,11 @@ public class UniqueID : MonoBehaviour
         _id = Guid.NewGuid().ToString();
         _idDatabase.Add(_id, this.gameObject);
     }
+
+    public void SetId(string id)
+    {
+        _id = id;
+        if (!_idDatabase.ContainsKey(_id))
+            _idDatabase.Add(_id, this.gameObject);
+    }
 }

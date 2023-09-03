@@ -22,7 +22,6 @@ public class CreativeModeWindow : MonoBehaviour
         CreateButtons();
     }
 
-
     private void Awake()
     {
         _playerInput = new PlayerInput();

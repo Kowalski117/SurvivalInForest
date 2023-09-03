@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SurvivalHandler : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class SurvivalHandler : MonoBehaviour
     public StaminaAttribute Stamina => _stamina;
     public SurvivalAttribute Sleep => _sleep;
     public TimeHandler TimeHandler => _timeHandler;
+
+    public event UnityAction<FoodItemData> OnEatFoodEffect;
 
     private void OnEnable()
     {
@@ -73,7 +76,12 @@ public class SurvivalHandler : MonoBehaviour
         {
             _hunger.ReplenishValue(foodItemData.AmountSatiety);
             _thirst.ReplenishValue(foodItemData.AmountWater);
-                                                   
+                
+            if(foodItemData.FoodTypeEffect != FoodTypeEffect.None)
+            {
+                OnEatFoodEffect?.Invoke(foodItemData);
+            }
+
             if (slot.Durability > 0)
             {
                 slot.LowerStrength(1);

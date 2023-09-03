@@ -13,7 +13,7 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     protected override void Awake()
     {
-        _uniqueId = GetComponent<UniqueID>();
+        _uniqueId = GetComponentInParent<UniqueID>();
         base.Awake();
     }
 
@@ -23,7 +23,7 @@ public class ChestInventory : InventoryHolder, IInteractable
         {
             PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
         }
-
+        LoadInventory();
     }
     public void Interact(Interactor interactor, out bool interactSuccessfull)
     {
@@ -38,15 +38,13 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     protected override void SaveInventory()
     {
-        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation);
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots, transform.position, transform.rotation);
         ES3.Save(_uniqueId.Id, saveData);
     }
 
     protected override void LoadInventory()
     {
-        InventorySaveData saveData = ES3.Load<InventorySaveData>(_uniqueId.Id, new InventorySaveData(PrimaryInventorySystem, transform.position, transform.rotation));
+        InventorySaveData saveData = ES3.Load<InventorySaveData>(_uniqueId.Id);
         PrimaryInventorySystem = saveData.InventorySystem;
-        transform.position = saveData.Position;
-        transform.rotation = saveData.Rotation;
     }
 }

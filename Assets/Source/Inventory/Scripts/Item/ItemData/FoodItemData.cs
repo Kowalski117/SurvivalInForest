@@ -8,11 +8,19 @@ public class FoodItemData : InventoryItemData
     [SerializeField] private float _amountSatiety;
     [SerializeField] private float _amountHealth;
     [SerializeField] private InventoryItemData _emptyDishes;
+    [SerializeField] private FoodTypeEffect _foodTypeEffect;
 
     public float AmountWater => _amountWater;
     public float AmountSatiety => _amountSatiety;
     public float AmountHealth => _amountHealth;
     public InventoryItemData EmptyDishes => _emptyDishes;
+    public FoodTypeEffect FoodTypeEffect => _foodTypeEffect;
+}
+
+public enum FoodTypeEffect
+{
+    None,
+    ColorRotation,
 }
 
 #if UNITY_EDITOR

@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +23,8 @@ public class Float : MonoBehaviour
     private Vector2 _fishOnHookOffset = new Vector2(0.4f, 1f);
     private float _timeBeforeFishEscapes = 3f;
     private float _animationDuration = 2f;
+    private float _returnDelay = 1f;
+    private int _numberOfRepetitions = -1;
 
     public event UnityAction<InventoryItemData> FishCaught;
     public event UnityAction FishMissed;
@@ -53,7 +54,6 @@ public class Float : MonoBehaviour
             StopCoroutine(_fishingCoroutine);
         }
 
-
         transform.parent = parent;
 
         _waterParticle.Stop();
@@ -64,7 +64,7 @@ public class Float : MonoBehaviour
 
         ClearTween();
         if (transform.position != _initialPosition)
-            _fishingTween = transform.DOLocalMove(_initialPosition, 0.5f);
+            _fishingTween = transform.DOLocalMove(_initialPosition, _returnDelay);
         transform.localRotation = _initialRotation;
 
         if (_isFishOnHook)
@@ -72,9 +72,9 @@ public class Float : MonoBehaviour
             FishCaught?.Invoke(_currentExtraction);
             _isFishOnHook = false;
         }
+
         _randomTime = Vector2.zero;
         _currentExtraction = null;
-
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -104,7 +104,7 @@ public class Float : MonoBehaviour
 
         ClearTween();
         _positionInWater = transform.position;
-        _fishingTween = transform.DOMove(_positionInWater + _calmWaterOffset, _animationDuration).SetLoops(-1, LoopType.Yoyo);
+        _fishingTween = transform.DOMove(_positionInWater + _calmWaterOffset, _animationDuration).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
 
         _waterParticle.gameObject.SetActive(true);
         _waterParticle.Play();
@@ -115,16 +115,16 @@ public class Float : MonoBehaviour
 
         _waterParticle.Stop();
         ClearTween();
-        _fishingTween = transform.DOMove(_positionInWater - GetRandomOffset(_fishOnHookOffset), _timeBeforeFishEscapes).SetLoops(-1, LoopType.Yoyo);
+        _fishingTween = transform.DOMove(_positionInWater - GetRandomOffset(_fishOnHookOffset), _timeBeforeFishEscapes).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
         _isFishOnHook = true;
 
         yield return new WaitForSeconds(_timeBeforeFishEscapes);
 
         ClearTween();
-        _fishingTween = transform.DOMove(new Vector3(transform.position.x, _positionInWater.y, transform.position.z), 1);
+        _fishingTween = transform.DOMove(new Vector3(transform.position.x, _positionInWater.y, transform.position.z), _returnDelay);
         _isFishOnHook = false;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(_returnDelay);
 
         ReturnToRod(_fishingRod.transform);
         FishMissed?.Invoke();

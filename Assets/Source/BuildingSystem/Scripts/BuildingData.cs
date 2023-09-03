@@ -5,14 +5,21 @@ using UnityEngine;
 public class BuildingData : ScriptableObject
 {
     [SerializeField] private string _displayName;
+    [SerializeField] private int _id;
     [SerializeField] private Sprite _icon;
     [SerializeField] private Building _prefab;
     [SerializeField] private ItemType _type;
 
     public string DisplayName => _displayName;
+    public int Id => _id;
     public Sprite Icon => _icon;
     public Building Prefab => _prefab;
-    public ItemType Type => _type;  
+    public ItemType Type => _type;
+
+    public void SetId(int id)
+    {
+        _id = id;
+    }
 }
 
 public enum PartType

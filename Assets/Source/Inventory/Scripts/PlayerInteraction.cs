@@ -22,7 +22,8 @@ public class PlayerInteraction : Raycast
     private BrokenObject _currentBrokenObject;
     private InventorySlot _currentInventorySlot;
 
-    private float _nextFire;
+    private float _nextFireDelay;
+    private float _maxDelayFire = 10f;
     private bool _isEnable;
 
     public event UnityAction<InventoryItemData> OnUpdateItemData;
@@ -48,13 +49,12 @@ public class PlayerInteraction : Raycast
         InitWeapon(_currentInventorySlot.ItemData);
         InitTool(_currentInventorySlot.ItemData);
 
+        if(_nextFireDelay <= _maxDelayFire)
+            _nextFireDelay += Time.deltaTime;
+
         if (_isEnable)
         {
-            //if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.RangedWeapon)
-            //{
-            //    Shoot();
-            //}
-            /*else*/ if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon)
+            if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon)
             {
                 Hit();
             }
@@ -117,11 +117,12 @@ public class PlayerInteraction : Raycast
 
     public bool IsShoot()
     {
-        if (Time.time > _nextFire)
+
+        if (_nextFireDelay > _currentWeapon.Speed)
         {
             if (_inventory.RemoveInventory(_currentWeapon.Bullet.ItemData, 1))
             {
-                _nextFire = Time.time + 1 / _currentWeapon.Speed;
+                _nextFireDelay = 0;
                 _playerAnimation.Hit();
                 _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
                 //_currentWeapon.MuzzleFlash.Play();
@@ -147,39 +148,7 @@ public class PlayerInteraction : Raycast
         return false;
     }
 
-    private void Hit()
-    {
-        if (Time.time > _nextFire)
-        {
-            _nextFire = Time.time + 1 / _currentWeapon.Speed;
-            _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
-            _playerAnimation.Hit();
-
-            TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
-            TakeDamageBrokenObject(_currentWeapon.Damage, 0);
-        }
-    }
-
-    private void InteractResource()
-    {
-        if (Time.time > _nextFire)
-        {
-            _playerAnimation.Hit();
-            _nextFire = Time.time + 1 / _currentTool.Speed;
-
-            if (_currentTool != null)
-            {
-                //_audioSource.PlayOneShot(_currentTool.MuzzleSound);
-                //_currentTool.MuzzleFlash.Play();
-
-                TakeDamageResoure(_currentTool.DamageResources, 0);
-                TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
-                TakeDamageBrokenObject(_currentTool.DamageResources, 0);
-            }
-        }
-    }
-
-    private void UpdateDurabilityItem()
+    public void UpdateDurabilityItem()
     {
         if (_currentInventorySlot.Durability > 0)
         {
@@ -190,6 +159,42 @@ public class PlayerInteraction : Raycast
                 _currentInventorySlot.UpdateDurabilityIfNeeded();
                 _inventory.RemoveInventory(_currentInventorySlot, 1);
                 _currentInventorySlot = null;
+            }
+        }
+    }
+
+    private void Hit()
+    {
+        //_nextFireDelay += Time.deltaTime;
+
+        if (_nextFireDelay > _currentWeapon.Speed)
+        {
+            _nextFireDelay = 0;
+            _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
+            _playerAnimation.Hit();
+
+            TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
+            TakeDamageBrokenObject(_currentWeapon.Damage, 0);
+        }
+    }
+
+    private void InteractResource()
+    {
+        //_nextFireDelay += Time.deltaTime;
+
+        if (_nextFireDelay > _currentTool.Speed)
+        {
+            _nextFireDelay = 0;
+            _playerAnimation.Hit();
+
+            if (_currentTool != null)
+            {
+                //_audioSource.PlayOneShot(_currentTool.MuzzleSound);
+                //_currentTool.MuzzleFlash.Play();
+
+                TakeDamageResoure(_currentTool.DamageResources, 0);
+                TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
+                TakeDamageBrokenObject(_currentTool.DamageResources, 0);
             }
         }
     }
