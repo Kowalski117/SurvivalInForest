@@ -15,12 +15,12 @@ public class BackpackInventoryView : MonoBehaviour
 
     private void OnEnable()
     {
-        _backpackInventory.OnDinamicInventoryDisplayInventory += ToggleDisplay;
+        _backpackInventory.OnDinamicDisplayInventory += ToggleDisplay;
     }
 
     private void OnDisable()
     {
-        _backpackInventory.OnDinamicInventoryDisplayInventory -= ToggleDisplay;
+        _backpackInventory.OnDinamicDisplayInventory -= ToggleDisplay;
     }
 
     public void ToggleDisplay(InventorySystem inventoryDisplay, int offset)

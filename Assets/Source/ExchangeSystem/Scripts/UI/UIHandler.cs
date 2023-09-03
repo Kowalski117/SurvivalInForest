@@ -6,6 +6,9 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
     [SerializeField] private StaticInventoryDisplay _playerHotbarInventory;
+    [SerializeField] private ClothesInventory _clothesInventory;
+    [SerializeField] private DynamicInventoryDisplay _playerClothesPanel;
+
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
@@ -60,6 +63,8 @@ public class UIHandler : MonoBehaviour
             _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
             _playerInputHandler.ToggleHotbarDisplay(false);
+
+            _playerClothesPanel.RefreshDynamicInventory(_clothesInventory.InventorySystem, 0);
         }
         else
         {

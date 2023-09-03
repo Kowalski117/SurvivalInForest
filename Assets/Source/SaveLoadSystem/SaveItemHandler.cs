@@ -24,7 +24,6 @@ public class SaveItemHandler : SaveHandler
             if (ES3.KeyExists(itemData))
             {
                 ItemPickUpSaveData itemSaveData = ES3.Load<ItemPickUpSaveData>(itemData);
-                Debug.Log(itemSaveData.Id);
                 foreach (var data in _itemDataList)
                 {
                     if (data.Id == itemSaveData.Id)

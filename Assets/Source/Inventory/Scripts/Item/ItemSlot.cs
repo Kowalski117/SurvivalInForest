@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public abstract class ItemSlot : ISerializationCallbackReceiver
 {
@@ -7,8 +6,7 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     [SerializeField] protected int ItemId = -1;
     [SerializeField] protected int StackSize;
     [SerializeField] protected float MaxDurabilityValue;
-
-    protected float ÑurrentDurability;
+    [SerializeField] protected float ÑurrentDurability;
 
     public float DurabilityPercent => ÑurrentDurability / MaxDurabilityValue;
     public InventoryItemData ItemData => InventoryItemData;
