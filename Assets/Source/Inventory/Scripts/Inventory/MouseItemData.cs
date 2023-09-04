@@ -7,8 +7,10 @@ using UnityEngine.InputSystem;
 public class MouseItemData : MonoBehaviour
 {
     [SerializeField] private InventoryPlayerInput _playerInput;
+    [SerializeField] private Interactor _interactor;
     [SerializeField] private Canvas _canvas;
 
+    private string _invetoryTag = "Inventory";
     private bool _isUpdateSlot = false;
 
     private InventorySlotUI _inventorySlotUI;
@@ -33,10 +35,6 @@ public class MouseItemData : MonoBehaviour
         {
             transform.position = Mouse.current.position.ReadValue();
         }
-        //    if (RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_canvas.transform, Input.mousePosition, _canvas.worldCamera, out Vector2 position))
-        //{
-        //    transform.position = _canvas.transform.TransformPoint(position);
-        //}
     }
 
     public void CleanSlot()
@@ -71,6 +69,25 @@ public class MouseItemData : MonoBehaviour
     public void Toggle(bool toggle)
     {
         gameObject.SetActive(toggle);
+    }
+
+    public void ReturnCurrentSlot()
+    {
+        if (_inventorySlotUI.AssignedInventorySlot.ItemData != null && _previousSlot != null)
+        {
+            if (IsPointerOverUIObject(_invetoryTag))
+            {
+                _previousSlot.AssignedInventorySlot.AssignItem(_inventorySlotUI.AssignedInventorySlot);
+                _previousSlot.UpdateUiSlot();
+            }
+            else
+            {
+                _interactor.RemoveItem(_inventorySlotUI);
+            }
+
+            Toggle(false);
+            CleanSlot();
+        }
     }
 
     public bool IsPointerOverUIObject(string tagToCheck)
