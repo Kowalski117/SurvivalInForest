@@ -29,6 +29,14 @@ public class Fire : MonoBehaviour
         _maxTimer = _maxTimer + TimeSpan.FromHours(_maxHours);
     }
 
+    private void Start()
+    {
+        if(_craftObject.IsEnabledInitially == true)
+        {
+            _collider.enabled = false;
+        }
+    }
+
     private void OnEnable()
     {
         SleepPanel.OnStoppedTime += ToggleEnable;

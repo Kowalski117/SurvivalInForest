@@ -8,6 +8,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private StaticInventoryDisplay _playerHotbarInventory;
     [SerializeField] private ClothesInventory _clothesInventory;
     [SerializeField] private DynamicInventoryDisplay _playerClothesPanel;
+    [SerializeField] private MouseItemData _mouseItemData;
 
 
     private bool _isInventoryOpen = false;
@@ -68,6 +69,7 @@ public class UIHandler : MonoBehaviour
         }
         else
         {
+            _mouseItemData.ReturnCurrentSlot();
             _playerBackpackPanel.ResetSelection();
             _playerHotbarInventory.ResetSelection();
             _playerBackpackPanel.CanvasGroup.alpha = 0;

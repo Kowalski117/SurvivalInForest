@@ -55,10 +55,10 @@ public class Building : MonoBehaviour
     public void Init(BuildingData data, string id = null)
     {
         _assignedData = data;
-        _colliders = transform.Find("Colliders");
+        //_colliders = transform.Find("Colliders");
 
-        if(_colliders != null )
-            _colliders.gameObject.SetActive(false);
+        //if(_colliders != null )
+        //    _colliders.gameObject.SetActive(false);
 
         if (id != null)
             _uniqueID.SetId(id);
@@ -70,8 +70,8 @@ public class Building : MonoBehaviour
     {
         _boxCollider.enabled = true;
 
-        if(_colliders != null)
-            _colliders.gameObject.SetActive(true);
+        //if(_colliders != null)
+        //    _colliders.gameObject.SetActive(true);
 
         UpdateMaterials(_defoultMaterial);
 
