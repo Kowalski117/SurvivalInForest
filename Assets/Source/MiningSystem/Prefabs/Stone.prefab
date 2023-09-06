@@ -55,10 +55,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2272311384873172990}
+  - component: {fileID: 4926288261294274953}
   - component: {fileID: 153342533}
   - component: {fileID: 2276745110817678568}
   - component: {fileID: 153342532}
-  - component: {fileID: 4926288261294274953}
+  - component: {fileID: 3559690694600145534}
   m_Layer: 0
   m_Name: Stone_2
   m_TagString: Untagged
@@ -83,6 +84,14 @@ Transform:
   m_Father: {fileID: 2276745112298898950}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &4926288261294274953
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2277968886114007726}
+  m_Mesh: {fileID: 4300000, guid: 4ac64bed5a4517045a11b1a28028fe0e, type: 3}
 --- !u!54 &153342533
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,14 +139,22 @@ MonoBehaviour:
   _lootsCount: 6
   _takeDamage: {fileID: 7541932063497932665}
   _parent: {fileID: 2276745112298898951}
---- !u!33 &4926288261294274953
-MeshFilter:
+--- !u!208 &3559690694600145534
+NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2277968886114007726}
-  m_Mesh: {fileID: 4300000, guid: 4ac64bed5a4517045a11b1a28028fe0e, type: 3}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.305, y: 0.47, z: 0.03}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.59}
+  m_TimeToStationary: 5
 --- !u!1 &7669079555607801093
 GameObject:
   m_ObjectHideFlags: 0
@@ -14612,7 +14629,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7669224412810188977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.625}
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children:
