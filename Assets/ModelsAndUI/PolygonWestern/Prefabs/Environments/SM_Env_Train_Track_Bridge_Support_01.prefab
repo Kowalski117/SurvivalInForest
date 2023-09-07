@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 4664246499174796}
   - component: {fileID: 33978608977224590}
   - component: {fileID: 23571850321635142}
-  - component: {fileID: 64633922091109290}
+  - component: {fileID: 1617465220973070965}
   m_Layer: 0
   m_Name: SM_Env_Train_Track_Bridge_Support_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &4664246499174796
 Transform:
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64633922091109290
-MeshCollider:
+--- !u!65 &1617465220973070965
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +94,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 7fa6483dad1760646a69aa635b3b9314, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 5.536649, y: 10.901248, z: 1.776415}
+  m_Center: {x: 0.12948227, y: -6.0746293, z: -6.36973e-17}
