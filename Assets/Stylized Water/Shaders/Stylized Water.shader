@@ -376,7 +376,7 @@
                 color += sunSpecularColor + sparkleColor + edgeFoamColor;
 
                 // Apply fog.
-               // UNITY_APPLY_FOG(i.fogCoord, color);
+               //UNITY_APPLY_FOG(i.fogCoord, color);
 
                 return float4(color, 1);
             }
