@@ -14,14 +14,18 @@ public abstract class Resource : MonoBehaviour, IDamagable
     [SerializeField] private ParticleSystem _takeDamage;
     [SerializeField] private GameObject _parent;
 
+    protected Collider Ñollider;
+
     private float _curenntHealth;
     private float _radiusSpawnLoots = 1;
     private float _spawnLootUp = 1;
     private float _disappearanceTime = 5;
     private bool _isDead = false;
     private Rigidbody _rigidbody;
-    private Collider _collider;
+    
     public event Action Died;
+    public event Action Disappeared;
+
     public float Health => _curenntHealth;
     public float MaxHealth => _maxHealth;
     public ToolType ExtractionType => _extractionType;
@@ -29,8 +33,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public virtual void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>();
-
+        Ñollider = GetComponent<Collider>();
     }
 
     public virtual void OnEnable()
@@ -72,13 +75,14 @@ public abstract class Resource : MonoBehaviour, IDamagable
 
     IEnumerator Precipice()
     {
+        Died?.Invoke();
         yield return new WaitForSeconds(_disappearanceTime/2);
-        _collider.enabled = false;
+        Ñollider.enabled = false;
         yield return new WaitForSeconds(_disappearanceTime/2);
         _rigidbody.isKinematic = true;
         _isDead = false;
-        _collider.enabled = true;
+        Ñollider.enabled = true;
         gameObject.SetActive(false);
-        Died?.Invoke();
+        Disappeared?.Invoke();
     }
 }

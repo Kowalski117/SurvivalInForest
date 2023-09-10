@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: ea33a8c5-cc03-4d54-939d-08640bb53fd5
+  _id: 291c148f-b64e-48b2-97c0-0fec2b1e49c9
 --- !u!114 &2917880083998692989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,14 +117,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 824dc35e7cc48774192854c0b64a26cf, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!54 &2917880083998692988
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -170,8 +168,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.45, y: 0.45, z: 1.65}
-  m_Center: {x: 0.025406925, y: 0.225, z: -0.025036482}
+  m_Size: {x: 3.0806549, y: 1.2307518, z: 1.65}
+  m_Center: {x: -0.28020528, y: 0.06396959, z: -0.025036506}
 --- !u!114 &5542883402767978187
 MonoBehaviour:
   m_ObjectHideFlags: 0
