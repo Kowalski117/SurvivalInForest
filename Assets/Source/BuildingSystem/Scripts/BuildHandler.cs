@@ -31,7 +31,7 @@ public class BuildHandler : MonoBehaviour
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInventoryInput(false);
-            _buildTool.SetDeleteModeEnabled(false);
+            //_buildTool.SetDeleteModeEnabled(false);
         }
     }
 
