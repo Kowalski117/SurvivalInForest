@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 74766642427550001}
   - component: {fileID: -6173253187159295519}
+  - component: {fileID: 3924516577217523983}
   m_Layer: 14
   m_Name: SM_Env_Tree_Fruit_03
   m_TagString: Untagged
@@ -24,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739240639354438539}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -45,7 +46,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTime: 3
+  _spawnTime: 10
+  _scaleTime: 30
+--- !u!65 &3924516577217523983
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739240639354438539}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &929436863360101299
 GameObject:
   m_ObjectHideFlags: 0
@@ -5184,7 +5199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f8266595b4c214a9d75dbf97008641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 5
+  _maxHealth: 100
   _extractionType: 0
   _loot: {fileID: 7254787343848191812, guid: bf148d5909d175645aec481f68d70d64, type: 3}
   _lootsCount: 5
