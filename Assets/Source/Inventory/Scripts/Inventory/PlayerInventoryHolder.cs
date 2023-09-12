@@ -5,7 +5,8 @@ public class PlayerInventoryHolder : InventoryHolder
 {
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private BackpackInventory _backpackInventory;
-
+    [SerializeField] private ClothesInventory _clothesInventory;
+     
     private string _invetoryId = "InventoryData";
     private InventoryItemData _currentItemData;
 
@@ -27,7 +28,7 @@ public class PlayerInventoryHolder : InventoryHolder
 
     public bool RemoveInventory(InventoryItemData data, int amount)
     {
-        if(PrimaryInventorySystem.RemoveItemsInventory(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(data, amount))
+        if(PrimaryInventorySystem.RemoveItemsInventory(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(data, amount) || _clothesInventory.InventorySystem.RemoveItemsInventory(data, amount))
         {
             OnItemDataChanged?.Invoke(data, -amount);
             OnUpdateItemSlot?.Invoke();
@@ -41,7 +42,7 @@ public class PlayerInventoryHolder : InventoryHolder
     {
         _currentItemData = slot.ItemData;
 
-        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(slot, amount))
+        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(slot, amount)  ||_clothesInventory.InventorySystem.RemoveItemsInventory(slot, amount))
         {
             OnItemDataChanged?.Invoke(_currentItemData, -amount);
             OnUpdateItemSlot?.Invoke();

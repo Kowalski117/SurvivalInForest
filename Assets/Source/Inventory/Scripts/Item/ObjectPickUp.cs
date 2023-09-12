@@ -5,14 +5,15 @@ using UnityEngine;
 public class ObjectPickUp : MonoBehaviour
 {
     [SerializeField] private int _layerMask = 6;
-    [SerializeField] private InventoryItem[] _items;
+    [SerializeField] private ObjectItemsData _objectItemsData;
+    [SerializeField] private bool _isDeleteAfterSelection = true;
 
     private UniqueID _uniqueID;
     private Outline _outline;
     private Rigidbody _rigidbody;
     private string _object = "Object_";
 
-    public InventoryItem[] Items => _items;
+    public ObjectItemsData ObjectItemsData => _objectItemsData;
 
     private void Awake()
     {
@@ -22,11 +23,17 @@ public class ObjectPickUp : MonoBehaviour
         _rigidbody.isKinematic = true;
     }
 
+    public void Init(ObjectItemsData objectItemsData)
+    {
+        _objectItemsData = objectItemsData;
+    }
+
     public void PicUp()
     {
-        if (ES3.KeyExists(_object + _uniqueID.Id))
-            ES3.DeleteKey(_object + _uniqueID.Id);
-        Destroy(this.gameObject);
+        if(_isDeleteAfterSelection )
+            Destroy(this.gameObject);
+        else
+            gameObject.SetActive(false);
     }
 
     public void TurnOff()

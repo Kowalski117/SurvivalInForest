@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
-using System.Xml;
 
 [RequireComponent(typeof(UniqueID))]
 public class ChestInventory : InventoryHolder, IInteractable
@@ -20,23 +19,16 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     private void Start()
     {
-        foreach (var item in _startingItems)
-        {
-            PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
-        }
-
         LoadInventory();
     }
+
     public void Interact(Interactor interactor, out bool interactSuccessfull)
     {
         OnDinamicInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, 0);
         interactSuccessfull = true;
     }
 
-    public void EndInteraction()
-    {
-
-    }
+    public void EndInteraction() { }
 
     protected override void SaveInventory()
     {
@@ -50,6 +42,13 @@ public class ChestInventory : InventoryHolder, IInteractable
         {
             InventorySaveData saveData = ES3.Load<InventorySaveData>(_uniqueId.Id);
             PrimaryInventorySystem = saveData.InventorySystem;
+        }
+        else
+        {
+            foreach (var item in _startingItems)
+            {
+                PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
+            }
         }
     }
 }
