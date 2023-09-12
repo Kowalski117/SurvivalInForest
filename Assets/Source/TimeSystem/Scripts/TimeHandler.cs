@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class TimeHandler : MonoBehaviour
 {
+    [SerializeField] private int _dayCounter = 0;
     [SerializeField] private float _timeMultiplier;
     [SerializeField] private float _startHour;
     [SerializeField] private float _sunriseHour;
@@ -16,6 +17,8 @@ public class TimeHandler : MonoBehaviour
     [SerializeField] private float _maxMoonLightIntensity;
     [SerializeField] private Color _dayAmblientLight;
     [SerializeField] private Color _nightAmblientLight;
+    [SerializeField] private Color _dayColorFog;
+    [SerializeField] private Color _nightColorFog;
     [SerializeField] private Material _dayMaterial;
     [SerializeField] private Material _nightMaterial;
     [SerializeField] private AnimationCurve _sunLightIntensityCurve;
@@ -26,10 +29,13 @@ public class TimeHandler : MonoBehaviour
     private DateTime _currentTime;
     private TimeSpan _sunriseTime;
     private TimeSpan _sunsetTime;
+    private DateTime _lastDayUpdate = DateTime.Now;
 
     private bool _isEnabled = true;
 
     public event UnityAction<DateTime> OnTimeUpdate;
+    public event UnityAction<int> OnDayUpdate;
+
     public DateTime StartTime => _currentTime.Date + TimeSpan.FromHours(_startHour);
     public float TimeMultiplier => _timeMultiplier;
 
@@ -39,6 +45,7 @@ public class TimeHandler : MonoBehaviour
         _currentTime = DateTime.Now.Date + TimeSpan.FromHours(_startHour);
         _sunriseTime = TimeSpan.FromHours(_sunriseHour);
         _sunsetTime = TimeSpan.FromHours(_sunsetHour);
+        OnDayUpdate?.Invoke(_dayCounter);
     }
 
     private void Update()
@@ -84,6 +91,13 @@ public class TimeHandler : MonoBehaviour
     {
         _currentTime = _currentTime.AddSeconds(Time.deltaTime * _timeMultiplier);
         OnTimeUpdate?.Invoke(_currentTime);
+
+        if (_currentTime.Date > _lastDayUpdate.Date)
+        {
+            _lastDayUpdate = _currentTime;
+            _dayCounter++;
+            OnDayUpdate?.Invoke(_dayCounter);
+        }
     }
 
     private void RotateSunAndMoon()
@@ -123,16 +137,15 @@ public class TimeHandler : MonoBehaviour
 
     private void UpdateLightSettings()
     {
-        // Рассчитываем значение для солнца
         float sunDotProduct = Vector3.Dot(_sunLight.transform.forward, Vector3.down);
         _sunLight.intensity = Mathf.Lerp(0, _maxSunLightIntensity, _sunLightIntensityCurve.Evaluate(sunDotProduct));
 
-        // Рассчитываем значение для луны
         float moonDotProduct = Vector3.Dot(_moonLight.transform.forward, Vector3.down);
         _moonLight.intensity = Mathf.Lerp(0, _maxMoonLightIntensity, _moonLightIntensityCurve.Evaluate(moonDotProduct));
 
         RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _ambientLightCurve.Evaluate(sunDotProduct));
         RenderSettings.skybox.Lerp(_dayMaterial, _nightMaterial, _ambientLightCurve.Evaluate(moonDotProduct));
+        RenderSettings.fogColor = Color.Lerp(_dayColorFog, _nightColorFog, _ambientLightCurve.Evaluate(moonDotProduct));
     }
 
     private TimeSpan CalculateTimeDifference(TimeSpan fromTime, TimeSpan toTime)

@@ -33,6 +33,8 @@ public class PlayerInteraction : Raycast
     public event UnityAction<float, float> OnEnableBarValue;
     public event UnityAction OnTurnOffBarValue;
 
+    public InventorySlot CurrentInventorySlot => _currentInventorySlot;
+
     private void OnEnable()
     {
         _playerInputHandler.InteractionPlayerInput.OnAttack += UseItem;
@@ -148,17 +150,17 @@ public class PlayerInteraction : Raycast
         return false;
     }
 
-    public void UpdateDurabilityItem()
+    public void UpdateDurabilityItem(InventorySlot inventorySlot)
     {
-        if (_currentInventorySlot.Durability > 0)
+        if (inventorySlot.Durability > 0)
         {
-            _currentInventorySlot.LowerStrength(1);
+            inventorySlot.LowerStrength(1);
 
-            if (_currentInventorySlot.Durability <= 0)
+            if (inventorySlot.Durability <= 0)
             {
-                _currentInventorySlot.UpdateDurabilityIfNeeded();
-                _inventory.RemoveInventory(_currentInventorySlot, 1);
-                _currentInventorySlot = null;
+                inventorySlot.UpdateDurabilityIfNeeded();
+                _inventory.RemoveInventory(inventorySlot, 1);
+                inventorySlot = null;
             }
         }
     }
@@ -209,7 +211,7 @@ public class PlayerInteraction : Raycast
         if (animals != null)
         {
             animals.TakeDamage(damage, overTimeDamage);
-            UpdateDurabilityItem();
+            UpdateDurabilityItem(_currentInventorySlot);
 
             OnValueChanged?.Invoke(animals.Health);
 
@@ -227,7 +229,7 @@ public class PlayerInteraction : Raycast
         {
             Debug.Log(damage);
             _currentBrokenObject.TakeDamage(damage, overTimeDamage);
-            UpdateDurabilityItem();
+            UpdateDurabilityItem(_currentInventorySlot);
 
             OnValueChanged?.Invoke(_currentBrokenObject.Endurance);
 
@@ -246,7 +248,7 @@ public class PlayerInteraction : Raycast
             if (_currentResoure.ExtractionType == _currentTool.ToolType)
             {
                 _currentResoure.TakeDamage(damage, overTimeDamage);
-                UpdateDurabilityItem();
+                UpdateDurabilityItem(_currentInventorySlot);
             }
             else if (_currentTool.ToolType == ToolType.Arm)
             {

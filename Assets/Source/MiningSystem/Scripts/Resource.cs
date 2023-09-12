@@ -21,16 +21,19 @@ public abstract class Resource : MonoBehaviour, IDamagable
     private bool _isDead = false;
     private Rigidbody _rigidbody;
     private Collider _collider;
+
     public event Action Died;
+
     public float Health => _curenntHealth;
     public float MaxHealth => _maxHealth;
     public ToolType ExtractionType => _extractionType;
+    public Rigidbody Rigidbody => _rigidbody;
+    public Collider Collider => _collider;
 
     public virtual void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
-
     }
 
     public virtual void OnEnable()
@@ -51,12 +54,12 @@ public abstract class Resource : MonoBehaviour, IDamagable
 
     public virtual void Die()
     {
-        _curenntHealth = 0;
-        _rigidbody.isKinematic = false;
         SpawnLoot(_loot, _radiusSpawnLoots, _spawnLootUp, _lootsCount);
-        _isDead = true;
+        DiedReset();
         StartCoroutine(Precipice());
     }
+
+    public virtual void Enable() { }
 
     public virtual void SpawnLoot(GameObject gameObject, float radius, float spawnPointUp,int count)
     {
@@ -70,15 +73,32 @@ public abstract class Resource : MonoBehaviour, IDamagable
         }
     }
 
+    public void ToggleCollider(bool isActive)
+    {
+        _collider.enabled = isActive;
+    }
+
+    protected void DiedEvent()
+    {
+        _isDead = false;
+        Died?.Invoke();
+    }
+
+    protected void DiedReset()
+    {
+        _curenntHealth = 0;
+        _rigidbody.isKinematic = false;
+        _isDead = true;
+    }
+
     IEnumerator Precipice()
     {
         yield return new WaitForSeconds(_disappearanceTime/2);
         _collider.enabled = false;
         yield return new WaitForSeconds(_disappearanceTime/2);
         _rigidbody.isKinematic = true;
-        _isDead = false;
         _collider.enabled = true;
         gameObject.SetActive(false);
-        Died?.Invoke();
+        DiedEvent();
     }
 }

@@ -84,7 +84,9 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
-        public bool _isEnable = true;
+        private bool _isEnable = true;
+        private bool _isInWater = false;
+
 
         private const float _threshold = 0.01f;
 
@@ -127,10 +129,11 @@ namespace StarterAssets
 
         private void Update()
         {
-            if (_isEnable)
+            if (_isEnable && !_isInWater)
             {
                 Stealth();
             }
+
             Move();
             GroundedCheck();
             JumpAndGravity();
@@ -216,26 +219,22 @@ namespace StarterAssets
 
             if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
+            float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
-            if (_isEnable)
+            float speedOffset = 0.1f;
+            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+
+            if (!_isSquatting)
             {
-                float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
-                float speedOffset = 0.1f;
-                float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
-
-                if (!_isSquatting)
+                if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
                 {
-                    if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
-                    {
-                        _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
+                    _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
 
-                        _speed = Mathf.Round(_speed * 1000f) / 1000f;
-                    }
-                    else
-                    {
-                        _speed = targetSpeed;
-                    }
+                    _speed = Mathf.Round(_speed * 1000f) / 1000f;
+                }
+                else
+                {
+                    _speed = targetSpeed;
                 }
             }
 
@@ -245,7 +244,7 @@ namespace StarterAssets
             {
                 inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
             }
-                _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         }
 
         private void Stealth()
@@ -259,10 +258,15 @@ namespace StarterAssets
 
             if (!_input.stealth && _isSquatting)
             {
-                _isSquatting = false;
-                _speed = _input.sprint ? SprintSpeed : MoveSpeed;
-                CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
+                SetDefoultStealth();
             }
+        }
+
+        private void SetDefoultStealth()
+        {
+            _isSquatting = false;
+            _speed = _input.sprint ? SprintSpeed : MoveSpeed;
+            CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -282,6 +286,23 @@ namespace StarterAssets
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out Water water))
+            {
+                _isInWater = true;
+                SetDefoultStealth();
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out Water water))
+            {
+                _isInWater = false;
+            }
         }
     }
 }

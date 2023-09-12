@@ -28,6 +28,7 @@ public enum ToolType
     Arm,
     FishingRod,
     Torch,
+    Shovel,
 }
 
 #if UNITY_EDITOR

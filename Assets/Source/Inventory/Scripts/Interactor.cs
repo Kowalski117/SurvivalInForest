@@ -49,7 +49,6 @@ public class Interactor : Raycast
         _hotbarDisplay.ItemClicked += PlantSeed;
 
         InventorySlotUI.OnItemRemove += RemoveItem;
-        _clothesSlotsHandler.OnItemRemove += RemoveItem;
     }
 
     private void OnDisable()
@@ -62,7 +61,6 @@ public class Interactor : Raycast
         _hotbarDisplay.ItemClicked -= PlantSeed;
 
         InventorySlotUI.OnItemRemove -= RemoveItem;
-        _clothesSlotsHandler.OnItemRemove -= RemoveItem;
     }
 
     private void Update()
@@ -133,7 +131,7 @@ public class Interactor : Raycast
         }
         else if(_currentObjectPickUp != null )
         {
-            foreach (var itemData in _currentObjectPickUp.Items)
+            foreach (var itemData in _currentObjectPickUp.ObjectItemsData.Items)
             {
                 for (int i = 0; i < itemData.Amount; i++)
                 {
@@ -185,7 +183,7 @@ public class Interactor : Raycast
     public void UpdateItem(ItemPickUp itemPickUp)
     {
         itemPickUp.GenerateNewID();
-        _saveItemHandler.AddId(itemPickUp.Id);
+        //_saveItemHandler.AddId(itemPickUp.Id);
     }
 
     private void InteractableInventory()

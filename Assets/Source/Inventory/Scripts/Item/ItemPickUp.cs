@@ -26,18 +26,18 @@ public class ItemPickUp : MonoBehaviour
         _uniqueID = GetComponent<UniqueID>();
         _durability = _itemData.Durability;
         _rigidbody = GetComponent<Rigidbody>();
+
+        Load();
     }
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        //SaveGame.OnSaveGame += Save;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        //SaveGame.OnSaveGame -= Save;
     }
 
     public void GenerateNewID()
@@ -57,6 +57,8 @@ public class ItemPickUp : MonoBehaviour
 
         //if (ES3.KeyExists(_uniqueID.Id))
         //    ES3.DeleteKey(_uniqueID.Id);
+        ES3.Save(_uniqueID.Id, _uniqueID.Id);
+        Debug.Log("sAVE");
         Destroy(this.gameObject);
     }
 
@@ -68,28 +70,28 @@ public class ItemPickUp : MonoBehaviour
         enabled = false;
     }
 
-    public void Enable()
-    {
-        enabled = true;
-        _outline.enabled = true;
-        gameObject.layer = _layerMask;
-    }
+    //public void Enable()
+    //{
+    //    enabled = true;
+    //    _outline.enabled = true;
+    //    gameObject.layer = _layerMask;
+    //}
 
-    public void Init(ItemPickUpSaveData itemSaveData, string id)
-    {
-        _durability = itemSaveData.Durability;
-        _uniqueID.SetId(id);
-    }
+    //public void Init(ItemPickUpSaveData itemSaveData, string id)
+    //{
+    //    _durability = itemSaveData.Durability;
+    //    _uniqueID.SetId(id);
+    //}
 
-    private void Save()
-    {
-        ItemPickUpSaveData itemSaveData = new ItemPickUpSaveData(_itemData.Id, transform.position, transform.rotation, _durability);
-        ES3.Save(_uniqueID.Id, itemSaveData);
-    }
+    //private void Save()
+    //{
+    //    ItemPickUpSaveData itemSaveData = new ItemPickUpSaveData(_itemData.Id, transform.position, transform.rotation, _durability);
+    //    ES3.Save(_uniqueID.Id, itemSaveData);
+    //}
 
     private void Load()
     {
-        if (!ES3.KeyExists(_uniqueID.Id))
+        if (ES3.KeyExists(_uniqueID.Id))
         {
             Destroy(gameObject);
         }

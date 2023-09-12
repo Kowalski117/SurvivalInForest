@@ -3,18 +3,29 @@ using UnityEngine;
 public class CraftObject : MonoBehaviour
 {
     [SerializeField] private CraftingÑategory _craftingÑategory;
+    [SerializeField] private bool _isEnabledInitially = false;
 
     private Building _building;
     private SphereCollider _sphereCollider;
+    private BoxCollider _boxCollider;
     private ManualWorkbench _workbench;
+
+    public bool IsEnabledInitially => _isEnabledInitially;
 
     private void Awake()
     {
         _building = GetComponentInParent<Building>();
         _sphereCollider = GetComponent<SphereCollider>();
-        if(_building != null)
+        _boxCollider = GetComponent<BoxCollider>();
+        if (_building != null)
         {
             _sphereCollider.enabled = false;
+        }
+
+        if (_isEnabledInitially)
+        {
+            _boxCollider.enabled = true;
+            _sphereCollider.enabled = true;
         }
     }
 

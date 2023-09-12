@@ -12,6 +12,7 @@ public class Building : MonoBehaviour
     private Transform _colliders;
     private bool _isOverlapping;
 
+    private LayerMask _placeBuildMask;
     private Renderer[] _renderers;
     private Material[] _defoultMaterial;
 
@@ -55,10 +56,10 @@ public class Building : MonoBehaviour
     public void Init(BuildingData data, string id = null)
     {
         _assignedData = data;
-        _colliders = transform.Find("Colliders");
+        //_colliders = transform.Find("Colliders");
 
-        if(_colliders != null )
-            _colliders.gameObject.SetActive(false);
+        //if(_colliders != null )
+        //    _colliders.gameObject.SetActive(false);
 
         if (id != null)
             _uniqueID.SetId(id);
@@ -70,13 +71,13 @@ public class Building : MonoBehaviour
     {
         _boxCollider.enabled = true;
 
-        if(_colliders != null)
-            _colliders.gameObject.SetActive(true);
+        //if(_colliders != null)
+        //    _colliders.gameObject.SetActive(true);
 
         UpdateMaterials(_defoultMaterial);
 
         gameObject.layer = _defoultLayerInt;
-        _boxCollider.enabled = false;
+        //_boxCollider.enabled = false;
         OnCompletedBuild?.Invoke();
 
         Save();
@@ -132,7 +133,14 @@ public class Building : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        _isOverlapping = true;
+        if(other.gameObject.layer == _placeBuildMask)
+        {
+            _isOverlapping = false;
+        }
+        else
+        {
+            _isOverlapping = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)

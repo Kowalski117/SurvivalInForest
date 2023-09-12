@@ -8,21 +8,52 @@ public class GardenBed : MonoBehaviour
     [SerializeField] private SeedItemData _seedItem;
 
     private ObjectPickUp _currentItem;
+    private UniqueID _uniqueID;
+
+    private InventoryItemData _currentItemData;
+    private float _elapsedTime = 0;
+    private bool _isPlantGrows = false;
+
+    private void Awake()
+    {
+        _uniqueID = GetComponent<UniqueID>();
+
+        if(_uniqueID == null)
+            _uniqueID = GetComponentInParent<UniqueID>();
+    }
 
     private void Start()
     {
-        if (_seedItem != null)
-            _currentItem = Instantiate(_seedItem.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
+        Load();
     }
 
-    public bool StartGrowingSeed(InventoryItemData inventoryItemData)
+    private void Update()
+    {
+        if (_isPlantGrows)
+        {
+            _elapsedTime += Time.deltaTime;
+        }
+    }
+
+    private void OnEnable()
+    {
+        SaveGame.OnSaveGame += Save;
+    }
+
+    private void OnDisable()
+    {
+        SaveGame.OnSaveGame -= Save;
+    }
+
+    public bool StartGrowingSeed(InventoryItemData inventoryItemData, Vector3 scale = default(Vector3))
     {
         if(_currentItem == null && inventoryItemData != null && inventoryItemData is SeedItemData seedItemData)
         {
+            _currentItemData = inventoryItemData;
             _currentItem = Instantiate(seedItemData.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
-            _currentItem.gameObject.transform.localScale = new Vector3(0, 0, 0);
+            _currentItem.gameObject.transform.localScale = scale;
             _currentItem.TurnOff();
-            StartCoroutine(SpawnOverTime(seedItemData.GrowthTime));
+            StartCoroutine(SpawnOverTime(seedItemData.GrowthTime - _elapsedTime));
             return true;
         }
         return false;
@@ -30,9 +61,70 @@ public class GardenBed : MonoBehaviour
 
     private IEnumerator SpawnOverTime(float time)
     {
-        _currentItem.transform.DOScale(new Vector3(1, 1, 1), time);
+        _isPlantGrows = true;
+        _currentItem.transform.DOScale(Vector3.one, time);
         yield return new WaitForSeconds(time);
         _currentItem.Enable();
+        Save();
         _currentItem = null;
+        _isPlantGrows = false;
+        _elapsedTime = 0;
+    }
+
+    private void Save()
+    {
+        if(_currentItemData != null && _currentItem != null)
+        {
+            GardenBedSaveData gardenBedSaveData = new GardenBedSaveData(_currentItemData.Id, _elapsedTime, _currentItem.gameObject.transform.localScale);
+            ES3.Save(_uniqueID.Id, gardenBedSaveData);
+        }
+    }
+
+    private void Load()
+    {
+        if (ES3.KeyExists(_uniqueID.Id))
+        {
+            GardenBedSaveData gardenBedSaveData = ES3.Load<GardenBedSaveData>(_uniqueID.Id);
+
+            _currentItemData = SaveItemHandler.GetItem(gardenBedSaveData.CurrentItemDataId);
+            _elapsedTime = gardenBedSaveData.ElapsedTime;
+
+            if (gardenBedSaveData.Scale != Vector3.one)
+            {
+                StartGrowingSeed(_currentItemData, gardenBedSaveData.Scale);
+            }
+            else
+            {
+                if(_currentItemData is SeedItemData seedItemData)
+                {
+                    _currentItem = Instantiate(seedItemData.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
+                }
+            }
+
+        }
+        else
+        {
+            if (_seedItem != null)
+                _currentItem = Instantiate(_seedItem.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
+        }
+    }
+}
+
+[System.Serializable]
+public struct GardenBedSaveData
+{
+    [SerializeField] private float _currentItemDataId;
+    [SerializeField] private float _elapsedTime;
+    [SerializeField] private Vector3 _scale;
+
+    public float CurrentItemDataId => _currentItemDataId;
+    public float ElapsedTime => _elapsedTime;
+    public Vector3 Scale => _scale;
+
+    public GardenBedSaveData(float currentItemDataId, float elapsedTime, Vector3 scale)
+    {
+        _currentItemDataId = currentItemDataId;
+        _elapsedTime = elapsedTime;
+        _scale = scale;
     }
 }
