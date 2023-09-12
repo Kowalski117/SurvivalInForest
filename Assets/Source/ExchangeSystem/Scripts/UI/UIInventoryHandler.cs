@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class UIHandler : MonoBehaviour
+public class UIInventoryHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
     [SerializeField] private StaticInventoryDisplay _playerHotbarInventory;
     [SerializeField] private ClothesInventory _clothesInventory;
     [SerializeField] private DynamicInventoryDisplay _playerClothesPanel;
     [SerializeField] private MouseItemData _mouseItemData;
-
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
@@ -28,12 +28,16 @@ public class UIHandler : MonoBehaviour
     {
         InventoryHolder.OnDinamicInventoryDisplayRequested += DisplayInventory;
         _playerInputHandler.InventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
+
+        _playerHealth.OnDied += TurnOffDisplayInventory;
     }
 
     private void OnDisable()
     {
         InventoryHolder.OnDinamicInventoryDisplayRequested -= DisplayInventory;
         _playerInputHandler.InventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
+
+        _playerHealth.OnDied -= TurnOffDisplayInventory;
     }
 
     public void DisplayInventory(InventorySystem inventoryDisplay, int offset)
@@ -79,5 +83,11 @@ public class UIHandler : MonoBehaviour
             _playerInputHandler.ToggleInteractionConstructionInput(true);
             _playerInputHandler.ToggleHotbarDisplay(true);
         }
+    }
+
+    private void TurnOffDisplayInventory()
+    {
+        if(_isInventoryOpen)
+            _playerInputHandler.InventoryPlayerInput.ToggleInventory();
     }
 }
