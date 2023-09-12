@@ -95,6 +95,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         yield return new WaitForSeconds(_disappearanceTime/2);
         _collider.enabled = false;
+
         yield return new WaitForSeconds(_disappearanceTime/2);
         _rigidbody.isKinematic = true;
         _collider.enabled = true;
