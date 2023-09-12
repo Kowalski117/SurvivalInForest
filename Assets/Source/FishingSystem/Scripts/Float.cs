@@ -77,16 +77,28 @@ public class Float : MonoBehaviour
         _currentExtraction = null;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.TryGetComponent(out Water water))
+        if (other.TryGetComponent(out Water water))
         {
+            _rigidbody.isKinematic = true;
             StartFishingOverTime();
             _startInWaterParticle.gameObject.SetActive(true);
             _startInWaterParticle.Play();
             SetPositionParticle(_startInWaterParticle, null, transform.position);
         }
     }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.collider.TryGetComponent(out Water water))
+    //    {
+    //        StartFishingOverTime();
+    //        _startInWaterParticle.gameObject.SetActive(true);
+    //        _startInWaterParticle.Play();
+    //        SetPositionParticle(_startInWaterParticle, null, transform.position);
+    //    }
+    //}
 
     private void StartFishingOverTime()
     {
@@ -100,8 +112,6 @@ public class Float : MonoBehaviour
 
     private IEnumerator FishingOverTime()
     {
-        _rigidbody.isKinematic = true;
-
         ClearTween();
         _positionInWater = transform.position;
         _fishingTween = transform.DOMove(_positionInWater + _calmWaterOffset, _animationDuration).SetLoops(_numberOfRepetitions, LoopType.Yoyo);

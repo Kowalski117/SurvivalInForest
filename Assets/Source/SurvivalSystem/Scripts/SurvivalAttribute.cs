@@ -10,7 +10,7 @@ public class SurvivalAttribute : MonoBehaviour
     private float _hourInSeconds = 3600;
 
     public event UnityAction<float> OnValueChanged;
-    public event UnityAction OnZeroValueReached;
+
     private float _maxValue => MaxValue * _hourInSeconds;
     public float CurrentAttribute => CurrentValue;
     public float MaxValueInSeconds => _maxValue;

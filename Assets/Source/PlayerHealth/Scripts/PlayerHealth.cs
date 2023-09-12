@@ -87,7 +87,6 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         _playerInputHandler.FirstPersonController.enabled = false;
         _characterController.enabled = false;
         _playerInputHandler.ToggleAllInput(false);
-        _playerInputHandler.ToggleInventoryPanels(false);
 
         OnHealthChanged?.Invoke(HealthPercent);
     }
@@ -100,7 +99,6 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         transform.rotation = _interactor.SleepPointSaveData.Rotation;
         _playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleAllInput(true);
-        _playerInputHandler.ToggleInventoryPanels(true);
         _playerInputHandler.FirstPersonController.enabled = true;
         _characterController.enabled = true;
         SetValue(MaxValue * 30 / 100);

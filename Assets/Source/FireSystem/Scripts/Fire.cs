@@ -1,4 +1,5 @@
 using System;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +9,7 @@ public class Fire : MonoBehaviour
     [SerializeField] private GameObject _fireParticle;
     [SerializeField] private bool _isRemoveAfterFire = false;
 
+    private string _fireSaveData = "Fire";
     private float _workingHours = 2f;
     private float _maxHours = 5f;
     private Building _building;
@@ -17,11 +19,13 @@ public class Fire : MonoBehaviour
     private bool _isFire = false;
     private bool _isEnable = true;
     private SphereCollider _collider;
+    private UniqueID _uniqueId;
 
     public event UnityAction<DateTime> OnCompletionTimeUpdate;
 
     private void Awake()
     {
+        _uniqueId = GetComponentInParent<UniqueID>();
         _collider = GetComponent<SphereCollider>();
         _timeHandler = FindObjectOfType<TimeHandler>();
         _building = GetComponentInParent<Building>();
@@ -35,6 +39,8 @@ public class Fire : MonoBehaviour
         {
             _collider.enabled = false;
         }
+
+        Load();
     }
 
     private void OnEnable()
@@ -42,6 +48,8 @@ public class Fire : MonoBehaviour
         SleepPanel.OnStoppedTime += ToggleEnable;
         SleepPanel.OnSubtractTime += ReduceTime;
         _building.OnCompletedBuild += StartFire;
+
+        SaveGame.OnSaveGame += Save;
     }
 
     private void OnDisable()
@@ -49,6 +57,8 @@ public class Fire : MonoBehaviour
         SleepPanel.OnStoppedTime -= ToggleEnable;
         SleepPanel.OnSubtractTime -= ReduceTime;
         _building.OnCompletedBuild -= StartFire;
+
+        SaveGame.OnSaveGame -= Save;
     }
 
     private void Update()
@@ -147,5 +157,34 @@ public class Fire : MonoBehaviour
     private void ToggleEnable(bool value)
     {
         _isEnable = value;
+    }
+
+    private void Save()
+    {
+        FireSaveData fireSaveData = new FireSaveData(_currentTime);
+        ES3.Save(_uniqueId.Id + _fireSaveData, fireSaveData);
+    }
+
+    private void Load()
+    {
+        if (ES3.KeyExists(_uniqueId.Id + _fireSaveData))
+        {
+            FireSaveData fireSaveData = ES3.Load<FireSaveData>(_uniqueId.Id + _fireSaveData);
+            _currentTime = fireSaveData.CurrentTime;
+            EnableParticle();
+        }
+    }
+}
+
+[System.Serializable]
+public struct FireSaveData
+{
+    [SerializeField] private DateTime _currentTime;
+
+    public DateTime CurrentTime => _currentTime;
+
+    public FireSaveData(DateTime currentTime)
+    {
+        _currentTime = currentTime;
     }
 }

@@ -29,7 +29,7 @@ public class Torch : MonoBehaviour
             if(_timerTime >= _timer)
             {
                 _timerTime = 0f;
-                _playerInteraction.UpdateDurabilityItem();
+                _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
             }
         }
     }
