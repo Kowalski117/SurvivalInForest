@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1915118094}
   - component: {fileID: 1683447427}
   - component: {fileID: 9201320400932517530}
+  - component: {fileID: 4567645490056493122}
   m_Layer: 8
   m_Name: SM_Env_Dirt_Mound_01
   m_TagString: Untagged
@@ -113,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPoint: {fileID: 4104733600466422}
-  _spawnTime: 1000
+  _seedItem: {fileID: 0}
 --- !u!114 &1683447427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +149,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4567645490056493122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163311251083476}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 11706dfe-b82c-4a74-a157-883a9fa03a75
