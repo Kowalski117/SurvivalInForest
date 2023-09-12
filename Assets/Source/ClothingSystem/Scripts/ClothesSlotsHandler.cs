@@ -13,7 +13,6 @@ public class ClothesSlotsHandler : MonoBehaviour
 
     private List<ClothesItemData> _clothesItems = new List<ClothesItemData>();
 
-    public event UnityAction<InventorySlotUI> OnItemRemove;
     public event UnityAction OnInteractionBackpack;
     public event UnityAction OnRemoveBackpack;
 
