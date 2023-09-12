@@ -2,14 +2,11 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
-[RequireComponent(typeof (BoxCollider))]
 public class SpawnResource : MonoBehaviour
 {
-    [SerializeField] private float _spawnTime = 15;
-    [SerializeField] private float _scaleTime = 30;
-
+    [SerializeField] private float _spawnTime;
+    [SerializeField] private GameObject _remainder;
     private Resource _resource;
-    private Coroutine _coroutineSpawn;
 
     private void Awake()
     {
@@ -18,37 +15,35 @@ public class SpawnResource : MonoBehaviour
 
     private void OnEnable()
     {
-        _resource.Died += TreeDeath;
+        _resource.Died += ResourceDeath;
+        _resource.Disappeared += ResourceDisappeared;
     }
 
     private void OnDisable()
     {
-        _resource.Died += TreeDeath;
+        _resource.Died -= ResourceDeath;
+        _resource.Disappeared -= ResourceDisappeared;
     }
 
-    private void TreeDeath()
+    private void ResourceDeath()
+    {
+        _remainder.SetActive(true);
+    }
+
+    private void ResourceDisappeared()
     {
         _resource.gameObject.transform.position = transform.position;
         _resource.gameObject.transform.rotation = transform.rotation;
-        if (_coroutineSpawn != null)
-        {
-            StopCoroutine(_coroutineSpawn);
-        }
-        _coroutineSpawn = StartCoroutine(SpawnOverTime());
+        StartCoroutine(SpawnOverTime());
     }
 
-    private IEnumerator SpawnOverTime()
+    IEnumerator SpawnOverTime()
     {
+        float scaleTime = 5f;
         yield return new WaitForSeconds(_spawnTime);
-
-        _resource.ToggleCollider(false);
-        _resource.gameObject.transform.localScale = Vector3.zero;
-        _resource.transform.DOScale(Vector3.one, _scaleTime);
+        _resource.gameObject.transform.localScale = new Vector3(0, 0, 0);
+        _resource.transform.DOScale(new Vector3(1, 1, 1), scaleTime);
+        _remainder.SetActive(false);
         _resource.gameObject.SetActive(true);
-        _resource.Enable();
-
-        yield return new WaitForSeconds(_scaleTime);
-
-        _resource.ToggleCollider(true);
     }
 }

@@ -11,10 +11,11 @@ public class Compass : MonoBehaviour
     [SerializeField] private float _maxDistance = 50;
     [SerializeField] private QuestMaker _questMaker;
 
-    private List<QuestMaker>  _questMakers = new List<QuestMaker>();
+    private List<QuestMaker> _questMakers = new List<QuestMaker>();
 
     private float _compassUnit;
     private float _rotationNumber = 360;
+    private int _repeatingPicture = 3;
 
     private void Awake()
     {
@@ -28,7 +29,7 @@ public class Compass : MonoBehaviour
 
     private void Update()
     {
-        _compassImage.uvRect = new Rect(_playerTransform.localEulerAngles.y / _rotationNumber, 0f, 1f, 1f);
+        _compassImage.uvRect = new Rect(_playerTransform.localEulerAngles.y / _rotationNumber/_repeatingPicture, 0f, 0.5f, 1f);
 
         foreach (var marker in _questMakers)
         {
