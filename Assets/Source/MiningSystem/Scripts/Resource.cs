@@ -15,13 +15,13 @@ public abstract class Resource : MonoBehaviour, IDamagable
     [SerializeField] private GameObject _parent;
 
     protected Collider Ñollider;
+    protected Rigidbody Rigidbody;
 
     private float _curenntHealth;
     private float _radiusSpawnLoots = 1;
     private float _spawnLootUp = 1;
     private float _disappearanceTime = 5;
     private bool _isDead = false;
-    private Rigidbody _rigidbody;
     
     public event Action Died;
     public event Action Disappeared;
@@ -32,7 +32,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
 
     public virtual void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        Rigidbody = GetComponent<Rigidbody>();
         Ñollider = GetComponent<Collider>();
     }
 
@@ -55,7 +55,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public virtual void Die()
     {
         _curenntHealth = 0;
-        _rigidbody.isKinematic = false;
+        Rigidbody.isKinematic = false;
         SpawnLoot(_loot, _radiusSpawnLoots, _spawnLootUp, _lootsCount);
         _isDead = true;
         StartCoroutine(Precipice());
@@ -73,16 +73,40 @@ public abstract class Resource : MonoBehaviour, IDamagable
         }
     }
 
-    IEnumerator Precipice()
+    public void ToggleCollider(bool isActive)
+    {
+        Ñollider.enabled = isActive;
+    }
+
+    public virtual void Enable() { }
+
+    protected void DiedEvent()
     {
         Died?.Invoke();
+    }
+    
+    protected void DisappearedEvent()
+    {
+        _isDead = false;
+        Disappeared?.Invoke();
+    }
+
+    protected void DiedReset()
+    {
+        _curenntHealth = 0;
+        Rigidbody.isKinematic = false;
+        _isDead = true;
+    }
+
+    IEnumerator Precipice()
+    {
+        DiedEvent();
         yield return new WaitForSeconds(_disappearanceTime/2);
         Ñollider.enabled = false;
         yield return new WaitForSeconds(_disappearanceTime/2);
-        _rigidbody.isKinematic = true;
-        _isDead = false;
+        Rigidbody.isKinematic = true;
         Ñollider.enabled = true;
         gameObject.SetActive(false);
-        Disappeared?.Invoke();
+        DisappearedEvent();
     }
 }

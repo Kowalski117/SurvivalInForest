@@ -50,6 +50,7 @@ public class Treasure : Resource
 
         StartCoroutine(Precipice());
     }
+
     public override void Enable()
     {
         _lootObject.gameObject.SetActive(true);
@@ -82,11 +83,13 @@ public class Treasure : Resource
 
     private IEnumerator Precipice()
     {
-        Collider.enabled = false;
-        yield return new WaitForSeconds(2);
-        Rigidbody.isKinematic = true;
-        Collider.enabled = true;
-        gameObject.SetActive(false);
         DiedEvent();
+        Ñollider.enabled = false;
+        yield return new WaitForSeconds(2);
+
+        Rigidbody.isKinematic = true;
+        Ñollider.enabled = true;
+        gameObject.SetActive(false);
+        DisappearedEvent();
     }
 }
