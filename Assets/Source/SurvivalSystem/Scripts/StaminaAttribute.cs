@@ -8,6 +8,7 @@ public class StaminaAttribute : MonoBehaviour
     [SerializeField] private float _rechargeRate = 2f;
     [SerializeField] private float _rechargeDelay = 1f;
     [SerializeField] private StarterAssetsInputs _playerInput;
+    [SerializeField] private FirstPersonController _firstPersonController;
 
     protected float _currentValue;
     private float _currentDelayCounter;
@@ -32,7 +33,7 @@ public class StaminaAttribute : MonoBehaviour
 
     public void DecreaseStaminaValue()
     {
-        if (_playerInput.sprint && _playerInput.move != Vector2.zero)
+        if (_firstPersonController.IsComing && _playerInput.move != Vector2.zero)
         {
             if(_currentValue > 0)
                 _currentValue -= _valueDeplerionRate * Time.deltaTime;
@@ -42,7 +43,7 @@ public class StaminaAttribute : MonoBehaviour
             _currentDelayCounter = 0;
         }
 
-        if(!_playerInput.sprint && _currentValue < _maxValue)
+        if(!_firstPersonController.IsComing && _currentValue < _maxValue)
         {
             if (_currentDelayCounter < _rechargeDelay)
             {

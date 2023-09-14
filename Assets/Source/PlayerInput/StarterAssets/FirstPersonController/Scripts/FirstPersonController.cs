@@ -86,12 +86,13 @@ namespace StarterAssets
         private GameObject _mainCamera;
         private bool _isEnable = true;
         private bool _isInWater = false;
-
+        private bool _isComing => _speed < SprintSpeed ? false : true;
 
         private const float _threshold = 0.01f;
 
-
         public float Speed => _speed;
+        public bool IsComing => _isComing;
+
         private bool IsCurrentDeviceMouse
         {
             get
