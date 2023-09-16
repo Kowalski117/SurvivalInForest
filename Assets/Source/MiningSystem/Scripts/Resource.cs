@@ -1,6 +1,7 @@
-using System;
 using System.Collections;
+using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine;
+using Action = System.Action;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -14,7 +15,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     [SerializeField] private ParticleSystem _takeDamage;
     [SerializeField] private GameObject _parent;
 
-    protected Collider �ollider;
+    protected Collider Сollider;
     protected Rigidbody Rigidbody;
 
     private float _curenntHealth;
@@ -33,7 +34,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public virtual void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
-        �ollider = GetComponent<Collider>();
+        Сollider = GetComponent<Collider>();
     }
 
     public virtual void OnEnable()
@@ -67,15 +68,17 @@ public abstract class Resource : MonoBehaviour, IDamagable
         { 
             for (int i = 0; i < count; i++)
             {
+                Debug.Log("spawn" + gameObject +"количество" + count);
               GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation, _parent.transform);
               current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
+              Debug.Log("цикл"+i);
             }
         }
     }
 
     public void ToggleCollider(bool isActive)
     {
-        �ollider.enabled = isActive;
+        Сollider.enabled = isActive;
     }
 
     public virtual void Enable() { }
@@ -102,10 +105,10 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         DiedEvent();
         yield return new WaitForSeconds(_disappearanceTime/2);
-        �ollider.enabled = false;
+        Сollider.enabled = false;
         yield return new WaitForSeconds(_disappearanceTime/2);
         Rigidbody.isKinematic = true;
-        �ollider.enabled = true;
+        Сollider.enabled = true;
         gameObject.SetActive(false);
         DisappearedEvent();
     }
