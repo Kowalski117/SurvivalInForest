@@ -1,6 +1,8 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Treasure : Resource
 {
@@ -11,22 +13,23 @@ public class Treasure : Resource
     private int _index;
     private float _changePositionDirection = 0.2f;
     private Vector3 _lootObjectPosition;
-
     private Tween _tweenTransform;
     private Tween _tweenLoot;
 
-    public override void Start()
+    private void Awake()
     {
-        base.Start();
-        SetRandomLoot();
+        base.Awake();
         _lootObjectPosition = _lootObject.transform.localPosition;
-        _lootObject.TurnOff();
     }
-
+    
     public override void OnEnable()
     {
         base.OnEnable();
         _index = 0;
+        _lootObject.gameObject.SetActive(true);
+        _lootObject.TurnOff();
+        SetRandomLoot();
+        _lootObject.transform.localPosition = _lootObjectPosition;
     }
 
     public override void TakeDamage(float damage, float overTimeDamage)
@@ -45,20 +48,10 @@ public class Treasure : Resource
     {
         ClearTween(_tweenLoot);
         ClearTween(_tweenTransform);
-        DiedReset();
         _lootObject.Enable();
-
         StartCoroutine(Precipice());
     }
-
-    public override void Enable()
-    {
-        _lootObject.gameObject.SetActive(true);
-        _lootObject.TurnOff();
-        SetRandomLoot();
-        _lootObject.transform.localPosition = _lootObjectPosition;
-    }
-
+    
     private void SetRandomLoot()
     {
         int index = Random.Range(0, _lootItems.Length);
@@ -84,11 +77,10 @@ public class Treasure : Resource
     private IEnumerator Precipice()
     {
         DiedEvent();
-        Ñollider.enabled = false;
+        Ð¡ollider.enabled = false;
         yield return new WaitForSeconds(2);
-
         Rigidbody.isKinematic = true;
-        Ñollider.enabled = true;
+        Ð¡ollider.enabled = true;
         gameObject.SetActive(false);
         DisappearedEvent();
     }

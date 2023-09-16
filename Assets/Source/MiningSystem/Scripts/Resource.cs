@@ -31,7 +31,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public float MaxHealth => _maxHealth;
     public ToolType ExtractionType => _extractionType;
 
-    public virtual void Start()
+    public virtual void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
         Сollider = GetComponent<Collider>();
@@ -40,6 +40,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public virtual void OnEnable()
     {
         _curenntHealth = _maxHealth;
+        Сollider.enabled = true;
     }
 
     public virtual void TakeDamage(float damage, float overTimeDamage)
@@ -68,20 +69,12 @@ public abstract class Resource : MonoBehaviour, IDamagable
         { 
             for (int i = 0; i < count; i++)
             {
-                Debug.Log("spawn" + gameObject +"количество" + count);
-              GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation, _parent.transform);
-              current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
-              Debug.Log("цикл"+i);
+                GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation);
+                current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
+                current.GetComponent<ItemPickUp>().GenerateNewID();
             }
         }
     }
-
-    public void ToggleCollider(bool isActive)
-    {
-        Сollider.enabled = isActive;
-    }
-
-    public virtual void Enable() { }
 
     protected void DiedEvent()
     {
@@ -94,13 +87,6 @@ public abstract class Resource : MonoBehaviour, IDamagable
         Disappeared?.Invoke();
     }
 
-    protected void DiedReset()
-    {
-        _curenntHealth = 0;
-        Rigidbody.isKinematic = false;
-        _isDead = true;
-    }
-
     IEnumerator Precipice()
     {
         DiedEvent();
@@ -108,7 +94,6 @@ public abstract class Resource : MonoBehaviour, IDamagable
         Сollider.enabled = false;
         yield return new WaitForSeconds(_disappearanceTime/2);
         Rigidbody.isKinematic = true;
-        Сollider.enabled = true;
         gameObject.SetActive(false);
         DisappearedEvent();
     }

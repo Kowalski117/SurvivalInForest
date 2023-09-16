@@ -12,8 +12,8 @@ public class Tree : Resource
 
     public override void OnEnable()
     {
-        _currentNumberStick = _numberStick;
         base.OnEnable();
+        _currentNumberStick = _numberStick;
     }
 
     public override void TakeDamage(float damage, float overTimeDamage)
