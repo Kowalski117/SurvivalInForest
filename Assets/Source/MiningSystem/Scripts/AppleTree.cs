@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AppleTree : Tree
 {
-    [SerializeField] private GameObject _apple;
+    [SerializeField] private ItemPickUp _apple;
     [SerializeField] private int _numberApple;
 
     private float _radiusSpawnApple = 3;
@@ -19,7 +19,7 @@ public class AppleTree : Tree
     {
         int number = Random.Range(0, _currentNumberApple+1);
         _currentNumberApple -= number;
-        base.SpawnLoot(_apple,_radiusSpawnApple,_spawnPointUp,number);
+        base.SpawnItem(_apple,_radiusSpawnApple,_spawnPointUp,number);
         base.TakeDamage(damage, overTimeDamage);
     }
 }

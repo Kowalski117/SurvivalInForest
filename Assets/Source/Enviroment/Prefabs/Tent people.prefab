@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 654275740476070468}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Tent people
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,6 +34,7 @@ Transform:
   - {fileID: 8011335258686827580}
   - {fileID: 7007911361769705190}
   - {fileID: 1056405259088609363}
+  - {fileID: 98619531983850453}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,6 +48,10 @@ PrefabInstance:
     - target: {fileID: 4874836195145779796, guid: 48a5693f18756d54c9b312cebd7232cf, type: 3}
       propertyPath: m_Name
       value: SM_Sleeping_Bag
+      objectReference: {fileID: 0}
+    - target: {fileID: 4874836195145779796, guid: 48a5693f18756d54c9b312cebd7232cf, type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 4874836195145779796, guid: 48a5693f18756d54c9b312cebd7232cf, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -159,6 +164,10 @@ PrefabInstance:
       value: SM_Fishing_Chair
       objectReference: {fileID: 0}
     - target: {fileID: 934142885302724327, guid: 2800c8ecf6ed78848bc7fd74a8e4b936, type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 934142885302724327, guid: 2800c8ecf6ed78848bc7fd74a8e4b936, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
       objectReference: {fileID: 0}
@@ -225,6 +234,10 @@ PrefabInstance:
       value: Assembled_Tent_B_01
       objectReference: {fileID: 0}
     - target: {fileID: 7886469276938696712, guid: 2e35c824bc5c2b043ab6980744e3c304, type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886469276938696712, guid: 2e35c824bc5c2b043ab6980744e3c304, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
       objectReference: {fileID: 0}
@@ -245,6 +258,10 @@ PrefabInstance:
     - target: {fileID: 7142355774263876397, guid: 8338c6b9d33f76f4aab7cecf681c9763, type: 3}
       propertyPath: m_Name
       value: Tent_B_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142355774263876397, guid: 8338c6b9d33f76f4aab7cecf681c9763, type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 7142355774263876397, guid: 8338c6b9d33f76f4aab7cecf681c9763, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -357,6 +374,10 @@ PrefabInstance:
       value: SM_Fishing_Chair (1)
       objectReference: {fileID: 0}
     - target: {fileID: 934142885302724327, guid: 2800c8ecf6ed78848bc7fd74a8e4b936, type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 934142885302724327, guid: 2800c8ecf6ed78848bc7fd74a8e4b936, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 126
       objectReference: {fileID: 0}
@@ -366,6 +387,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 557723620946558045, guid: 2800c8ecf6ed78848bc7fd74a8e4b936, type: 3}
   m_PrefabInstance: {fileID: 654275740531555342}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &654275741015352940
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 654275740476070468}
+    m_Modifications:
+    - target: {fileID: 597335671839927736, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_Name
+      value: Building_BonfireWithStone
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.220825
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2278719
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.9154358
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+--- !u!4 &98619531983850453 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 597335671839927737, guid: 2548e92af3d151a4596c2250139ca448, type: 3}
+  m_PrefabInstance: {fileID: 654275741015352940}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &654275741084836955
 PrefabInstance:
@@ -421,6 +504,10 @@ PrefabInstance:
     - target: {fileID: 6544734768900415561, guid: 101ee0da20ef7b248ab197efd648e171, type: 3}
       propertyPath: m_Name
       value: Assembled_Tent_A
+      objectReference: {fileID: 0}
+    - target: {fileID: 6544734768900415561, guid: 101ee0da20ef7b248ab197efd648e171, type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 6544734768900415561, guid: 101ee0da20ef7b248ab197efd648e171, type: 3}
       propertyPath: m_StaticEditorFlags

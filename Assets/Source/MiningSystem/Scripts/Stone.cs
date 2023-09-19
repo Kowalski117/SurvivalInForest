@@ -11,15 +11,10 @@ public class Stone : Resource
         base.OnEnable();
         _maxHealth = Health;
     }
-
-    public override void TakeDamage(float damage, float overTimeDamage)
-    {
-        base.TakeDamage(damage, overTimeDamage);
-    }
-
+    
     public override void Die()
     {
-        Ñollider.enabled = false;
+        Ð¡ollider.enabled = false;
         base.Die();
     }
 }

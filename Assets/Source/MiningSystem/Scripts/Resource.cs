@@ -1,7 +1,6 @@
 using System.Collections;
-using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine;
-using Action = System.Action;
+using System;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -10,8 +9,8 @@ public abstract class Resource : MonoBehaviour, IDamagable
 {
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private ToolType _extractionType;
-    [SerializeField] private GameObject _loot;
-    [SerializeField] private int _lootsCount;
+    [SerializeField] private ItemPickUp _item;
+    [SerializeField] private int _countItem;
     [SerializeField] private ParticleSystem _takeDamage;
     [SerializeField] private GameObject _parent;
 
@@ -58,20 +57,19 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         _curenntHealth = 0;
         Rigidbody.isKinematic = false;
-        SpawnLoot(_loot, _radiusSpawnLoots, _spawnLootUp, _lootsCount);
+        SpawnItem(_item, _radiusSpawnLoots, _spawnLootUp, _countItem);
         _isDead = true;
         StartCoroutine(Precipice());
     }
 
-    public virtual void SpawnLoot(GameObject gameObject, float radius, float spawnPointUp,int count)
+    public virtual void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp,int count)
     {
         if (_isDead == false)
         { 
             for (int i = 0; i < count; i++)
             {
-                GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation);
-                current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
-                current.GetComponent<ItemPickUp>().GenerateNewID();
+                Vector3 position = (transform.position + Random.insideUnitSphere * radius);
+                SpawnLoots.Spawn(itemPickUp,position,transform,false,spawnPointUp,false);
             }
         }
     }

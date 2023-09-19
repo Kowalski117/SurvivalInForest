@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 0
+  outlineMode: 1
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 0
   precomputeOutline: 0
@@ -132,19 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _layerMask: 6
-  _items:
-  - _itemData: {fileID: 11400000, guid: 15d93017eeb3bda419a543949890d511, type: 2}
-    _amount: 5
-  - _itemData: {fileID: 11400000, guid: 6169cd3bc64d2354fb5a3ef62404b810, type: 2}
-    _amount: 5
-  - _itemData: {fileID: 11400000, guid: cf13eb621d32a064e83cc924c5fd320a, type: 2}
-    _amount: 5
-  - _itemData: {fileID: 11400000, guid: 273dc7b66dc3fb747a873cdb8abe014e, type: 2}
-    _amount: 5
-  - _itemData: {fileID: 11400000, guid: 4a306080b2fa20643819a80f27861a30, type: 2}
-    _amount: 5
-  - _itemData: {fileID: 11400000, guid: 15d93017eeb3bda419a543949890d511, type: 2}
-    _amount: 5
+  _objectItemsData: {fileID: 0}
+  _isDeleteAfterSelection: 1
 --- !u!65 &1241767526390253555
 BoxCollider:
   m_ObjectHideFlags: 0
