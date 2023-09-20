@@ -790,6 +790,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleDailyRewardsScreen",
+                    "type": "Button",
+                    "id": "2382a13f-2765-4963-a340-8835ef98e863",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -812,6 +821,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleShopScreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "228481b0-6b52-41e8-9c5b-3bddf72926f4",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleDailyRewardsScreen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

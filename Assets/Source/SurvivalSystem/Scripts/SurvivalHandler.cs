@@ -44,7 +44,9 @@ public class SurvivalHandler : MonoBehaviour
     private void Update()
     {
         _stamina.DecreaseStaminaValue();
-        HandleTimeUpdate();
+
+        if(_health.HealthPercent > 0)
+            HandleTimeUpdate();
 
         if(_hunger.ValuePercent <= 0 || _thirst.ValuePercent <= 0 || _sleep.ValuePercent <= 0)
         {

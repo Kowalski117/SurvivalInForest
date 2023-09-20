@@ -97,9 +97,9 @@ public class Bow : MonoBehaviour
     public void InstantiateArrow(Arrow arrow,Vector3 position, Quaternion rotation, GameObject parent)
     {
         ItemPickUp arrowItem = Instantiate(_currentWeapon.Bullet, position, rotation);
+        arrowItem.GenerateNewID();
         arrowItem.gameObject.transform.parent = parent.transform;
         arrowItem.Rigidbody.isKinematic = true;
-        _interactor.UpdateItem(arrowItem);
 
         arrow.SetRope(transform);
         arrow.gameObject.SetActive(false);
