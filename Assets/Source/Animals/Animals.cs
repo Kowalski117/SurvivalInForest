@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using BehaviorDesigner.Runtime;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,7 +8,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Collider))]
 public abstract class Animals : MonoBehaviour, IDamagable
 {
-    [SerializeField] private GameObject _meat;
+    [SerializeField] private ItemPickUp _meat;
     [SerializeField] private int _numberMeat;
     [SerializeField] private float _healh;
     [SerializeField] private float _armor;
@@ -62,21 +61,21 @@ public abstract class Animals : MonoBehaviour, IDamagable
         _collider.enabled = false;
         _behaviorTree.enabled = false;
         _agent.enabled = false;
-        SpawnLoot(_meat,_radiusSpawnLoots,_spawnLootUp,_numberMeat);
+        SpawnItem(_meat,_radiusSpawnLoots,_spawnLootUp,_numberMeat);
         _isDead = true;
 
         Died?.Invoke();
         StartCoroutine(Precipice());
     }
     
-    public void SpawnLoot(GameObject gameObject, float radius, float spawnPointUp,int count)
+    public void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp,int count)
     {
         if (_isDead == false)
         {
             for (int i = 0; i < count; i++)
             {
-                GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation);
-                current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
+                Vector3 position = transform.position + Random.insideUnitSphere * radius;
+                SpawnLoots.Spawn(itemPickUp,position,transform,false,spawnPointUp,false);
             }
         }
     }

@@ -80,11 +80,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 0
-  _loot: {fileID: 7254787343848191812, guid: bf148d5909d175645aec481f68d70d64, type: 3}
-  _lootsCount: 5
+  _item: {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  _countItem: 4
   _takeDamage: {fileID: 6249016894711208352}
   _parent: {fileID: 3298165907711742831}
-  _stick: {fileID: 1106815268943476616, guid: 89ff1c3f6ca2c014ca8384472c59608c, type: 3}
+  _stick: {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
   _numberStick: 3
 --- !u!1 &617396725812857687
 GameObject:
@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnTime: 3
+  _scaleTime: 3
   _remainder: {fileID: 3825331647448503500}
 --- !u!208 &8401524954498659238
 NavMeshObstacle:

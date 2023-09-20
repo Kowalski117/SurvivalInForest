@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnTime: 3
+  _scaleTime: 3
   _remainder: {fileID: 4736318866139758370}
 --- !u!208 &3211205699866775463
 NavMeshObstacle:
@@ -504,11 +505,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 0
-  _loot: {fileID: 7254787343848191812, guid: bf148d5909d175645aec481f68d70d64, type: 3}
-  _lootsCount: 7
+  _item: {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  _countItem: 5
   _takeDamage: {fileID: 8375086043081375399}
   _parent: {fileID: 2146921750331591826}
-  _stick: {fileID: 2868006695564987358, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  _stick: {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
   _numberStick: 3
 --- !u!1 &7237815888602160719
 GameObject:
@@ -611,7 +612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8375086043063032721
 Transform:
   m_ObjectHideFlags: 0
@@ -780,8 +781,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.043137256, g: 0.227451, b: 0.20000002, a: 1}
-      maxColor: {r: 0.070621215, g: 0.21698111, b: 0.1898, a: 1}
+      minColor: {r: 0.121568635, g: 0.6745098, b: 0.54901963, a: 1}
+      maxColor: {r: 0.10196079, g: 0.4901961, b: 0.39607847, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

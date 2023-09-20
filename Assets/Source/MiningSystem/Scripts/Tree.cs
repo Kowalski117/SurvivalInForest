@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider))]
 public class Tree : Resource
 {
-    [SerializeField] private GameObject _stick;
+    [SerializeField] private ItemPickUp _stick;
     [SerializeField] private int _numberStick;
 
     private float _radiusSpawnStick = 2;
@@ -12,15 +12,15 @@ public class Tree : Resource
 
     public override void OnEnable()
     {
-        _currentNumberStick = _numberStick;
         base.OnEnable();
+        _currentNumberStick = _numberStick;
     }
 
     public override void TakeDamage(float damage, float overTimeDamage)
     {
         int number = Random.Range(0, _currentNumberStick+1);
         _currentNumberStick -= number;
-        base.SpawnLoot(_stick,_radiusSpawnStick,_spawnPointUpStick,number);
+        base.SpawnItem(_stick,_radiusSpawnStick,_spawnPointUpStick,number);
         base.TakeDamage(damage, overTimeDamage);
     }
 }

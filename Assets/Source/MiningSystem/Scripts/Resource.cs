@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using System;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,12 +9,12 @@ public abstract class Resource : MonoBehaviour, IDamagable
 {
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private ToolType _extractionType;
-    [SerializeField] private GameObject _loot;
-    [SerializeField] private int _lootsCount;
+    [SerializeField] private ItemPickUp _item;
+    [SerializeField] private int _countItem;
     [SerializeField] private ParticleSystem _takeDamage;
     [SerializeField] private GameObject _parent;
 
-    protected Collider 裲llider;
+    protected Collider 小ollider;
     protected Rigidbody Rigidbody;
 
     private float _curenntHealth;
@@ -30,15 +30,16 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public float MaxHealth => _maxHealth;
     public ToolType ExtractionType => _extractionType;
 
-    public virtual void Start()
+    public virtual void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
-        裲llider = GetComponent<Collider>();
+        小ollider = GetComponent<Collider>();
     }
 
     public virtual void OnEnable()
     {
         _curenntHealth = _maxHealth;
+        小ollider.enabled = true;
     }
 
     public virtual void TakeDamage(float damage, float overTimeDamage)
@@ -56,29 +57,22 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         _curenntHealth = 0;
         Rigidbody.isKinematic = false;
-        SpawnLoot(_loot, _radiusSpawnLoots, _spawnLootUp, _lootsCount);
+        SpawnItem(_item, _radiusSpawnLoots, _spawnLootUp, _countItem);
         _isDead = true;
         StartCoroutine(Precipice());
     }
 
-    public virtual void SpawnLoot(GameObject gameObject, float radius, float spawnPointUp,int count)
+    public virtual void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp,int count)
     {
         if (_isDead == false)
         { 
             for (int i = 0; i < count; i++)
             {
-              GameObject current = Instantiate(gameObject, transform.position + Random.insideUnitSphere * radius, Random.rotation, _parent.transform);
-              current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
+                Vector3 position = (transform.position + Random.insideUnitSphere * radius);
+                SpawnLoots.Spawn(itemPickUp,position,transform,false,spawnPointUp,false);
             }
         }
     }
-
-    public void ToggleCollider(bool isActive)
-    {
-        裲llider.enabled = isActive;
-    }
-
-    public virtual void Enable() { }
 
     protected void DiedEvent()
     {
@@ -91,21 +85,13 @@ public abstract class Resource : MonoBehaviour, IDamagable
         Disappeared?.Invoke();
     }
 
-    protected void DiedReset()
-    {
-        _curenntHealth = 0;
-        Rigidbody.isKinematic = false;
-        _isDead = true;
-    }
-
     IEnumerator Precipice()
     {
         DiedEvent();
         yield return new WaitForSeconds(_disappearanceTime/2);
-        裲llider.enabled = false;
+        小ollider.enabled = false;
         yield return new WaitForSeconds(_disappearanceTime/2);
         Rigidbody.isKinematic = true;
-        裲llider.enabled = true;
         gameObject.SetActive(false);
         DisappearedEvent();
     }

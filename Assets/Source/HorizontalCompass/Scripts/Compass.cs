@@ -29,7 +29,7 @@ public class Compass : MonoBehaviour
 
     private void Update()
     {
-        _compassImage.uvRect = new Rect(_playerTransform.localEulerAngles.y / _rotationNumber/_repeatingPicture, 0f, 0.5f, 1f);
+        _compassImage.uvRect = new Rect(_playerTransform.localEulerAngles.y / _rotationNumber/_repeatingPicture, 0f, _compassImage.uvRect.width, 1f);
 
         foreach (var marker in _questMakers)
         {

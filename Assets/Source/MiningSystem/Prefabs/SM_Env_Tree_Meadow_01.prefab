@@ -62,7 +62,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 3210900461099521612}
   m_Enabled: 1
---- !u!1 &864491921390181922
+--- !u!1 &1946759274957025866
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,38 +70,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 864491921390483444}
-  - component: {fileID: 864491921371058882}
-  - component: {fileID: 864491921372508790}
+  - component: {fileID: 3547318850625641794}
+  - component: {fileID: 401410049052797514}
+  - component: {fileID: 8219786306673599381}
   m_Layer: 14
   m_Name: BlowingLeaves
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &864491921390483444
+  m_IsActive: 1
+--- !u!4 &3547318850625641794
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 864491921390181922}
+  m_GameObject: {fileID: 1946759274957025866}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.25, y: 4.03, z: 0}
+  m_LocalPosition: {x: 0, y: 3.043, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1355756109359510703}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!198 &864491921371058882
+--- !u!198 &401410049052797514
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 864491921390181922}
+  m_GameObject: {fileID: 1946759274957025866}
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
@@ -248,8 +248,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.039215688, g: 0.22352943, b: 0.20392159, a: 1}
-      maxColor: {r: 0.0627451, g: 0.3372549, b: 0.2901961, a: 1}
+      minColor: {r: 0.121568635, g: 0.6745098, b: 0.54901963, a: 1}
+      maxColor: {r: 0.10196079, g: 0.4901961, b: 0.39607847, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1146,7 +1146,7 @@ ParticleSystem:
     enabled: 1
     x:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 2
       scalar: 1
       minScalar: 0
       maxCurve:
@@ -1199,7 +1199,7 @@ ParticleSystem:
         m_RotationOrder: 4
     y:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 2
       scalar: 1
       minScalar: 0
       maxCurve:
@@ -4697,28 +4697,28 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!199 &864491921372508790
+--- !u!199 &8219786306673599381
 ParticleSystemRenderer:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 864491921390181922}
+  m_GameObject: {fileID: 1946759274957025866}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9e2411d65e8b2094eaa91113863f37d4, type: 2}
+  - {fileID: 2100000, guid: fe8511f93a008754ab121c179e401ecf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4750,7 +4750,7 @@ ParticleSystemRenderer:
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
-  m_RenderAlignment: 0
+  m_RenderAlignment: 1
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
   m_UseCustomVertexStreams: 0
@@ -4884,7 +4884,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 864491921390483444}
+  - {fileID: 3547318850625641794}
   - {fileID: 2568543882997231861}
   m_Father: {fileID: 7768601906473230819}
   m_RootOrder: 0
@@ -4933,11 +4933,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 0
-  _loot: {fileID: 7254787343848191812, guid: bf148d5909d175645aec481f68d70d64, type: 3}
-  _lootsCount: 10
-  _takeDamage: {fileID: 864491921371058882}
+  _item: {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  _countItem: 3
+  _takeDamage: {fileID: 401410049052797514}
   _parent: {fileID: 6954770494557141849}
-  _stick: {fileID: 2868006695564987358, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  _stick: {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
   _numberStick: 5
 --- !u!1 &4974185952895321032
 GameObject:
@@ -5103,6 +5103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnTime: 3
+  _scaleTime: 3
   _remainder: {fileID: 6046726410172265913}
 --- !u!208 &6304613484113778441
 NavMeshObstacle:
