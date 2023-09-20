@@ -12,7 +12,6 @@ public class Building : MonoBehaviour
     private Transform _colliders;
     private bool _isOverlapping;
 
-    private LayerMask _placeBuildMask;
     private Renderer[] _renderers;
     private Material[] _defoultMaterial;
 
@@ -133,14 +132,7 @@ public class Building : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.layer == _placeBuildMask)
-        {
-            _isOverlapping = false;
-        }
-        else
-        {
-            _isOverlapping = true;
-        }
+        _isOverlapping = true;
     }
 
     private void OnTriggerExit(Collider other)

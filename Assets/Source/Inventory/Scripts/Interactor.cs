@@ -175,24 +175,17 @@ public class Interactor : Raycast
         {
             ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
             itemPickUp.GenerateNewID();
-            UpdateItem(itemPickUp);
             itemPickUp.UpdateDurability(durability);
         }
     }
-
-    public void UpdateItem(ItemPickUp itemPickUp)
-    {
-        itemPickUp.GenerateNewID();
-        //_saveItemHandler.AddId(itemPickUp.Id);
-    }
-
+    
     private void InteractableInventory()
     {
         if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hitInfo))
         {
             if (hitInfo.collider.TryGetComponent(out IInteractable interactable))
             {
-                interactable.Interact(this, out bool interactSuccessful);
+                interactable.Interact();
 
                 if (_currentInteractable == null)
                 {
@@ -245,11 +238,11 @@ public class Interactor : Raycast
 
     private void ClearIInteractable()
     {
-        if (_currentInteractable != null)
-        {
-            _currentInteractable.Interact(this, out bool interactSuccessful);
-            _currentInteractable = null;
-        }
+        //if (_currentInteractable != null)
+        //{
+        //    _currentInteractable.Interact();
+        //    _currentInteractable = null;
+        //}
     }
 
     private void PlantSeed(InventorySlot slot)

@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3079476379691222968}
   - component: {fileID: 4072126112938148095}
   - component: {fileID: 4713718439946271833}
+  - component: {fileID: -4458207936493167701}
   m_Layer: 6
   m_Name: Weapon_Spear_stone
   m_TagString: Untagged
@@ -117,14 +118,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: b414ea5e160a32942ba5b67b394665b4, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!54 &6405183457530594502
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -216,3 +215,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &-4458207936493167701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411954897839073204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

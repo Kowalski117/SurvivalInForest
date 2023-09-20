@@ -80,11 +80,14 @@ public class PlayerAnimatorHandler : MonoBehaviour
     {
         if(!_itemsAnimator.Any(item => _currentItemData == item.ItemData) || _currentItemData == null)
         {
-            if(_handAnimator != _defoultItem)
+            if (_handAnimator != _defoultItem)
+            {
                 _handAnimator.ToggleItem(false);
+                _handAnimator = _defoultItem;
+                _handAnimator.ToggleItem(true);
+                _handAnimator.HandAnimator.SetTrigger(_pullItem);
+            }
 
-            _handAnimator = _defoultItem;
-            _handAnimator.ToggleItem(true);
             return;
         }
 
@@ -93,8 +96,12 @@ public class PlayerAnimatorHandler : MonoBehaviour
             if (_currentItemData == item.ItemData)
             {
                 item.ToggleItem(true);
-                _handAnimator = item;
-                _handAnimator.HandAnimator.SetTrigger(_pullItem);
+
+                if(_handAnimator != item)
+                {
+                    _handAnimator = item;
+                    _handAnimator.HandAnimator.SetTrigger(_pullItem);
+                }
             }
             else
             {
@@ -102,7 +109,6 @@ public class PlayerAnimatorHandler : MonoBehaviour
             }
         }
     }
-
 
     public void TurnOffAnimations()
     {

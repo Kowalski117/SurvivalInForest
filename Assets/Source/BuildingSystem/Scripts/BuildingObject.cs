@@ -14,7 +14,7 @@ public class BuildingObject : MonoBehaviour
     {
         _building = GetComponentInParent<Building>();
         _boxCollider = GetComponent<BoxCollider>();
-        //_boxCollider.enabled = false;
+        _boxCollider.enabled = false;
     }
 
     private void Start()

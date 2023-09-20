@@ -58,7 +58,6 @@ public class ItemPickUp : MonoBehaviour
         //if (ES3.KeyExists(_uniqueID.Id))
         //    ES3.DeleteKey(_uniqueID.Id);
         ES3.Save(_uniqueID.Id, _uniqueID.Id);
-        Debug.Log("sAVE");
         Destroy(this.gameObject);
     }
 
@@ -94,6 +93,7 @@ public class ItemPickUp : MonoBehaviour
         if (ES3.KeyExists(_uniqueID.Id))
         {
             Destroy(gameObject);
+            ES3.DeleteKey(_uniqueID.Id);
         }
     }
 }

@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class InventoryItemData : ScriptableObject
     [SerializeField] private float _gorenjeTime;
     [SerializeField] private float _durability;
     [SerializeField] private Color _colorDurability = Color.red;
+    [SerializeField] private TypeBehaviorInWater _typeBehaviorInWater = TypeBehaviorInWater.PopsUp;
 
     public int Id => _id;
     public ItemType Type => _type;
@@ -26,6 +28,7 @@ public class InventoryItemData : ScriptableObject
     public float GorenjeTime => _gorenjeTime;
     public float Durability => _durability;
     public Color ColorDurability => _colorDurability;
+    public TypeBehaviorInWater TypeBehaviorInWater => _typeBehaviorInWater;
 
     public void SetId(int id)
     {
@@ -56,6 +59,13 @@ public enum ItemType
     ClothingShoes = 14,
     Backpack = 15,
 
+}
+
+public enum TypeBehaviorInWater
+{
+    None = 0,
+    Sinking = 1,
+    PopsUp = 2,
 }
 
 #if UNITY_EDITOR

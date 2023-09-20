@@ -7,6 +7,7 @@ public class UIScreenPlayerInput : MonoBehaviour
 
     public event UnityAction OnTogglePauseScreen;
     public event UnityAction OnToggleShopScreen;
+    public event UnityAction OnToggleDailyRewardsScreen;
 
     private void Awake()
     {
@@ -18,12 +19,14 @@ public class UIScreenPlayerInput : MonoBehaviour
         _playerInput.Enable();
         _playerInput.UIScreen.TogglePauseScreen.performed += ctx => TogglePauseScreen();
         _playerInput.UIScreen.ToggleShopScreen.performed += ctx => ToggleShopScreen();
+        _playerInput.UIScreen.ToggleDailyRewardsScreen.performed += ctx => ToggleDailyRewardsScreen();
     }
 
     private void OnDisable()
     {
         _playerInput.UIScreen.TogglePauseScreen.performed -= ctx => TogglePauseScreen();
         _playerInput.UIScreen.ToggleShopScreen.performed -= ctx => ToggleShopScreen();
+        _playerInput.UIScreen.ToggleDailyRewardsScreen.performed -= ctx => ToggleDailyRewardsScreen();
         _playerInput.Disable();
     }
 
@@ -35,5 +38,10 @@ public class UIScreenPlayerInput : MonoBehaviour
     public void ToggleShopScreen()
     {
         OnToggleShopScreen?.Invoke();
+    }
+
+    public void ToggleDailyRewardsScreen()
+    {
+        OnToggleDailyRewardsScreen?.Invoke();
     }
 }

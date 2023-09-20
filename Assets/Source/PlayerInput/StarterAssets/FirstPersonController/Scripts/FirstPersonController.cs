@@ -111,6 +111,7 @@ namespace StarterAssets
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+
             CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
 
             _survivalHandler = GetComponent<SurvivalHandler>();
@@ -126,6 +127,12 @@ namespace StarterAssets
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
 
+        }
+
+        private void OnEnable()
+        {
+            CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
+            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
         }
 
         private void Update()

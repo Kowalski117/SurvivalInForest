@@ -812,6 +812,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleDailyRewardsScreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""2382a13f-2765-4963-a340-8835ef98e863"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -834,6 +843,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ToggleShopScreen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""228481b0-6b52-41e8-9c5b-3bddf72926f4"",
+                    ""path"": ""<Keyboard>/n"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDailyRewardsScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -930,6 +950,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_UIScreen = asset.FindActionMap("UIScreen", throwIfNotFound: true);
         m_UIScreen_TogglePauseScreen = m_UIScreen.FindAction("TogglePauseScreen", throwIfNotFound: true);
         m_UIScreen_ToggleShopScreen = m_UIScreen.FindAction("ToggleShopScreen", throwIfNotFound: true);
+        m_UIScreen_ToggleDailyRewardsScreen = m_UIScreen.FindAction("ToggleDailyRewardsScreen", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1315,12 +1336,14 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private IUIScreenActions m_UIScreenActionsCallbackInterface;
     private readonly InputAction m_UIScreen_TogglePauseScreen;
     private readonly InputAction m_UIScreen_ToggleShopScreen;
+    private readonly InputAction m_UIScreen_ToggleDailyRewardsScreen;
     public struct UIScreenActions
     {
         private @PlayerInput m_Wrapper;
         public UIScreenActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @TogglePauseScreen => m_Wrapper.m_UIScreen_TogglePauseScreen;
         public InputAction @ToggleShopScreen => m_Wrapper.m_UIScreen_ToggleShopScreen;
+        public InputAction @ToggleDailyRewardsScreen => m_Wrapper.m_UIScreen_ToggleDailyRewardsScreen;
         public InputActionMap Get() { return m_Wrapper.m_UIScreen; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1336,6 +1359,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleShopScreen.started -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleShopScreen;
                 @ToggleShopScreen.performed -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleShopScreen;
                 @ToggleShopScreen.canceled -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleShopScreen;
+                @ToggleDailyRewardsScreen.started -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleDailyRewardsScreen;
+                @ToggleDailyRewardsScreen.performed -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleDailyRewardsScreen;
+                @ToggleDailyRewardsScreen.canceled -= m_Wrapper.m_UIScreenActionsCallbackInterface.OnToggleDailyRewardsScreen;
             }
             m_Wrapper.m_UIScreenActionsCallbackInterface = instance;
             if (instance != null)
@@ -1346,6 +1372,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @ToggleShopScreen.started += instance.OnToggleShopScreen;
                 @ToggleShopScreen.performed += instance.OnToggleShopScreen;
                 @ToggleShopScreen.canceled += instance.OnToggleShopScreen;
+                @ToggleDailyRewardsScreen.started += instance.OnToggleDailyRewardsScreen;
+                @ToggleDailyRewardsScreen.performed += instance.OnToggleDailyRewardsScreen;
+                @ToggleDailyRewardsScreen.canceled += instance.OnToggleDailyRewardsScreen;
             }
         }
     }
@@ -1430,5 +1459,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnTogglePauseScreen(InputAction.CallbackContext context);
         void OnToggleShopScreen(InputAction.CallbackContext context);
+        void OnToggleDailyRewardsScreen(InputAction.CallbackContext context);
     }
 }
