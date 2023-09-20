@@ -4,26 +4,28 @@ using UnityEngine.Events;
 [RequireComponent(typeof(UniqueID))]
 public class ExchangeKeeper : MonoBehaviour, IInteractable
 {
+    private bool _isActive = false;
+
     public static UnityAction<ExchangeKeeper> OnExchangeDisplayRequested;
     public UnityAction<IInteractable> OnInteractionComplete { get; set; }
 
-    public void EndInteraction()
-    {
+    public void EndInteraction() { }
 
+    public void Interact()
+    {
+        OnExchangeDisplayRequested?.Invoke(this);
+        _isActive = !_isActive;
     }
 
-    public void Interact(Interactor interactor, out bool interactSuccessfull)
+    private void OnTriggerExit(Collider other)
     {
-        var playerInventory = interactor.PlayerInventoryHolder;
-
-        if (playerInventory != null)
+        if (other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
         {
-            OnExchangeDisplayRequested?.Invoke(this);
-            interactSuccessfull = true;
-        }
-        else
-        {
-            interactSuccessfull = false;
+            if (_isActive)
+            {
+                OnExchangeDisplayRequested?.Invoke(this);
+                _isActive = false;
+            }
         }
     }
 }

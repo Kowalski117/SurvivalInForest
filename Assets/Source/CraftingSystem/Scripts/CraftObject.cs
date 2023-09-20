@@ -19,6 +19,7 @@ public class CraftObject : MonoBehaviour
         _boxCollider = GetComponent<BoxCollider>();
         if (_building != null)
         {
+            _boxCollider.enabled = false;
             _sphereCollider.enabled = false;
         }
 

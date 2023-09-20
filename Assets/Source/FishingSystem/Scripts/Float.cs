@@ -89,17 +89,6 @@ public class Float : MonoBehaviour
         }
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.collider.TryGetComponent(out Water water))
-    //    {
-    //        StartFishingOverTime();
-    //        _startInWaterParticle.gameObject.SetActive(true);
-    //        _startInWaterParticle.Play();
-    //        SetPositionParticle(_startInWaterParticle, null, transform.position);
-    //    }
-    //}
-
     private void StartFishingOverTime()
     {
         if (_fishingCoroutine != null)

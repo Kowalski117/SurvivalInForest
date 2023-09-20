@@ -8,6 +8,7 @@ public class ChestInventory : InventoryHolder, IInteractable
     [SerializeField] private List<InventoryItemData> _startingItems;
 
     private UniqueID _uniqueId;
+    private bool _isActive = false;
 
     public UnityAction<IInteractable> OnInteractionComplete { get; set; }
 
@@ -22,10 +23,10 @@ public class ChestInventory : InventoryHolder, IInteractable
         LoadInventory();
     }
 
-    public void Interact(Interactor interactor, out bool interactSuccessfull)
+    public void Interact()
     {
         OnDinamicInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, 0);
-        interactSuccessfull = true;
+        _isActive = !_isActive;
     }
 
     public void EndInteraction() { }
@@ -48,6 +49,18 @@ public class ChestInventory : InventoryHolder, IInteractable
             foreach (var item in _startingItems)
             {
                 PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
+        {
+            if (_isActive)
+            {
+                OnDinamicInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, 0);
+                _isActive = false;
             }
         }
     }
