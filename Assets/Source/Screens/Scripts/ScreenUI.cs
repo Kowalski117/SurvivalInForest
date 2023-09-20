@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ScreenUI : MonoBehaviour
 {
@@ -6,6 +7,9 @@ public class ScreenUI : MonoBehaviour
     [SerializeField] private CanvasGroup _panel;
 
     private bool _isOpenScreen = false;
+
+    public event UnityAction OnOpenScreen;
+    public event UnityAction OnCloseScreen;
 
     public void OpenScreen()
     {
@@ -28,12 +32,14 @@ public class ScreenUI : MonoBehaviour
             OpenScreen();
             PlayerInputHandler.SetCursorVisible(true);
             PlayerInputHandler.ToggleAllInput(false);
+            OnOpenScreen?.Invoke();
         }
         else
         {
             CloseScreen();
             PlayerInputHandler.SetCursorVisible(false);
             PlayerInputHandler.ToggleAllInput(true);
+            OnCloseScreen?.Invoke();
         }
     }
 }
