@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,10 +10,12 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     [SerializeField] private ProtectionValue _protectionValue;
     [SerializeField] private float _recoveryRate = 0.1f;
     [SerializeField] private float _recoveryDelay = 3f;
+    [SerializeField] private Transform _cameraRoot;
 
     private float _currentDelayCounter;
     private bool _isRestoringHealth;
     private bool _canRestoreHealth = true;
+    private float _defoultPositionY;
 
     public event UnityAction<float> OnHealthChanged;
     public event UnityAction OnDamageDone;
@@ -25,6 +28,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     private void Start()
     {
         CurrentValue = MaxValue;
+        _defoultPositionY = _cameraRoot.transform.localPosition.y;
     }
 
     public void LowerHealth(float value)
@@ -81,13 +85,15 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void Die()
     {
-        OnDied?.Invoke();
+        _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
+        _cameraRoot.DOLocalMoveY(0.5f, 1f);
         CurrentValue = 0;
         _playerInputHandler.SetCursorVisible(true);
         _playerInputHandler.FirstPersonController.enabled = false;
+        _playerInputHandler.ToggleInventoryPanels(false);
         _characterController.enabled = false;
         _playerInputHandler.ToggleAllInput(false);
-
+        OnDied?.Invoke();
         OnHealthChanged?.Invoke(HealthPercent);
     }
 
@@ -95,14 +101,18 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         OnRevived?.Invoke();
 
+        //_cameraRoot.localPosition = new Vector3(_cameraRoot.localPosition.x, _defoultPositionY, _cameraRoot.localPosition.z);
+        //_cameraRoot.localRotation = Quaternion.identity;
         transform.position = _interactor.SleepPointSaveData.Position;
         transform.rotation = _interactor.SleepPointSaveData.Rotation;
         _playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleAllInput(true);
         _playerInputHandler.FirstPersonController.enabled = true;
+        _playerInputHandler.ToggleInventoryPanels(true);
         _characterController.enabled = true;
         SetValue(MaxValue * 30 / 100);
         OnHealthChanged?.Invoke(HealthPercent);
+        //_playerInputHandler.FirstPersonController.ResetPosition();
     }
 
     public void SetCanRestoreHealth(bool value)
