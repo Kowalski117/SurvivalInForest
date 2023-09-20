@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2311839271094286030}
   - component: {fileID: 5248453901215248229}
   - component: {fileID: 8358593510687823233}
+  - component: {fileID: -178478532861252355}
   m_Layer: 6
   m_Name: Food_Pate_A_03
   m_TagString: Untagged
@@ -133,14 +134,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: cb9de568d22c98e4e8a318b63fdd882c, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!114 &2311839271094286030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,3 +214,15 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-178478532861252355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8168884635363809133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

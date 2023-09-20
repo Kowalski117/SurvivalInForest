@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 33876706174890327}
   - component: {fileID: 8931598136151603270}
   - component: {fileID: 6241352038716331982}
+  - component: {fileID: -5205465298298207005}
   m_Layer: 6
   m_Name: Food_Meat
   m_TagString: Untagged
@@ -104,14 +105,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 02a8b6b249a46924f97bb988ce9fa7cd, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!114 &727747226364548974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,3 +214,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &-5205465298298207005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728100886918063908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

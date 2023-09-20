@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5364156888240803335}
   - component: {fileID: 983968520}
   - component: {fileID: -4212696186634780760}
+  - component: {fileID: 1481611617342607598}
   m_Layer: 6
   m_Name: Weapon_Bow
   m_TagString: Untagged
@@ -117,14 +118,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 3544a707eed4d754291c28db4e515d0f, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!114 &5693164074243054664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,3 +214,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &1481611617342607598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687467787669184739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

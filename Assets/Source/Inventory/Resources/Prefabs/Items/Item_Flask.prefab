@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7944007712406201119}
   - component: {fileID: 7944007712406201088}
   - component: {fileID: 7197492775942160997}
+  - component: {fileID: 7447388300009862160}
   m_Layer: 6
   m_Name: Item_Flask
   m_TagString: Untagged
@@ -133,14 +134,12 @@ MonoBehaviour:
   _questControl: {fileID: 7944007712406201119}
   _itemData: {fileID: 11400000, guid: 11fc12d02eeafe14da00fb74beab06b7, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!114 &7944007712406201119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,3 +214,15 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &7447388300009862160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5970299575667275294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

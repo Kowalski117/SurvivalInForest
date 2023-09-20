@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3379290452246781431}
   - component: {fileID: 8501378928511143313}
   - component: {fileID: -1919046004983418691}
+  - component: {fileID: -4262357485738734108}
   m_Layer: 6
   m_Name: Item_Log
   m_TagString: Untagged
@@ -117,14 +118,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: cc663e98aa7670a4fa26266c078b8957, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!54 &3379290452246781425
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -216,3 +215,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &-4262357485738734108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7254787343848191812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

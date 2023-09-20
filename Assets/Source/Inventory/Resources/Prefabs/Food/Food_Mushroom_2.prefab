@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 33903938021564882}
   - component: {fileID: 7102587419343629260}
   - component: {fileID: -4816539767033837779}
+  - component: {fileID: 1455023098672963317}
   m_Layer: 6
   m_Name: Food_Mushroom_2
   m_TagString: Untagged
@@ -104,14 +105,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 95ae2e8ea1fe87845956e3e22a933b17, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!114 &8937240945695608302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,3 +215,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &1455023098672963317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8936125653630984870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

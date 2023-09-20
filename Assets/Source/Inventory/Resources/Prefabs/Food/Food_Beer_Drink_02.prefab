@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8825064201463861831}
   - component: {fileID: 7997323834517076049}
   - component: {fileID: 2557163420658152723}
+  - component: {fileID: 3166681823921138604}
   m_Layer: 6
   m_Name: Food_Beer_Drink_02
   m_TagString: Untagged
@@ -133,14 +134,12 @@ MonoBehaviour:
   _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 87a813404e8735540bc91861641ec945, type: 2}
   _itemSaveData:
-    _itemData: {fileID: 0}
+    _id: 0
     _position: {x: 0, y: 0, z: 0}
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _layerMask: 6
 --- !u!114 &8825064201463861831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,3 +214,15 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &3166681823921138604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5132700122841028550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
