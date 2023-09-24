@@ -1318,6 +1318,7 @@
             <e p="250plus survival flat icons" t="Include" />
             <e p="read me - katgrabowska_survivalicons.txt" t="Include" />
           </e>
+          <e p="UI" t="Include" />
           <e p="UnityAssetsStore" t="Include">
             <e p="Low Poly" t="Include">
               <e p="Rocks Pack - Low Poly" t="Include" />
@@ -5057,6 +5058,7 @@
         </e>
         <e p="Scenes" t="Include">
           <e p="AnimalsTestScene" t="Include" />
+          <e p="Rezerv9" t="Include" />
           <e p="SampleScene" t="Include" />
           <e p="TestScene" t="Include" />
         </e>
@@ -5314,6 +5316,7 @@
                   <e p="ToolItemData.cs" t="Include" />
                   <e p="WeaponItemData.cs" t="Include" />
                 </e>
+                <e p="ItemInWater.cs" t="Include" />
                 <e p="ItemPickUp.cs" t="Include" />
                 <e p="ItemSlot.cs" t="Include" />
                 <e p="ObjectPickUp.cs" t="Include" />
@@ -5344,6 +5347,7 @@
           <e p="Materials" t="Include" />
           <e p="MiningSystem" t="Include">
             <e p="Materials" t="Include" />
+            <e p="Particle" t="Include" />
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
               <e p="AppleTree.cs" t="Include" />
@@ -5360,9 +5364,10 @@
               <e p="Knife" t="Include" />
               <e p="Player" t="Include" />
             </e>
-            <e p="Hand" t="Include">
+            <e p="Hands" t="Include">
               <e p="Axe" t="Include" />
               <e p="Bow" t="Include" />
+              <e p="Hand" t="Include" />
               <e p="Knife" t="Include" />
               <e p="Spear" t="Include" />
               <e p="Torch" t="Include" />
@@ -5499,6 +5504,19 @@
             <e p="UniqueID.cs" t="Include" />
           </e>
           <e p="Screens" t="Include">
+            <e p="RewardScreen" t="Include">
+              <e p="DayRewardsData" t="Include" />
+              <e p="Prefabs" t="Include" />
+              <e p="Scripts" t="Include">
+                <e p="DayRewardsData.cs" t="Include" />
+                <e p="RewardHandler.cs" t="Include" />
+                <e p="RewardSlot.cs" t="Include" />
+                <e p="UI" t="Include">
+                  <e p="DailyRewardsScreen.cs" t="Include" />
+                  <e p="RewardSlotView.cs" t="Include" />
+                </e>
+              </e>
+            </e>
             <e p="Scripts" t="Include">
               <e p="PauseScreen.cs" t="Include" />
               <e p="ScreenUI.cs" t="Include" />

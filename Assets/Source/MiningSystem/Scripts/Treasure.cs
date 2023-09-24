@@ -9,9 +9,9 @@ public class Treasure : Resource
     [SerializeField] private ObjectItemsData[] _lootItems;
     [SerializeField] private ObjectPickUp _lootObject;
 
-    private int[] _array = new int[] { 75, 50, 25, 0 };
+    private int[] _array = new int[] { 75, 50, 25, 0};
     private int _index;
-    private float _changePositionDirection = 0.2f;
+    private float _changePositionDirection = 0.1f;
     private Vector3 _lootObjectPosition;
     private Tween _tweenTransform;
     private Tween _tweenLoot;
@@ -37,7 +37,7 @@ public class Treasure : Resource
         base.TakeDamage(damage, overTimeDamage);
         float damagePercentage = Health / MaxHealth * 100;
 
-        if (damagePercentage <= _array[_index])
+        if (damagePercentage < _array[_index])
         {
             ChangePosition();
             _index++;
@@ -49,7 +49,8 @@ public class Treasure : Resource
         ClearTween(_tweenLoot);
         ClearTween(_tweenTransform);
         _lootObject.Enable();
-        StartCoroutine(Precipice());
+        Сollider.enabled = false;
+        base.Die();
     }
     
     private void SetRandomLoot()
@@ -72,16 +73,5 @@ public class Treasure : Resource
             tween.Kill();
             tween = null;
         }
-    }
-
-    private IEnumerator Precipice()
-    {
-        DiedEvent();
-        Сollider.enabled = false;
-        yield return new WaitForSeconds(2);
-        Rigidbody.isKinematic = true;
-        Сollider.enabled = true;
-        gameObject.SetActive(false);
-        DisappearedEvent();
     }
 }
