@@ -11,6 +11,7 @@ public class AnimationAnimals : MonoBehaviour
     private string _sleep = "Sleep";
     private string _sit = "Sit";
     private string _attacks ="Attack";
+    private string _howl ="Howl";
     private static int _maxAttacksAnimation = 3;
 
 
@@ -27,17 +28,6 @@ public class AnimationAnimals : MonoBehaviour
 
         _animator.SetFloat(_speed, (_agent.velocity.magnitude / 10)); 
     }
-
-    public void Sit()
-    {
-        TurnOffAnimations();
-        _animator.SetBool(_sit,true);
-    }
-
-    public void Sleep()
-    {
-        
-    }
     
     public void Attack()
     {
@@ -52,11 +42,12 @@ public class AnimationAnimals : MonoBehaviour
         _animator.SetBool(_death, true);
     }
 
-    private void TurnOffAnimations()
+    public void TurnOffAnimations()
     {
         _animator.SetBool(_sit,false);
         _animator.SetBool(_sleep, false);
-        _animator.SetBool(_eat, false);
+        _animator.SetBool(_eat, false); 
+        _animator.SetBool(_howl, false);
     }
 
 }

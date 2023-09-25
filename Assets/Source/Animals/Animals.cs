@@ -18,10 +18,11 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private float _spawnLootUp = 0.5f;
     private BehaviorTree _behaviorTree;
     private NavMeshAgent _agent;
-    private bool _isDead = false;
+    private bool _isDead;
     private Coroutine _coroutineOverTimeDamage;
     private Collider _collider;
     private float _maxHealth;
+    private Rigidbody _rigidbody;
 
     public float Health => _healh;
     public float MaxHealth => _maxHealth;
@@ -34,6 +35,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
         _behaviorTree = GetComponent<BehaviorTree>();
         _agent = GetComponent<NavMeshAgent>();
         _collider = GetComponent<Collider>();
+        _rigidbody = GetComponent<Rigidbody>();
         _maxHealth = _healh;
     }
     
@@ -58,7 +60,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
 
     public void Die()
     {
-        _collider.enabled = false;
+        
         _behaviorTree.enabled = false;
         _agent.enabled = false;
         SpawnItem(_meat,_radiusSpawnLoots,_spawnLootUp,_numberMeat);
@@ -82,7 +84,11 @@ public abstract class Animals : MonoBehaviour, IDamagable
 
     IEnumerator Precipice()
     {
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(10f);
+        _collider.enabled = false;
+        yield return new WaitForSeconds(10f);
+        _rigidbody.isKinematic = false;
+        yield return new WaitForSeconds(3f);
         Destroy(gameObject);
     }
 
