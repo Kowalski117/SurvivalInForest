@@ -35,17 +35,34 @@ public class InventorySystem
                     OnInventorySlotChanged?.Invoke(slot);
                     return true;
                 }
+                else if (slot.ItemData != null) 
+                {
+                    int spaceLeft = slot.ItemData.MaxStackSize - slot.Size; 
+                    slot.AddToStack(spaceLeft); 
+                    OnInventorySlotChanged?.Invoke(slot);
+
+                    amount -= spaceLeft;
+                }
             }
         }
-        if (HasFreeSlot(out InventorySlot freeSlot))
+
+        foreach (var slot in _inventorySlots)
         {
-            if (freeSlot.EnoughRoomLeftInStack(amount))
+            if (slot.ItemData == null)
             {
-                freeSlot.UpdateInventorySlot(item, amount, durability);
-                OnInventorySlotChanged?.Invoke(freeSlot);
-                return true;
+                int stackSizeToAdd = Mathf.Min(amount, item.MaxStackSize);
+                slot.UpdateInventorySlot(item, stackSizeToAdd, durability);
+                OnInventorySlotChanged?.Invoke(slot);
+
+                amount -= stackSizeToAdd;
+
+                if (amount <= 0)
+                {
+                    return true;
+                }
             }
         }
+
         return false;
     }
 

@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using UnityEngine;
 
 public class UIInventoryHandler : MonoBehaviour
@@ -14,6 +15,8 @@ public class UIInventoryHandler : MonoBehaviour
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
 
+    public bool IsInventoryOpen => _isInventoryOpen;
+
     private void Awake()
     {
         _inventoryPanel.gameObject.SetActive(false);
@@ -26,7 +29,7 @@ public class UIInventoryHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        InventoryHolder.OnDinamicInventoryDisplayRequested += DisplayInventory;
+        ChestInventory.OnDinamicChestDisplayRequested += DisplayInventory;
         _playerInputHandler.InventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
 
         _playerHealth.OnDied += TurnOffDisplayInventory;
@@ -34,23 +37,33 @@ public class UIInventoryHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        InventoryHolder.OnDinamicInventoryDisplayRequested -= DisplayInventory;
+        ChestInventory.OnDinamicChestDisplayRequested -= DisplayInventory;
         _playerInputHandler.InventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
 
         _playerHealth.OnDied -= TurnOffDisplayInventory;
     }
 
-    public void DisplayInventory(InventorySystem inventoryDisplay, int offset)
+    public void DisplayInventory(ChestInventory chestInventory, int offset)
     {
-        _isChestOpen = !_isChestOpen;
-
-        if (_isChestOpen)
+        if (!_isInventoryOpen)
         {
-            _inventoryPanel.gameObject.SetActive(true);
-            _inventoryPanel.RefreshDynamicInventory(inventoryDisplay, offset);
+            _isChestOpen = !_isChestOpen;
+            chestInventory.DistanceHandler.SetActive(_isChestOpen);
+
+            if (_isChestOpen)
+            {
+                _inventoryPanel.gameObject.SetActive(true);
+                _inventoryPanel.RefreshDynamicInventory(chestInventory.InventorySystem, offset);
+            }
+            else
+            {
+                _inventoryPanel.gameObject.SetActive(false);
+            }
         }
         else
         {
+            _isChestOpen = false;
+            chestInventory.DistanceHandler.SetActive(_isChestOpen);
             _inventoryPanel.gameObject.SetActive(false);
         }
     }

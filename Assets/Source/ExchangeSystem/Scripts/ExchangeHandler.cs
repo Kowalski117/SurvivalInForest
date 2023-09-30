@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ExchangeHandler : MonoBehaviour
 {
+    [SerializeField] private UIInventoryHandler _inventoryHandler;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private Transform _panel;
     [SerializeField] private Transform _containerForSlot;
@@ -30,15 +31,25 @@ public class ExchangeHandler : MonoBehaviour
 
     private void DisplayShopWindow(ExchangeKeeper exchangeKeeper)
     {
-        _isShopOpen = !_isShopOpen;
-
-        if (_isShopOpen)
+        if (!_inventoryHandler.IsInventoryOpen)
         {
-            _panel.gameObject.SetActive(true);
-            CreateSlots();
+            _isShopOpen = !_isShopOpen;
+            exchangeKeeper.DistanceHandler.SetActive(_isShopOpen);
+
+            if (_isShopOpen)
+            {
+                _panel.gameObject.SetActive(true);
+                CreateSlots();
+            }
+            else
+            {
+                _panel.gameObject.SetActive(false);
+            }
         }
         else
         {
+            _isShopOpen = false;
+            exchangeKeeper.DistanceHandler.SetActive(_isShopOpen);
             _panel.gameObject.SetActive(false);
         }
     }

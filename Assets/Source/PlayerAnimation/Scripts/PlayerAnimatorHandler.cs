@@ -16,7 +16,7 @@ public class PlayerAnimatorHandler : MonoBehaviour
     private string _speed = "Speed";
     private string _pickUp = "PickUp";
     private string _build = "Build";
-    private string _hit = "Hit";
+    private string[] _hits = { "Hit", "Hit1"};
     private string _aim = "Aim";
     private string _pullItem = "PullItem";
 
@@ -68,7 +68,7 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public void Hit()
     {
-        _handAnimator.HandAnimator.SetTrigger(_hit);
+        _handAnimator.HandAnimator.SetTrigger(_hits[Random.Range(0, _hits.Length)]);
     }
 
     public void Aim(bool value)

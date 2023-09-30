@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class Building : MonoBehaviour
 {
     [SerializeField] private int _defoultLayerInt = 12;
+    [SerializeField] private bool _isCanDelete = true;
 
     private BuildingData _assignedData;
     private BoxCollider _boxCollider;
@@ -25,6 +26,7 @@ public class Building : MonoBehaviour
     public BuildingData AssignedData => _assignedData;
     public bool FlaggedForDelete => _flaggedForDelete;
     public bool IsOverlapping => _isOverlapping;
+    public bool IsCanDelete => _isCanDelete;
 
     private void Awake()
     {
@@ -44,12 +46,12 @@ public class Building : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnLoadData += Load;
+        //SaveGame.OnLoadData += Load;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnLoadData -= Load;
+        //SaveGame.OnLoadData -= Load;
     }
 
     public void Init(BuildingData data, string id = null)
@@ -115,20 +117,19 @@ public class Building : MonoBehaviour
 
     public void Save()
     {
-        if (ES3.KeyExists(_uniqueID.Id))
-            ES3.DeleteKey(_uniqueID.Id);
-
         BuildingSaveData itemSaveData = new BuildingSaveData(_assignedData.Id, transform.position, transform.rotation);
         ES3.Save(_uniqueID.Id, itemSaveData);
     }
 
-    private void Load()
-    {
-        if (!ES3.KeyExists(_uniqueID.Id))
-        {
-            Destroy(gameObject);
-        }
-    }
+    //private void Load()
+    //{
+    //    if (!ES3.KeyExists(_uniqueID.Id))
+    //    {
+
+
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     private void OnTriggerStay(Collider other)
     {

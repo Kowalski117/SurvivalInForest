@@ -34,10 +34,18 @@ public class InventorySlot : ItemSlot
 
     public bool EnoughRoomLeftInStack(int amountToAdd)
     {
-        if (ItemData == null || (ItemData != null && StackSize + amountToAdd <= ItemData.MaxStackSize))
-            return true;
-        else
-            return false;
+        if (ItemData != null)
+        {
+            if (ItemData.MaxStackSize > 1)
+            {
+                return StackSize + amountToAdd <= ItemData.MaxStackSize;
+            }
+            else
+            {
+                return StackSize < 1; // Можно добавить только один предмет
+            }
+        }
+        return false;
     }
 
     public bool SplitStack(out InventorySlot splitSlot)

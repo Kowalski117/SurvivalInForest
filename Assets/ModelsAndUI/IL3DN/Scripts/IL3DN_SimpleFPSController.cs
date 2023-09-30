@@ -251,9 +251,9 @@ namespace IL3DN
             IL3DN_ChangeWalkingSound soundScript = other.GetComponent<IL3DN_ChangeWalkingSound>();
             if (soundScript != null)
             {
-                footStepsOverride = soundScript.footStepsOverride;
-                jumpSoundOverride = soundScript.jumpSound;
-                landSoundOverride = soundScript.landSound;
+                footStepsOverride = soundScript.FootStepsOverride;
+                jumpSoundOverride = soundScript.JumpSound;
+                landSoundOverride = soundScript.LandSound;
                 isInSpecialSurface = true;
             }
         }

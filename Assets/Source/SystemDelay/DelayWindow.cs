@@ -10,6 +10,7 @@ public class DelayWindow : MonoBehaviour
     [SerializeField] private Transform _loadingPanel;
     [SerializeField] private Image _loadingBar;
     [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private TMP_Text _timeText;
@@ -37,6 +38,7 @@ public class DelayWindow : MonoBehaviour
     private IEnumerator LoadingRoutine(float delay, float skipTime, string name, ActionType actionType)
     {
         _isLoading = true;
+        _survivalHandler.TimeHandler.ToggleEnable(false);
         _playerInputHandler.ToggleAllInput(false);
         _loadingPanel.gameObject.SetActive(true);
 
@@ -62,6 +64,10 @@ public class DelayWindow : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         _isLoading = false;
         _timeHandler.AddTimeInHours(skipTime);
+        _survivalHandler.Sleep.LowerValueInFours(skipTime);
+        _survivalHandler.Hunger.LowerValueInFours(skipTime);
+        _survivalHandler.Thirst.LowerValueInFours(skipTime);
+        _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);
 

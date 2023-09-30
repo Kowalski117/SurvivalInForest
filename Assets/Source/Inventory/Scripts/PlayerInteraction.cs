@@ -227,7 +227,6 @@ public class PlayerInteraction : Raycast
     {
         if (_currentBrokenObject != null)
         {
-            Debug.Log(damage);
             _currentBrokenObject.TakeDamage(damage, overTimeDamage);
             UpdateDurabilityItem(_currentInventorySlot);
 

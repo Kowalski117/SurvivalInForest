@@ -34,12 +34,17 @@ public class SurvivalAttribute : MonoBehaviour
 
     public void LowerValue(float value)
     {
-        CurrentValue -= value * Time.deltaTime;
+        CurrentValue -= value;
 
         if (CurrentValue <= 0)
             CurrentValue = 0;
 
         OnValueChanged?.Invoke(ValuePercent);
+    }
+
+    public void LowerValueInFours(float value)
+    {
+        LowerValue(value * _hourInSeconds);
     }
 
     public void SetValue(float value)

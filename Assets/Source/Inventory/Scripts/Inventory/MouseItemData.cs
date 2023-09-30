@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class MouseItemData : MonoBehaviour
 {
     [SerializeField] private InventoryPlayerInput _playerInput;
-    [SerializeField] private Interactor _interactor;
+    [SerializeField] private InventoryOperator _inventoryOperator;
     [SerializeField] private Canvas _canvas;
 
     private string _invetoryTag = "Inventory";
@@ -82,7 +82,7 @@ public class MouseItemData : MonoBehaviour
             }
             else
             {
-                _interactor.RemoveItem(_inventorySlotUI);
+                _inventoryOperator.RemoveItem(_inventorySlotUI);
             }
 
             Toggle(false);

@@ -15,7 +15,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     private float _currentDelayCounter;
     private bool _isRestoringHealth;
     private bool _canRestoreHealth = true;
-    private float _defoultPositionY;
+    private bool _isDied = false;
 
     public event UnityAction<float> OnHealthChanged;
     public event UnityAction OnDamageDone;
@@ -23,12 +23,12 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public event UnityAction OnDied;
     public event UnityAction OnRevived;
 
+    public bool IsDied => _isDied;
     public float HealthPercent => CurrentValue / MaxValue;
 
     private void Start()
     {
         CurrentValue = MaxValue;
-        _defoultPositionY = _cameraRoot.transform.localPosition.y;
     }
 
     public void LowerHealth(float value)
@@ -85,24 +85,23 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void Die()
     {
+        OnDied?.Invoke();
+        _isDied = true;
         _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
         _cameraRoot.DOLocalMoveY(0.5f, 1f);
         CurrentValue = 0;
-        _playerInputHandler.SetCursorVisible(true);
         _playerInputHandler.FirstPersonController.enabled = false;
         _playerInputHandler.ToggleInventoryPanels(false);
         _characterController.enabled = false;
         _playerInputHandler.ToggleAllInput(false);
-        OnDied?.Invoke();
+        _playerInputHandler.SetCursorVisible(true);
         OnHealthChanged?.Invoke(HealthPercent);
     }
 
     public void Reborn()
     {
         OnRevived?.Invoke();
-
-        //_cameraRoot.localPosition = new Vector3(_cameraRoot.localPosition.x, _defoultPositionY, _cameraRoot.localPosition.z);
-        //_cameraRoot.localRotation = Quaternion.identity;
+        _isDied = false;
         transform.position = _interactor.SleepPointSaveData.Position;
         transform.rotation = _interactor.SleepPointSaveData.Rotation;
         _playerInputHandler.SetCursorVisible(false);
@@ -111,8 +110,8 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         _playerInputHandler.ToggleInventoryPanels(true);
         _characterController.enabled = true;
         SetValue(MaxValue * 30 / 100);
+
         OnHealthChanged?.Invoke(HealthPercent);
-        //_playerInputHandler.FirstPersonController.ResetPosition();
     }
 
     public void SetCanRestoreHealth(bool value)

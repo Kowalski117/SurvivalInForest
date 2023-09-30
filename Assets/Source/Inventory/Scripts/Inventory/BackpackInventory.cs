@@ -4,7 +4,7 @@ using UnityEngine.Events;
 public class BackpackInventory : InventoryHolder
 {
     [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
-    [SerializeField] private Interactor _interactor;
+    [SerializeField] private InventoryOperator _inventoryOperator;
 
     private string _backpackInventory = "BackpackInventory";
     private bool _isEnable = false;
@@ -18,6 +18,9 @@ public class BackpackInventory : InventoryHolder
         _clothesSlotsHandler.OnInteractionBackpack += Show;
         _clothesSlotsHandler.OnRemoveBackpack += Show;
         _clothesSlotsHandler.OnRemoveBackpack += RemoveAllItems;
+
+        SaveGame.OnSaveGame += SaveInventory;
+        SaveGame.OnLoadData += LoadInventory;
     }
 
     private void OnDisable()
@@ -25,6 +28,9 @@ public class BackpackInventory : InventoryHolder
         _clothesSlotsHandler.OnInteractionBackpack -= Show;
         _clothesSlotsHandler.OnRemoveBackpack -= Show;
         _clothesSlotsHandler.OnRemoveBackpack -= RemoveAllItems;
+
+        SaveGame.OnSaveGame -= SaveInventory;
+        SaveGame.OnLoadData -= LoadInventory;
     }
 
     public void Show()
@@ -39,7 +45,7 @@ public class BackpackInventory : InventoryHolder
         {
             if(slot.ItemData != null)
             {
-                _interactor.InstantiateItem(slot.ItemData, slot.Durability);
+                _inventoryOperator.InstantiateItem(slot.ItemData, slot.Durability);
                 PrimaryInventorySystem.RemoveItemsInventory(slot, slot.Size);
             }
         }
@@ -53,8 +59,9 @@ public class BackpackInventory : InventoryHolder
 
     protected override void LoadInventory()
     {
-        Debug.Log(_backpackInventory);
         InventorySaveData saveData = ES3.Load<InventorySaveData>(_backpackInventory);
         PrimaryInventorySystem = saveData.InventorySystem;
+
+        base.LoadInventory();
     }
 }

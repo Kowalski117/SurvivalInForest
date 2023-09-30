@@ -15,6 +15,10 @@ public class SurvivalHandler : MonoBehaviour
     [SerializeField] private float _liftingDelay = 2f;
 
     private float _lookTimer = 0;
+    private int _addAmount = 1;
+
+    private bool _isEnable = false;
+
     public SurvivalAttribute Hunger => _hunger;
     public SurvivalAttribute Thirst => _thirst;
     public StaminaAttribute Stamina => _stamina;
@@ -45,7 +49,7 @@ public class SurvivalHandler : MonoBehaviour
     {
         _stamina.DecreaseStaminaValue();
 
-        if(_health.HealthPercent > 0)
+        if(_health.HealthPercent > 0 && _isEnable)
             HandleTimeUpdate();
 
         if(_hunger.ValuePercent <= 0 || _thirst.ValuePercent <= 0 || _sleep.ValuePercent <= 0)
@@ -91,7 +95,7 @@ public class SurvivalHandler : MonoBehaviour
                 if (slot.Durability <= 0)
                 {
                     if (foodItemData.EmptyDishes != null)
-                        _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+                        _playerInventory.AddToInventory(foodItemData.EmptyDishes, _addAmount);
 
                     _playerInventory.RemoveInventory(slot, 1);
                 }
@@ -99,18 +103,23 @@ public class SurvivalHandler : MonoBehaviour
             else
             {
                 if (foodItemData.EmptyDishes != null)
-                    _playerInventory.AddToInventory(foodItemData.EmptyDishes, 1);
+                    _playerInventory.AddToInventory(foodItemData.EmptyDishes, _addAmount);
 
                 _playerInventory.RemoveInventory(slot, 1);
             }
         }
     }
 
+    public void SetEnable(bool isActive)
+    {
+        _isEnable = isActive;
+    }
+
     private void HandleTimeUpdate()
     {
-        _hunger.LowerValue(_timeHandler.TimeMultiplier);
-        _thirst.LowerValue(_timeHandler.TimeMultiplier);
-        _sleep.LowerValue(_timeHandler.TimeMultiplier);
+        _hunger.LowerValue(_timeHandler.TimeMultiplier * Time.deltaTime);
+        _thirst.LowerValue(_timeHandler.TimeMultiplier * Time.deltaTime);
+        _sleep.LowerValue(_timeHandler.TimeMultiplier * Time.deltaTime);
     }
 
     private void Reborn()
@@ -120,14 +129,14 @@ public class SurvivalHandler : MonoBehaviour
         _sleep.SetValue(_sleep.MaxValueInSeconds * 30 / 100);
     }
 
-    public void SaveSurvivalAttributes()
+    private void SaveSurvivalAttributes()
     {
         ES3.Save("Hunger", _hunger.CurrentAttribute);
         ES3.Save("Thirst", _thirst.CurrentAttribute);
         ES3.Save("Sleep", _sleep.CurrentAttribute);
     }
 
-    public void LoadSurvivalAttributes()
+    private void LoadSurvivalAttributes()
     {
         _hunger.SetValue(ES3.Load<float>("Hunger", _hunger.MaxValueInSeconds));
         _thirst.SetValue(ES3.Load<float>("Thirst", _thirst.MaxValueInSeconds));
