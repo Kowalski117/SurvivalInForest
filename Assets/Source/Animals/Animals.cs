@@ -103,6 +103,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     {
         int duration = 5;
         float second = 1;
+        
         _blood.Play();
         
         for (int i = duration; i > 0; i--)
@@ -117,8 +118,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
                 break;
             }
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(duration);
         _blood.Stop();
-        Debug.Log("tut");
     }
 }
