@@ -101,7 +101,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
 
     IEnumerator TakeOverTimeDamage(float overTimeDamage)
     {
-        int duration = 100;
+        int duration = 5;
         float second = 1;
         _blood.Play();
         
