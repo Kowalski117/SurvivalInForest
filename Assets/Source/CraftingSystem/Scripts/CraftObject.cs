@@ -9,6 +9,7 @@ public class CraftObject : MonoBehaviour
     private SphereCollider _sphereCollider;
     private BoxCollider _boxCollider;
     private ManualWorkbench _workbench;
+    private DistanceHandler _distanceHandler;
 
     public bool IsEnabledInitially => _isEnabledInitially;
 
@@ -17,6 +18,8 @@ public class CraftObject : MonoBehaviour
         _building = GetComponentInParent<Building>();
         _sphereCollider = GetComponent<SphereCollider>();
         _boxCollider = GetComponent<BoxCollider>();
+        _distanceHandler = GetComponentInChildren<DistanceHandler>();
+
         if (_building != null)
         {
             _boxCollider.enabled = false;
@@ -36,6 +39,8 @@ public class CraftObject : MonoBehaviour
         {
             _building.OnCompletedBuild += EnableCollider;
         }
+
+        _distanceHandler.OnDistanceExceeded += SetDefoultCrafts;
     }
 
     private void OnDisable()
@@ -44,6 +49,8 @@ public class CraftObject : MonoBehaviour
         {
             _building.OnCompletedBuild -= EnableCollider;
         }
+
+        _distanceHandler.OnDistanceExceeded -= SetDefoultCrafts;
     }
 
     public void TurnOff()
@@ -54,9 +61,17 @@ public class CraftObject : MonoBehaviour
         {
             _workbench.CraftingHandler.DisplayCraftWindow(_workbench.CraftingÑategory);
             _workbench = null;
+            _distanceHandler.SetActive(false);
         }
 
         enabled = false;
+    }
+
+    private void SetDefoultCrafts()
+    {
+        _workbench.CraftingHandler.DisplayCraftWindow(_workbench.CraftingÑategory);
+        _workbench = null;
+        _distanceHandler.SetActive(false);
     }
 
     private void EnableCollider()
@@ -70,15 +85,16 @@ public class CraftObject : MonoBehaviour
         {
             _workbench = manualWorkbench;
             manualWorkbench.CraftingHandler.DisplayCraftWindow(_craftingÑategory);
+            _distanceHandler.SetActive(true);
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
-        {
-            manualWorkbench.CraftingHandler.DisplayCraftWindow(manualWorkbench.CraftingÑategory);
-            _workbench = null;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
+    //    {
+    //        manualWorkbench.CraftingHandler.DisplayCraftWindow(manualWorkbench.CraftingÑategory);
+    //        _workbench = null;
+    //    }
+    //}
 }

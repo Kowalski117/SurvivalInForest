@@ -11,7 +11,7 @@ public class InventoryDescriptionUI : MonoBehaviour
     [SerializeField] private Button _useButton;
     [SerializeField] private Button _discardButton;
 
-    [SerializeField] private Interactor _interactor;
+    [SerializeField] private InventoryOperator _inventoryOperator;
     [SerializeField] private SurvivalHandler _survivalHandler;
 
     private InventorySlotUI _currentSlot;
@@ -94,7 +94,7 @@ public class InventoryDescriptionUI : MonoBehaviour
 
     private void DiscardButtonClick()
     {
-        _interactor.RemoveItem(_currentSlot);
+        _inventoryOperator.RemoveItem(_currentSlot);
 
         if (_currentSlot.AssignedInventorySlot.ItemData == null)
             ResetDescription();

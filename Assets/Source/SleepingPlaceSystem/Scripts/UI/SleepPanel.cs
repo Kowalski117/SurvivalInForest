@@ -13,6 +13,7 @@ public class SleepPanel : MonoBehaviour
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private DelayWindow _loadingWindow;
+    [SerializeField] private SaveGame _saveGame;
 
     private DateTime _sleepTime;
     private bool _isSleepWindowOpen = false;
@@ -46,11 +47,6 @@ public class SleepPanel : MonoBehaviour
             _timer.text = _sleepTime.AddHours(_survivalHandler.Sleep.MissingValue).ToString("HH:mm");
     }
 
-    public void OpenWindow()
-    {
-        _sleepWindow.gameObject.SetActive(true);
-    }
-
     private void SleepButtonClick()
     {
         ExitButtonClick();
@@ -65,8 +61,12 @@ public class SleepPanel : MonoBehaviour
         OnSubtractTime?.Invoke(_survivalHandler.Sleep.MissingValue);
         _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue);
         _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue);
+        _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue);
+        _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue);
+
         OnStoppedTime?.Invoke(true);
         _survivalHandler.TimeHandler.ToggleEnable(true);
+        _saveGame.Save();
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
@@ -85,7 +85,7 @@ public class SleepPanel : MonoBehaviour
         {
             _playerInputHandler.SetCursorVisible(_isSleepWindowOpen);
             _playerInputHandler.ToggleInventoryInput(!_isSleepWindowOpen);
-            OpenWindow();
+            _sleepWindow.gameObject.SetActive(true);
         }
         else
         {

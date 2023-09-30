@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Xml;
 using UnityEngine;
 
 public class GardenBed : MonoBehaviour
@@ -7,6 +8,7 @@ public class GardenBed : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private SeedItemData _seedItem;
 
+    private string _gardenBedSaveData = "GardenBed";
     private ObjectPickUp _currentItem;
     private UniqueID _uniqueID;
 
@@ -38,6 +40,7 @@ public class GardenBed : MonoBehaviour
     private void OnEnable()
     {
         SaveGame.OnSaveGame += Save;
+        //_currentItem.OnPickUp += 
     }
 
     private void OnDisable()
@@ -53,6 +56,7 @@ public class GardenBed : MonoBehaviour
             _currentItem = Instantiate(seedItemData.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
             _currentItem.gameObject.transform.localScale = scale;
             _currentItem.TurnOff();
+            _currentItem.Init(SetLootItem(seedItemData));
             StartCoroutine(SpawnOverTime(seedItemData.GrowthTime - _elapsedTime));
             return true;
         }
@@ -65,48 +69,65 @@ public class GardenBed : MonoBehaviour
         _currentItem.transform.DOScale(Vector3.one, time);
         yield return new WaitForSeconds(time);
         _currentItem.Enable();
-        Save();
         _currentItem = null;
+        _currentItemData = null;
         _isPlantGrows = false;
         _elapsedTime = 0;
+        Save();
     }
 
     private void Save()
     {
-        if(_currentItemData != null && _currentItem != null)
-        {
-            GardenBedSaveData gardenBedSaveData = new GardenBedSaveData(_currentItemData.Id, _elapsedTime, _currentItem.gameObject.transform.localScale);
-            ES3.Save(_uniqueID.Id, gardenBedSaveData);
-        }
+        GardenBedSaveData gardenBedSaveData;
+
+        if (_currentItemData != null && _currentItem != null)
+            gardenBedSaveData = new GardenBedSaveData(_currentItemData.Id, _elapsedTime, _currentItem.gameObject.transform.localScale);
+        else
+            gardenBedSaveData = new GardenBedSaveData(0, _elapsedTime, Vector3.zero);
+
+        ES3.Save(_uniqueID.Id + _gardenBedSaveData, gardenBedSaveData);
     }
 
     private void Load()
     {
-        if (ES3.KeyExists(_uniqueID.Id))
+        if (ES3.KeyExists(_uniqueID.Id + _gardenBedSaveData))
         {
-            GardenBedSaveData gardenBedSaveData = ES3.Load<GardenBedSaveData>(_uniqueID.Id);
+            GardenBedSaveData gardenBedSaveData = ES3.Load<GardenBedSaveData>(_uniqueID.Id + _gardenBedSaveData);
 
-            _currentItemData = SaveItemHandler.GetItem(gardenBedSaveData.CurrentItemDataId);
-            _elapsedTime = gardenBedSaveData.ElapsedTime;
+            if(gardenBedSaveData.CurrentItemDataId != 0)
+            {
+                _currentItemData = SaveItemHandler.GetItem(gardenBedSaveData.CurrentItemDataId);
 
-            if (gardenBedSaveData.Scale != Vector3.one)
-            {
-                StartGrowingSeed(_currentItemData, gardenBedSaveData.Scale);
-            }
-            else
-            {
-                if(_currentItemData is SeedItemData seedItemData)
+                _elapsedTime = gardenBedSaveData.ElapsedTime;
+
+                if (gardenBedSaveData.Scale != Vector3.one)
                 {
-                    _currentItem = Instantiate(seedItemData.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
+                    StartGrowingSeed(_currentItemData, gardenBedSaveData.Scale);
+                }
+                else
+                {
+                    if (_currentItemData is SeedItemData seedItemData)
+                    {
+                        _currentItem = Instantiate(seedItemData.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
+                        _currentItem.Init(SetLootItem(seedItemData));
+                    }
                 }
             }
-
         }
         else
         {
             if (_seedItem != null)
+            {
                 _currentItem = Instantiate(_seedItem.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
+                _currentItemData = _seedItem;
+                _currentItem.Init(SetLootItem(_seedItem));
+            }
         }
+    }
+
+    private ObjectItemsData SetLootItem(SeedItemData seedItemData)
+    {
+        return seedItemData.LootItems[Random.Range(0, seedItemData.LootItems.Length)];
     }
 }
 

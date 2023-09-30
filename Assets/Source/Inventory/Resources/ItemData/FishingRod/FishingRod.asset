@@ -22,6 +22,7 @@ MonoBehaviour:
   _gorenjeTime: 0
   _durability: 0
   _colorDurability: {r: 1, g: 0, b: 0, a: 1}
+  _typeBehaviorInWater: 2
   _toolType: 3
   _damageResources: 0
   _damageLiving: 0
@@ -29,13 +30,17 @@ MonoBehaviour:
   _muzzleFlash: {fileID: 0}
   _hitEffect: {fileID: 0}
   _muzzleSound: {fileID: 0}
-  _randomTime: {x: 5, y: 15}
+  _randomTime: {x: 10, y: 30}
   _extractions:
-  - _inventoryItemData: {fileID: 11400000, guid: da72d5f73d6756a439c80895b979ec01, type: 2}
-    _chance: 0.4
-  - _inventoryItemData: {fileID: 11400000, guid: 824dc35e7cc48774192854c0b64a26cf, type: 2}
+  - _inventoryItemData: {fileID: 11400000, guid: 403e38b4cafd1424d8b88e7b535dbb9b, type: 2}
+    _chance: 0.225
+  - _inventoryItemData: {fileID: 11400000, guid: e0e314fe9332c774c832c21bf26e699b, type: 2}
     _chance: 0.2
-  - _inventoryItemData: {fileID: 11400000, guid: 11fc12d02eeafe14da00fb74beab06b7, type: 2}
+  - _inventoryItemData: {fileID: 11400000, guid: 26365cc70b21b1549ace9a5a4e3fb4da, type: 2}
     _chance: 0.2
-  - _inventoryItemData: {fileID: 11400000, guid: 3d4176447b7ab78449ff1e2497ea3b8c, type: 2}
-    _chance: 0.2
+  - _inventoryItemData: {fileID: 11400000, guid: 6ab92c85218376041bd90d10d8ac350d, type: 2}
+    _chance: 0.15
+  - _inventoryItemData: {fileID: 11400000, guid: 737712de3576be6439bc7595dfbf7c59, type: 2}
+    _chance: 0.05
+  - _inventoryItemData: {fileID: 11400000, guid: 551321ab1a123f242bbac763b7d778df, type: 2}
+    _chance: 0.175

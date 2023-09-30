@@ -9,6 +9,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private InteractionPlayerInput _interactionPlayerInput;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private UIScreenPlayerInput _screenPlayerInput;
+    [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private Transform _inventoryPanels;
 
     public FirstPersonController FirstPersonController => _firstPersonController;
@@ -20,12 +21,13 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Start()
     {
-        //SetCursorVisible(false);
+        SetCursorVisible(true);
+        ToggleAllParametrs(false);
     }
 
     public void SetCursorVisible(bool visible)
     {
-        _firstPersonController.TogglePersonController(!visible);
+        _firstPersonController.ToggleCamera(!visible);
 
         Cursor.visible = visible;
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
@@ -33,6 +35,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void TogglePersonController(bool visible)
     {
+        _firstPersonController.ToggleCamera(visible);
         _firstPersonController.TogglePersonController(visible);
     }
 
@@ -73,5 +76,13 @@ public class PlayerInputHandler : MonoBehaviour
         ToggleInventoryInput(visible);
         ToggleInteractionConstructionInput(visible);
         ToggleBuildPlayerInput(visible);
+    }
+
+    public void ToggleAllParametrs(bool visible)
+    {
+        SetCursorVisible(!visible);
+        TogglePersonController(visible);
+        _survivalHandler.SetEnable(visible);
+        _survivalHandler.TimeHandler.SetEnable(visible);
     }
 }

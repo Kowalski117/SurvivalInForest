@@ -9,7 +9,7 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private DelayWindow _loadingWindow;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
-    [SerializeField] private BuildPlayerInput _buildPlayerInput;
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private float _rotateSnapAngle = 45f;
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
@@ -39,10 +39,10 @@ public class BuildTool : MonoBehaviour
     {
         CrafBuildSlot.OnCreateRecipeButtonClick += ChoosePart;
 
-        _buildPlayerInput.OnPutBuilding += PutBuilding;
-        _buildPlayerInput.OnRotateBuilding += RotateBuilding;
-        _buildPlayerInput.OnDeleteModeBuilding += DeleteMobeBuilding;
-        _buildPlayerInput.OnDeleteBuilding += DeleteBuilding;
+        _playerInputHandler.BuildPlayerInput.OnPutBuilding += PutBuilding;
+        _playerInputHandler.BuildPlayerInput.OnRotateBuilding += RotateBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding += DeleteMobeBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += DeleteBuilding;
 
         _playerHealth.OnDied += DeleteBuilding;
     }
@@ -51,10 +51,10 @@ public class BuildTool : MonoBehaviour
     {
         CrafBuildSlot.OnCreateRecipeButtonClick -= ChoosePart;
 
-        _buildPlayerInput.OnPutBuilding -= PutBuilding;
-        _buildPlayerInput.OnRotateBuilding -= RotateBuilding;
-        _buildPlayerInput.OnDeleteModeBuilding -= DeleteMobeBuilding;
-        _buildPlayerInput.OnDeleteBuilding -= DeleteBuilding;
+        _playerInputHandler.BuildPlayerInput.OnPutBuilding -= PutBuilding;
+        _playerInputHandler.BuildPlayerInput.OnRotateBuilding -= RotateBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding -= DeleteMobeBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= DeleteBuilding;
 
         _playerHealth.OnDied -= DeleteBuilding;
     }
@@ -95,7 +95,7 @@ public class BuildTool : MonoBehaviour
 
         var detectedBuilding = hitInfo.collider.gameObject.GetComponentInParent<Building>();
 
-        if(detectedBuilding == null)
+        if(detectedBuilding == null || !detectedBuilding.IsCanDelete)
             return;
 
         if (_targetBuilding == null)
@@ -155,6 +155,7 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
         {
+            _playerInputHandler.TogglePersonController(false);
             _loadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.BuildingData.DisplayName, ActionType.CraftBuild);
             _loadingWindow.OnLoadingComplete += OnLoadingComplete;
         }
@@ -169,6 +170,8 @@ public class BuildTool : MonoBehaviour
         _spawnBuilding = null;
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
+        _playerInputHandler.TogglePersonController(true);
+        _playerInputHandler.ToggleBuildPlayerInput(true);
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
@@ -218,6 +221,7 @@ public class BuildTool : MonoBehaviour
         }
 
         DeleteObjectPreview();
+        SetDeleteModeEnabled(false);
 
         _spawnBuilding = Instantiate(_recipe.BuildingData.Prefab, _containerBuildings);
         _spawnBuilding.Init(_recipe.BuildingData);

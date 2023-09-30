@@ -20,7 +20,7 @@ public class ItemInteractPanel : MonoBehaviour
     [SerializeField] private SurvivalHandler _survivalHandler;
 
     private InventorySlot _currentSlot;
-
+    private int _addAmount = 1;
     private void Start()
     {
         _panel.gameObject.SetActive(false);
@@ -74,9 +74,9 @@ public class ItemInteractPanel : MonoBehaviour
                 _survivalHandler.Thirst.ReplenishValue(foodItemData.AmountWater);
 
                 if(foodItemData.EmptyDishes != null)
-                    _inventoryHolder.AddToInventory(foodItemData.EmptyDishes, 1);
+                    _inventoryHolder.AddToInventory(foodItemData.EmptyDishes, _addAmount);
             }
-            _inventoryHolder.RemoveInventory(_currentSlot.ItemData, 1);
+            _inventoryHolder.RemoveInventory(_currentSlot.ItemData, _addAmount);
         }
 
         UpdateState();
@@ -88,7 +88,7 @@ public class ItemInteractPanel : MonoBehaviour
         if (_inventoryHolder.InventorySystem.GetItemCount(_currentSlot.ItemData) >= 0)
         {
             Instantiate(_currentSlot.ItemData.ItemPrefab, _playerTransform.position + _playerTransform.forward * _dropOffset, Quaternion.identity);
-            _inventoryHolder.RemoveInventory(_currentSlot.ItemData, 1);
+            _inventoryHolder.RemoveInventory(_currentSlot.ItemData, _addAmount);
         }
         UpdateState();
     }

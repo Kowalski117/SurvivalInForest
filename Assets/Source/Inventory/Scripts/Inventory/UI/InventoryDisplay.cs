@@ -8,7 +8,7 @@ public abstract class InventoryDisplay : MonoBehaviour
 {
     [SerializeField] protected MouseItemData MouseInventoryItem;
     [SerializeField] protected InventoryDescriptionUI InventoryDescription;
-    [SerializeField] protected Interactor _interactor;
+    [SerializeField] private InventoryOperator _inventoryOperator;
     [SerializeField] protected InventorySlotUI[] Slots;
 
     private string _invetoryTag = "Inventory";
@@ -90,7 +90,7 @@ public abstract class InventoryDisplay : MonoBehaviour
             }
             else
             {
-                _interactor.RemoveItem(MouseInventoryItem.InventorySlotUI);
+                _inventoryOperator.RemoveItem(MouseInventoryItem.InventorySlotUI);
             }
 
             MouseInventoryItem.CleanSlot();

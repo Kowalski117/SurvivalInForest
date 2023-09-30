@@ -2,15 +2,17 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadPanel : MonoBehaviour
 {
     //[SerializeField] private AudioManager _audioManager;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-    [SerializeField] private Hints _hints;
+    [SerializeField] private LoadingScreenSettings _screenSettings;
     [SerializeField] private Image _imageHint;
     [SerializeField] private Image _loadBarImage;
+    [SerializeField] private TMP_Text _sceneNameIndex;
     [SerializeField] private TMP_Text _textHint;
     [SerializeField] private TMP_Text _loadBarText;
     [SerializeField] private Button _resumeButton;
@@ -30,8 +32,8 @@ public class LoadPanel : MonoBehaviour
 
     private void Start()
     {
-        if(!_isStart)
-            Load(0, null);
+        if (!_isStart)
+            Load(0, null, SceneManager.GetActiveScene().buildIndex);
     }
 
     private void OnEnable()
@@ -44,7 +46,7 @@ public class LoadPanel : MonoBehaviour
         _resumeButton.onClick.RemoveListener(Deactivate);
     }
 
-    public void Load(float alpha, UnityAction OnFadingDone)
+    public void Load(float alpha, UnityAction OnFadingDone, int indexScene)
     {
         //if (alpha == 1)
         //    _audioManager.FadeIn();
@@ -52,22 +54,25 @@ public class LoadPanel : MonoBehaviour
         //if (alpha == 0)
         //    _audioManager.FadeOut();
 
+        _canvasGroup.blocksRaycasts = true;
+
         if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
             _coroutine = null;
         }
 
-        _coroutine = StartCoroutine(Fade(alpha, OnFadingDone));
+        _coroutine = StartCoroutine(Fade(alpha, OnFadingDone, indexScene));
     }
 
-    private IEnumerator Fade(float alpha, UnityAction OnFadingDone)
+    private IEnumerator Fade(float alpha, UnityAction OnFadingDone, int indexScene)
     {
-        SetHint();
+        SetSettingsScreen(indexScene);
 
         if (alpha == 0)
         {
             _canvasGroup.alpha = 1;
+            _canvasGroup.blocksRaycasts = false;
             float elapsedTime = 0;
             float targetTime = _waitForFadeTime;
             _loadBarText.enabled = true;
@@ -82,12 +87,14 @@ public class LoadPanel : MonoBehaviour
                 yield return null;
             }
 
+            _canvasGroup.blocksRaycasts = true;
             _loadBarText.enabled = false;
             _resumeButton.gameObject.SetActive(true);
         }
         else if (alpha == 1)
         {
             _resumeButton.gameObject.SetActive(false);
+            _canvasGroup.blocksRaycasts = false;
         }
 
         _loadBarImage.fillAmount = 0;
@@ -106,6 +113,9 @@ public class LoadPanel : MonoBehaviour
 
     public void Deactivate()
     {
+        if (_playerInputHandler != null)
+            _playerInputHandler.ToggleAllParametrs(true);
+
         if (_coroutineDeactivate != null)
         {
             StopCoroutine(_coroutineDeactivate);
@@ -124,17 +134,21 @@ public class LoadPanel : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-
-        if (_playerInputHandler != null)
-            _playerInputHandler.SetCursorVisible(false);
     }
 
-    private void SetHint()
+    private void SetSettingsScreen(int indexScene)
     {
-        _randomIndex = Random.Range(0, _hints.SpriteHints.Length);
-        _imageHint.sprite = _hints.SpriteHints[_randomIndex];
+        foreach (var sceneParameter in _screenSettings.SceneParameters)
+        {
+            if (indexScene == sceneParameter.SceneIndex)
+                _sceneNameIndex.text = sceneParameter.SceneName;
+        }
 
-        _randomIndex = Random.Range(0, _hints.TextHints.Length);
-        _textHint.text = _hints.TextHints[_randomIndex];
+        _randomIndex = Random.Range(0, _screenSettings.HintSprites.Length);
+        _imageHint.sprite = _screenSettings.HintSprites[_randomIndex];
+
+        _randomIndex = Random.Range(0, _screenSettings.HintTexts.Length);
+        _textHint.text = _screenSettings.HintTexts[_randomIndex];
     }
 }
+

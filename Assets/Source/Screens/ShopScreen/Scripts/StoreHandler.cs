@@ -45,10 +45,7 @@ public class StoreHandler : MonoBehaviour
     {
         foreach(var product in data.Products)
         {
-            for (int i = 0; i < product.Amount; i++)
-            {
-                _inventoryHolder.AddToInventory(product.ItemData, 1);
-            }
+            _inventoryHolder.AddToInventory(product.ItemData, product.Amount);
         }
     }
 }

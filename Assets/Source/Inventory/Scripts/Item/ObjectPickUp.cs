@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(UniqueID))]
 public class ObjectPickUp : MonoBehaviour
@@ -12,6 +13,8 @@ public class ObjectPickUp : MonoBehaviour
     private Outline _outline;
     private Rigidbody _rigidbody;
     private string _object = "Object_";
+
+    public event UnityAction OnPickUp;
 
     public ObjectItemsData ObjectItemsData => _objectItemsData;
 
@@ -30,7 +33,9 @@ public class ObjectPickUp : MonoBehaviour
 
     public void PicUp()
     {
-        if(_isDeleteAfterSelection )
+        OnPickUp?.Invoke();
+
+        if (_isDeleteAfterSelection )
             Destroy(this.gameObject);
         else
             gameObject.SetActive(false);
@@ -80,6 +85,12 @@ public class InventoryItem
 
     public InventoryItemData ItemData => _itemData;
     public int Amount => _amount;
+
+    public InventoryItem(InventoryItemData itemData, int amount)
+    {
+        _itemData = itemData;
+        _amount = amount;
+    }
 }
 
 [System.Serializable]

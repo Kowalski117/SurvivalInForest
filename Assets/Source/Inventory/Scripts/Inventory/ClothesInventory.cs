@@ -12,5 +12,7 @@ public class ClothesInventory : InventoryHolder
     {
         InventorySaveData saveData = ES3.Load<InventorySaveData>(_clothesInventory);
         PrimaryInventorySystem = saveData.InventorySystem;
+
+        base.LoadInventory();
     }
 }

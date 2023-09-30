@@ -61,6 +61,8 @@ namespace StarterAssets
         [Header("Interaction with objects")]
         public float TakeDistance = 3f;
 
+        [SerializeField] private PlayerAudioHandler _audioHandler;
+
         // cinemachine
         private float _cinemachineTargetPitch;
 
@@ -85,6 +87,7 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
         private bool _isEnable = true;
+        private bool _isEnableCamera = true;
         private bool _isInWater = false;
         private bool _isComing => _speed < SprintSpeed ? false : true;
 
@@ -137,20 +140,27 @@ namespace StarterAssets
 
         private void Update()
         {
-            if (_isEnable && !_isInWater)
+            if (_isEnable)
             {
-                Stealth();
+                if(!_isInWater)
+                    Stealth();
+
+                Move();
             }
 
-            Move();
             GroundedCheck();
             JumpAndGravity();
         }
 
         private void LateUpdate()
         {
-            if(_isEnable)
+            if(_isEnableCamera)
                 CameraRotation();
+        }
+
+        public void ToggleCamera(bool toggle)
+        {
+            _isEnableCamera = toggle;
         }
 
         public void TogglePersonController(bool toggle)
@@ -201,17 +211,17 @@ namespace StarterAssets
                 {
                     _jumpTimeoutDelta -= Time.deltaTime;
                 }
+                _audioHandler.PlayLandingSound(_input.jump);
             }
             else
             {
-
                 _jumpTimeoutDelta = JumpTimeout;
 
                 if (_fallTimeoutDelta >= 0.0f)
                 {
                     _fallTimeoutDelta -= Time.deltaTime;
                 }
-
+                _audioHandler.PlayJumpSound(_input.jump);
                 _input.jump = false;
             }
 
@@ -251,8 +261,11 @@ namespace StarterAssets
             if (_input.move != Vector2.zero)
             {
                 inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
+                _audioHandler.PlayFootStepAudio(targetSpeed == SprintSpeed);
             }
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+
         }
 
         private void Stealth()

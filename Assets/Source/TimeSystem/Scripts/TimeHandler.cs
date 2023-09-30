@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityBehaviour;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,7 +32,7 @@ public class TimeHandler : MonoBehaviour
     private TimeSpan _sunsetTime;
     private DateTime _lastDayUpdate = DateTime.Now;
 
-    private bool _isEnabled = true;
+    private bool _isEnabled = false;
 
     public event UnityAction<DateTime> OnTimeUpdate;
     public event UnityAction<int> OnDayUpdate;
@@ -83,6 +84,11 @@ public class TimeHandler : MonoBehaviour
     }
 
     public void ToggleEnable(bool isActive)
+    {
+        _isEnabled = isActive;
+    }
+
+    public void SetEnable(bool isActive)
     {
         _isEnabled = isActive;
     }
@@ -168,12 +174,12 @@ public class TimeHandler : MonoBehaviour
             _timeMultiplier = 60;
     }
 
-    public void SaveTime()
+    private void SaveTime()
     {
         ES3.Save("Time", _currentTime);
     }
 
-    public void LoadTime()
+    private void LoadTime()
     {
         _currentTime = ES3.Load<DateTime>("Time", DateTime.Now.Date + TimeSpan.FromHours(_startHour));
     }

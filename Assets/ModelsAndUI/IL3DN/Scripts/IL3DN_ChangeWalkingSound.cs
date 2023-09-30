@@ -7,8 +7,12 @@ namespace IL3DN
     /// </summary>
     public class IL3DN_ChangeWalkingSound : MonoBehaviour
     {
-        public AudioClip[] footStepsOverride;
-        public AudioClip jumpSound;
-        public AudioClip landSound;
+        [SerializeField] private AudioClip[] _footStepsOverride;
+        [SerializeField] private AudioClip _jumpSound;
+        [SerializeField] private AudioClip _landSound;
+
+        public AudioClip[] FootStepsOverride => _footStepsOverride;
+        public AudioClip JumpSound => _jumpSound;
+        public AudioClip LandSound => _landSound;
     }
 }

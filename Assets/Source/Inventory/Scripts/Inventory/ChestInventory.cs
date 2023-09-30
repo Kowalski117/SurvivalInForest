@@ -8,14 +8,18 @@ public class ChestInventory : InventoryHolder, IInteractable
     [SerializeField] private List<InventoryItemData> _startingItems;
 
     private UniqueID _uniqueId;
-    private bool _isActive = false;
+    private DistanceHandler _distanceHandler;
 
+    public static UnityAction<ChestInventory, int> OnDinamicChestDisplayRequested;
     public UnityAction<IInteractable> OnInteractionComplete { get; set; }
+
+    public DistanceHandler DistanceHandler => _distanceHandler;
 
     protected override void Awake()
     {
         _uniqueId = GetComponentInParent<UniqueID>();
         base.Awake();
+        _distanceHandler = GetComponentInChildren<DistanceHandler>();
     }
 
     private void Start()
@@ -23,10 +27,19 @@ public class ChestInventory : InventoryHolder, IInteractable
         LoadInventory();
     }
 
+    private void OnEnable()
+    {
+        _distanceHandler.OnDistanceExceeded += Interact;
+    }
+
+    private void OnDisable()
+    {
+        _distanceHandler.OnDistanceExceeded -= Interact;
+    }
+
     public void Interact()
     {
-        OnDinamicInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, 0);
-        _isActive = !_isActive;
+        OnDinamicChestDisplayRequested?.Invoke(this, 0);
     }
 
     public void EndInteraction() { }
@@ -49,18 +62,6 @@ public class ChestInventory : InventoryHolder, IInteractable
             foreach (var item in _startingItems)
             {
                 PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
-        {
-            if (_isActive)
-            {
-                OnDinamicInventoryDisplayRequested?.Invoke(PrimaryInventorySystem, 0);
-                _isActive = false;
             }
         }
     }

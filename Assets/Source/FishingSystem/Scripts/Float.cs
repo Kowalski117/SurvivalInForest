@@ -8,6 +8,7 @@ public class Float : MonoBehaviour
     [SerializeField] private FishingRod _fishingRod;
     [SerializeField] private ParticleSystem _startInWaterParticle;
     [SerializeField] private ParticleSystem _waterParticle;
+    [SerializeField] private ParticleSystem _splashingFishParticle;
 
     private Rigidbody _rigidbody;
     private Vector3 _initialPosition;
@@ -57,10 +58,13 @@ public class Float : MonoBehaviour
         transform.parent = parent;
 
         _waterParticle.Stop();
+        _splashingFishParticle.Stop();
         _waterParticle.gameObject.SetActive(false);
         _startInWaterParticle.gameObject.SetActive(false);
+        _splashingFishParticle.gameObject.SetActive(false);
         SetPositionParticle(_startInWaterParticle, transform, transform.position);
         SetPositionParticle(_waterParticle, transform, transform.position);
+        SetPositionParticle(_splashingFishParticle, transform, transform.position);
 
         ClearTween();
         if (transform.position != _initialPosition)
@@ -81,11 +85,11 @@ public class Float : MonoBehaviour
     {
         if (other.TryGetComponent(out Water water))
         {
+            SetPositionParticle(_startInWaterParticle, null, transform.position);
             _rigidbody.isKinematic = true;
             StartFishingOverTime();
             _startInWaterParticle.gameObject.SetActive(true);
             _startInWaterParticle.Play();
-            SetPositionParticle(_startInWaterParticle, null, transform.position);
         }
     }
 
@@ -113,12 +117,17 @@ public class Float : MonoBehaviour
         yield return new WaitForSeconds(GetRandomNumber(_randomTime.x, _randomTime.y));
 
         _waterParticle.Stop();
+        _splashingFishParticle.gameObject.SetActive(true);
+        SetPositionParticle(_splashingFishParticle, null, _positionInWater);
+        _splashingFishParticle.Play();
+
         ClearTween();
         _fishingTween = transform.DOMove(_positionInWater - GetRandomOffset(_fishOnHookOffset), _timeBeforeFishEscapes).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
         _isFishOnHook = true;
 
         yield return new WaitForSeconds(_timeBeforeFishEscapes);
 
+        _splashingFishParticle.Stop();
         ClearTween();
         _fishingTween = transform.DOMove(new Vector3(transform.position.x, _positionInWater.y, transform.position.z), _returnDelay);
         _isFishOnHook = false;

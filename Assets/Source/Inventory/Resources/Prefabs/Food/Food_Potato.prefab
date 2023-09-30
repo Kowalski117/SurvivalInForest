@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 322876781605810352}
   - component: {fileID: -4198735542213189887}
   - component: {fileID: -8136923422047398210}
+  - component: {fileID: -4990222992847721866}
   m_Layer: 6
   m_Name: Food_Potato
   m_TagString: Untagged
@@ -47,7 +48,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3212155127040667662}
-  m_Mesh: {fileID: 4300000, guid: 490b83aa49786b843b67a79c249b2cf6, type: 3}
+  m_Mesh: {fileID: 4300000, guid: e1224571793cfd5448f4100bd6d68758, type: 3}
 --- !u!23 &3225603004051572882
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,10 +66,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 4294967295
+  m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c0273817d9b557c4cbe78d17e9f64976, type: 2}
+  - {fileID: 2100000, guid: fdf18c58b725a2f469593ece1786d307, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -169,8 +170,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.06899128
-  m_Center: {x: -0.00050837547, y: -0.0011575818, z: -0.0011764839}
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0.04, z: 0}
 --- !u!114 &-4198735542213189887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,3 +227,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4990222992847721866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212155127040667662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d18230d3a29b2a418e94d126c53f276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_questID:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_questNodeID:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_counterName:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_conditionalEvent:
+    questID:
+      m_text: 
+      m_stringAsset: {fileID: 0}
+      m_textTable: {fileID: 0}
+      m_textTableFieldID: 0
+    requiredQuestState: 0
+    questNodeID:
+      m_text: 
+      m_stringAsset: {fileID: 0}
+      m_textTable: {fileID: 0}
+      m_textTableFieldID: 0
+    requiredQuestNodeState: 0
+    onConditionMet:
+      m_PersistentCalls:
+        m_Calls: []
