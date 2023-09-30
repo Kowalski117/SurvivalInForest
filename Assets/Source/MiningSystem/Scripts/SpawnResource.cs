@@ -54,8 +54,10 @@ public class SpawnResource : MonoBehaviour
     {
         yield return new WaitForSeconds(_spawnTime);
         _resource.gameObject.transform.localScale = Vector3.zero;
-        _resource.transform.DOScale(_resurseLocaleScale, _scaleTime);    
         _remainder.SetActive(false);
         _resource.gameObject.SetActive(true);
+        _resource.transform.DOScale(_resurseLocaleScale, _scaleTime);
+        yield return new WaitForSeconds(_scaleTime);
+        _resource.EnableCollider();
     }
 }

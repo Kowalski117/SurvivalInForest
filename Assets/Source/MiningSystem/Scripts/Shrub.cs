@@ -8,7 +8,7 @@ public class Shrub : MonoBehaviour
     private const float _radiusSpawn= 0.5f;
     private const float _spawnPointUp= 0.5f;
 
-    private void OnEnable()
+    private void Start()
     {
       SpawnItem(_countItems);
     }

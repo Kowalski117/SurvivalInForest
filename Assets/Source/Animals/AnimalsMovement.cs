@@ -15,7 +15,7 @@ public abstract class AnimalsMovement : MonoBehaviour
 
     private NavMeshAgent _agent;
     private Vector3 _spawnPoint;
-    private bool _isRuning = false;
+    private bool _isRuning;
 
     protected AnimationAnimals AnimationAnimals;
 
@@ -57,13 +57,13 @@ public abstract class AnimalsMovement : MonoBehaviour
         _agent.SetDestination(point);
     }
 
-    public void Sit()
-    {
-        AnimationAnimals.Sit();
-    }
-
     public void Death()
     {
         AnimationAnimals.Death();
+    }
+
+    public void TurnOffAnimations()
+    {
+        AnimationAnimals.TurnOffAnimations();
     }
 }

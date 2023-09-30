@@ -16,7 +16,7 @@ public abstract class SpawnLoots : MonoBehaviour
         }
 
         current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
-        current.GetComponent<Rigidbody>().isKinematic = isKinematic;
+        current.Rigidbody.isKinematic = isKinematic;
         current.GenerateNewID();
     }
 }

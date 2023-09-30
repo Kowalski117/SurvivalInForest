@@ -1,6 +1,5 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GetNearbyObject<TNearbyObject, TSharedNearbyObject> : Conditional where TNearbyObject : Component where TSharedNearbyObject : SharedVariable<TNearbyObject>
@@ -15,11 +14,11 @@ public class GetNearbyObject<TNearbyObject, TSharedNearbyObject> : Conditional w
     {
         if (AnimalsMovement.DetectionRadius <= 0)
         {
-            Radius = 1;
+            Radius.Value = 1;
         }
         else
         {
-            Radius = AnimalsMovement.DetectionRadius;
+            Radius.Value = AnimalsMovement.DetectionRadius;
         }
     }
     
