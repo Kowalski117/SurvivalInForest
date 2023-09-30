@@ -671,8 +671,8 @@ MonoBehaviour:
         byteData: 
         byteDataArray: 
       Version: 1.7.2
-  gizmoViewMode: 0
-  showBehaviorDesignerGizmo: 0
+  gizmoViewMode: 2
+  showBehaviorDesignerGizmo: 1
 --- !u!82 &3741143313788975860
 AudioSource:
   m_ObjectHideFlags: 0
@@ -815,7 +815,7 @@ MonoBehaviour:
   _numberMeat: 4
   _healh: 100
   _armor: 0
-  _blood: {fileID: 4551350311598480360}
+  _blood: {fileID: 4551350311580477826}
 --- !u!114 &7995561721640879150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2264,25 +2264,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1680242125934029641}
     m_Modifications:
-    - target: {fileID: 4551350313092114576, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4551350313106912308, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
       propertyPath: m_Name
       value: BloodFlowing
-      objectReference: {fileID: 0}
-    - target: {fileID: 4551350313106912308, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 4551350313106912308, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4551350313106990198, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-      propertyPath: m_Layer
-      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4551350313107274818, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
       propertyPath: m_RootOrder
@@ -2330,9 +2314,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
---- !u!1 &4551350311598480360 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4551350313106912308, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
+--- !u!198 &4551350311580477826 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4551350313092073054, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
   m_PrefabInstance: {fileID: 1848209372}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4551350311598838686 stripped

@@ -578,8 +578,8 @@ MonoBehaviour:
         byteData: 
         byteDataArray: 
       Version: 1.7.2
-  gizmoViewMode: 0
-  showBehaviorDesignerGizmo: 0
+  gizmoViewMode: 2
+  showBehaviorDesignerGizmo: 1
 --- !u!195 &1321323317006421455
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -648,7 +648,7 @@ MonoBehaviour:
   _numberMeat: 2
   _healh: 100
   _armor: 0
-  _blood: {fileID: 4551350312541917603}
+  _blood: {fileID: 4551350312522376137}
 --- !u!114 &5156387951003520814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1378,18 +1378,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BloodFlowing
       objectReference: {fileID: 0}
-    - target: {fileID: 4551350313106912308, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 4551350313106912308, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4551350313106990198, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
     - target: {fileID: 4551350313107274818, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1436,13 +1424,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
+--- !u!198 &4551350312522376137 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4551350313092073054, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
+  m_PrefabInstance: {fileID: 645211543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4551350312541755861 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4551350313107274818, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
-  m_PrefabInstance: {fileID: 645211543}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4551350312541917603 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4551350313106912308, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
   m_PrefabInstance: {fileID: 645211543}
   m_PrefabAsset: {fileID: 0}
