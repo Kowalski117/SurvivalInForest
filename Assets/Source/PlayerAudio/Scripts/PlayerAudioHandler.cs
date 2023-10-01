@@ -1,11 +1,11 @@
-using IL3DN;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
+using IL3DN;
 
 public class PlayerAudioHandler : MonoBehaviour
 {
-    [SerializeField] private AudioClip[] _footstepSounds = default;   
-    [SerializeField] private AudioClip _jumpSound = default;          
+    [SerializeField] private AudioClip[] _footstepSounds = default;
+    [SerializeField] private AudioClip _jumpSound = default;
     [SerializeField] private AudioClip _landSound = default;
 
     private CharacterController _characterController;
@@ -16,6 +16,7 @@ public class PlayerAudioHandler : MonoBehaviour
     private bool _isInSpecialSurface;
     private bool _isFootstepPlaying = false;
     private bool _isJumping = false;
+    private Coroutine _coroutine;
 
     private void Awake()
     {
@@ -53,20 +54,22 @@ public class PlayerAudioHandler : MonoBehaviour
                 _audioSource.clip = _jumpSound;
             }
             _audioSource.Play();
+            _isFootstepPlaying = true;
+            StartCoroutine(0.5f);
             _isJumping = true;
         }
     }
 
-    public void PlayFootStepAudio(bool isSprint)
+    public void PlayFootStepAudio(bool isSprint, bool isStealth)
     {
         if (!_isFootstepPlaying)
         {
             _isFootstepPlaying = true;
 
-            if (isSprint)
-                StartCoroutine(WaitForSoundToFinish(0.25f));
+            if (isSprint && !isStealth)
+                StartCoroutine(0.25f);
             else
-                StartCoroutine(WaitForSoundToFinish(0.5f));
+                StartCoroutine(0.5f);
 
             if (!_isInSpecialSurface)
             {
@@ -91,6 +94,17 @@ public class PlayerAudioHandler : MonoBehaviour
         }
     }
 
+    private void StartCoroutine(float duration)
+    {
+        if(_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _coroutine = StartCoroutine(WaitForSoundToFinish(duration));
+    }
+
     private IEnumerator WaitForSoundToFinish(float duration)
     {
         yield return new WaitForSeconds(duration);
@@ -100,7 +114,7 @@ public class PlayerAudioHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out IL3DN_ChangeWalkingSound soundScript))
+        if (other.TryGetComponent(out IL3DN_ChangeWalkingSound soundScript))
         {
             if (soundScript != null)
             {
