@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemInWater : MonoBehaviour
@@ -8,10 +7,13 @@ public class ItemInWater : MonoBehaviour
     private ItemPickUp _itemPickUp;
     private Tween _popsUpTween;
 
-    private Vector3 _calmWaterOffset = new Vector3(0, -0.15f, 0);
+    private int _groundLayer = 7;
+    private Vector3 _calmWaterOffset = new Vector3(0, 0.15f, 0);
     private float _animationDuration = 2f;
     private int _numberOfRepetitions = -1;
     private float _drag = 10;
+    private float _delay = 1f;
+    private bool _isGrounded = false;
 
     private void Awake()
     {
@@ -20,8 +22,8 @@ public class ItemInWater : MonoBehaviour
 
     private void PopsUp()
     {
-        _itemPickUp.Rigidbody.isKinematic = true;
         _popsUpTween = transform.DOMove(transform.position + _calmWaterOffset, _animationDuration).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
+        _itemPickUp.Rigidbody.isKinematic = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,8 +32,15 @@ public class ItemInWater : MonoBehaviour
         {
             if(_itemPickUp.ItemData.TypeBehaviorInWater == TypeBehaviorInWater.PopsUp)
             {
-                ClearTween();
-                PopsUp();
+                if (_isGrounded)
+                {
+                    StartCoroutine(WaitForSoundToFinish(_delay));
+                }
+                else
+                {
+                    ClearTween();
+                    PopsUp();
+                }
             }
             else if(_itemPickUp.ItemData.TypeBehaviorInWater == TypeBehaviorInWater.Sinking)
             {
@@ -51,6 +60,14 @@ public class ItemInWater : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.gameObject.layer == _groundLayer)
+        {
+            _isGrounded = true;
+        }
+    }
+
     private void ClearTween()
     {
         if (_popsUpTween != null && _popsUpTween.IsActive())
@@ -58,5 +75,12 @@ public class ItemInWater : MonoBehaviour
             _popsUpTween.Kill();
             _popsUpTween = null;
         }
+    }
+
+    private IEnumerator WaitForSoundToFinish(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        ClearTween();
+        PopsUp();
     }
 }
