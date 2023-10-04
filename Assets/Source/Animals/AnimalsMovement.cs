@@ -9,7 +9,6 @@ public abstract class AnimalsMovement : MonoBehaviour
     [SerializeField] private Animals _animals;
     [SerializeField] private float _speedRun;
     [SerializeField] private float _speedWalk;
-    [SerializeField] private float _detectionRadius;
     [SerializeField] private float _fleeRadius;
     [SerializeField] private float _spawnPointRadius;
 
@@ -22,7 +21,6 @@ public abstract class AnimalsMovement : MonoBehaviour
     public NavMeshAgent Agent => _agent;
     public Vector3 SpawnPoint => _spawnPoint;
     public bool IsRuning => _isRuning;
-    public float DetectionRadius => _detectionRadius;
     public float FleeRadius => _fleeRadius;
     public float SpawnPointRadius => _spawnPointRadius;
 
