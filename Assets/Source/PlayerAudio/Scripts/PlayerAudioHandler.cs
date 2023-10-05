@@ -8,6 +8,9 @@ public class PlayerAudioHandler : MonoBehaviour
     [SerializeField] private AudioClip _jumpSound = default;
     [SerializeField] private AudioClip _landSound = default;
 
+    [SerializeField] private AudioClip[] _eatingSounds;
+    [SerializeField] private AudioClip[] _drinkingSounds;
+
     private CharacterController _characterController;
     private AudioSource _audioSource;
     private AudioClip[] _footStepsOverride;
@@ -22,6 +25,26 @@ public class PlayerAudioHandler : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlayEatingSound(float eatValue, float drinkValue)
+    {
+        if(eatValue > 0 || drinkValue > 0)
+        {
+            if (eatValue >= drinkValue)
+            {
+                int n = Random.Range(0, _eatingSounds.Length);
+                _audioSource.clip = _eatingSounds[n];
+            }
+            else if (drinkValue > eatValue)
+            {
+                int n = Random.Range(0, _drinkingSounds.Length);
+                _audioSource.clip = _drinkingSounds[n];
+            }
+            _audioSource.PlayOneShot(_audioSource.clip);
+            _isJumping = true;
+            StartCoroutine(0.5f);
+        }
     }
 
     public void PlayLandingSound(bool isJumping)
@@ -110,6 +133,7 @@ public class PlayerAudioHandler : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         _isFootstepPlaying = false;
+        _isJumping = false;
     }
 
     private void OnTriggerEnter(Collider other)
