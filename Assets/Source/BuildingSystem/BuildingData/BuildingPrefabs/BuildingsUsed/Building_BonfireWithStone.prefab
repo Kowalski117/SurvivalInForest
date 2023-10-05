@@ -63,6 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defoultLayerInt: 12
+  _isCanDelete: 1
 --- !u!54 &-8699646342938781514
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -107,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 103064da-31e4-43f1-a271-4cb6320430cb
+  _id: 8285ad7a-ef18-4174-be71-79c73df4d271
 --- !u!1001 &4872877596012050445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,6 +164,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4872877596446958106, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
+      propertyPath: "_crafting\u0421ategory"
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c061a3b8dec1ff4bbf147a607fa0ab6, type: 2}
     - target: {fileID: 4872877596446958106, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
       propertyPath: _isEnabledInitially
       value: 1

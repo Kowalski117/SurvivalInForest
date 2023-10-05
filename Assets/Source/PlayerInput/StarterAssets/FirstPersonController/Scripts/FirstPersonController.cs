@@ -78,17 +78,19 @@ namespace StarterAssets
 
         private bool _isSquatting;
 
+
         private SurvivalHandler _survivalHandler;
 
 #if ENABLE_INPUT_SYSTEM
         private UnityEngine.InputSystem.PlayerInput _playerInput;
 #endif
         private CharacterController _controller;
-        private StarterAssetsInputs _input;
+        [SerializeField] private StarterAssetsInputs _input;
         private GameObject _mainCamera;
         private bool _isEnable = true;
         private bool _isEnableCamera = true;
         private bool _isInWater = false;
+        private bool _isStealth = false;
         private bool _isComing => _speed < SprintSpeed ? false : true;
 
         private const float _threshold = 0.01f;
@@ -195,6 +197,7 @@ namespace StarterAssets
         {
             if (Grounded && _isEnable)
             {
+                _audioHandler.PlayLandingSound(_input.jump);
                 _fallTimeoutDelta = FallTimeout;
 
                 if (_verticalVelocity < 0.0f)
@@ -211,17 +214,16 @@ namespace StarterAssets
                 {
                     _jumpTimeoutDelta -= Time.deltaTime;
                 }
-                _audioHandler.PlayLandingSound(_input.jump);
             }
             else
             {
+                _audioHandler.PlayJumpSound(_input.jump);
                 _jumpTimeoutDelta = JumpTimeout;
 
                 if (_fallTimeoutDelta >= 0.0f)
                 {
                     _fallTimeoutDelta -= Time.deltaTime;
                 }
-                _audioHandler.PlayJumpSound(_input.jump);
                 _input.jump = false;
             }
 
@@ -233,7 +235,7 @@ namespace StarterAssets
 
         private void Move()
         {
-            float targetSpeed = _input.sprint && _survivalHandler.Stamina.IsNotEmpty ? SprintSpeed : MoveSpeed;
+            float targetSpeed = _input.sprint && !_isInWater && _survivalHandler.Stamina.IsNotEmpty ? SprintSpeed : MoveSpeed;
 
             if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
@@ -261,7 +263,7 @@ namespace StarterAssets
             if (_input.move != Vector2.zero)
             {
                 inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
-                _audioHandler.PlayFootStepAudio(targetSpeed == SprintSpeed);
+                _audioHandler.PlayFootStepAudio(targetSpeed == SprintSpeed, _input.stealth);
             }
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 

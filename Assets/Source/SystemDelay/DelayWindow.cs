@@ -18,6 +18,7 @@ public class DelayWindow : MonoBehaviour
     private DateTime _time;
     private Coroutine _coroutine;
     private bool _isLoading = false;
+    private ActionType _currentType;
 
     public event UnityAction OnLoadingComplete;
 
@@ -62,6 +63,7 @@ public class DelayWindow : MonoBehaviour
         _loadingBar.fillAmount = 1f;
 
         yield return new WaitForSeconds(0.5f);
+
         _isLoading = false;
         _timeHandler.AddTimeInHours(skipTime);
         _survivalHandler.Sleep.LowerValueInFours(skipTime);
@@ -70,18 +72,6 @@ public class DelayWindow : MonoBehaviour
         _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);
-
-        if (actionType == ActionType.CraftItem)
-        {
-            _playerInputHandler.ToggleHotbarDisplay(false);
-            _playerInputHandler.ToggleBuildPlayerInput(false);
-            _playerInputHandler.ToggleInteractionConstructionInput(false);
-            _playerInputHandler.TogglePersonController(false);
-        }
-        else if (actionType == ActionType.CraftBuild)
-        {
-            _playerInputHandler.ToggleInteractionConstructionInput(false);
-        }
 
         _time = DateTime.MinValue;
 

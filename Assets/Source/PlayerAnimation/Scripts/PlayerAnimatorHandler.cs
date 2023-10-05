@@ -23,6 +23,8 @@ public class PlayerAnimatorHandler : MonoBehaviour
     private InventoryItemData _currentItemData;
     private InventoryItemData _previousItemData;
 
+    public ItemAnimator CurrentItemAnimation => _handAnimator;
+
     private void Update()
     {
         if(_handAnimator != null)
