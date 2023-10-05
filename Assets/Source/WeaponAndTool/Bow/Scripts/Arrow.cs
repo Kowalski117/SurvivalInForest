@@ -8,7 +8,7 @@ public class Arrow : MonoBehaviour
     private Rigidbody _rigidbody;
     private bool _isFlying = false;
 
-    public event UnityAction<Arrow,Vector3, Quaternion, GameObject> OnEnteredCollider;
+    public event UnityAction<Arrow, Transform, Animals> OnEnteredCollider;
 
     public bool IsFlying => _isFlying;
 
@@ -42,7 +42,7 @@ public class Arrow : MonoBehaviour
         {
             _rigidbody.isKinematic = true;
             _isFlying = false;
-            OnEnteredCollider?.Invoke(this, transform.position, transform.rotation, collision.gameObject);
+            OnEnteredCollider?.Invoke(this, collision.transform, collision.gameObject.GetComponentInParent<Animals>());
         }
     }
 }

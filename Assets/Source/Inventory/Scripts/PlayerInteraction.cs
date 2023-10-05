@@ -191,9 +191,6 @@ public class PlayerInteraction : Raycast
 
             if (_currentTool != null)
             {
-                //_audioSource.PlayOneShot(_currentTool.MuzzleSound);
-                //_currentTool.MuzzleFlash.Play();
-
                 TakeDamageResoure(_currentTool.DamageResources, 0);
                 TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
                 TakeDamageBrokenObject(_currentTool.DamageResources, 0);
@@ -222,6 +219,15 @@ public class PlayerInteraction : Raycast
             }
         }
     }
+
+    private void CreateParticle(InventoryItemData inventoryItemData, ParticleSystem particle)
+    {
+        if(_playerAnimation.CurrentItemAnimation.ItemData == inventoryItemData)
+        {
+            if (_playerAnimation.CurrentItemAnimation.ParticleSpawnPoint != null && particle != null)
+                Instantiate(particle, _playerAnimation.CurrentItemAnimation.ParticleSpawnPoint.position, Quaternion.identity);
+        }
+    }
     
     private void TakeDamageBrokenObject(float damage, float overTimeDamage)
     {
@@ -246,6 +252,7 @@ public class PlayerInteraction : Raycast
         {
             if (_currentResoure.ExtractionType == _currentTool.ToolType)
             {
+                CreateParticle(_currentTool, _currentTool.HitEffect);
                 _currentResoure.TakeDamage(damage, overTimeDamage);
                 UpdateDurabilityItem(_currentInventorySlot);
             }

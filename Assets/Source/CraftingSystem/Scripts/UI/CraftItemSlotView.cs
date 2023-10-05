@@ -52,6 +52,7 @@ public class CraftItemSlotView : CraftSlotView
     private void OnLoadingComplete()
     {
         OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
+
         LoadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 }

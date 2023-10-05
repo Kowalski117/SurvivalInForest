@@ -1,12 +1,15 @@
-using IL3DN;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
+using IL3DN;
 
 public class PlayerAudioHandler : MonoBehaviour
 {
-    [SerializeField] private AudioClip[] _footstepSounds = default;   
-    [SerializeField] private AudioClip _jumpSound = default;          
+    [SerializeField] private AudioClip[] _footstepSounds = default;
+    [SerializeField] private AudioClip _jumpSound = default;
     [SerializeField] private AudioClip _landSound = default;
+
+    [SerializeField] private AudioClip[] _eatingSounds;
+    [SerializeField] private AudioClip[] _drinkingSounds;
 
     private CharacterController _characterController;
     private AudioSource _audioSource;
@@ -16,11 +19,32 @@ public class PlayerAudioHandler : MonoBehaviour
     private bool _isInSpecialSurface;
     private bool _isFootstepPlaying = false;
     private bool _isJumping = false;
+    private Coroutine _coroutine;
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlayEatingSound(float eatValue, float drinkValue)
+    {
+        if(eatValue > 0 || drinkValue > 0)
+        {
+            if (eatValue >= drinkValue)
+            {
+                int n = Random.Range(0, _eatingSounds.Length);
+                _audioSource.clip = _eatingSounds[n];
+            }
+            else if (drinkValue > eatValue)
+            {
+                int n = Random.Range(0, _drinkingSounds.Length);
+                _audioSource.clip = _drinkingSounds[n];
+            }
+            _audioSource.PlayOneShot(_audioSource.clip);
+            _isJumping = true;
+            StartCoroutine(0.5f);
+        }
     }
 
     public void PlayLandingSound(bool isJumping)
@@ -53,20 +77,22 @@ public class PlayerAudioHandler : MonoBehaviour
                 _audioSource.clip = _jumpSound;
             }
             _audioSource.Play();
+            _isFootstepPlaying = true;
+            StartCoroutine(0.5f);
             _isJumping = true;
         }
     }
 
-    public void PlayFootStepAudio(bool isSprint)
+    public void PlayFootStepAudio(bool isSprint, bool isStealth)
     {
         if (!_isFootstepPlaying)
         {
             _isFootstepPlaying = true;
 
-            if (isSprint)
-                StartCoroutine(WaitForSoundToFinish(0.25f));
+            if (isSprint && !isStealth)
+                StartCoroutine(0.25f);
             else
-                StartCoroutine(WaitForSoundToFinish(0.5f));
+                StartCoroutine(0.5f);
 
             if (!_isInSpecialSurface)
             {
@@ -91,16 +117,28 @@ public class PlayerAudioHandler : MonoBehaviour
         }
     }
 
+    private void StartCoroutine(float duration)
+    {
+        if(_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _coroutine = StartCoroutine(WaitForSoundToFinish(duration));
+    }
+
     private IEnumerator WaitForSoundToFinish(float duration)
     {
         yield return new WaitForSeconds(duration);
 
         _isFootstepPlaying = false;
+        _isJumping = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out IL3DN_ChangeWalkingSound soundScript))
+        if (other.TryGetComponent(out IL3DN_ChangeWalkingSound soundScript))
         {
             if (soundScript != null)
             {

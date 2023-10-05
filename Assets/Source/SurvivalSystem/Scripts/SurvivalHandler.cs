@@ -11,6 +11,7 @@ public class SurvivalHandler : MonoBehaviour
     [SerializeField] private StaminaAttribute _stamina;
     [SerializeField] private SurvivalAttribute _sleep;
     [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private PlayerAudioHandler _playerAudioHandler;
     [SerializeField] private float _healthDamage = 5f;
     [SerializeField] private float _liftingDelay = 2f;
 
@@ -80,8 +81,10 @@ public class SurvivalHandler : MonoBehaviour
     {
         if (slot.ItemData is FoodItemData foodItemData)
         {
+            _playerAudioHandler.PlayEatingSound(foodItemData.AmountSatiety, foodItemData.AmountWater);
             _hunger.ReplenishValue(foodItemData.AmountSatiety);
             _thirst.ReplenishValue(foodItemData.AmountWater);
+            _health.ReplenishHealth(foodItemData.AmountHealth);
                 
             if(foodItemData.FoodTypeEffect != FoodTypeEffect.None)
             {

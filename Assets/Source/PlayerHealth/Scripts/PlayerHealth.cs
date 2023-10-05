@@ -16,6 +16,8 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     private bool _isRestoringHealth;
     private bool _canRestoreHealth = true;
     private bool _isDied = false;
+    private Tween _positionTween;
+    private Tween _rotateTween;
 
     public event UnityAction<float> OnHealthChanged;
     public event UnityAction OnDamageDone;
@@ -78,6 +80,16 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         }
     }
 
+    public void ReplenishHealth(float value)
+    {
+        CurrentValue += value;
+
+        if (CurrentValue > MaxValue)
+            CurrentValue = MaxValue;
+
+        OnHealthChanged?.Invoke(ValuePercent);
+    }
+
     public void TakeDamage(float damage,float overTimeDamage)
     {
         LowerHealth(damage);
@@ -87,8 +99,8 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         OnDied?.Invoke();
         _isDied = true;
-        _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
-        _cameraRoot.DOLocalMoveY(0.5f, 1f);
+        _rotateTween = _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
+        _positionTween = _cameraRoot.DOLocalMoveY(0.5f, 1f);
         CurrentValue = 0;
         _playerInputHandler.FirstPersonController.enabled = false;
         _playerInputHandler.ToggleInventoryPanels(false);
@@ -100,7 +112,11 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void Reborn()
     {
+        _rotateTween.Kill();
+        _positionTween.Kill();
+
         OnRevived?.Invoke();
+
         _isDied = false;
         transform.position = _interactor.SleepPointSaveData.Position;
         transform.rotation = _interactor.SleepPointSaveData.Rotation;

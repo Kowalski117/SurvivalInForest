@@ -1,27 +1,37 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemInWater : MonoBehaviour
 {
     private ItemPickUp _itemPickUp;
+    private Tween _popsDownTween;
     private Tween _popsUpTween;
 
-    private Vector3 _calmWaterOffset = new Vector3(0, -0.15f, 0);
+    private int _groundLayer = 7;
+    private Vector3 _calmWaterOffset = new Vector3(0, 0.15f, 0);
+    private Vector3 _shiftingPositionUp = new Vector3(0, 0.3f, 0);
     private float _animationDuration = 2f;
     private int _numberOfRepetitions = -1;
     private float _drag = 10;
+    private float _delay = 2f;
+    private bool _isGrounded = false;
 
     private void Awake()
     {
         _itemPickUp = GetComponent<ItemPickUp>();
     }
 
-    private void PopsUp()
+    private void PopsDown()
     {
+        _popsDownTween = transform.DOMove(transform.position - _calmWaterOffset, _animationDuration).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
         _itemPickUp.Rigidbody.isKinematic = true;
-        _popsUpTween = transform.DOMove(transform.position + _calmWaterOffset, _animationDuration).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
+    }
+
+    private void PopsUp(float delay)
+    {
+        _popsUpTween = transform.DOMove(transform.position + _shiftingPositionUp, delay);
+        _itemPickUp.Rigidbody.isKinematic = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,8 +40,14 @@ public class ItemInWater : MonoBehaviour
         {
             if(_itemPickUp.ItemData.TypeBehaviorInWater == TypeBehaviorInWater.PopsUp)
             {
-                ClearTween();
-                PopsUp();
+                if (_isGrounded)
+                {
+                    StartCoroutine(WaitForSoundToFinish(_delay, 1));
+                }
+                else
+                {
+                    StartCoroutine(WaitForSoundToFinish(_delay, 1));
+                }
             }
             else if(_itemPickUp.ItemData.TypeBehaviorInWater == TypeBehaviorInWater.Sinking)
             {
@@ -40,23 +56,54 @@ public class ItemInWater : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.TryGetComponent(out Water water))
+    //    {
+    //        if (_itemPickUp.ItemData.TypeBehaviorInWater == TypeBehaviorInWater.PopsUp)
+    //        {
+    //            ClearTween();
+    //        }
+    //    }
+    //}
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.TryGetComponent(out Water water))
+        if(collision.collider.gameObject.layer == _groundLayer)
         {
-            if (_itemPickUp.ItemData.TypeBehaviorInWater == TypeBehaviorInWater.PopsUp)
-            {
-                ClearTween();
-            }
+            _isGrounded = true;
         }
     }
 
-    private void ClearTween()
+    private void OnCollisionExit(Collision collision)
     {
-        if (_popsUpTween != null && _popsUpTween.IsActive())
+        if (collision.collider.gameObject.layer == _groundLayer)
         {
-            _popsUpTween.Kill();
-            _popsUpTween = null;
+            _isGrounded = false;
         }
+    }
+
+    private void ClearTween(Tween tween)
+    {
+        if (tween != null && tween.IsActive())
+        {
+            tween.Kill();
+            tween = null;
+        }
+    }
+
+    private IEnumerator WaitForSoundToFinish(float diveDelay, float liftingDelay)
+    {
+        yield return new WaitForSeconds(diveDelay);
+
+        if(liftingDelay >= 0)
+        {
+            PopsUp(liftingDelay);
+            yield return new WaitForSeconds(liftingDelay);
+            ClearTween(_popsUpTween);
+        }
+
+        ClearTween(_popsDownTween);
+        PopsDown();
     }
 }

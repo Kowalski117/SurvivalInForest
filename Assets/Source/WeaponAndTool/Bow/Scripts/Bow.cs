@@ -94,18 +94,18 @@ public class Bow : MonoBehaviour
         }
     }
 
-    public void InstantiateArrow(Arrow arrow,Vector3 position, Quaternion rotation, GameObject parent)
+    public void InstantiateArrow(Arrow arrow, Transform parent, Animals animals)
     {
-        ItemPickUp arrowItem = Instantiate(_currentWeapon.Bullet, position, rotation);
+        ItemPickUp arrowItem = Instantiate(_currentWeapon.Bullet, arrow.transform.position, arrow.transform.rotation);
         arrowItem.GenerateNewID();
-        arrowItem.gameObject.transform.parent = parent.transform;
+        arrowItem.gameObject.transform.parent = parent;
         arrowItem.Rigidbody.isKinematic = true;
 
         arrow.SetRope(transform);
         arrow.gameObject.SetActive(false);
         _isShoot = false;
 
-        if (parent.TryGetComponent(out Animals animals))
+        if (animals != null)
         {
             _playerInteraction.TakeDamageAnimal(animals, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
         }
