@@ -6,22 +6,9 @@ public class GetNearbyObject<TNearbyObject, TSharedNearbyObject> : Conditional w
 {
     public SharedFloat Radius;
     public TSharedNearbyObject NearbyObjectReturn;
-    public AnimalsMovement AnimalsMovement;
 
     private readonly Collider[] _overlapColliders = new Collider[256];
 
-    public override void OnStart()
-    {
-        if (AnimalsMovement.DetectionRadius <= 0)
-        {
-            Radius.Value = 1;
-        }
-        else
-        {
-            Radius.Value = AnimalsMovement.DetectionRadius;
-        }
-    }
-    
     public override TaskStatus OnUpdate()
     {
         int overlapCount = Physics.OverlapSphereNonAlloc(transform.position, Radius.Value, _overlapColliders);

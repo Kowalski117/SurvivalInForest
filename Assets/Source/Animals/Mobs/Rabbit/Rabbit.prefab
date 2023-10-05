@@ -446,7 +446,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -629,8 +629,7 @@ MonoBehaviour:
   _animals: {fileID: 8521634268307526097}
   _speedRun: 5
   _speedWalk: 2
-  _detectionRadius: 10
-  _fleeRadius: 30
+  _fleeRadius: 50
   _spawnPointRadius: 10
 --- !u!114 &8521634268307526097
 MonoBehaviour:
@@ -663,7 +662,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animalsMovement: {fileID: 4258742043862253642}
   ShowGizmos: 0
-  _colorDetectionRadius: {r: 1, g: 0, b: 0, a: 1}
   _colorFleeRadius: {r: 0, g: 1, b: 0, a: 1}
   _colorSpawnPoint: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &527477652

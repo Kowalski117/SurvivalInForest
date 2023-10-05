@@ -5,7 +5,6 @@ public class ViewGizmos : MonoBehaviour
 {
     [SerializeField] private AnimalsMovement _animalsMovement;
     [SerializeField] private bool ShowGizmos;
-    [SerializeField] private Color _colorDetectionRadius = Color.red;
     [SerializeField] private Color _colorFleeRadius = Color.green;
     [SerializeField] private Color _colorSpawnPoint = Color.blue;
 
@@ -18,8 +17,6 @@ public class ViewGizmos : MonoBehaviour
     {
         if (ShowGizmos)
         {
-            Gizmos.color = _colorDetectionRadius;
-            Gizmos.DrawWireSphere(transform.position, _animalsMovement.DetectionRadius);
             Gizmos.color = _colorFleeRadius;
             Gizmos.DrawWireSphere(transform.position, _animalsMovement.FleeRadius);
             Gizmos.color = _colorSpawnPoint;
