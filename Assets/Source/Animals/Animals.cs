@@ -1,12 +1,11 @@
 using System;
 using System.Collections;
 using BehaviorDesigner.Runtime;
-using Unity.VisualScripting;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Collider))]
 public abstract class Animals : MonoBehaviour, IDamagable
 {
     [SerializeField] private ItemPickUp _meat;
@@ -21,9 +20,9 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private NavMeshAgent _agent;
     private bool _isDead;
     private Coroutine _coroutineOverTimeDamage;
-    private Collider _collider;
     private float _maxHealth;
     private Rigidbody _rigidbody;
+    private ParticleSystem _currentBlood;
 
     public float Health => _healh;
     public float MaxHealth => _maxHealth;
@@ -34,9 +33,8 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private void Start()
     {
         _behaviorTree = GetComponent<BehaviorTree>();
-        _agent = GetComponent<NavMeshAgent>();
-        _collider = GetComponent<Collider>();
         _rigidbody = GetComponent<Rigidbody>();
+        _agent = GetComponent<NavMeshAgent>();
         _maxHealth = _healh;
     }
 
@@ -88,11 +86,17 @@ public abstract class Animals : MonoBehaviour, IDamagable
         }
     }
 
+    private void CreateBlood()
+    {
+        if (_currentBlood == null)
+        {
+            _currentBlood = Instantiate(_blood, transform.position, quaternion.identity, transform);
+        }   
+    }
+
     IEnumerator Precipice()
     {
         float second = 10f;
-        yield return new WaitForSeconds(second);
-        _collider.enabled = false;
         yield return new WaitForSeconds(second);
         _rigidbody.isKinematic = false;
         yield return new WaitForSeconds(second / 5);
@@ -103,8 +107,8 @@ public abstract class Animals : MonoBehaviour, IDamagable
     {
         int duration = 5;
         float second = 1;
-        
-        _blood.Play();
+        CreateBlood();
+        _currentBlood.Play();
         
         for (int i = duration; i > 0; i--)
         {
@@ -119,6 +123,6 @@ public abstract class Animals : MonoBehaviour, IDamagable
             }
         }
         yield return new WaitForSeconds(duration);
-        _blood.Stop();
+        _currentBlood.Stop();
     }
 }
