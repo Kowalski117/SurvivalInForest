@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using BehaviorDesigner.Runtime;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(BehaviorTree),typeof(Rigidbody),typeof(NavMeshAgent))]
 public abstract class Animals : MonoBehaviour, IDamagable
 {
-    [SerializeField] private ItemPickUp _meat;
-    [SerializeField] private int _numberMeat;
+    [SerializeField] private List<ItemPickUp> _loots;
     [SerializeField] private float _healh;
     [SerializeField] private float _armor;
     [SerializeField] private ParticleSystem _blood;
@@ -23,6 +24,8 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private float _maxHealth;
     private Rigidbody _rigidbody;
     private ParticleSystem _currentBlood;
+    private string _takeDamage = "TakeDamage";
+    private string _takeDamageOverTime = "TakeDamageOverTime";
 
     public float Health => _healh;
     public float MaxHealth => _maxHealth;
@@ -42,7 +45,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     {
         float currentDamage = damage - _armor;
 
-        _behaviorTree.SendEvent("TakeDamage");
+        _behaviorTree.SendEvent(_takeDamage);
 
         if (currentDamage >= 0)
         {
@@ -67,25 +70,18 @@ public abstract class Animals : MonoBehaviour, IDamagable
     {
         _behaviorTree.enabled = false;
         _agent.enabled = false;
-        SpawnItem(_meat, _radiusSpawnLoots, _spawnLootUp, _numberMeat);
-        _isDead = true;
 
+        for (int i = 0; i < _loots.Count; i++)
+        {
+            Vector3 position = transform.position + Random.insideUnitSphere * _radiusSpawnLoots;
+            SpawnLoots.Spawn(_loots[i], position, transform, false, _spawnLootUp, false);
+        }
+        
+        _isDead = true;
         Died?.Invoke();
         StartCoroutine(Precipice());
     }
-
-    public void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp, int count)
-    {
-        if (_isDead == false)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                Vector3 position = transform.position + Random.insideUnitSphere * radius;
-                SpawnLoots.Spawn(itemPickUp, position, transform, false, spawnPointUp, false);
-            }
-        }
-    }
-
+    
     private void CreateBlood()
     {
         if (_currentBlood == null)
@@ -114,7 +110,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
         {
             yield return new WaitForSeconds(second);
             _healh -= overTimeDamage;
-            _behaviorTree.SendEvent("TakeDamageOverTime");
+            _behaviorTree.SendEvent(_takeDamageOverTime);
 
             if (_healh <= 0)
             {

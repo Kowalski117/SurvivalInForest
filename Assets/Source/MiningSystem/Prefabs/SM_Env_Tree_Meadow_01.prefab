@@ -203,7 +203,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4531071363959795198}
-  m_LocalRotation: {x: 0.013613191, y: 0, z: 0, w: 0.9999074}
+  m_LocalRotation: {x: 0.008726558, y: 0, z: 0, w: 0.999962}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -212,7 +212,7 @@ Transform:
   - {fileID: 8011550163044246243}
   m_Father: {fileID: 7768601906473230819}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 1.56, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 1, y: 0, z: 0}
 --- !u!136 &8791306470950973001
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -257,13 +257,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 0
-  _item: {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
-  _countItem: 3
   _disappearanceTime: 10
-  _stick: {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
-  _numberStick: 5
+  _loots: []
   _positionLeaves: {fileID: 8011550163044246243}
   _leaves: {fileID: 8829560152314037528, guid: e3b0acba46e46514eb2851787e5e02b6, type: 3}
+  _isTreeHasLeaves: 1
+  _damageLoots:
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  _currentDamageLoots: []
 --- !u!1 &4974185952895321032
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,7 +445,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.1, y: 0.1, z: 0.1}
+  m_Extents: {x: 0.1, y: 0.5, z: 0.1}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1

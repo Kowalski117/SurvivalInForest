@@ -212,7 +212,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.1, y: 0.1, z: 0.1}
+  m_Extents: {x: 0.1, y: 0.5, z: 0.1}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 7158509883508938096}
   - component: {fileID: 5025718983600773008}
   - component: {fileID: 6653390171701209208}
-  - component: {fileID: 5978384349730853997}
+  - component: {fileID: 1507542266625401402}
   m_Layer: 14
   m_Name: Tree
   m_TagString: Untagged
@@ -571,7 +571,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9008898864725839286}
-  m_LocalRotation: {x: -0.027311087, y: 0, z: 0, w: 0.99962705}
+  m_LocalRotation: {x: -0.008726465, y: 0, z: 0, w: 0.999962}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -580,7 +580,7 @@ Transform:
   - {fileID: 1240178763872158120}
   m_Father: {fileID: 2973149261809905399}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -3.13, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1, y: 0, z: 0}
 --- !u!136 &5025718983600773008
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -611,7 +611,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 32
   m_CollisionDetection: 0
---- !u!114 &5978384349730853997
+--- !u!114 &1507542266625401402
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -620,20 +620,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 9008898864725839286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72f8266595b4c214a9d75dbf97008641, type: 3}
+  m_Script: {fileID: 11500000, guid: 762c24caa11e5b148a172f5d7bc1afd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 0
-  _item: {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
-  _countItem: 3
   _disappearanceTime: 10
-  _stick: {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
-  _numberStick: 3
+  _loots:
+  - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
   _positionLeaves: {fileID: 1240178763872158120}
   _leaves: {fileID: 76558198551833141, guid: 1b8caff9f05564144bd01559ef165435, type: 3}
-  _apple: {fileID: 2006157863569543925, guid: fcfd3e0669bf0ac47a298f3fa9f0a98c, type: 3}
-  _numberApple: 5
+  _isTreeHasLeaves: 1
+  _damageLoots:
+  - {fileID: 2006157863569543925, guid: fcfd3e0669bf0ac47a298f3fa9f0a98c, type: 3}
+  - {fileID: 2006157863569543925, guid: fcfd3e0669bf0ac47a298f3fa9f0a98c, type: 3}
+  - {fileID: 2006157863569543925, guid: fcfd3e0669bf0ac47a298f3fa9f0a98c, type: 3}
+  - {fileID: 2006157863569543925, guid: fcfd3e0669bf0ac47a298f3fa9f0a98c, type: 3}
+  - {fileID: 2006157863569543925, guid: fcfd3e0669bf0ac47a298f3fa9f0a98c, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  _currentDamageLoots: []
 --- !u!1 &9060881320051738903
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class AppleTree : Tree
     {
         int number = Random.Range(0, _currentNumberApple+1);
         _currentNumberApple -= number;
-        base.SpawnItem(_apple,_radiusSpawnApple,_spawnPointUp,number);
+        base.SpawnItem(_apple,_radiusSpawnApple,_spawnPointUp);
         base.TakeDamage(damage, overTimeDamage);
     }
 }
