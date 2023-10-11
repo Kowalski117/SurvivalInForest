@@ -60,13 +60,7 @@ public class InteractionPlayerInput : MonoBehaviour
 
     public void Attack()
     {
-        _isButtonPressed = !_isButtonPressed;
-        OnAttack?.Invoke(_isButtonPressed);
-    }
-
-    public void TurnOff()
-    {
-        _isButtonPressed = false;
+        _isButtonPressed = _playerInput.WeaponSystem.Attack.IsPressed();
         OnAttack?.Invoke(_isButtonPressed);
     }
 
@@ -78,22 +72,5 @@ public class InteractionPlayerInput : MonoBehaviour
     public void Aim()
     {
         OnAim?.Invoke();
-    }
-
-    public void PressedButton()
-    {
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
-
-        _coroutine = StartCoroutine(Pressed());
-    }
-
-    private IEnumerator Pressed()
-    {
-        yield return new WaitForSeconds(1f);
-        TurnOff();
     }
 }

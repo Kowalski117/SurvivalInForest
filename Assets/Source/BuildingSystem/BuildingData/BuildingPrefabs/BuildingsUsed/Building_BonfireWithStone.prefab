@@ -64,6 +64,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defoultLayerInt: 12
   _isCanDelete: 1
+  _colliderGround: {fileID: 0}
+  _renderers:
+  - {fileID: 4885735941751875529}
 --- !u!54 &-8699646342938781514
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -108,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 8285ad7a-ef18-4174-be71-79c73df4d271
+  _id: af0db47d-6903-4d9c-a7f5-d17fc65c4c24
 --- !u!1001 &4872877596012050445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -170,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 8c061a3b8dec1ff4bbf147a607fa0ab6, type: 2}
     - target: {fileID: 4872877596446958106, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
       propertyPath: _isEnabledInitially
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8539142390404672864, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
       propertyPath: m_Range
@@ -213,6 +216,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isEnabledInitially: 0
+--- !u!23 &4885735941751875529 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23202646697140164, guid: 5ad998fd9674b7041b61077ca5808bb8, type: 3}
+  m_PrefabInstance: {fileID: 4872877596012050445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8713251545601534990
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,6 +231,10 @@ PrefabInstance:
     - target: {fileID: 2099210253411637275, guid: 17700725019dde94dab420395e3f604c, type: 3}
       propertyPath: m_Name
       value: DistanceHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099210253411637277, guid: 17700725019dde94dab420395e3f604c, type: 3}
+      propertyPath: m_Radius
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2099210253411637278, guid: 17700725019dde94dab420395e3f604c, type: 3}
       propertyPath: m_RootOrder

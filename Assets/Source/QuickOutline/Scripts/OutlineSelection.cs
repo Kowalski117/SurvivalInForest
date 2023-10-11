@@ -23,7 +23,7 @@ public class OutlineSelection : Raycast
                     }
 
                     outline.OutlineWidth = _outlineWidth;
-                    outline.enabled = true;
+                    //outline.enabled = true;
                     outline.OutlineColor = _outlineColor;
 
                     _previousOutline = outline;
@@ -47,7 +47,7 @@ public class OutlineSelection : Raycast
             if (other.TryGetComponent(out Outline outline))
             {
                 outline.OutlineWidth = _outlineWidth;
-                outline.enabled = true;
+                //outline.enabled = true;
                 outline.OutlineColor = _outlineColor;
             }
         }

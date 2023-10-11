@@ -96,10 +96,13 @@ public class Bow : MonoBehaviour
 
     public void InstantiateArrow(Arrow arrow, Transform parent, Animals animals)
     {
-        ItemPickUp arrowItem = Instantiate(_currentWeapon.Bullet, arrow.transform.position, arrow.transform.rotation);
-        arrowItem.GenerateNewID();
-        arrowItem.gameObject.transform.parent = parent;
-        arrowItem.Rigidbody.isKinematic = true;
+        if(Random.Range(0, 2) == 0)
+        {
+            ItemPickUp arrowItem = Instantiate(_currentWeapon.Bullet, arrow.transform.position, arrow.transform.rotation);
+            arrowItem.GenerateNewID();
+            arrowItem.gameObject.transform.parent = parent;
+            arrowItem.Rigidbody.isKinematic = true;
+        }
 
         arrow.SetRope(transform);
         arrow.gameObject.SetActive(false);

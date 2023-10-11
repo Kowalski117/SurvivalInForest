@@ -19,30 +19,6 @@ namespace StarterAssets
 
         [Header("Movement Settings")]
         public bool analogMovement;
-        //private PlayerInput _playerInput;
-
-        //[Header("Mouse Cursor Settings")]
-        //public bool cursorLocked = true;
-        //public bool cursorInputForLook = true;
-
-        //public event UnityAction OnToggleStealth;
-
-        //private void Awake()
-        //{
-        //    _playerInput = new PlayerInput();
-        //}
-
-        //private void OnEnable()
-        //{
-        //    _playerInput.Enable();
-        //    _playerInput.Player.Stealth.performed += ctx => StealthInput();
-        //}
-
-        //private void OnDisable()
-        //{
-        //    _playerInput.Player.Stealth.performed -= ctx => StealthInput();
-        //    _playerInput.Disable();
-        //}
 
 #if ENABLE_INPUT_SYSTEM
         public void OnMove(InputValue value)
@@ -78,10 +54,10 @@ namespace StarterAssets
             InteractInput(value.isPressed);
         }
 
-        //public void OnAttack(InputValue value)
-        //{
-        //    AttackInput(value.isPressed);
-        //}
+        public void OnAttack(InputValue value)
+        {
+            AttackInput(value.isPressed);
+        }
 #endif
 
         public void MoveInput(Vector2 newMoveDirection)

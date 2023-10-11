@@ -75,7 +75,7 @@ public class UIInventoryHandler : MonoBehaviour
         if (_isInventoryOpen)
         {
             _playerInputHandler.ToggleBuildPlayerInput(false);
-            _playerInputHandler.ToggleInteractionConstructionInput(false);
+            //_playerInputHandler.ToggleInteractionConstructionInput(false);
             _playerBackpackPanel.CanvasGroup.alpha = 1;
             _playerBackpackPanel.CanvasGroup.blocksRaycasts = true;
             _playerInputHandler.SetCursorVisible(true);
@@ -93,7 +93,7 @@ public class UIInventoryHandler : MonoBehaviour
             _playerBackpackPanel.CanvasGroup.blocksRaycasts = false;
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
-            _playerInputHandler.ToggleInteractionConstructionInput(true);
+            //_playerInputHandler.ToggleInteractionConstructionInput(true);
             _playerInputHandler.ToggleHotbarDisplay(true);
         }
     }

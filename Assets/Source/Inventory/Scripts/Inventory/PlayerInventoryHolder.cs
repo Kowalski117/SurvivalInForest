@@ -75,8 +75,9 @@ public class PlayerInventoryHolder : InventoryHolder
         for (int i = 0; i < count; i++)
         {
             int index = Random.Range(0, PrimaryInventorySystem.GetAllFilledSlots().Count);
-            int amountRandom = Random.Range(1, PrimaryInventorySystem.GetAllFilledSlots()[index].Size);
-            RemoveInventory(PrimaryInventorySystem.GetAllFilledSlots()[index], amountRandom);
+            InventorySlot slot = PrimaryInventorySystem.GetAllFilledSlots()[index];
+            int amountRandom = Random.Range(1, slot.Size);
+            RemoveInventory(slot, amountRandom);
         }
     }
 

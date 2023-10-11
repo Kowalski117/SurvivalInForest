@@ -6,14 +6,15 @@ public class Building : MonoBehaviour
 {
     [SerializeField] private int _defoultLayerInt = 12;
     [SerializeField] private bool _isCanDelete = true;
+    [SerializeField] private GameObject _colliderGround;
+    [SerializeField] private Renderer[] _renderers;
 
-    private BuildingData _assignedData;
+    private BuildingRecipe _buildingRecipe;
     private BoxCollider _boxCollider;
     private Rigidbody _rigidbody;
     private Transform _colliders;
     private bool _isOverlapping;
 
-    private Renderer[] _renderers;
     private Material[] _defoultMaterial;
 
     private bool _flaggedForDelete;
@@ -23,7 +24,7 @@ public class Building : MonoBehaviour
     public event UnityAction OnCompletedBuild;
 
     public string UniqueID =>  _uniqueID.Id;
-    public BuildingData AssignedData => _assignedData;
+    public BuildingRecipe BuildingRecipe => _buildingRecipe;
     public bool FlaggedForDelete => _flaggedForDelete;
     public bool IsOverlapping => _isOverlapping;
     public bool IsCanDelete => _isCanDelete;
@@ -35,8 +36,11 @@ public class Building : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _boxCollider.isTrigger = true;
         _rigidbody.isKinematic = true;
-        _renderers = transform.GetComponentsInChildren<Renderer>();
+        //_renderers = transform.GetComponentsInChildren<Renderer>();
         _defoultMaterial = new Material[_renderers.Length];
+
+        if(_colliderGround)
+            _colliderGround.SetActive(false);
 
         for (int i = 0; i < _renderers.Length; i++)
         {
@@ -44,23 +48,9 @@ public class Building : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void Init(BuildingRecipe buildingRecipe, string id = null)
     {
-        //SaveGame.OnLoadData += Load;
-    }
-
-    private void OnDisable()
-    {
-        //SaveGame.OnLoadData -= Load;
-    }
-
-    public void Init(BuildingData data, string id = null)
-    {
-        _assignedData = data;
-        //_colliders = transform.Find("Colliders");
-
-        //if(_colliders != null )
-        //    _colliders.gameObject.SetActive(false);
+        _buildingRecipe = buildingRecipe;
 
         if (id != null)
             _uniqueID.SetId(id);
@@ -72,14 +62,13 @@ public class Building : MonoBehaviour
     {
         _boxCollider.enabled = true;
 
-        //if(_colliders != null)
-        //    _colliders.gameObject.SetActive(true);
-
         UpdateMaterials(_defoultMaterial);
 
         gameObject.layer = _defoultLayerInt;
-        //_boxCollider.enabled = false;
         OnCompletedBuild?.Invoke();
+
+        if (_colliderGround)
+            _colliderGround.SetActive(true);
 
         Save();
     }
@@ -117,19 +106,9 @@ public class Building : MonoBehaviour
 
     public void Save()
     {
-        BuildingSaveData itemSaveData = new BuildingSaveData(_assignedData.Id, transform.position, transform.rotation);
+        BuildingSaveData itemSaveData = new BuildingSaveData(_buildingRecipe.BuildingData.Id, transform.position, transform.rotation);
         ES3.Save(_uniqueID.Id, itemSaveData);
     }
-
-    //private void Load()
-    //{
-    //    if (!ES3.KeyExists(_uniqueID.Id))
-    //    {
-
-
-    //        Destroy(gameObject);
-    //    }
-    //}
 
     private void OnTriggerStay(Collider other)
     {
@@ -139,12 +118,6 @@ public class Building : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         _isOverlapping = false;
-    }
-
-    private void OnDestroy()
-    {
-        //if (ES3.KeyExists(UniqueID))
-        //    ES3.DeleteKey(UniqueID);
     }
 }
 

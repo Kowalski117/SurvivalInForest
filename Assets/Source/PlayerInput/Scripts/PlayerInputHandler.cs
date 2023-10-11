@@ -10,6 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
     [SerializeField] private UIScreenPlayerInput _screenPlayerInput;
     [SerializeField] private SurvivalHandler _survivalHandler;
+    [SerializeField] private BuildTool _buildTool;
     [SerializeField] private Transform _inventoryPanels;
 
     public FirstPersonController FirstPersonController => _firstPersonController;
@@ -17,6 +18,8 @@ public class PlayerInputHandler : MonoBehaviour
     public InteractionPlayerInput InteractionPlayerInput => _interactionPlayerInput;
     public BuildPlayerInput BuildPlayerInput => _buildPlayerInput;
     public UIScreenPlayerInput ScreenPlayerInput => _screenPlayerInput;
+    public SurvivalHandler SurvivalHandler => _survivalHandler;
+    public BuildTool BuildTool => _buildTool;
     public Transform InventoryPanels => _inventoryPanels;
 
     private void Start()
@@ -56,7 +59,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void ToggleInteractionConstructionInput(bool visible)
     {
-        _interactionPlayerInput.PressedButton();
         _interactionPlayerInput.enabled = visible;
     }
 
@@ -74,7 +76,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         TogglePersonController(visible);
         ToggleInventoryInput(visible);
-        ToggleInteractionConstructionInput(visible);
+        //ToggleInteractionConstructionInput(visible);
         ToggleBuildPlayerInput(visible);
     }
 

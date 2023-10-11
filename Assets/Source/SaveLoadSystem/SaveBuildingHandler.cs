@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SaveBuildingHandler : SaveHandler
 {
-    [SerializeField] private List<BuildingData> _buildingDataList;
+    [SerializeField] private List<BuildingRecipe> _buildingDataList;
 
     private string _idsBuildings = "idsBuildings";
 
@@ -26,9 +26,9 @@ public class SaveBuildingHandler : SaveHandler
 
                 foreach (var data in _buildingDataList)
                 {
-                    if (data.Id == itemSaveData.Id)
+                    if (data.BuildingData.Id == itemSaveData.Id)
                     {
-                        _currentBuilding = Instantiate(data.Prefab, itemSaveData.Position, itemSaveData.Rotation, Container);
+                        _currentBuilding = Instantiate(data.BuildingData.Prefab, itemSaveData.Position, itemSaveData.Rotation, Container);
                         _currentBuilding.Init(data, buildingData);
                         _currentBuilding.PlaceBuilding();
                         _currentBuilding = null;

@@ -59,10 +59,10 @@ public class SleepPanel : MonoBehaviour
     private void OnLoadingComplete()
     {
         OnSubtractTime?.Invoke(_survivalHandler.Sleep.MissingValue);
-        _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue);
-        _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue);
-        _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue);
-        _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue);
+        _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue / 3);
+        _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue / 3);
+        _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue / 3);
+        _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue / 3);
 
         OnStoppedTime?.Invoke(true);
         _survivalHandler.TimeHandler.ToggleEnable(true);

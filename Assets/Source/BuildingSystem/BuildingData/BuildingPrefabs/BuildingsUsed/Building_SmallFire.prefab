@@ -63,6 +63,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defoultLayerInt: 12
+  _isCanDelete: 1
+  _colliderGround: {fileID: 0}
+  _renderers:
+  - {fileID: 4452204414993853546}
+  _defoultMaterial:
+  - {fileID: 2100000, guid: c6030e4939d206544a563fc12dc8518f, type: 2}
 --- !u!54 &2443664449135142848
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -519,6 +525,7 @@ MonoBehaviour:
   _craftObject: {fileID: 2786890757607728481}
   _fireParticle: {fileID: 5554089792678960289}
   _isRemoveAfterFire: 1
+  _campfireItems: []
 --- !u!114 &8379648161582545794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -542,6 +549,10 @@ PrefabInstance:
     - target: {fileID: 2099210253411637275, guid: 17700725019dde94dab420395e3f604c, type: 3}
       propertyPath: m_Name
       value: DistanceHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099210253411637277, guid: 17700725019dde94dab420395e3f604c, type: 3}
+      propertyPath: m_Radius
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2099210253411637278, guid: 17700725019dde94dab420395e3f604c, type: 3}
       propertyPath: m_RootOrder
@@ -758,5 +769,10 @@ PrefabInstance:
 --- !u!4 &3279258860509828869 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6959008511084985165, guid: b8c19df0f97c53e46a19c6da45ecab43, type: 3}
+  m_PrefabInstance: {fileID: 5553248204840922184}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4452204414993853546 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8131373932394315810, guid: b8c19df0f97c53e46a19c6da45ecab43, type: 3}
   m_PrefabInstance: {fileID: 5553248204840922184}
   m_PrefabAsset: {fileID: 0}

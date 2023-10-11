@@ -273,13 +273,11 @@ public class PlayerInteraction : Raycast
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Animals animals))
+        _currentAnim = other.GetComponentInParent<Animals>();
+
+        if (_currentAnim != null)
         {
-            if (animals != null)
-            {
-                _currentAnim = animals;
-                OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
-            }
+            OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
         }
 
         if (other.TryGetComponent(out Resource resource))

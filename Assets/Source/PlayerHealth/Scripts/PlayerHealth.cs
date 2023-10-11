@@ -87,7 +87,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         if (CurrentValue > MaxValue)
             CurrentValue = MaxValue;
 
-        OnHealthChanged?.Invoke(ValuePercent);
+        OnHealthChanged?.Invoke(HealthPercent);
     }
 
     public void TakeDamage(float damage,float overTimeDamage)

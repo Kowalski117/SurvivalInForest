@@ -12,8 +12,9 @@ public class PauseScreen : ScreenUI
     public event UnityAction OnSaveButton;
     public event UnityAction OnExitButton;
 
-    private void OnEnable()
+    public override void OnEnable()
     {
+        base.OnEnable();
         _continueButton.onClick.AddListener(ContinueButtonClick);
         _saveButton.onClick.AddListener(SaveButtonClick);
         _exitButton.onClick.AddListener(ExitButtonClick);
@@ -21,8 +22,9 @@ public class PauseScreen : ScreenUI
         PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleScreen;
     }
 
-    private void OnDisable()
+    public override void OnDisable()
     {
+        base.OnDisable();
         _continueButton.onClick.RemoveListener(ContinueButtonClick);
         _saveButton.onClick.RemoveListener(SaveButtonClick);
         _exitButton.onClick.RemoveListener(ExitButtonClick);
