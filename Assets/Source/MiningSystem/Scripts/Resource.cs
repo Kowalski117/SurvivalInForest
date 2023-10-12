@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,9 +10,8 @@ public abstract class Resource : MonoBehaviour, IDamagable
 {
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private ToolType _extractionType;
-    [SerializeField] private ItemPickUp _item;
-    [SerializeField] private int _countItem;
-    [SerializeField]private float _disappearanceTime = 10;
+    [SerializeField] private float _disappearanceTime = 10;
+    [SerializeField] private List<ItemPickUp> _loots;
     
     protected Collider Сollider;
     protected Rigidbody Rigidbody;
@@ -53,20 +53,22 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         _curenntHealth = 0;
         Rigidbody.isKinematic = false;
-        SpawnItem(_item, _radiusSpawnLoots, _spawnLootUp, _countItem);
+
+        for (int i = 0; i < _loots.Count; i++)
+        {
+            SpawnItem(_loots[i], _radiusSpawnLoots, _spawnLootUp);
+        }
+        
         _isDead = true;
         StartCoroutine(Precipice());
     }
 
-    public virtual void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp, int count)
+    public virtual void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp)
     {
         if (_isDead == false)
         {
-            for (int i = 0; i < count; i++)
-            {
-                Vector3 position = (transform.position + Random.insideUnitSphere * radius);
-                SpawnLoots.Spawn(itemPickUp, position, transform, false, spawnPointUp, false);
-            }
+            Vector3 position = (transform.position + Random.insideUnitSphere * radius);
+            SpawnLoots.Spawn(itemPickUp, position, transform, false, spawnPointUp, false);
         }
     }
 

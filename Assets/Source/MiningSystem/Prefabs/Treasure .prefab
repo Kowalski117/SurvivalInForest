@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &6669322106757079985
 Transform:
@@ -48,7 +48,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5497776042432844256
 Transform:
@@ -127,8 +127,8 @@ GameObject:
   - component: {fileID: 7390951824732099544}
   - component: {fileID: 7400426031986704814}
   - component: {fileID: 7415026891261011277}
-  - component: {fileID: 7415026891261011278}
   - component: {fileID: 7415026891261011279}
+  - component: {fileID: 1621152386179462598}
   m_Layer: 18
   m_Name: SM_Prop_Hay_Pile_01_Green (1)
   m_TagString: Untagged
@@ -217,19 +217,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &7415026891261011278
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7413376249537084990}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 1.1602466, z: 2}
-  m_Center: {x: 0, y: 0.53012335, z: 0}
 --- !u!114 &7415026891261011279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,6 +238,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 955b83eb2606efc4b83ca6d0e014b699, type: 2}
   - {fileID: 11400000, guid: 909c22361c032a4498a0625e6ffa85c9, type: 2}
   _lootObject: {fileID: 8637010559191012645}
+--- !u!136 &1621152386179462598
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7413376249537084990}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.3223362
+  m_Height: 2.6446724
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &7415026890183502644
 GameObject:
   m_ObjectHideFlags: 0

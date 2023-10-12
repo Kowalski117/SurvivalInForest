@@ -1,33 +1,47 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(CapsuleCollider))]
 public class Tree : Resource
 {
-    [SerializeField] private ItemPickUp _stick;
-    [SerializeField] private int _numberStick;
     [SerializeField] private Transform _positionLeaves;
     [SerializeField] private ParticleSystem _leaves;
+    [SerializeField] private bool _isTreeHasLeaves;
+    [SerializeField] private List<ItemPickUp> _damageLoots;
 
-    private float _radiusSpawnStick = 2;
-    private float _spawnPointUpStick = 2;
-    private int _currentNumberStick;
+    private float _radiusSpawn = 3;
+    private float _spawnPointUp = 2;
+    [SerializeField] private List<ItemPickUp> _currentDamageLoots;
 
     public override void OnEnable()
     {
         base.OnEnable();
-        _currentNumberStick = _numberStick;
+        _currentDamageLoots.AddRange(_damageLoots);
     }
 
     public override void TakeDamage(float damage, float overTimeDamage)
     {
+        int count = Random.Range(0, _currentDamageLoots.Count+1);
+        
+        if (_isTreeHasLeaves)
+        {
+            CreateParticleLeaves();
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            int number = Random.Range(0, _currentDamageLoots.Count);
+            base.SpawnItem(_currentDamageLoots[number], _radiusSpawn, _spawnPointUp);
+            _currentDamageLoots.RemoveAt(number);
+        }
+        
+        base.TakeDamage(damage, overTimeDamage);
+    }
+    
+    private void CreateParticleLeaves()
+    {
         ParticleSystem leaves = Instantiate(_leaves, _positionLeaves.position, _positionLeaves.rotation, _positionLeaves);
         StartCoroutine(DeleteLeaves(leaves));
-
-        int number = Random.Range(0, _currentNumberStick + 1);
-        _currentNumberStick -= number;
-        base.SpawnItem(_stick, _radiusSpawnStick, _spawnPointUpStick, number);
-        base.TakeDamage(damage, overTimeDamage);
     }
 
     IEnumerator DeleteLeaves(ParticleSystem leaves)

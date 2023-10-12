@@ -26,9 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952581774879631929}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1572, y: -2.9064, z: -0.053332}
-  m_LocalScale: {x: 0.7088296, y: 0.7088296, z: 0.7088296}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.142, y: -3.164, z: -0.103}
+  m_LocalScale: {x: 1.31, y: 1.31, z: 1.31}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4829524073620059691}
   m_RootOrder: 0
@@ -144,7 +144,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.1, y: 0.1, z: 0.1}
+  m_Extents: {x: 0.1, y: 0.5, z: 0.1}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -161,8 +161,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.4823452, y: 0.32432473, z: 0.37558657}
-  m_Center: {x: 0.012879625, y: -0.36, z: -0.0004810393}
+  m_Size: {x: 0.4823452, y: 0.18227717, z: 0.37558657}
+  m_Center: {x: 0.012879625, y: -0.43102378, z: -0.0004810393}
 --- !u!1 &2743234878983303802
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,16 +482,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5266744776159930962}
-  m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.008726465, y: 0, z: 0, w: 0.999962}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7605477428437913471}
   - {fileID: 908789943311444729}
   m_Father: {fileID: 1621495262321268264}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1, y: 0, z: 0}
 --- !u!136 &3880445157951552871
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -503,9 +503,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.10000001
-  m_Height: 4.0024643
+  m_Height: 3.8299203
   m_Direction: 1
-  m_Center: {x: -0.040000007, y: 1.5170255, z: -0.08}
+  m_Center: {x: -0.040000007, y: 1.6032907, z: -0.07999991}
 --- !u!54 &4453499062678996060
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -536,13 +536,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 0
-  _item: {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
-  _countItem: 5
   _disappearanceTime: 10
-  _stick: {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
-  _numberStick: 3
+  _loots:
+  - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
   _positionLeaves: {fileID: 908789943311444729}
   _leaves: {fileID: 8829560152314037528, guid: e3b0acba46e46514eb2851787e5e02b6, type: 3}
+  _isTreeHasLeaves: 1
+  _damageLoots:
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  - {fileID: 2863208635891924812, guid: ab6459edf8efa2d498214e1b3d6e4751, type: 3}
+  _currentDamageLoots: []
 --- !u!1 &7237815888602160719
 GameObject:
   m_ObjectHideFlags: 0
