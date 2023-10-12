@@ -66,9 +66,9 @@ public class DelayWindow : MonoBehaviour
 
         _isLoading = false;
         _timeHandler.AddTimeInHours(skipTime);
-        _survivalHandler.Sleep.LowerValueInFours(skipTime);
-        _survivalHandler.Hunger.LowerValueInFours(skipTime);
-        _survivalHandler.Thirst.LowerValueInFours(skipTime);
+        _survivalHandler.Sleep.LowerValueInFours(skipTime / 3);
+        _survivalHandler.Hunger.LowerValueInFours(skipTime / 3);
+        _survivalHandler.Thirst.LowerValueInFours(skipTime / 3);
         _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);

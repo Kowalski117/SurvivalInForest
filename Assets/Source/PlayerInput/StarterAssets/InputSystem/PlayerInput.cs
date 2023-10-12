@@ -101,7 +101,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Hit"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""60507cde-ee82-435c-89d2-5c409ebba5e7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

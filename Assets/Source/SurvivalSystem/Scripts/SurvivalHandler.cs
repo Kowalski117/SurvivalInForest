@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,14 +13,17 @@ public class SurvivalHandler : MonoBehaviour
     [SerializeField] private SurvivalAttribute _sleep;
     [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private PlayerAudioHandler _playerAudioHandler;
+    [SerializeField] private BuildTool _buildTool;
     [SerializeField] private float _healthDamage = 5f;
     [SerializeField] private float _liftingDelay = 2f;
 
     private float _lookTimer = 0;
     private int _addAmount = 1;
-
+    private Coroutine _eatCoroutine;
+    private bool _isEating = false;
     private bool _isEnable = false;
 
+    public PlayerHealth PlayerHealth => _health;
     public SurvivalAttribute Hunger => _hunger;
     public SurvivalAttribute Thirst => _thirst;
     public StaminaAttribute Stamina => _stamina;
@@ -79,8 +83,9 @@ public class SurvivalHandler : MonoBehaviour
 
     public void Eat(InventorySlot slot)
     {
-        if (slot.ItemData is FoodItemData foodItemData)
+        if (slot.ItemData is FoodItemData foodItemData && !_isEating && !_buildTool.IsMoveBuild)
         {
+            _isEating = true;
             _playerAudioHandler.PlayEatingSound(foodItemData.AmountSatiety, foodItemData.AmountWater);
             _hunger.ReplenishValue(foodItemData.AmountSatiety);
             _thirst.ReplenishValue(foodItemData.AmountWater);
@@ -100,7 +105,7 @@ public class SurvivalHandler : MonoBehaviour
                     if (foodItemData.EmptyDishes != null)
                         _playerInventory.AddToInventory(foodItemData.EmptyDishes, _addAmount);
 
-                    _playerInventory.RemoveInventory(slot, 1);
+                    _playerInventory.RemoveInventory(slot, _addAmount);
                 }
             }
             else
@@ -108,8 +113,10 @@ public class SurvivalHandler : MonoBehaviour
                 if (foodItemData.EmptyDishes != null)
                     _playerInventory.AddToInventory(foodItemData.EmptyDishes, _addAmount);
 
-                _playerInventory.RemoveInventory(slot, 1);
+                _playerInventory.RemoveInventory(slot, _addAmount);
             }
+
+            StartCoroutine(_addAmount);
         }
     }
 
@@ -144,5 +151,23 @@ public class SurvivalHandler : MonoBehaviour
         _hunger.SetValue(ES3.Load<float>("Hunger", _hunger.MaxValueInSeconds));
         _thirst.SetValue(ES3.Load<float>("Thirst", _thirst.MaxValueInSeconds));
         _sleep.SetValue(ES3.Load<float>("Sleep", _sleep.MaxValueInSeconds));
+    }
+
+    private void StartCoroutine(float duration)
+    {
+        if (_eatCoroutine != null)
+        {
+            StopCoroutine(_eatCoroutine);
+            _eatCoroutine = null;
+        }
+
+        _eatCoroutine = StartCoroutine(WaitForEatToFinish(duration));
+    }
+
+    private IEnumerator WaitForEatToFinish(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        _isEating = false;
     }
 }

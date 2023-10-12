@@ -44,7 +44,10 @@ public class ObjectPickUp : MonoBehaviour
     public void TurnOff()
     {
         _rigidbody.isKinematic = true;
-        _outline.enabled = false;
+
+        if (_outline)
+            _outline.enabled = false;
+
         gameObject.layer = default;
         enabled = false;
     }
@@ -52,7 +55,10 @@ public class ObjectPickUp : MonoBehaviour
     public void Enable()
     {
         enabled = true;
-        _outline.enabled = true;
+
+        if(_outline)
+            _outline.enabled = true;
+
         gameObject.layer = _layerMask;
     }
 

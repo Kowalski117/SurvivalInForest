@@ -31,6 +31,7 @@ public class Interactor : Raycast
 
     private int _addAmount = 1;
 
+
     public event UnityAction<float, string> OnTimeUpdate;
 
     public float LookTimerPracent => _lookTimer / _liftingDelay;

@@ -21,14 +21,21 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private SphereCollider _selectionCollider;
 
     private bool _deleteModeEnabled;
+    private bool _isMovedBuild = false;
     private Camera _camera;
     private BuildingRecipe _recipe;
     private Building _spawnBuilding;
     private Building _targetBuilding;
     private Quaternion _lastRotation;
 
+    private float _radiusSpawn = 2f;
+    private float _spawnPointUp = 0.5f;
+    private int _coutIndex = 2;
+
     public event UnityAction OnCreateBuild;
     public event UnityAction OnCompletedBuild;
+
+    public bool IsMoveBuild => _isMovedBuild;
 
     private void Awake()
     {
@@ -44,7 +51,7 @@ public class BuildTool : MonoBehaviour
         _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding += DeleteMobeBuilding;
         _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += DeleteBuilding;
 
-        _playerHealth.OnDied += DeleteBuilding;
+        _playerHealth.OnRevived += DeleteBuilding;
     }
 
     private void OnDisable()
@@ -56,7 +63,7 @@ public class BuildTool : MonoBehaviour
         _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding -= DeleteMobeBuilding;
         _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= DeleteBuilding;
 
-        _playerHealth.OnDied -= DeleteBuilding;
+        _playerHealth.OnRevived -= DeleteBuilding;
     }
 
     private void Update()
@@ -65,6 +72,11 @@ public class BuildTool : MonoBehaviour
             DeleteModeLogic();
         else
             BuildModeLogic();
+    }
+
+    public void DeleteBuilding()
+    {
+        DeleteObjectPreview();
     }
 
     public void SetDeleteModeEnabled(bool deleteMode)
@@ -95,13 +107,13 @@ public class BuildTool : MonoBehaviour
 
         var detectedBuilding = hitInfo.collider.gameObject.GetComponentInParent<Building>();
 
-        if(detectedBuilding == null || !detectedBuilding.IsCanDelete)
+        if (detectedBuilding == null || !detectedBuilding.IsCanDelete)
             return;
 
         if (_targetBuilding == null)
             _targetBuilding = detectedBuilding;
 
-        if(detectedBuilding != _targetBuilding && _targetBuilding.FlaggedForDelete)
+        if (detectedBuilding != _targetBuilding && _targetBuilding.FlaggedForDelete)
         {
             _targetBuilding.RemoveDeleteFlag();
             _targetBuilding = detectedBuilding; 
@@ -114,8 +126,12 @@ public class BuildTool : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Destroy(hitInfo.collider.gameObject);
+            foreach (var item in _targetBuilding.BuildingRecipe.CraftingIngridients)
+            {
+                SpawnItem(item.ItemRequired.ItemPrefab, _radiusSpawn, _spawnPointUp, item.AmountRequured / _coutIndex);
+            }
             _targetBuilding = null;
+            Destroy(hitInfo.collider.gameObject);
         }
     }
 
@@ -142,12 +158,19 @@ public class BuildTool : MonoBehaviour
             Vector3 hitPoint = hitInfo.point;
             Vector3 terrainNormal = hitInfo.normal;
 
-            hitPoint += terrainNormal * 0.1f;
-            Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
-            float terrainHeight = Terrain.activeTerrain.SampleHeight(hitPoint);
+            if(_recipe.BuildingData.Type == ItemType.Build)
+            {
 
-            gridPosition.y = terrainHeight;
-            _spawnBuilding.transform.position = hitPoint;
+                hitPoint += terrainNormal * 0.1f;
+                Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
+                Vector3 roundedPosition = new Vector3(Mathf.Round(gridPosition.x), hitPoint.y, Mathf.Round(gridPosition.z));
+                _spawnBuilding.transform.position = roundedPosition;
+            }
+            else if(_recipe.BuildingData.Type == ItemType.InteractBuilding)
+            {
+                _spawnBuilding.transform.position = hitPoint;
+            }
+
         }
     }
 
@@ -155,6 +178,7 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
         {
+            _playerInputHandler.ToggleAllInput(false);
             _loadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.BuildingData.DisplayName, ActionType.CraftBuild);
             _loadingWindow.OnLoadingComplete += OnLoadingComplete;
         }
@@ -169,6 +193,8 @@ public class BuildTool : MonoBehaviour
         _spawnBuilding = null;
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
+        _isMovedBuild = false;
+        _playerInputHandler.ToggleBuildPlayerInput(true);
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
@@ -186,11 +212,6 @@ public class BuildTool : MonoBehaviour
         OnCompletedBuild?.Invoke();
         DeleteObjectPreview();
         _deleteModeEnabled = !_deleteModeEnabled;
-    }
-
-    private void DeleteBuilding()
-    {
-        DeleteObjectPreview();
     }
 
     private void CraftingItem(BuildingRecipe craftRecipe)
@@ -221,10 +242,23 @@ public class BuildTool : MonoBehaviour
         SetDeleteModeEnabled(false);
 
         _spawnBuilding = Instantiate(_recipe.BuildingData.Prefab, _containerBuildings);
-        _spawnBuilding.Init(_recipe.BuildingData);
+        _spawnBuilding.Init(_recipe);
         _spawnBuilding.transform.rotation = _lastRotation;
         OnCreateBuild?.Invoke();
         _playerAnimation.Build();
         _selectionCollider.enabled = false;
+        _isMovedBuild = true;
+    }
+
+    public virtual void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp, int count)
+    {
+        if (_deleteModeEnabled && _targetBuilding != null)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 position = (_targetBuilding.transform.position + Random.insideUnitSphere * radius);
+                SpawnLoots.Spawn(itemPickUp, position, _targetBuilding.transform, false, spawnPointUp, false);
+            }
+        }
     }
 }

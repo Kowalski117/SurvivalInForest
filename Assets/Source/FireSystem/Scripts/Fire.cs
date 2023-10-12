@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,6 +9,7 @@ public class Fire : MonoBehaviour
     [SerializeField] private CraftObject _craftObject;
     [SerializeField] private GameObject _fireParticle;
     [SerializeField] private bool _isRemoveAfterFire = false;
+    [SerializeField] private InventoryItemData[] _campfireItems;
 
     private string _fireSaveData = "Fire";
     private float _workingHours = 2f;
@@ -73,9 +75,9 @@ public class Fire : MonoBehaviour
     {
         if (slot.ItemData != null && slot.ItemData.GorenjeTime > 0 && slot.Size > 0)
         {
-            if (AddTime(slot.ItemData.GorenjeTime))
+            if (_campfireItems.Contains(slot.ItemData) || _campfireItems == null)
             {
-                return true;
+                return AddTime(slot.ItemData.GorenjeTime);
             }
         }
 
