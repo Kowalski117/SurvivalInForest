@@ -178,6 +178,7 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
         {
+            _playerInputHandler.ToggleAllInput(false);
             _loadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.BuildingData.DisplayName, ActionType.CraftBuild);
             _loadingWindow.OnLoadingComplete += OnLoadingComplete;
         }
@@ -193,6 +194,7 @@ public class BuildTool : MonoBehaviour
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
         _isMovedBuild = false;
+        _playerInputHandler.ToggleBuildPlayerInput(true);
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 

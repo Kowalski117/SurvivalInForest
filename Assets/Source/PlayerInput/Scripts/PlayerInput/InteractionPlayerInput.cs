@@ -5,8 +5,7 @@ using UnityEngine.Events;
 public class InteractionPlayerInput : MonoBehaviour
 {
     private PlayerInput _playerInput;
-    private bool _isButtonPressed;
-    private Coroutine _coroutine;
+    private bool _isEnable = true;
 
     public event UnityAction OnInteractedConstruction;
     public event UnityAction OnHit;
@@ -45,32 +44,48 @@ public class InteractionPlayerInput : MonoBehaviour
 
     public void InteractedConstruction()
     {
-        OnInteractedConstruction?.Invoke();
+        if(_isEnable)
+            OnInteractedConstruction?.Invoke();
     }
 
     private void Hit()
     {
-        OnHit?.Invoke();
+        if (_isEnable)
+            OnHit?.Invoke();
     }
 
     private void PickUp()
     {
-        OnPickUp?.Invoke();
+        if (_isEnable)
+            OnPickUp?.Invoke();
     }
 
     public void Attack()
     {
-        _isButtonPressed = _playerInput.WeaponSystem.Attack.IsPressed();
-        OnAttack?.Invoke(_isButtonPressed);
+        if (_isEnable)
+        {
+            OnAttack?.Invoke(_playerInput.WeaponSystem.Attack.IsPressed());
+        }
+        else
+        {
+            OnAttack?.Invoke(false);
+        }
     }
 
     public void Use()
     {
-        OnUse?.Invoke();
+        if (_isEnable)
+            OnUse?.Invoke();
     }
 
     public void Aim()
     {
-        OnAim?.Invoke();
+        if (_isEnable)
+            OnAim?.Invoke();
+    }
+
+    public void SetEnable(bool enable)
+    {
+        _isEnable = enable;
     }
 }
