@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &429577550593594675
 Transform:
@@ -94,6 +94,10 @@ Transform:
   - {fileID: 3808456812188390772}
   - {fileID: 3808456810803328615}
   - {fileID: 3808456811215240285}
+  - {fileID: 3808456811304320861}
+  - {fileID: 3808456811900846644}
+  - {fileID: 3808456810882645324}
+  - {fileID: 3808456810890344483}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -125,6 +129,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -192,6 +200,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -258,6 +270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (58)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 58
@@ -313,6 +329,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
   m_PrefabInstance: {fileID: 429577550210991675}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &429577550214775030
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 429577550593594675}
+    m_Modifications:
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_Name
+      value: SpawnPointAnimals (66)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_RootOrder
+      value: 66
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 523.63446
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.362854
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 343.2787
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949251, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: _animals
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+--- !u!4 &3808456811900846644 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+  m_PrefabInstance: {fileID: 429577550214775030}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &429577550228040908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -323,6 +409,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -390,6 +480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (60)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 60
@@ -455,6 +549,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -522,6 +620,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 19
@@ -588,21 +690,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 495.05322
+      value: 483.2937
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.507568
+      value: -6.067413
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -59.8112
+      value: -64.56825
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalRotation.w
@@ -653,6 +759,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -720,6 +830,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (49)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 49
@@ -785,6 +899,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (52)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -852,6 +970,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 24
@@ -917,6 +1039,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (44)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -984,6 +1110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (45)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 45
@@ -1049,6 +1179,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (47)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -1116,6 +1250,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -1181,6 +1319,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (39)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -1248,6 +1390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (56)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 56
@@ -1313,6 +1459,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (48)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -1380,6 +1530,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (59)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 59
@@ -1445,6 +1599,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -1512,6 +1670,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -1577,6 +1739,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -1644,6 +1810,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -1709,6 +1879,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -1776,6 +1950,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (53)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 53
@@ -1841,6 +2019,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -1908,6 +2090,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (41)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 41
@@ -1973,6 +2159,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (33)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2040,6 +2230,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (62)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 62
@@ -2105,6 +2299,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2172,21 +2370,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 505.31622
+      value: 493.7657
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.560822
+      value: -9.6591
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -31.367168
+      value: -24.091091
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2237,6 +2439,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2304,6 +2510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (38)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 38
@@ -2369,6 +2579,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (57)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2436,6 +2650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (63)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 63
@@ -2491,6 +2709,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
   m_PrefabInstance: {fileID: 429577551314547877}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &429577551359621857
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 429577550593594675}
+    m_Modifications:
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_Name
+      value: SpawnPointAnimals (68)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_RootOrder
+      value: 68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 514.3099
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8.328972
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -49.207794
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949251, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: _animals
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+--- !u!4 &3808456810890344483 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+  m_PrefabInstance: {fileID: 429577551359621857}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &429577551367846786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2501,6 +2789,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2557,6 +2849,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
   m_PrefabInstance: {fileID: 429577551367846786}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &429577551369682830
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 429577550593594675}
+    m_Modifications:
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_Name
+      value: SpawnPointAnimals (67)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_RootOrder
+      value: 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 662.12274
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -10.217651
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 238.11581
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949251, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: _animals
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+--- !u!4 &3808456810882645324 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+  m_PrefabInstance: {fileID: 429577551369682830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &429577551402887117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2567,6 +2929,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (43)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2634,6 +3000,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -2699,6 +3069,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2766,6 +3140,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -2831,6 +3209,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (37)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -2898,21 +3280,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 537.7
+      value: 550.4475
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.1
+      value: -3.0180774
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -31.8
+      value: -32.4073
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2963,6 +3349,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (55)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3030,6 +3420,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (40)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 40
@@ -3095,6 +3489,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3162,6 +3560,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (36)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 36
@@ -3227,6 +3629,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3294,6 +3700,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (61)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 61
@@ -3359,6 +3769,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (46)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3426,6 +3840,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 35
@@ -3491,6 +3909,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (54)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3558,6 +3980,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -3623,6 +4049,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3690,6 +4120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (42)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 42
@@ -3745,6 +4179,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
   m_PrefabInstance: {fileID: 429577551889798859}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &429577551891496351
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 429577550593594675}
+    m_Modifications:
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_Name
+      value: SpawnPointAnimals (65)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_RootOrder
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 67.41547
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.68515
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 228.8596
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949251, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: _animals
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+--- !u!4 &3808456811304320861 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+  m_PrefabInstance: {fileID: 429577551891496351}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &429577551915166697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3755,6 +4259,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (51)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3822,6 +4330,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 25
@@ -3887,6 +4399,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -3954,6 +4470,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (50)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 50
@@ -4019,6 +4539,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -4086,6 +4610,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 34
@@ -4151,6 +4679,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
@@ -4218,6 +4750,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -4284,6 +4820,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPointAnimals (64)
       objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
       value: 64
@@ -4349,6 +4889,10 @@ PrefabInstance:
     - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_Name
       value: SpawnPointAnimals (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543332124931949249, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3543332124931949250, guid: 04cc8c59ab5494244b4cc7485f3a7398, type: 3}
       propertyPath: m_RootOrder
