@@ -342,6 +342,7 @@ MonoBehaviour:
   _buildPlayerInput: {fileID: 7366031901143214871}
   _screenPlayerInput: {fileID: 857606953}
   _survivalHandler: {fileID: 7366031901143214866}
+  _buildTool: {fileID: 0}
   _inventoryPanels: {fileID: 0}
 --- !u!114 &7366031901143214871
 MonoBehaviour:
@@ -480,6 +481,7 @@ MonoBehaviour:
   _sleep: {fileID: 7366031901069918950}
   _timeHandler: {fileID: 0}
   _playerAudioHandler: {fileID: 0}
+  _buildTool: {fileID: 0}
   _healthDamage: 2
   _liftingDelay: 1
 --- !u!114 &7366031901143214856
@@ -2531,10 +2533,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 364005327, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: _cullingDistances.Array.data[22]
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 364005327, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
-      propertyPath: _cullingDistances.Array.data[23]
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 364005327, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
