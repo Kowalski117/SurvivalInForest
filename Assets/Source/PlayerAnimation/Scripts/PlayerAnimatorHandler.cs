@@ -43,18 +43,12 @@ public class PlayerAnimatorHandler : MonoBehaviour
         _previousItemData = _currentItemData;
         
         if(itemData != null)
-        {
             _currentItemData = itemData;
-        }
         else
-        {
             _currentItemData = _defoultItem.ItemData;
-        }
 
         if (_currentItemData != _previousItemData)
-        {
             PullItemAnimation();
-        }
     }
 
     public void PickUp()
@@ -80,26 +74,34 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public void PullItemAnimation()
     {
-        if(!_itemsAnimator.Any(item => _currentItemData == item.ItemData) || _currentItemData == null)
-        {
-            if (_handAnimator != _defoultItem)
-            {
-                _handAnimator.ToggleItem(false);
-                _handAnimator = _defoultItem;
-                _handAnimator.ToggleItem(true);
-                _handAnimator.HandAnimator.SetTrigger(_pullItem);
-            }
+        if (_currentItemData == null || !_itemsAnimator.Any(item => _currentItemData == item.ItemData))
+            SwitchToDefaultItem();
+        else
+            SwitchToItem(_currentItemData);
+    }
 
-            return;
+    private void SwitchToDefaultItem()
+    {
+        if (_handAnimator != _defoultItem)
+        {
+            _handAnimator.ToggleAnimator(false);
+            _handAnimator = _defoultItem;
+            _handAnimator.ToggleAnimator(true);
+            _handAnimator.HandAnimator.SetTrigger(_pullItem);
         }
 
+        return;
+    }
+
+    private void SwitchToItem(InventoryItemData itemData)
+    {
         foreach (var item in _itemsAnimator)
         {
-            if (_currentItemData == item.ItemData)
+            if (itemData == item.ItemData)
             {
-                item.ToggleItem(true);
+                item.ToggleAnimator(true);
 
-                if(_handAnimator != item)
+                if (_handAnimator != item)
                 {
                     _handAnimator = item;
                     _handAnimator.HandAnimator.SetTrigger(_pullItem);
@@ -107,7 +109,10 @@ public class PlayerAnimatorHandler : MonoBehaviour
             }
             else
             {
-                item.ToggleItem(false);
+                if(_handAnimator != null && _handAnimator.HandAnimator != item.HandAnimator)
+                    item.ToggleAnimator(false);
+                else
+                    item.ToggleItem(false);
             }
         }
     }
