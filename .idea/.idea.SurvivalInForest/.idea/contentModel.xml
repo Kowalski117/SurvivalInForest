@@ -5214,7 +5214,6 @@
             <e p="TurnToPlayer.cs" t="Include" />
             <e p="ViewGizmos.cs" t="Include" />
           </e>
-          <e p="BrokenObject.cs" t="Include" />
           <e p="BuildingSystem" t="Include">
             <e p="BuildingData" t="Include">
               <e p="Build" t="Include" />
@@ -5228,17 +5227,19 @@
             <e p="Materials" t="Include" />
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="BrokenObject.cs" t="Include" />
+              <e p="BrokenPackage.cs" t="Include" />
               <e p="BuildHandler.cs" t="Include" />
               <e p="Building.cs" t="Include" />
               <e p="BuildingData.cs" t="Include" />
               <e p="BuildTool.cs" t="Include" />
               <e p="ColliderHandler.cs" t="Include" />
               <e p="DistanceHandler.cs" t="Include" />
-              <e p="Door.cs" t="Include" />
+              <e p="DoorAudioHandler.cs" t="Include" />
               <e p="DoorRotate.cs" t="Include" />
-              <e p="UI" t="Include" />
               <e p="WorldGrid.cs" t="Include" />
             </e>
+            <e p="Sounds" t="Include" />
           </e>
           <e p="ClothingSystem" t="Include">
             <e p="Scripts" t="Include">
@@ -5434,6 +5435,7 @@
                   <e p="InventoryDisplay.cs" t="Include" />
                   <e p="InventorySlotUI.cs" t="Include" />
                   <e p="ItemInteractPanel.cs" t="Include" />
+                  <e p="ParamertView.cs" t="Include" />
                   <e p="StaticInventoryDisplay.cs" t="Include" />
                 </e>
               </e>
@@ -5480,6 +5482,7 @@
           <e p="Materials" t="Include" />
           <e p="MiningSystem" t="Include">
             <e p="Materials" t="Include" />
+            <e p="Models" t="Include" />
             <e p="Particle" t="Include" />
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
@@ -5505,6 +5508,7 @@
               <e p="Torch" t="Include" />
             </e>
             <e p="Materials" t="Include" />
+            <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
               <e p="ItemAnimator.cs" t="Include" />
               <e p="PlayerAnimatorHandler.cs" t="Include" />
@@ -5724,6 +5728,11 @@
                 <e p="Arrow.cs" t="Include" />
                 <e p="ArrowTorque.cs" t="Include" />
                 <e p="Bow.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Headlamp" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="Headlamp.cs" t="Include" />
               </e>
             </e>
             <e p="Torch" t="Include">
