@@ -194,6 +194,10 @@ PrefabInstance:
       propertyPath: m_Range
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 10878318, guid: 4e84120dab5fa4342b13417a3ff8964c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19805908, guid: 4e84120dab5fa4342b13417a3ff8964c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.b
       value: 0
@@ -256,6 +260,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e84120dab5fa4342b13417a3ff8964c, type: 3}
+--- !u!1 &404512921109083249 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 118716, guid: 4e84120dab5fa4342b13417a3ff8964c, type: 3}
+  m_PrefabInstance: {fileID: 404512921109068749}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &5851536401417124663
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404512921109083249}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 260.85
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4978378144940210513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404512921109083249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c30c7f70cc51564b8e4a69600af5bb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &404512921109162333 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 430736, guid: 4e84120dab5fa4342b13417a3ff8964c, type: 3}

@@ -31,11 +31,8 @@ public class GoToSpawnPoint : Action
             bool isCorrectPoint = false;
             while (!isCorrectPoint)
             {
-                NavMeshHit navmeshHit;
-                // NavMesh.SamplePosition(Animals.SpawnPoint + Random.insideUnitSphere * RandomPointRadius,out navmeshHit, RandomPointRadius, NavMesh.AllAreas);
-                NavMesh.SamplePosition(
-                    Animals.SpawnPoint + new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f).normalized *
-                    RandomPointRadius, out navmeshHit, RandomPointRadius, NavMesh.AllAreas);
+                NavMeshHit navmeshHit; 
+                NavMesh.SamplePosition(Animals.SpawnPoint + Random.insideUnitSphere * RandomPointRadius,out navmeshHit, RandomPointRadius, NavMesh.AllAreas);
                 _randomPoint = navmeshHit.position;
                 Animals.Agent.CalculatePath(_randomPoint, _navMeshPath);
                 if (_navMeshPath.status == NavMeshPathStatus.PathComplete) isCorrectPoint = true;
