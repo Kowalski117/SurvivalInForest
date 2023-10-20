@@ -83,12 +83,13 @@ public class SurvivalHandler : MonoBehaviour
 
     public void Eat(InventorySlot slot)
     {
-        if (slot.ItemData is FoodItemData foodItemData && !_isEating && !_buildTool.IsMoveBuild)
+        if (slot.ItemData is FoodItemData foodItemData && !_isEating && !_buildTool.IsMoveBuild && !_health.IsDied)
         {
             _isEating = true;
             _playerAudioHandler.PlayEatingSound(foodItemData.AmountSatiety, foodItemData.AmountWater);
             _hunger.ReplenishValue(foodItemData.AmountSatiety);
             _thirst.ReplenishValue(foodItemData.AmountWater);
+            _sleep.ReplenishValue(foodItemData.AmountSleep);
             _health.ReplenishHealth(foodItemData.AmountHealth);
                 
             if(foodItemData.FoodTypeEffect != FoodTypeEffect.None)

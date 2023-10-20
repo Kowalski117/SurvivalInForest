@@ -1,4 +1,5 @@
 using BehaviorDesigner.Runtime;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -38,6 +39,11 @@ public class InventoryItemData : ScriptableObject
     public void UseItem()
     {
         
+    }
+
+    public void UpdateParametrs(TMP_Text text)
+    {
+
     }
 }
 

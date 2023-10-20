@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 1050108438802409559}
   - component: {fileID: 3782572817958155704}
   - component: {fileID: -1358014082939363174}
+  - component: {fileID: 3258336705307977222}
   m_Layer: 12
   m_Name: Building_WoodenSteps
   m_TagString: Untagged
@@ -104,10 +105,6 @@ MonoBehaviour:
   - {fileID: 6724591736506613836}
   - {fileID: 6724591736830164961}
   - {fileID: 6724591737260724164}
-  _defoultMaterial:
-  - {fileID: 2100000, guid: c0273817d9b557c4cbe78d17e9f64976, type: 2}
-  - {fileID: 2100000, guid: c0273817d9b557c4cbe78d17e9f64976, type: 2}
-  - {fileID: 2100000, guid: c0273817d9b557c4cbe78d17e9f64976, type: 2}
 --- !u!54 &1050108438802409559
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -150,6 +147,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 8c684c3e-b273-425b-ba19-5669e2541c6b
+--- !u!208 &3258336705307977222
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9089155514655332907}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.5, z: -1}
+  m_TimeToStationary: 0.5
 --- !u!1 &9089155515121271389
 GameObject:
   m_ObjectHideFlags: 0

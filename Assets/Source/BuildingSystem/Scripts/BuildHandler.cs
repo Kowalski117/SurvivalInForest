@@ -12,6 +12,7 @@ public class BuildHandler : MonoBehaviour
         _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += EnableWindows;
         _buildTool.OnCreateBuild += TurnOffWindows;
         _buildTool.OnCompletedBuild += EnableWindows;
+        _buildTool.OnDestroyBuild += UnplugWindow;
     }
 
     private void OnDisable()
@@ -19,6 +20,7 @@ public class BuildHandler : MonoBehaviour
         _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= EnableWindows;
         _buildTool.OnCreateBuild -= TurnOffWindows;
         _buildTool.OnCompletedBuild -= EnableWindows;
+        _buildTool.OnDestroyBuild -= UnplugWindow;
     }
 
     private void TurnOffWindows()
@@ -31,8 +33,14 @@ public class BuildHandler : MonoBehaviour
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInventoryInput(false);
+            _playerInputHandler.ToggleInteractionInput(false);
             //_buildTool.SetDeleteModeEnabled(false);
         }
+    }
+
+    private void UnplugWindow()
+    {
+        _isTurnOffWindows = false;
     }
 
     private void EnableWindows()
@@ -41,6 +49,7 @@ public class BuildHandler : MonoBehaviour
         {
             _playerInputHandler.ToggleBuildPlayerInput(false);
             _playerInputHandler.ToggleInventoryInput(true);
+            _playerInputHandler.ToggleInteractionInput(true);
             _isTurnOffWindows = false;
         }
     }

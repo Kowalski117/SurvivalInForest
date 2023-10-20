@@ -57,7 +57,7 @@ public class PlayerInputHandler : MonoBehaviour
         _screenPlayerInput.enabled = visible;
     }
 
-    public void ToggleInteractionConstructionInput(bool visible)
+    public void ToggleInteractionInput(bool visible)
     {
         _interactionPlayerInput.SetEnable(visible);
     }
@@ -76,7 +76,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         TogglePersonController(visible);
         ToggleInventoryInput(visible);
-        ToggleInteractionConstructionInput(visible);
+        ToggleInteractionInput(visible);
         ToggleBuildPlayerInput(visible);
     }
 

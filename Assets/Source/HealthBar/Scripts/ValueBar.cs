@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ValueBar : MonoBehaviour
 {
     [SerializeField] private PlayerInteraction _playerInteraction;
+    [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private Image _bar;
     [SerializeField] private Image _ground;
     [SerializeField] private TMP_Text _valueText;
@@ -17,6 +18,8 @@ public class ValueBar : MonoBehaviour
         _playerInteraction.OnEnableBarValue += EnableBar;
         _playerInteraction.OnTurnOffBarValue += TurnOffBar;
         _playerInteraction.OnValueChanged += UpdateBar;
+
+        _playerHealth.OnDied += TurnOffBar;
     }
 
     private void OnDisable()
@@ -24,6 +27,8 @@ public class ValueBar : MonoBehaviour
         _playerInteraction.OnEnableBarValue -= EnableBar;
         _playerInteraction.OnTurnOffBarValue -= TurnOffBar;
         _playerInteraction.OnValueChanged -= UpdateBar;
+
+        _playerHealth.OnDied -= TurnOffBar;
     }
 
     public void UpdateBar(float value)
@@ -41,11 +46,14 @@ public class ValueBar : MonoBehaviour
 
     public void EnableBar(float maxValue, float currentCalue)
     {
-        _maxValue = maxValue;
-        _currenValue = currentCalue;
-        _ground.gameObject.SetActive(true);
+        if (!_playerHealth.IsDied)
+        {
+            _maxValue = maxValue;
+            _currenValue = currentCalue;
+            _ground.gameObject.SetActive(true);
 
-        UpdateBar(_currenValue);
+            UpdateBar(_currenValue);
+        }
     }
 
     public void TurnOffBar()

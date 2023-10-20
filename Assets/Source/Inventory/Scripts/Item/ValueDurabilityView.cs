@@ -8,7 +8,7 @@ public class ValueDurabilityView : MonoBehaviour
 
     private void Update()
     {
-        if(_itemSlot.AssignedInventorySlot.Durability > 0)
+        if(_itemSlot.AssignedInventorySlot.Durability > 0 && _itemSlot.AssignedInventorySlot.MaxDurability > 1)
         {
             if (_itemSlot.AssignedInventorySlot.DurabilityPercent > 0)
             {

@@ -12,6 +12,8 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     public InventoryItemData ItemData => InventoryItemData;
     public int Size => StackSize;
     public float Durability => ÑurrentDurability;
+    public float MaxDurability => MaxDurabilityValue;
+
 
     public void ClearSlot()
     {
@@ -73,9 +75,6 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     {
         if (ItemId == -1)
             return;
-
-        //var dataBase = Resources.Load<DataBase>("Database");
-        //InventoryItemData = dataBase.GetItem(ItemId);
     }
 
     public void OnBeforeSerialize()

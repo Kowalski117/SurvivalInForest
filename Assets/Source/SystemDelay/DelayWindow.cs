@@ -13,12 +13,10 @@ public class DelayWindow : MonoBehaviour
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private TMP_Text _text;
-    [SerializeField] private TMP_Text _timeText;
 
     private DateTime _time;
     private Coroutine _coroutine;
     private bool _isLoading = false;
-    private ActionType _currentType;
 
     public event UnityAction OnLoadingComplete;
 
@@ -41,6 +39,7 @@ public class DelayWindow : MonoBehaviour
         _isLoading = true;
         _survivalHandler.TimeHandler.ToggleEnable(false);
         _playerInputHandler.ToggleAllInput(false);
+        _playerInputHandler.ToggleScreenPlayerInput(false);
         _loadingPanel.gameObject.SetActive(true);
 
         _time = _time + TimeSpan.FromHours(skipTime);
@@ -72,6 +71,7 @@ public class DelayWindow : MonoBehaviour
         _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);
+        _playerInputHandler.ToggleScreenPlayerInput(true);
 
         _time = DateTime.MinValue;
 

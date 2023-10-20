@@ -4,6 +4,10 @@ using UnityEngine.Events;
 public class SaveGame : MonoBehaviour
 {
     [SerializeField] private LoadPanel _loadPanel;
+    [SerializeField] private bool _isAutoSave;
+    [SerializeField] private float _autoSaveDelay;
+
+    float _timer = 0;
 
     public static UnityAction OnSaveGame;
     public static UnityAction OnLoadData;
@@ -12,6 +16,20 @@ public class SaveGame : MonoBehaviour
     //{
     //    Load();
     //}
+
+    private void Update()
+    {
+        if(_isAutoSave)
+        {
+            _timer += Time.deltaTime;
+
+            if (_timer >= _autoSaveDelay)
+            {
+                _timer = 0;
+                Save();
+            }
+        }
+    }
 
     public void Save()
     {

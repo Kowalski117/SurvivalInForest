@@ -188,10 +188,9 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     private void SwapSlots(InventorySlotUI clickedUISlot)
     {
-        if (MouseInventoryItem.CurrentSlot.AssignedInventorySlot.ItemData == clickedUISlot.AssignedInventorySlot.ItemData)
-        {
+        if (MouseInventoryItem.CurrentSlot.AssignedInventorySlot.ItemData == clickedUISlot.AssignedInventorySlot.ItemData || MouseInventoryItem.CurrentSlot.AssignedInventorySlot.ItemData != null)
             return;
-        }
+
         MouseInventoryItem.CurrentSlot.AssignedInventorySlot.AssignItem(clickedUISlot.AssignedInventorySlot);
         MouseInventoryItem.CurrentSlot.UpdateUiSlot();
         clickedUISlot.CleanUiSlotEvent();

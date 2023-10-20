@@ -7,7 +7,7 @@ public class Torch : MonoBehaviour
 
     private ToolItemData _currentTool;
     private bool _isEnable = false;
-    private float _timer = 3f;
+    private float _timer = 1f;
     private float _timerTime = 0f;
 
     private void OnEnable()
@@ -24,13 +24,7 @@ public class Torch : MonoBehaviour
     {
         if (_isEnable && _currentTool != null)
         {
-            _timerTime += Time.deltaTime;
-
-            if(_timerTime >= _timer)
-            {
-                _timerTime = 0f;
-                _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
-            }
+            _playerInteraction.UpdateDurabilityWithGameTime(_playerInteraction.CurrentInventorySlot);
         }
     }
 

@@ -15,6 +15,7 @@ public class SurvivalAttribute : MonoBehaviour
     public float CurrentAttribute => CurrentValue;
     public float CurrentValueAttribute => CurrentValue * _hourInSeconds;
     public float MaxValueInSeconds => _maxValue;
+    public float MaxValueInHours => MaxValue;
     public float MissingValue => (_maxValue - CurrentValue) / _hourInSeconds;
     public float ValuePercent => CurrentValue / _maxValue;
 

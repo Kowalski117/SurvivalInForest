@@ -32,15 +32,8 @@ public class ClothingSlot : MonoBehaviour
     {
         if (_clothesItemData != null && _clothesItemData.TypeOfClothingUse == TypeOfClothingUse.AmountOfTime)
         {
-            _timerTime += Time.deltaTime;
-
-            if (_timerTime >= _timer)
-            {
-                _timerTime = 0f;
-                _playerInteraction.UpdateDurabilityItem(_inventorySlotUI.AssignedInventorySlot);
-
-                DeselectSlot();
-            }
+            _playerInteraction.UpdateDurabilityWithGameTime(_inventorySlotUI.AssignedInventorySlot);
+            DeselectSlot();
         }
     }
 
@@ -49,7 +42,6 @@ public class ClothingSlot : MonoBehaviour
         if (_clothesItemData != null && _clothesItemData.TypeOfClothingUse == TypeOfClothingUse.AmountOfDamage)
         {
             _playerInteraction.UpdateDurabilityItem(_inventorySlotUI.AssignedInventorySlot);
-
             DeselectSlot();
         }
     }

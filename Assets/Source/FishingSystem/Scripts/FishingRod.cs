@@ -40,8 +40,7 @@ public class FishingRod : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, _float.transform.position) > _distance && _isEnable)
         {
-            _float.ReturnToRod(transform);
-            _isFishing = false;
+            RebornToRod();
         }
 
         if (!_isAllowedFishing)
@@ -59,9 +58,7 @@ public class FishingRod : MonoBehaviour
 
         if (_currentFishingRod == null && _float.transform.position != transform.position)
         {
-            _float.ReturnToRod(transform);
-            _isFishing = false;
-            _isAllowedFishing = false;
+            RebornToRod();
         }
     }
 
@@ -74,14 +71,20 @@ public class FishingRod : MonoBehaviour
                 _isFishing = true;
                 _renderer.DrawRope();
                 _float.StartFishing(_velocityForse, _currentFishingRod.RandomTime, GetRandomItem());
+                _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
             }
             else
             {
-                _isFishing = false;
-                _isAllowedFishing = false;
-                _float.ReturnToRod(transform);
+                RebornToRod();
             }
         }
+    }
+
+    private void RebornToRod()
+    {
+        _float.ReturnToRod(transform);
+        _isFishing = false;
+        _isAllowedFishing = false;
     }
 
     private InventoryItemData GetRandomItem() 

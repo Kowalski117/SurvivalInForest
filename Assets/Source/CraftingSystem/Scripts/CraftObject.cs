@@ -79,6 +79,11 @@ public class CraftObject : MonoBehaviour
         _sphereCollider.enabled = true;
     }
 
+    private void OnDestroy()
+    {
+        TurnOff();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out ManualWorkbench manualWorkbench))

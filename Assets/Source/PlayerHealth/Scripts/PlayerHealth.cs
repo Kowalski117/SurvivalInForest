@@ -27,6 +27,8 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public bool IsDied => _isDied;
     public float HealthPercent => CurrentValue / MaxValue;
+    public float MaxHealth => MaxValue;
+    public ProtectionValue ProtectionValue => _protectionValue;
 
     private void Start()
     {
@@ -37,18 +39,24 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         if(CurrentValue > 0)
         {
-            CurrentValue -= value - (value / 100 * _protectionValue.Protection);
+            float damage = value - _protectionValue.Protection;
 
-            OnDamageDone?.Invoke();
-            OnHealthChanged?.Invoke(HealthPercent);
 
-            if (CurrentValue <= 0)
+            if(damage >= 0) 
             {
-                Die();
-                return;
-            }
+                CurrentValue -= damage;
 
-            _currentDelayCounter = 0;
+                OnDamageDone?.Invoke();
+                OnHealthChanged?.Invoke(HealthPercent);
+
+                if (CurrentValue <= 0)
+                {
+                    Die();
+                    return;
+                }
+
+                _currentDelayCounter = 0;
+            }
         }
     }
 

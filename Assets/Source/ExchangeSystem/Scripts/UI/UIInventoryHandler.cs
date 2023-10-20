@@ -75,12 +75,12 @@ public class UIInventoryHandler : MonoBehaviour
         if (_isInventoryOpen)
         {
             _playerInputHandler.ToggleBuildPlayerInput(false);
-            //_playerInputHandler.ToggleInteractionConstructionInput(false);
             _playerBackpackPanel.CanvasGroup.alpha = 1;
             _playerBackpackPanel.CanvasGroup.blocksRaycasts = true;
             _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
             _playerInputHandler.ToggleHotbarDisplay(false);
+            _playerInputHandler.ToggleInteractionInput(false);
 
             _playerClothesPanel.RefreshDynamicInventory(_clothesInventory.InventorySystem, 0);
         }
@@ -93,7 +93,7 @@ public class UIInventoryHandler : MonoBehaviour
             _playerBackpackPanel.CanvasGroup.blocksRaycasts = false;
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
-            //_playerInputHandler.ToggleInteractionConstructionInput(true);
+            _playerInputHandler.ToggleInteractionInput(true);
             _playerInputHandler.ToggleHotbarDisplay(true);
         }
     }
