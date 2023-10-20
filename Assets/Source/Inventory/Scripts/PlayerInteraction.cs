@@ -12,6 +12,7 @@ public class PlayerInteraction : Raycast
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
+    [SerializeField] private TimeHandler _timeHandler;
 
     private WeaponItemData _currentWeapon;
     private ToolItemData _currentTool;
@@ -22,9 +23,10 @@ public class PlayerInteraction : Raycast
     private BrokenObject _currentBrokenObject;
     private InventorySlot _currentInventorySlot;
 
-    private float _nextFireDelay;
     private float _maxDelayFire = 10f;
+    private float _nextFireDelay;
     private bool _isEnable;
+    private float _hourInSeconds = 3600;
 
     public event UnityAction<InventoryItemData> OnUpdateItemData;
     public event UnityAction<WeaponItemData> OnUpdateWeaponItemData;
@@ -34,6 +36,11 @@ public class PlayerInteraction : Raycast
     public event UnityAction OnTurnOffBarValue;
 
     public InventorySlot CurrentInventorySlot => _currentInventorySlot;
+
+    private void Awake()
+    {
+        _nextFireDelay = _maxDelayFire;
+    }
 
     private void OnEnable()
     {
@@ -51,7 +58,7 @@ public class PlayerInteraction : Raycast
         InitWeapon(_currentInventorySlot.ItemData);
         InitTool(_currentInventorySlot.ItemData);
 
-        if(_nextFireDelay <= _maxDelayFire)
+        if (_nextFireDelay <= _maxDelayFire)
             _nextFireDelay += Time.deltaTime;
 
         if (_isEnable)
@@ -124,26 +131,10 @@ public class PlayerInteraction : Raycast
         {
             if (_inventory.RemoveInventory(_currentWeapon.Bullet.ItemData, 1))
             {
-                _nextFireDelay = 0;
                 _playerAnimation.Hit();
                 _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
                 //_currentWeapon.MuzzleFlash.Play();
-
-                //if (IsRayHittingSomething(_creatureLayer, out RaycastHit hitInfo))
-                //{
-                //    Vector3 spawnPoint = hitInfo.collider.ClosestPointOnBounds(hitInfo.point);
-
-                //    if (hitInfo.collider.TryGetComponent(out Animals animals))
-                //    {
-                //        if (_currentWeapon.HitEffect != null)
-                //        {
-                //            ParticleSystem impact = Instantiate(_currentWeapon.HitEffect, spawnPoint, Quaternion.LookRotation(hitInfo.normal), hitInfo.collider.transform);
-                //            impact.Play();
-                //        }
-                //        _currentAnim = animals;
-                //        TakeDamageAnimal(_currentWeapon.Damage, _currentWeapon.OverTimeDamage);
-                //    }
-                //}
+                _nextFireDelay = 0;
                 return true;
             }
         }
@@ -165,25 +156,39 @@ public class PlayerInteraction : Raycast
         }
     }
 
+    public void UpdateDurabilityWithGameTime(InventorySlot inventorySlot)
+    {
+        if (inventorySlot.Durability > 0)
+        {
+            inventorySlot.LowerStrength(_timeHandler.TimeMultiplier / _hourInSeconds * Time.deltaTime);
+
+            if (inventorySlot.Durability <= 0)
+            {
+                inventorySlot.UpdateDurabilityIfNeeded();
+
+                if(inventorySlot.ItemData is ClothesItemData clothesItemData && clothesItemData.DischargedItem != null)               
+                    _inventory.AddToInventory(clothesItemData.DischargedItem, 1);
+                
+                _inventory.RemoveInventory(inventorySlot, 1);
+                inventorySlot = null;
+            }
+        }
+    }
+
     private void Hit()
     {
-        //_nextFireDelay += Time.deltaTime;
-
         if (_nextFireDelay > _currentWeapon.Speed)
         {
-            _nextFireDelay = 0;
             _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
             _playerAnimation.Hit();
-
             TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
             TakeDamageBrokenObject(_currentWeapon.Damage, 0);
+            _nextFireDelay = 0;
         }
     }
 
     private void InteractResource()
     {
-        //_nextFireDelay += Time.deltaTime;
-
         if (_nextFireDelay > _currentTool.Speed)
         {
             _nextFireDelay = 0;

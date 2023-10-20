@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(UniqueID))]
 public class ChestInventory : InventoryHolder, IInteractable
 {
-    [SerializeField] private List<InventoryItemData> _startingItems;
+    [SerializeField] private ObjectItemsData[] _startingItems;
 
     private UniqueID _uniqueId;
     private DistanceHandler _distanceHandler;
@@ -59,10 +59,21 @@ public class ChestInventory : InventoryHolder, IInteractable
         }
         else
         {
-            foreach (var item in _startingItems)
+            if (_startingItems.Length > 0) 
             {
-                PrimaryInventorySystem.AddToInventory(item, 1, item.Durability);
+                foreach (var slot in SetLootItem().Items)
+                {
+                    for (int i = 0; i < slot.Amount; i++)
+                    {
+                        PrimaryInventorySystem.AddToInventory(slot.ItemData, 1, slot.ItemData.Durability);
+                    }
+                }
             }
         }
+    }
+
+    private ObjectItemsData SetLootItem()
+    {
+        return _startingItems[Random.Range(0, _startingItems.Length)];
     }
 }

@@ -7,11 +7,13 @@ public class ClothesItemData : InventoryItemData
     [SerializeField] private float _boost;
     [SerializeField] private TypeOfClothingUse _typeOfClothingUse;
     [SerializeField] private ClothingType _clothingType = ClothingType.Torso;
+    [SerializeField] private InventoryItemData _dischargedItem;
 
     public float Protection => _protection;
     public float Boost => _boost;
     public TypeOfClothingUse TypeOfClothingUse => _typeOfClothingUse;
     public ClothingType ClothingType => _clothingType;
+    public InventoryItemData DischargedItem => _dischargedItem;
 }
 
 public enum ClothingType
