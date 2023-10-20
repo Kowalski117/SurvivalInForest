@@ -12,7 +12,7 @@ public class SpawnAnimals : MonoBehaviour
     [SerializeField] private PlayerHealth _player;
 
     [SerializeField] private List<SpawnPointAnimals> _listSpawnPoint;
-    
+
     private float _distanceToPlayer;
 
     private void Start()
@@ -21,19 +21,20 @@ public class SpawnAnimals : MonoBehaviour
         {
             _listSpawnPoint.Add(GetComponentsInChildren<SpawnPointAnimals>()[i]);
         }
+
         for (int i = 0; i < _listSpawnPoint.Count; i++)
         {
             _distanceToPlayer = _listSpawnPoint[i].DistanceToPlayer;
             float distance = (_listSpawnPoint[i].transform.position - _player.transform.position).magnitude;
-            
+
             if (distance > _distanceToPlayer)
             {
-                Spawn(_listSpawnPoint[i].transform,_listSpawnPoint[i].GetComponent<SpawnPointAnimals>().Animals);
+                Spawn(_listSpawnPoint[i].transform, _listSpawnPoint[i].GetComponent<SpawnPointAnimals>().Animals);
             }
         }
     }
 
-    private void Spawn(Transform spawnPoint,TypeAnimals typeAnimals)
+    private void Spawn(Transform spawnPoint, TypeAnimals typeAnimals)
     {
         Animals currentAnimals = null;
         int range;
@@ -62,6 +63,7 @@ public class SpawnAnimals : MonoBehaviour
                 {
                     currentAnimals = _rabbit;
                 }
+
                 break;
             case TypeAnimals.Enemy:
                 range = Random.Range(0, 2);
@@ -74,12 +76,14 @@ public class SpawnAnimals : MonoBehaviour
                 {
                     currentAnimals = _bear;
                 }
+
                 break;
         }
-        
+
         Instantiate(currentAnimals, spawnPoint.position, quaternion.identity, spawnPoint);
     }
 }
+
 public enum TypeAnimals
 {
     Mob,

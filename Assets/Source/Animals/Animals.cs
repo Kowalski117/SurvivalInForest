@@ -112,7 +112,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
             _healh -= overTimeDamage;
             _behaviorTree.SendEvent(_takeDamageOverTime);
 
-            if (_healh <= 0)
+            if (_healh <= 0 && _isDead == false)
             {
                 Die();
                 break;
