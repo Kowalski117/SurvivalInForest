@@ -14,6 +14,8 @@ public class ClothesSlotsHandler : MonoBehaviour
     private List<ClothesItemData> _clothesItems = new List<ClothesItemData>();
 
     public event UnityAction OnInteractionBackpack;
+    public event UnityAction<ClothesItemData> OnAddClothes;
+    public event UnityAction<ClothesItemData> OnRemoveClothes;
     public event UnityAction OnRemoveBackpack;
 
     private void OnEnable()
@@ -61,6 +63,7 @@ public class ClothesSlotsHandler : MonoBehaviour
                 _clothesItems.Add(clothesItemData);
                 _protectionValue.UpdateProtectionValue(clothesItemData.Protection);
                 _stiminaAttribute.AddMaxValueStamina(clothesItemData.Boost);
+                OnAddClothes?.Invoke(clothesItemData);
             }
 
             if(clothesItemData.ClothingType == ClothingType.Backpack)
@@ -103,6 +106,8 @@ public class ClothesSlotsHandler : MonoBehaviour
                 {
                     OnRemoveBackpack?.Invoke();
                 }
+
+                OnRemoveClothes?.Invoke(clothesItemData);
             }
         }
     }

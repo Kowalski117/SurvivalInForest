@@ -231,9 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 5
-  _item: {fileID: 0}
-  _countItem: 0
   _disappearanceTime: 10
+  _loots: []
   _lootItems:
   - {fileID: 11400000, guid: 955b83eb2606efc4b83ca6d0e014b699, type: 2}
   - {fileID: 11400000, guid: 909c22361c032a4498a0625e6ffa85c9, type: 2}
@@ -247,9 +246,9 @@ CapsuleCollider:
   m_GameObject: {fileID: 7413376249537084990}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 1.3223362
-  m_Height: 2.6446724
+  m_Enabled: 0
+  m_Radius: 1.6
+  m_Height: 2.9
   m_Direction: 1
   m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &7415026890183502644
@@ -403,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253552, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _id
-      value: 6e9a783b-7676-44af-b236-55b87003c1a6
+      value: 4aec2ef2-3abc-44c2-b124-7a4ac9b582ba
       objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253554, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _isDeleteAfterSelection

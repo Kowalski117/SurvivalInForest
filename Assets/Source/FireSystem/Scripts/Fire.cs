@@ -75,7 +75,7 @@ public class Fire : MonoBehaviour
     {
         if (slot.ItemData != null && slot.ItemData.GorenjeTime > 0 && slot.Size > 0)
         {
-            if (_campfireItems.Contains(slot.ItemData) || _campfireItems == null)
+            if (_campfireItems.Contains(slot.ItemData) || _campfireItems.Length == 0)
             {
                 return AddTime(slot.ItemData.GorenjeTime);
             }
