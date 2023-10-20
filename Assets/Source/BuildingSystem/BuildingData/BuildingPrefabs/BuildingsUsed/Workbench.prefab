@@ -67,8 +67,6 @@ MonoBehaviour:
   _colliderGround: {fileID: 0}
   _renderers:
   - {fileID: 3257439431378686944}
-  _defoultMaterial:
-  - {fileID: 2100000, guid: ea599db7ae265df43ba9efd8500ddaec, type: 3}
 --- !u!54 &8742011354731154459
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -113,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 5afb1c5c-138c-4698-9181-2c752876f98b
+  _id: 791c55fd-3c79-4b9f-89b3-7c988dd96cad
 --- !u!1001 &3271155863249597400
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -127,7 +125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1877781280503006, guid: 534f914d7e13786419d382a4362a38ac, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 1877781280503006, guid: 534f914d7e13786419d382a4362a38ac, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -293,9 +291,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: DistanceHandler
       objectReference: {fileID: 0}
+    - target: {fileID: 2099210253411637275, guid: 17700725019dde94dab420395e3f604c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2099210253411637277, guid: 17700725019dde94dab420395e3f604c, type: 3}
       propertyPath: m_Radius
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 2099210253411637278, guid: 17700725019dde94dab420395e3f604c, type: 3}
       propertyPath: m_RootOrder

@@ -67,8 +67,6 @@ MonoBehaviour:
   _colliderGround: {fileID: 0}
   _renderers:
   - {fileID: 2958092090174798309}
-  _defoultMaterial:
-  - {fileID: 2100000, guid: ea599db7ae265df43ba9efd8500ddaec, type: 3}
 --- !u!54 &-1149602718545928010
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,6 +126,10 @@ PrefabInstance:
     - target: {fileID: 1470700698668186, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
       propertyPath: m_Name
       value: Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470700698668186, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 1470700698668186, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
       propertyPath: m_StaticEditorFlags

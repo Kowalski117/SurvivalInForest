@@ -34,6 +34,7 @@ public class BuildTool : MonoBehaviour
 
     public event UnityAction OnCreateBuild;
     public event UnityAction OnCompletedBuild;
+    public event UnityAction OnDestroyBuild;
 
     public bool IsMoveBuild => _isMovedBuild;
 
@@ -91,6 +92,8 @@ public class BuildTool : MonoBehaviour
             _playerAnimation.TurnOffAnimations();
             Destroy(_spawnBuilding.gameObject);
             _spawnBuilding = null;
+            _isMovedBuild = false;
+            OnDestroyBuild?.Invoke();
         }
     }
 
@@ -160,7 +163,6 @@ public class BuildTool : MonoBehaviour
 
             if(_recipe.BuildingData.Type == ItemType.Build)
             {
-
                 hitPoint += terrainNormal * 0.1f;
                 Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
                 Vector3 roundedPosition = new Vector3(Mathf.Round(gridPosition.x), hitPoint.y, Mathf.Round(gridPosition.z));
@@ -194,7 +196,6 @@ public class BuildTool : MonoBehaviour
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
         _isMovedBuild = false;
-        _playerInputHandler.ToggleBuildPlayerInput(true);
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
@@ -212,6 +213,7 @@ public class BuildTool : MonoBehaviour
         OnCompletedBuild?.Invoke();
         DeleteObjectPreview();
         _deleteModeEnabled = !_deleteModeEnabled;
+        _isMovedBuild = false;
     }
 
     private void CraftingItem(BuildingRecipe craftRecipe)
