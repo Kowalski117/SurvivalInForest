@@ -1,24 +1,31 @@
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class ItemAnimator : MonoBehaviour
 {
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private Animator _animatorHand;
-    [SerializeField] private AnimatorController _animatorControllerHand;
     [SerializeField] private Transform _particleSpawnPoint;
+    [SerializeField] private int _indexLayer;
 
     public InventoryItemData ItemData => _itemData;
     public Animator HandAnimator => _animatorHand;
     public Transform ParticleSpawnPoint => _particleSpawnPoint;
+    public int IndexLayer => _indexLayer;
+
+    public void ToggleLayer(bool isActive)
+    {
+        ToggleAnimator(isActive);
+        ToggleItem(isActive);
+
+        if (isActive) 
+            _animatorHand.SetLayerWeight(_indexLayer, 1);
+        else
+            _animatorHand.SetLayerWeight(_indexLayer, 0);
+    }
 
     public void ToggleAnimator(bool isActive)
     {
-        ToggleItem(isActive);
         _animatorHand.gameObject.SetActive(isActive);
-
-        if(isActive)
-            _animatorHand.runtimeAnimatorController = _animatorControllerHand;
     }
 
     public void ToggleItem(bool isActive)

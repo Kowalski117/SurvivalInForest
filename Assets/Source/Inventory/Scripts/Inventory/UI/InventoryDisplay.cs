@@ -175,7 +175,7 @@ public abstract class InventoryDisplay : MonoBehaviour
     {
         foreach (var slotUI in Slots)
         {
-            slotUI.Deselect();
+            slotUI.TurnOffHighlight();
         }
     }
 

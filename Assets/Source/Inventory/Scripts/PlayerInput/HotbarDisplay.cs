@@ -99,7 +99,7 @@ public class HotbarDisplay : StaticInventoryDisplay
     {
         if (_isActive)
         {
-            Slots[_currentIndex].ToggleHighlight();
+            Slots[_currentIndex].TurnOffHighlight();
             _currentIndex += direction;
 
             if (_currentIndex > _maxIndexSize)

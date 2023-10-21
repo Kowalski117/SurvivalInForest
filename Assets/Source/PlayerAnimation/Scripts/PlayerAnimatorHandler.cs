@@ -84,9 +84,9 @@ public class PlayerAnimatorHandler : MonoBehaviour
     {
         if (_handAnimator != _defoultItem)
         {
-            _handAnimator.ToggleAnimator(false);
+            _handAnimator.ToggleLayer(false);
             _handAnimator = _defoultItem;
-            _handAnimator.ToggleAnimator(true);
+            _handAnimator.ToggleLayer(true);
             _handAnimator.HandAnimator.SetTrigger(_pullItem);
         }
 
@@ -97,9 +97,14 @@ public class PlayerAnimatorHandler : MonoBehaviour
     {
         foreach (var item in _itemsAnimator)
         {
+            item.ToggleLayer(false);
+        }
+
+        foreach (var item in _itemsAnimator)
+        {
             if (itemData == item.ItemData)
             {
-                item.ToggleAnimator(true);
+                item.ToggleLayer(true);
 
                 if (_handAnimator != item)
                 {
@@ -109,10 +114,13 @@ public class PlayerAnimatorHandler : MonoBehaviour
             }
             else
             {
-                if(_handAnimator != null && _handAnimator.HandAnimator != item.HandAnimator)
-                    item.ToggleAnimator(false);
-                else
-                    item.ToggleItem(false);
+                if(_handAnimator != null) 
+                {
+                    if (_handAnimator.IndexLayer == item.IndexLayer || _handAnimator.HandAnimator == item.HandAnimator)
+                        item.ToggleItem(false);
+                    else
+                        item.ToggleAnimator(false);
+                }
             }
         }
     }

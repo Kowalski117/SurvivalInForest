@@ -65,7 +65,7 @@ public class ClothingSlot : MonoBehaviour
     {
         if (_inventorySlotUI.AssignedInventorySlot.Durability <= 0)
         {
-            _inventorySlotUI.Deselect();
+            _inventorySlotUI.TurnOffHighlight();
         }
     }
 }

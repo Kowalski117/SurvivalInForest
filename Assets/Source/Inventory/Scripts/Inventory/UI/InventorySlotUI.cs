@@ -31,7 +31,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     private void Awake()
     {
         CleanSlot();
-        Deselect();
+        TurnOffHighlight();
         _iconImage.preserveAspect = true;
     }
 
@@ -65,12 +65,6 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     {
         if (_borderImage != null)
             _borderImage.enabled = false;
-    }
-
-    public void Select()
-    {
-        if (_borderImage != null)
-            _borderImage.enabled = true;
     }
 
     public void UpdateUiSlot()
