@@ -10,4 +10,10 @@ public class ButtonScenes : MonoBehaviour
         _loadPanel.gameObject.SetActive(true);
         _loadPanel.Load(1, () => SceneManager.LoadScene(1), 1);
     }
+    
+        public void StartSceneCave()
+        {
+            _loadPanel.gameObject.SetActive(true);
+            _loadPanel.Load(1, () => SceneManager.LoadScene(2), 1);
+        }
 }
