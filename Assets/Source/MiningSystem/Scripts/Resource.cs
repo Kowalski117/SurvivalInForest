@@ -12,7 +12,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     [SerializeField] private ToolType _extractionType;
     [SerializeField] private float _disappearanceTime = 10;
     [SerializeField] private List<ItemPickUp> _loots;
-    
+
     protected Collider Сollider;
     protected Rigidbody Rigidbody;
 
@@ -53,14 +53,17 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         _curenntHealth = 0;
         Rigidbody.isKinematic = false;
+        SpawnLoot();
+        _isDead = true;
+        StartCoroutine(Precipice());
+    }
 
+    public virtual void SpawnLoot()
+    {
         for (int i = 0; i < _loots.Count; i++)
         {
             SpawnItem(_loots[i], _radiusSpawnLoots, _spawnLootUp);
         }
-        
-        _isDead = true;
-        StartCoroutine(Precipice());
     }
 
     public virtual void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp)

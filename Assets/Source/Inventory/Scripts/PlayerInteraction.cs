@@ -20,7 +20,7 @@ public class PlayerInteraction : Raycast
     private InventoryItemData _previousItemData;
     private Resource _currentResoure;
     private Animals _currentAnim;
-    private BrokenObject _currentBrokenObject;
+    private Box _currentBox;
     private InventorySlot _currentInventorySlot;
 
     private float _maxDelayFire = 10f;
@@ -236,17 +236,17 @@ public class PlayerInteraction : Raycast
     
     private void TakeDamageBrokenObject(float damage, float overTimeDamage)
     {
-        if (_currentBrokenObject != null)
+        if (_currentBox != null)
         {
-            _currentBrokenObject.TakeDamage(damage, overTimeDamage);
+            _currentBox.TakeDamage(damage, overTimeDamage);
             UpdateDurabilityItem(_currentInventorySlot);
 
-            OnValueChanged?.Invoke(_currentBrokenObject.Endurance);
+            OnValueChanged?.Invoke(_currentBox.Endurance);
 
-            if (_currentBrokenObject.Endurance <= 0)
+            if (_currentBox.Endurance <= 0)
             {
-                OnValueChanged?.Invoke(_currentBrokenObject.Endurance);
-                _currentBrokenObject = null;
+                OnValueChanged?.Invoke(_currentBox.Endurance);
+                _currentBox = null;
             }
         }
     }
@@ -295,12 +295,12 @@ public class PlayerInteraction : Raycast
 
         }
 
-        if (other.TryGetComponent(out BrokenObject brokenObject))
+        if (other.TryGetComponent(out Box brokenObject))
         {
             if (brokenObject != null)
             {
-                _currentBrokenObject = brokenObject;
-                OnEnableBarValue?.Invoke(_currentBrokenObject.MaxEndurance, _currentBrokenObject.Endurance);
+                _currentBox = brokenObject;
+                OnEnableBarValue?.Invoke(_currentBox.MaxEndurance, _currentBox.Endurance);
             }
         }
     }
@@ -319,9 +319,9 @@ public class PlayerInteraction : Raycast
             OnTurnOffBarValue?.Invoke();
         }
 
-        if (other.TryGetComponent(out BrokenObject brokenObject))
+        if (other.TryGetComponent(out Box brokenObject))
         {
-            _currentBrokenObject = null;
+            _currentBox = null;
             OnTurnOffBarValue?.Invoke();
         }
     }

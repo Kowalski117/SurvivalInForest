@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2276745112298898950}
-  - component: {fileID: 8851228994346149607}
   - component: {fileID: 3102666152373042882}
   - component: {fileID: 2606470441282626173}
+  - component: {fileID: 3561281808136575310}
   m_Layer: 20
   m_Name: Iron
   m_TagString: Untagged
@@ -36,21 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8851228994346149607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2276745112298898951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnTime: 3
-  _scaleTime: 3
-  _remainder: {fileID: 3619236931086325760}
 --- !u!208 &3102666152373042882
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -81,6 +66,22 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: -0.51, z: 0}
+--- !u!114 &3561281808136575310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2276745112298898951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b132ca04cf15434fa480f9e53a24a37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnTime: 1800
+  _scaleTime: 3
+  _remainder: {fileID: 3619236931086325760}
+  _brokenStone: {fileID: 4950090947848154378, guid: 66bccf846b8f8554984bce0dc5419254, type: 3}
 --- !u!1 &2277968886114007726
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _extractionType: 1
-  _disappearanceTime: 10
+  _disappearanceTime: 30
   _loots:
   - {fileID: 4224483964070766007, guid: c1f6ba45325eb9b43adca69592e1e227, type: 3}
   - {fileID: 4224483964070766007, guid: c1f6ba45325eb9b43adca69592e1e227, type: 3}
@@ -187,7 +188,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &1501886923352891413
 Transform:
