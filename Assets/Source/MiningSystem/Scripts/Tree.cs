@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Tree : Resource
 {
@@ -37,7 +38,17 @@ public class Tree : Resource
         
         base.TakeDamage(damage, overTimeDamage);
     }
-    
+
+    public override void Die()
+    {
+        for (int i = 0; i < _currentDamageLoots.Count; i++)
+        {
+            base.SpawnItem(_currentDamageLoots[i],_radiusSpawn,_spawnPointUp);
+        }
+        
+        base.Die();
+    }
+
     private void CreateParticleLeaves()
     {
         ParticleSystem leaves = Instantiate(_leaves, _positionLeaves.position, _positionLeaves.rotation, _positionLeaves);
@@ -48,6 +59,9 @@ public class Tree : Resource
     {
         float time = 3f;
         yield return new WaitForSeconds(time);
-        Destroy(leaves.gameObject);
+        if (leaves != null)
+        {
+            Destroy(leaves.gameObject);
+        }
     }
 }

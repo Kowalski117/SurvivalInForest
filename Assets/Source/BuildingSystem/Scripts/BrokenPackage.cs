@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class BrokenPackage : MonoBehaviour
 {
-    private BrokenObject _brokenObject;
+    private Box _box;
     private Collider _collider;
     private Outline _outline;
 
     private void Awake()
     {
-        _brokenObject = GetComponentInParent<BrokenObject>();
+        _box = GetComponentInParent<Box>();
         _collider = GetComponent<Collider>();
         _outline = GetComponent<Outline>();
         TurnOffPackage();
@@ -16,12 +16,12 @@ public class BrokenPackage : MonoBehaviour
 
     private void OnEnable()
     {
-        _brokenObject.OnDied += TurnOnPackage;
+        _box.OnDied += TurnOnPackage;
     }
 
     private void OnDisable()
     {
-        _brokenObject.OnDied -= TurnOnPackage;
+        _box.OnDied -= TurnOnPackage;
     }
 
     private void TurnOnPackage()

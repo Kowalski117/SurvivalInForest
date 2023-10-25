@@ -8,7 +8,8 @@ public class Stone : Resource
 
     public override void Die()
     {
-        Сollider.enabled = false;
-        base.Die();
+        gameObject.SetActive(false);
+        SpawnLoot();
+        DiedEvent();
     }
 }
