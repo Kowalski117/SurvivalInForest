@@ -26,6 +26,7 @@ public class TimeHandler : MonoBehaviour
     [SerializeField] private AnimationCurve _moonLightIntensityCurve;
     [SerializeField] private AnimationCurve _ambientLightCurve;
     [SerializeField] private ParticleSystem _starsParticle;
+    [SerializeField] private Camera _camera;
 
     private DateTime _currentTime;
     private TimeSpan _sunriseTime;
@@ -152,6 +153,7 @@ public class TimeHandler : MonoBehaviour
         RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _ambientLightCurve.Evaluate(sunDotProduct));
         RenderSettings.skybox.Lerp(_dayMaterial, _nightMaterial, _ambientLightCurve.Evaluate(moonDotProduct));
         RenderSettings.fogColor = Color.Lerp(_dayColorFog, _nightColorFog, _ambientLightCurve.Evaluate(moonDotProduct));
+        _camera.backgroundColor = Color.Lerp(_dayColorFog, _nightColorFog,_ambientLightCurve.Evaluate(moonDotProduct));
     }
 
     private TimeSpan CalculateTimeDifference(TimeSpan fromTime, TimeSpan toTime)

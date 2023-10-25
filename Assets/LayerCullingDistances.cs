@@ -11,10 +11,6 @@ public class LayerCullingDistances : MonoBehaviour
     private int _maxDistances = 700;
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            DecreaseDistance();
-        }
         SetCullingDistances();
     }
 
