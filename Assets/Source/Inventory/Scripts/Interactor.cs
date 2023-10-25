@@ -1,6 +1,9 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static PlayerHealth;
+using UnityEngine.SceneManagement;
 
 public class Interactor : Raycast
 {
@@ -20,6 +23,7 @@ public class Interactor : Raycast
     [SerializeField] private float _liftingDelay = 2f;
     [SerializeField] private Transform _removeItemPoint;
     [SerializeField] private Transform _playerTransform;
+    [SerializeField] private PlayerPosition _playerPositionLastScene;
 
     private bool _isStartingPick = true;
     private float _lookTimer = 0;
@@ -40,7 +44,7 @@ public class Interactor : Raycast
 
     private void Start()
     {
-        _sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
+        //_sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
     }
 
     private void OnEnable()
@@ -49,7 +53,10 @@ public class Interactor : Raycast
         _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable += InteractableInventory;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction += InteractableConstruction;
 
-        _hotbarDisplay.ItemClicked += PlantSeed;
+        _hotbarDisplay.OnItemClicked += PlantSeed;
+
+        SaveGame.OnSaveGame += Save;
+        SaveGame.OnLoadData += Load;
     }
 
     private void OnDisable()
@@ -58,7 +65,10 @@ public class Interactor : Raycast
         _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable -= InteractableInventory;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
 
-        _hotbarDisplay.ItemClicked -= PlantSeed;
+        _hotbarDisplay.OnItemClicked -= PlantSeed;
+
+        SaveGame.OnSaveGame -= Save;
+        SaveGame.OnLoadData -= Load;
     }
 
     private void Update()
@@ -149,18 +159,6 @@ public class Interactor : Raycast
                     }
                 }
             }
-                //{
-
-                //List<InventoryItem> itemsWithInsufficientSpace = _inventoryOperator.GetItemsWithInsufficientSpace(_currentObjectPickUp.ObjectItemsData.Items);
-
-                //foreach (var inventoryData in itemsWithInsufficientSpace)
-                //{
-                //    Debug.Log(inventoryData.Amount);
-                //    for (int i = 0; i < inventoryData.Amount; i++)
-                //    {
-                //        _inventoryOperator.InstantiateItem(inventoryData.ItemData, inventoryData.ItemData.Durability);
-                //    }
-                //}
             _currentObjectPickUp.PicUp();
             _currentObjectPickUp = null;
         }
@@ -233,6 +231,32 @@ public class Interactor : Raycast
                     _playerInventoryHolder.RemoveInventory(slot, _addAmount);
                 }
             }
+        }
+    }
+
+    private void Save()
+    {
+        if (_sleepPointSaveData.Position == Vector3.zero)
+        {
+            foreach (var sleepPosition in _playerPositionLastScene.SleepPositions)
+            {
+                if (SceneManager.GetActiveScene().buildIndex == sleepPosition.SceneIndex)
+                {
+                    _sleepPointSaveData = new SleepPointSaveData(sleepPosition.Position, sleepPosition.Rotation);
+                    Debug.Log("fdsfds");
+                }
+            }
+        }
+
+        ES3.Save("SpawnPosition" + SceneManager.GetActiveScene().buildIndex, _sleepPointSaveData);
+    }
+
+    private void Load()
+    {
+        if (ES3.KeyExists("SpawnPosition" + SceneManager.GetActiveScene().buildIndex))
+        {
+            _sleepPointSaveData = ES3.Load<SleepPointSaveData>("SpawnPosition" + SceneManager.GetActiveScene().buildIndex);
+            return;
         }
     }
 }

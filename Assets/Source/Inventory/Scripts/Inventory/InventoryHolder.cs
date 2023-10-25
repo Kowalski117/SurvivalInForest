@@ -44,20 +44,20 @@ public struct InventorySaveData
 {
     [SerializeField] private InventorySystem _inventorySystem;
     [SerializeField] private List<InventorySlot> _inventorySlots;
-    [SerializeField] private Vector3 _position;
-    [SerializeField] private Quaternion _rotation;
+    //[SerializeField] private Vector3 _position;
+    //[SerializeField] private Quaternion _rotation;
 
     public InventorySystem InventorySystem => _inventorySystem;
     public List<InventorySlot> InventorySlots => _inventorySlots;
-    public Vector3 Position => _position;
-    public Quaternion Rotation => _rotation;
+    //public Vector3 Position => _position;
+    //public Quaternion Rotation => _rotation;
 
-    public InventorySaveData(InventorySystem inventorySystem, List<InventorySlot> inventorySlots, Vector3 position, Quaternion rotation)
+    public InventorySaveData(InventorySystem inventorySystem, List<InventorySlot> inventorySlots/*, Vector3 position, Quaternion rotation*/)
     {
         _inventorySystem = inventorySystem;
         _inventorySlots = inventorySlots;
-        _position = position;
-        _rotation = rotation;
+        //_position = position;
+        //_rotation = rotation;
     }
 }
 

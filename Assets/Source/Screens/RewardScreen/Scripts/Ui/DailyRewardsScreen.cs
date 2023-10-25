@@ -8,7 +8,7 @@ public class DailyRewardsScreen : ScreenUI
 
     public event UnityAction OnExitButton;
 
-    public override void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
         _exitButton.onClick.AddListener(ExitButtonClick);
@@ -16,7 +16,7 @@ public class DailyRewardsScreen : ScreenUI
         PlayerInputHandler.ScreenPlayerInput.OnToggleDailyRewardsScreen += ToggleScreen;
     }
 
-    public override void OnDisable()
+    protected override void OnDisable()
     {
         base.OnDisable();
         _exitButton.onClick.RemoveListener(ExitButtonClick);

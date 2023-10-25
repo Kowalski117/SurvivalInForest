@@ -39,4 +39,6 @@ public enum ParamertType
     Helfth = 10,
 
     GrowthTime = 11,
+
+    Sleep = 12,
 }

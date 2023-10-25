@@ -83,19 +83,22 @@ public class PlayerInventoryHolder : InventoryHolder
 
     protected override void SaveInventory()
     {
-        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots, transform.position, transform.rotation);
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
         ES3.Save(_invetoryId, saveData);
     }
 
     protected override void LoadInventory()
     {
-        InventorySaveData saveData = ES3.Load<InventorySaveData>(_invetoryId);
-        _playerInputHandler.FirstPersonController.enabled = false;
-        PrimaryInventorySystem = saveData.InventorySystem;
-        transform.position = saveData.Position;
-        transform.rotation = saveData.Rotation;
-        _playerInputHandler.FirstPersonController.enabled = true;
+        if (ES3.KeyExists(_invetoryId))
+        {
+            InventorySaveData saveData = ES3.Load<InventorySaveData>(_invetoryId);
+            _playerInputHandler.FirstPersonController.enabled = false;
+            PrimaryInventorySystem = saveData.InventorySystem;
+            //transform.position = saveData.Position;
+            //transform.rotation = saveData.Rotation;
+            _playerInputHandler.FirstPersonController.enabled = true;
 
-        base.LoadInventory();
+            base.LoadInventory();
+        }
     }
 }

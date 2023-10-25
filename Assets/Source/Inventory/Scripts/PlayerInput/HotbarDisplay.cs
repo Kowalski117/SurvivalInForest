@@ -13,7 +13,8 @@ public class HotbarDisplay : StaticInventoryDisplay
 
     private PlayerInput _playerInput;
 
-    public event UnityAction<InventorySlot> ItemClicked;
+    public event UnityAction<InventorySlot> OnItemClicked;
+    public event UnityAction<InventorySlotUI> OnItemSwitched;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         _maxIndexSize = Slots.Length - 1;
 
         Slots[_currentIndex].ToggleHighlight();
+        OnItemSwitched?.Invoke(Slots[_currentIndex]);
     }
 
     private void Update()
@@ -52,6 +54,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         foreach (var slot in Slots)
         {
             slot.OnItemClicked += HandleSlotSelected;
+            slot.OnItemUpdate += UpdateSlot;
         }
     }
 
@@ -70,6 +73,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         foreach (var slot in Slots)
         {
             slot.OnItemClicked -= HandleSlotSelected;
+            slot.OnItemUpdate -= UpdateSlot;
         }
     }
 
@@ -80,7 +84,7 @@ public class HotbarDisplay : StaticInventoryDisplay
             if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
                 Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
 
-            ItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot);
+            OnItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot);
         }
     }
 
@@ -109,6 +113,7 @@ public class HotbarDisplay : StaticInventoryDisplay
                 _currentIndex = _maxIndexSize;
 
             Slots[_currentIndex].ToggleHighlight();
+            OnItemSwitched?.Invoke(Slots[_currentIndex]);
         }
     }
 
@@ -125,6 +130,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         _currentIndex = newIndex;
 
         Slots[_currentIndex].ToggleHighlight();
+        OnItemSwitched?.Invoke(Slots[_currentIndex]);
     }
 
     private void Hotbar(int index)
@@ -142,5 +148,10 @@ public class HotbarDisplay : StaticInventoryDisplay
                 _currentIndex = i;
             }
         }
+    }
+
+    private void UpdateSlot(InventorySlotUI slot)
+    {
+        OnItemSwitched?.Invoke(Slots[_currentIndex]);
     }
 }

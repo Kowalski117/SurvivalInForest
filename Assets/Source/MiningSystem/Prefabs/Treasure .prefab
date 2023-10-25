@@ -263,6 +263,7 @@ GameObject:
   - component: {fileID: 1857118931969005684}
   - component: {fileID: 7025113253979926473}
   - component: {fileID: 3504116436217879005}
+  - component: {fileID: 5300165015511860449}
   m_Layer: 18
   m_Name: 'Treasure '
   m_TagString: Untagged
@@ -300,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTime: 5
+  _spawnTime: 100
   _scaleTime: 5
   _remainder: {fileID: 28796451043233392}
 --- !u!208 &7025113253979926473
@@ -333,6 +334,19 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: -0.88, z: 0}
+--- !u!114 &5300165015511860449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7415026890183502644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 
 --- !u!1001 &7415026891267740375
 PrefabInstance:
   m_ObjectHideFlags: 0

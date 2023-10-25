@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8851228994346149607}
   - component: {fileID: 3102666152373042882}
   - component: {fileID: 2606470441282626173}
+  - component: {fileID: 806562253028577717}
   m_Layer: 20
   m_Name: Stone
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTime: 3
+  _spawnTime: 100
   _scaleTime: 3
   _remainder: {fileID: 3619236931086325760}
 --- !u!208 &3102666152373042882
@@ -81,6 +82,19 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: -0.51, z: 0}
+--- !u!114 &806562253028577717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2276745112298898951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 
 --- !u!1 &2277968886114007726
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,6 +187,8 @@ MonoBehaviour:
   - {fileID: 8960539922728349853, guid: 77f2bd874a3c0bd42b9ccd72231b585d, type: 3}
   - {fileID: 8960539922728349853, guid: 77f2bd874a3c0bd42b9ccd72231b585d, type: 3}
   - {fileID: 8960539922728349853, guid: 77f2bd874a3c0bd42b9ccd72231b585d, type: 3}
+  _selectionParticle: {fileID: 2611327634490146045, guid: c36699ffe67b0f74ea16e9fb6b5dc2a3, type: 3}
+  _resourseType: 0
 --- !u!1 &3619236931086325760
 GameObject:
   m_ObjectHideFlags: 0

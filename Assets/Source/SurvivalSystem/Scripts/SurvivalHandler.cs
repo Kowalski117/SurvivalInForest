@@ -37,7 +37,7 @@ public class SurvivalHandler : MonoBehaviour
         SaveGame.OnSaveGame += SaveSurvivalAttributes;
         SaveGame.OnLoadData += LoadSurvivalAttributes;
 
-        _hotbarDisplay.ItemClicked += Eat;
+        _hotbarDisplay.OnItemClicked += Eat;
         _health.OnRevived += Reborn;
     }
 
@@ -46,7 +46,7 @@ public class SurvivalHandler : MonoBehaviour
         SaveGame.OnSaveGame -= SaveSurvivalAttributes;
         SaveGame.OnLoadData -= LoadSurvivalAttributes;
 
-        _hotbarDisplay.ItemClicked -= Eat;
+        _hotbarDisplay.OnItemClicked -= Eat;
         _health.OnRevived -= Reborn;
     }
 

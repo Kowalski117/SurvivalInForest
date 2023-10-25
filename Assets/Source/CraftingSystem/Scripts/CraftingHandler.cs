@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CraftingHandler : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class CraftingHandler : MonoBehaviour
 
     private CraftingÑategory _currentCategory;
     private bool _isCraftPlayerOpen = false;
+
+    public event UnityAction OnUpdateSlotInventory;
 
     public Transform CraftingWindow => _craftingWindow;
 
@@ -96,6 +99,8 @@ public class CraftingHandler : MonoBehaviour
         {
             slot.UpdateRecipe();
         }
+
+        OnUpdateSlotInventory?.Invoke();
     }
 
     public void SwitchCraftingCategory(ItemType itemType)

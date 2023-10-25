@@ -6,45 +6,45 @@ public class SaveItemHandler : SaveHandler
 {
     [SerializeField] private static List<InventoryItemData> _itemDataList;
 
-    private string _idsItems = "idsItems";
+    //private string _idsItems = "idsItems";
 
-    private ItemPickUp _currentItemPickUp;
+    //private ItemPickUp _currentItemPickUp;
 
     private void Awake()
     {
         SetItemIds();
     }
 
-    protected override void SaveBase()
-    {
-        //ES3.Save(_idsItems, Ids);
-    }
+    //protected override void SaveBase()
+    //{
+    //    //ES3.Save(_idsItems, Ids);
+    //}
 
-    protected override void LoadBase()
-    {
-        //Ids = ES3.Load<List<string>>(_idsItems);
+    //protected override void LoadBase()
+    //{
+    //    //Ids = ES3.Load<List<string>>(_idsItems);
 
-        //foreach (var itemData in Ids)
-        //{
-        //    if (ES3.KeyExists(itemData))
-        //    {
-        //        ItemPickUpSaveData itemSaveData = ES3.Load<ItemPickUpSaveData>(itemData);
-        //        foreach (var data in _itemDataList)
-        //        {
-        //            if (data.Id == itemSaveData.Id)
-        //            {
-        //                if(data.ItemPrefab != null)
-        //                {
-        //                    _currentItemPickUp = Instantiate(data.ItemPrefab, itemSaveData.Position, itemSaveData.Rotation, Container);
-        //                    _currentItemPickUp.Init(itemSaveData, itemData);
-        //                    _currentItemPickUp = null;
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-    }
+    //    //foreach (var itemData in Ids)
+    //    //{
+    //    //    if (ES3.KeyExists(itemData))
+    //    //    {
+    //    //        ItemPickUpSaveData itemSaveData = ES3.Load<ItemPickUpSaveData>(itemData);
+    //    //        foreach (var data in _itemDataList)
+    //    //        {
+    //    //            if (data.Id == itemSaveData.Id)
+    //    //            {
+    //    //                if(data.ItemPrefab != null)
+    //    //                {
+    //    //                    _currentItemPickUp = Instantiate(data.ItemPrefab, itemSaveData.Position, itemSaveData.Rotation, Container);
+    //    //                    _currentItemPickUp.Init(itemSaveData, itemData);
+    //    //                    _currentItemPickUp = null;
+    //    //                    break;
+    //    //                }
+    //    //            }
+    //    //        }
+    //    //    }
+    //    //}
+    //}
 
     [ContextMenu("Set Ids")]
     public void SetItemIds()
@@ -86,5 +86,15 @@ public class SaveItemHandler : SaveHandler
     public static InventoryItemData GetItem(float id)
     {
         return _itemDataList.Find(i => i.Id == id);
+    }
+
+    protected override void LoadBase()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    protected override void SaveBase()
+    {
+        //throw new System.NotImplementedException();
     }
 }

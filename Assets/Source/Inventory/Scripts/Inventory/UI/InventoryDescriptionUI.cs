@@ -152,6 +152,7 @@ public class InventoryDescriptionUI : MonoBehaviour
                 SetParametr(ParamertType.Thirst, GetInterest(foodItemData.AmountWater * _currentSlot.AssignedInventorySlot.Durability, _survivalHandler.Thirst.MaxValueInHours));
             //if (foodItemData.AmountHealth > 0)
                 SetParametr(ParamertType.Helfth, GetInterest(foodItemData.AmountHealth * _currentSlot.AssignedInventorySlot.Durability, _survivalHandler.PlayerHealth.MaxHealth));
+                SetParametr(ParamertType.Sleep, GetInterest(foodItemData.AmountSleep * _currentSlot.AssignedInventorySlot.Durability, _survivalHandler.Sleep.MaxValueInHours));
         }
     }
 

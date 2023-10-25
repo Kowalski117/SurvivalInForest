@@ -47,7 +47,7 @@ public class OutlineSelection : Raycast
             if (other.TryGetComponent(out Outline outline))
             {
                 outline.OutlineWidth = _outlineWidth;
-                //outline.enabled = true;
+                outline.enabled = true;
                 outline.OutlineColor = _outlineColor;
             }
         }

@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : SurvivalAttribute, IDamagable
 {
@@ -11,6 +13,8 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     [SerializeField] private float _recoveryRate = 0.1f;
     [SerializeField] private float _recoveryDelay = 3f;
     [SerializeField] private Transform _cameraRoot;
+    [SerializeField] private PlayerPosition _playerPositionLastScene;
+    [SerializeField] private bool _isTransitionLastPosition;
 
     private float _currentDelayCounter;
     private bool _isRestoringHealth;
@@ -33,20 +37,29 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     private void Start()
     {
         CurrentValue = MaxValue;
+        SetActiveCollider(false);
+    }
+
+    private void OnEnable()
+    {
+        SaveGame.OnSaveGame += Save;
+        SaveGame.OnLoadData += Load;
+    }
+
+    private void OnDisable()
+    {
+        SaveGame.OnSaveGame -= Save;
+        SaveGame.OnLoadData -= Load;
     }
 
     public void LowerHealth(float value)
     {
         if(CurrentValue > 0)
         {
-            float damage = value - _protectionValue.Protection;
-
-
-            if(damage >= 0) 
+            if(value >= 0) 
             {
-                CurrentValue -= damage;
+                CurrentValue -= value;
 
-                OnDamageDone?.Invoke();
                 OnHealthChanged?.Invoke(HealthPercent);
 
                 if (CurrentValue <= 0)
@@ -58,6 +71,12 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
                 _currentDelayCounter = 0;
             }
         }
+    }
+
+    public void LowerHealthDamage(float value)
+    {
+        LowerHealth(value - _protectionValue.Protection);
+        OnDamageDone?.Invoke();
     }
 
     public void RestoringHealth()
@@ -100,7 +119,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void TakeDamage(float damage,float overTimeDamage)
     {
-        LowerHealth(damage);
+        LowerHealthDamage(damage);
     }
 
     public void Die()
@@ -112,7 +131,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         CurrentValue = 0;
         _playerInputHandler.FirstPersonController.enabled = false;
         _playerInputHandler.ToggleInventoryPanels(false);
-        _characterController.enabled = false;
+        SetActiveCollider(false);
         _playerInputHandler.ToggleAllInput(false);
         _playerInputHandler.SetCursorVisible(true);
         OnHealthChanged?.Invoke(HealthPercent);
@@ -132,7 +151,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         _playerInputHandler.ToggleAllInput(true);
         _playerInputHandler.FirstPersonController.enabled = true;
         _playerInputHandler.ToggleInventoryPanels(true);
-        _characterController.enabled = true;
+        SetActiveCollider(true);
         SetValue(MaxValue * 30 / 100);
 
         OnHealthChanged?.Invoke(HealthPercent);
@@ -141,5 +160,63 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public void SetCanRestoreHealth(bool value)
     {
         _canRestoreHealth = value;
+    }
+
+    public void SetActiveCollider(bool isActive)
+    {
+        _characterController.enabled = isActive;
+    }
+
+    private void Save()
+    {
+        PlayerSaveData playerSaveData = new PlayerSaveData(transform.position, transform.rotation);
+
+        ES3.Save("SceneIndex", SceneManager.GetActiveScene().buildIndex);
+        ES3.Save("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex, playerSaveData);
+    }
+
+    private void Load()
+    {
+        if (ES3.KeyExists("LastSceneIndex")) 
+        {
+            int lastSceneIndex = ES3.Load<int>("LastSceneIndex");
+            int nextSceneIndex = ES3.Load<int>("NextSceneIndex");
+
+            if (ES3.KeyExists("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex) &&  _isTransitionLastPosition || lastSceneIndex == 0)
+            {
+                PlayerSaveData playerSaveData = ES3.Load<PlayerSaveData>("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex);
+                transform.position = playerSaveData.Position;
+                transform.rotation = playerSaveData.Rotation;
+                return;
+            }
+            else
+            {
+                foreach (var lastScene in _playerPositionLastScene.LastScenePosition)
+                {
+                    if (lastSceneIndex == lastScene.LastSceneIndex && nextSceneIndex == lastScene.NextSceneIndex)
+                    {
+                        transform.position = lastScene.Position;
+                        transform.rotation = lastScene.Rotation;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    [System.Serializable]
+    public struct PlayerSaveData
+    {
+        [SerializeField] private Vector3 _position;
+        [SerializeField] private Quaternion _rotation;
+
+        public Vector3 Position => _position;
+        public Quaternion Rotation => _rotation;
+
+        public PlayerSaveData(Vector3 position, Quaternion rotation)
+        {
+            _position = position;
+            _rotation = rotation;
+        }
     }
 }

@@ -8,7 +8,7 @@ public class ShopScreen : ScreenUI
 
     public event UnityAction OnExitButton;
 
-    public override void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
 
@@ -17,7 +17,7 @@ public class ShopScreen : ScreenUI
         PlayerInputHandler.ScreenPlayerInput.OnToggleShopScreen += ToggleScreen;
     }
 
-    public override void OnDisable()
+    protected override void OnDisable()
     {
         base.OnDisable();
 

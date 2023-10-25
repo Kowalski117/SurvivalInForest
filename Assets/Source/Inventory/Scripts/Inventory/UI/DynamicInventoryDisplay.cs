@@ -9,14 +9,18 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     public CanvasGroup CanvasGroup => _canvasGroup;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         if (inventorySystem != null)
             inventorySystem.OnInventorySlotChanged += UpdateSlot;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         if (inventorySystem != null)
             inventorySystem.OnInventorySlotChanged -= UpdateSlot;
     }
