@@ -22,7 +22,7 @@ public class PlayerInteraction : Raycast
     private InventoryItemData _previousItemData;
     private Resource _currentResoure;
     private Animals _currentAnim;
-    private BrokenObject _currentBrokenObject;
+    private Box _currentBrokenObject;
     private InventorySlot _currentInventorySlot;
 
     private float _maxDelayFire = 10f;
@@ -105,7 +105,7 @@ public class PlayerInteraction : Raycast
                 }
             }
 
-            if (hitInfo.collider.TryGetComponent(out BrokenObject brokenObject))
+            if (hitInfo.collider.TryGetComponent(out Box brokenObject))
             {
                 if (brokenObject != null)
                 {

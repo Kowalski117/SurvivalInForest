@@ -56,12 +56,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         _curenntHealth = 0;
         Rigidbody.isKinematic = false;
-
-        for (int i = 0; i < _loots.Count; i++)
-        {
-            SpawnItem(_loots[i], _radiusSpawnLoots, _spawnLootUp);
-        }
-        
+        SpawnLoot();
         _isDead = true;
         StartCoroutine(Precipice());
     }
@@ -72,6 +67,14 @@ public abstract class Resource : MonoBehaviour, IDamagable
         {
             Vector3 position = (transform.position + Random.insideUnitSphere * radius);
             SpawnLoots.Spawn(itemPickUp, position, transform, false, spawnPointUp, false);
+        }
+    }
+    
+    public virtual void SpawnLoot()
+    {
+        for (int i = 0; i < _loots.Count; i++)
+        {
+            SpawnItem(_loots[i], _radiusSpawnLoots, _spawnLootUp);
         }
     }
 

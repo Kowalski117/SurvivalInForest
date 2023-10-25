@@ -5521,6 +5521,7 @@
             <e p="Materials" t="Include" />
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="AnimationEvent.cs" t="Include" />
               <e p="ItemAnimator.cs" t="Include" />
               <e p="PlayerAnimatorHandler.cs" t="Include" />
             </e>
@@ -5728,6 +5729,17 @@
               <e p="UI" t="Include">
                 <e p="ClockUI.cs" t="Include" />
                 <e p="DayUI.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="TransitionBetweenScenes" t="Include">
+            <e p="Prefabs" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="GameTimeСounter.cs" t="Include" />
+              <e p="PlayerPosition.cs" t="Include" />
+              <e p="TransitionHandlerBetweenScenes.cs" t="Include" />
+              <e p="UI" t="Include">
+                <e p="TransitionBetweenScenesWindow.cs" t="Include" />
               </e>
             </e>
           </e>
