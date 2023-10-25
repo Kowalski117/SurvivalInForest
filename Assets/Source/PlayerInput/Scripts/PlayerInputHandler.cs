@@ -12,6 +12,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private Transform _inventoryPanels;
+    [SerializeField] private PlayerHealth _playerHealth;
 
     public FirstPersonController FirstPersonController => _firstPersonController;
     public InventoryPlayerInput InventoryPlayerInput => _inventoryPlayerInput;
@@ -21,6 +22,7 @@ public class PlayerInputHandler : MonoBehaviour
     public SurvivalHandler SurvivalHandler => _survivalHandler;
     public BuildTool BuildTool => _buildTool;
     public Transform InventoryPanels => _inventoryPanels;
+    public PlayerHealth PlayerHealth => _playerHealth;
 
     private void Start()
     {

@@ -11,12 +11,17 @@ public class ScreenUI : MonoBehaviour
     public event UnityAction OnOpenScreen;
     public event UnityAction OnCloseScreen;
 
-    public virtual void OnEnable()
+    private void Awake()
+    {
+        PlayerInputHandler = FindObjectOfType<PlayerInputHandler>();
+    }
+
+    protected virtual void OnEnable()
     {
         PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied += Close;
     }
 
-    public virtual void OnDisable()
+    protected virtual void OnDisable()
     {
         PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied -= Close;
     }

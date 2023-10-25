@@ -5,6 +5,7 @@ using UnityEngine;
 public class ToolItemData : InventoryItemData
 {
     [SerializeField] private ToolType _toolType;
+    [SerializeField] private ResourseType _resourseType;
     [SerializeField] private float _damageResources;
     [SerializeField] private float _damageLiving;
     [SerializeField] private float _speed; 
@@ -13,6 +14,7 @@ public class ToolItemData : InventoryItemData
     [SerializeField] private AudioClip _muzzleSound;
 
     public ToolType ToolType => _toolType;
+    public ResourseType ResourseType => _resourseType;
     public float DamageResources => _damageResources;
     public float DamageLiving => _damageLiving;
     public float Speed => _speed;
@@ -29,6 +31,15 @@ public enum ToolType
     FishingRod,
     Torch,
     Shovel,
+}
+
+public enum ResourseType
+{
+    Stone,
+    Coal,
+    Iron,
+    All,
+    None,
 }
 
 #if UNITY_EDITOR

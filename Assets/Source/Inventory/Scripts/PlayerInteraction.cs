@@ -1,6 +1,7 @@
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerInteraction : Raycast
 {
@@ -13,6 +14,7 @@ public class PlayerInteraction : Raycast
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
     [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private LayerMask _usingLayer;
 
     private WeaponItemData _currentWeapon;
     private ToolItemData _currentTool;
@@ -27,6 +29,8 @@ public class PlayerInteraction : Raycast
     private float _nextFireDelay;
     private bool _isEnable;
     private float _hourInSeconds = 3600;
+    private Vector3 _particlePosition;
+    private ParticleSystem _selectionParticle;
 
     public event UnityAction<InventoryItemData> OnUpdateItemData;
     public event UnityAction<WeaponItemData> OnUpdateWeaponItemData;
@@ -37,26 +41,26 @@ public class PlayerInteraction : Raycast
 
     public InventorySlot CurrentInventorySlot => _currentInventorySlot;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _nextFireDelay = _maxDelayFire;
     }
 
     private void OnEnable()
     {
         _playerInputHandler.InteractionPlayerInput.OnAttack += UseItem;
+        _hotbarDisplay.OnItemSwitched += UpdateItemData;
     }
 
     private void OnDisable()
     {
         _playerInputHandler.InteractionPlayerInput.OnAttack -= UseItem;
+        _hotbarDisplay.OnItemSwitched -= UpdateItemData;
     }
 
     private void Update()
     {
-        UpdateItemData();
-        InitWeapon(_currentInventorySlot.ItemData);
-        InitTool(_currentInventorySlot.ItemData);
 
         if (_nextFireDelay <= _maxDelayFire)
             _nextFireDelay += Time.deltaTime;
@@ -65,40 +69,89 @@ public class PlayerInteraction : Raycast
         {
             if (_currentWeapon != null && _currentWeapon.WeaponType == WeaponType.MeleeWeapon)
             {
-                Hit();
+                if (_nextFireDelay > _currentWeapon.Speed)
+                {
+                    _playerAnimation.Hit(_currentAnim);
+                    _nextFireDelay = 0;
+
+                }
             }
             else if (_currentTool != null && _currentWeapon == null)
             {
-                InteractResource();          
+                if (_nextFireDelay > _currentTool.Speed)
+                {
+                    _playerAnimation.Hit(_currentResoure);
+                    _nextFireDelay = 0;
+                }
+            }
+        }
+
+        if (IsRayHittingSomething(_usingLayer, out RaycastHit hitInfo))
+        {
+            _particlePosition = hitInfo.point;
+            _currentAnim = hitInfo.collider.GetComponentInParent<Animals>();
+            if (_currentAnim != null)
+            {
+                OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
+            }
+
+            if (hitInfo.collider.TryGetComponent(out Resource resource))
+            {
+                if (resource != null)
+                {
+                    _currentResoure = resource;
+                    _selectionParticle = _currentResoure.SelectionParticle;
+                    OnEnableBarValue?.Invoke(_currentResoure.MaxHealth, _currentResoure.Health);
+                }
+            }
+
+            if (hitInfo.collider.TryGetComponent(out BrokenObject brokenObject))
+            {
+                if (brokenObject != null)
+                {
+                    _currentBrokenObject = brokenObject;
+                    OnEnableBarValue?.Invoke(_currentBrokenObject.MaxEndurance, _currentBrokenObject.Endurance);
+                }
+            }
+
+
+        }
+        else
+        {
+            if(_currentAnim != null || _currentResoure != null || _currentBrokenObject != null)
+            {
+                _currentAnim = null;
+                _currentResoure = null;
+                _currentBrokenObject = null;
+                _selectionParticle = null;
+                OnTurnOffBarValue?.Invoke();
             }
         }
     }
 
-    public void UpdateItemData()
+    public void UpdateItemData(InventorySlotUI slotUI)
     {
         _previousItemData = _currentItemData;
-        _currentInventorySlot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+        _currentInventorySlot = slotUI.AssignedInventorySlot;
         _currentItemData = _currentInventorySlot.ItemData;
         OnUpdateItemData?.Invoke(_currentItemData);
+        InitWeapon(_currentItemData);
+        InitTool(_currentItemData);
     }
 
     public void InitWeapon(InventoryItemData itemData)
     {
         if (itemData != null)
         {
-            if (itemData is WeaponItemData weaponItemData)
-            {
-                _currentWeapon = weaponItemData;
-            }
-            else
-            {
+            if (itemData is WeaponItemData weaponItemData)          
+                _currentWeapon = weaponItemData;           
+            else           
                 _currentWeapon = null;
-            }
         }
         else
         {
             _currentWeapon = null;
-        }
+        } 
 
         OnUpdateWeaponItemData?.Invoke(_currentWeapon);
     }
@@ -108,13 +161,9 @@ public class PlayerInteraction : Raycast
         if (itemData != null)
         {
             if (itemData is ToolItemData toolItemData)
-            {
                 _currentTool = toolItemData;
-            }
             else
-            {
                 _currentTool = _armItemData;
-            }
         }
         else
         {
@@ -131,7 +180,7 @@ public class PlayerInteraction : Raycast
         {
             if (_inventory.RemoveInventory(_currentWeapon.Bullet.ItemData, 1))
             {
-                _playerAnimation.Hit();
+                _playerAnimation.Hit(true);
                 _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
                 //_currentWeapon.MuzzleFlash.Play();
                 _nextFireDelay = 0;
@@ -175,31 +224,26 @@ public class PlayerInteraction : Raycast
         }
     }
 
-    private void Hit()
+    public void Hit()
     {
-        if (_nextFireDelay > _currentWeapon.Speed)
+        if (_currentTool != null)
         {
             _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
-            _playerAnimation.Hit();
             TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
             TakeDamageBrokenObject(_currentWeapon.Damage, 0);
-            _nextFireDelay = 0;
         }
     }
 
-    private void InteractResource()
+    public void InteractResource()
     {
-        if (_nextFireDelay > _currentTool.Speed)
+        if (_currentTool != null)
         {
-            _nextFireDelay = 0;
-            _playerAnimation.Hit();
+            if (_selectionParticle != null)
+                Instantiate(_selectionParticle, _particlePosition, Quaternion.identity);
 
-            if (_currentTool != null)
-            {
-                TakeDamageResoure(_currentTool.DamageResources, 0);
-                TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
-                TakeDamageBrokenObject(_currentTool.DamageResources, 0);
-            }
+            TakeDamageResoure(_currentTool.DamageResources, 0);
+            TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
+            TakeDamageBrokenObject(_currentTool.DamageResources, 0);
         }
     }
 
@@ -257,6 +301,9 @@ public class PlayerInteraction : Raycast
         {
             if (_currentResoure.ExtractionType == _currentTool.ToolType)
             {
+                if(!(_currentResoure is Stone stone && stone.ResourseType == _currentTool.ResourseType || _currentTool.ResourseType == ResourseType.All ))
+                    return;
+
                 CreateParticle(_currentTool, _currentTool.HitEffect);
                 _currentResoure.TakeDamage(damage, overTimeDamage);
                 UpdateDurabilityItem(_currentInventorySlot);
@@ -276,53 +323,53 @@ public class PlayerInteraction : Raycast
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        _currentAnim = other.GetComponentInParent<Animals>();
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    _currentAnim = other.GetComponentInParent<Animals>();
 
-        if (_currentAnim != null)
-        {
-            OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
-        }
+    //    if (_currentAnim != null)
+    //    {
+    //        OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
+    //    }
 
-        if (other.TryGetComponent(out Resource resource))
-        {
-            if (resource != null)
-            {
-                _currentResoure = resource;
-                OnEnableBarValue?.Invoke(_currentResoure.MaxHealth, _currentResoure.Health);
-            }
+    //    if (other.TryGetComponent(out Resource resource))
+    //    {
+    //        if (resource != null)
+    //        {
+    //            _currentResoure = resource;
+    //            OnEnableBarValue?.Invoke(_currentResoure.MaxHealth, _currentResoure.Health);
+    //        }
 
-        }
+    //    }
 
-        if (other.TryGetComponent(out BrokenObject brokenObject))
-        {
-            if (brokenObject != null)
-            {
-                _currentBrokenObject = brokenObject;
-                OnEnableBarValue?.Invoke(_currentBrokenObject.MaxEndurance, _currentBrokenObject.Endurance);
-            }
-        }
-    }
+    //    if (other.TryGetComponent(out BrokenObject brokenObject))
+    //    {
+    //        if (brokenObject != null)
+    //        {
+    //            _currentBrokenObject = brokenObject;
+    //            OnEnableBarValue?.Invoke(_currentBrokenObject.MaxEndurance, _currentBrokenObject.Endurance);
+    //        }
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent(out Resource resource))
-        {
-            _currentResoure = null;
-            OnTurnOffBarValue?.Invoke();
-        }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.TryGetComponent(out Resource resource))
+    //    {
+    //        _currentResoure = null;
+    //        OnTurnOffBarValue?.Invoke();
+    //    }
 
-        if (other.TryGetComponent(out Animals animals))
-        {
-            _currentAnim = null;
-            OnTurnOffBarValue?.Invoke();
-        }
+    //    if (other.TryGetComponent(out Animals animals))
+    //    {
+    //        _currentAnim = null;
+    //        OnTurnOffBarValue?.Invoke();
+    //    }
 
-        if (other.TryGetComponent(out BrokenObject brokenObject))
-        {
-            _currentBrokenObject = null;
-            OnTurnOffBarValue?.Invoke();
-        }
-    }
+    //    if (other.TryGetComponent(out BrokenObject brokenObject))
+    //    {
+    //        _currentBrokenObject = null;
+    //        OnTurnOffBarValue?.Invoke();
+    //    }
+    //}
 }

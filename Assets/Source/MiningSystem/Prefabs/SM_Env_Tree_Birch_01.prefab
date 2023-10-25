@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: -2903410161505056084}
   - component: {fileID: 8549927968174032561}
   - component: {fileID: 610552897749010298}
+  - component: {fileID: 1514748340342460012}
   m_Layer: 14
   m_Name: SM_Env_Tree_Birch_01
   m_TagString: Untagged
@@ -79,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTime: 3
+  _spawnTime: 100
   _scaleTime: 3
   _remainder: {fileID: 2894331177213427050}
 --- !u!208 &8549927968174032561
@@ -111,6 +112,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4823452, y: 0.2549127, z: 0.37558657}
   m_Center: {x: 0.012879625, y: -0.18353565, z: -0.0004810393}
+--- !u!114 &1514748340342460012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016392496237815170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 
 --- !u!1 &1034176041135172949
 GameObject:
   m_ObjectHideFlags: 0

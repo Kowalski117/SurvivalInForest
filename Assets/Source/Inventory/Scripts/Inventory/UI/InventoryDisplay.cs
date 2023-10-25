@@ -10,6 +10,7 @@ public abstract class InventoryDisplay : MonoBehaviour
     [SerializeField] protected InventoryDescriptionUI InventoryDescription;
     [SerializeField] private InventoryOperator _inventoryOperator;
     [SerializeField] protected InventorySlotUI[] Slots;
+    [SerializeField] private CraftingHandler _craftingHandler;
 
     private string _invetoryTag = "Inventory";
 
@@ -26,14 +27,16 @@ public abstract class InventoryDisplay : MonoBehaviour
     public abstract void AssingSlot(InventorySystem inventoryToDisplay, int offSet);
     public abstract void HandleSwap(InventorySlotUI inventorySlotUI);
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
-        
+        if (_craftingHandler != null)
+            _craftingHandler.OnUpdateSlotInventory += UpdateSlots;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
-        
+        if (_craftingHandler != null)
+            _craftingHandler.OnUpdateSlotInventory -= UpdateSlots;
     }
 
     public void SlotClicked(InventorySlotUI clickedUISlot)
@@ -70,6 +73,14 @@ public abstract class InventoryDisplay : MonoBehaviour
                     return;
                 }
             }
+        }
+    }
+
+    public void UpdateSlots()
+    {
+        foreach (var slot in Slots)
+        {
+            slot.UpdateUiSlot();
         }
     }
 

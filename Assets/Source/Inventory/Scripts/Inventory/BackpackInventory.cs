@@ -53,15 +53,18 @@ public class BackpackInventory : InventoryHolder
 
     protected override void SaveInventory()
     {
-        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots, transform.position, transform.rotation);
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
         ES3.Save(_backpackInventory, saveData);
     }
 
     protected override void LoadInventory()
     {
-        InventorySaveData saveData = ES3.Load<InventorySaveData>(_backpackInventory);
-        PrimaryInventorySystem = saveData.InventorySystem;
+        if (ES3.KeyExists(_backpackInventory))
+        {
+            InventorySaveData saveData = ES3.Load<InventorySaveData>(_backpackInventory);
+            PrimaryInventorySystem = saveData.InventorySystem;
 
-        base.LoadInventory();
+            base.LoadInventory();
+        }
     }
 }

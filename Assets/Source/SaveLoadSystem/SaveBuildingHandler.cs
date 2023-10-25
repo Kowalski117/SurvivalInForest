@@ -16,23 +16,26 @@ public class SaveBuildingHandler : SaveHandler
 
     protected override void LoadBase()
     {
-        Ids = ES3.Load<List<string>>(_idsBuildings);
-
-        foreach (var buildingData in Ids)
+        if (ES3.KeyExists(_idsBuildings)) 
         {
-            if (ES3.KeyExists(buildingData))
-            {
-                BuildingSaveData itemSaveData = ES3.Load<BuildingSaveData>(buildingData);
+            Ids = ES3.Load<List<string>>(_idsBuildings);
 
-                foreach (var data in _buildingDataList)
+            foreach (var buildingData in Ids)
+            {
+                if (ES3.KeyExists(buildingData))
                 {
-                    if (data.BuildingData.Id == itemSaveData.Id)
+                    BuildingSaveData itemSaveData = ES3.Load<BuildingSaveData>(buildingData);
+
+                    foreach (var data in _buildingDataList)
                     {
-                        _currentBuilding = Instantiate(data.BuildingData.Prefab, itemSaveData.Position, itemSaveData.Rotation, Container);
-                        _currentBuilding.Init(data, buildingData);
-                        _currentBuilding.PlaceBuilding();
-                        _currentBuilding = null;
-                        break;
+                        if (data.BuildingData.Id == itemSaveData.Id)
+                        {
+                            _currentBuilding = Instantiate(data.BuildingData.Prefab, itemSaveData.Position, itemSaveData.Rotation, Container);
+                            _currentBuilding.Init(data, buildingData);
+                            _currentBuilding.PlaceBuilding();
+                            _currentBuilding = null;
+                            break;
+                        }
                     }
                 }
             }

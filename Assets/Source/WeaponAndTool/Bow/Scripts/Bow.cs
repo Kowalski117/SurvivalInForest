@@ -85,7 +85,7 @@ public class Bow : MonoBehaviour
                     if(arrow.IsFlying == false)
                     {
                         arrow.gameObject.SetActive(true);
-                        _playerAnimatorHandler.Hit();
+                        _playerAnimatorHandler.Hit(true);
                         arrow.Shoot(_arrowSpeed);
                         break;
                     }

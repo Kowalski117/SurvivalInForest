@@ -1,4 +1,5 @@
 using StarterAssets;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -25,6 +26,16 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public ItemAnimator CurrentItemAnimation => _handAnimator;
 
+    private void OnEnable()
+    {
+        _hotbarDisplay.OnItemSwitched += Init;
+    }
+
+    private void OnDisable()
+    {
+        _hotbarDisplay.OnItemSwitched -= Init;
+    }
+
     private void Update()
     {
         if(_handAnimator != null)
@@ -34,16 +45,14 @@ public class PlayerAnimatorHandler : MonoBehaviour
             else
                 _handAnimator.HandAnimator.SetFloat(_speed, 0);
         }
-
-        Init(_hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot.ItemData);
     }
 
-    public void Init(InventoryItemData itemData)
+    public void Init(InventorySlotUI slotUI)
     {
         _previousItemData = _currentItemData;
-        
-        if(itemData != null)
-            _currentItemData = itemData;
+
+        if (slotUI.AssignedInventorySlot.ItemData != null)
+            _currentItemData = slotUI.AssignedInventorySlot.ItemData;
         else
             _currentItemData = _defoultItem.ItemData;
 
@@ -62,9 +71,12 @@ public class PlayerAnimatorHandler : MonoBehaviour
         _handAnimator.HandAnimator.SetBool(_build, true);
     }
 
-    public void Hit()
+    public void Hit(bool isActive)
     {
-        _handAnimator.HandAnimator.SetTrigger(_hits[Random.Range(0, _hits.Length)]);
+        if(isActive)
+            _handAnimator.HandAnimator.SetTrigger(_hits[0]);
+        else
+            _handAnimator.HandAnimator.SetTrigger(_hits[1]);
     }
 
     public void Aim(bool value)

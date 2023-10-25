@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1781313535525023714}
   - component: {fileID: 5879705966077817101}
   - component: {fileID: 6448659119479536721}
+  - component: {fileID: 9158847129956252103}
   m_Layer: 14
   m_Name: SM_Env_Tree_Fruit_02
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTime: 3
+  _spawnTime: 100
   _scaleTime: 3
   _remainder: {fileID: 3577222749891811700}
 --- !u!208 &5879705966077817101
@@ -80,6 +81,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4823452, y: 0.32432473, z: 0.37558657}
   m_Center: {x: 0.012879625, y: -0.14882964, z: -0.0004810393}
+--- !u!114 &9158847129956252103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2154830210199987570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 
 --- !u!1 &2314070469688158428
 GameObject:
   m_ObjectHideFlags: 0

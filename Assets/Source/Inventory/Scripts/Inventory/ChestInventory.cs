@@ -46,7 +46,7 @@ public class ChestInventory : InventoryHolder, IInteractable
 
     protected override void SaveInventory()
     {
-        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots, transform.position, transform.rotation);
+        InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
         ES3.Save(_uniqueId.Id, saveData);
     }
 

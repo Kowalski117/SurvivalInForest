@@ -7,7 +7,7 @@ public class Raycast : MonoBehaviour
 
     protected Camera CameraMain;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         CameraMain = Camera.main;
     }
@@ -16,6 +16,9 @@ public class Raycast : MonoBehaviour
     {
         var ray = new Ray(RayOrigin.position, CameraMain.transform.forward * RayDistance);
         Debug.DrawRay(ray.origin, ray.direction * RayDistance, Color.red);
-        return Physics.Raycast(ray, out hitInfo, RayDistance, layerMask);
+        if(layerMask != 0)
+            return Physics.Raycast(ray, out hitInfo, RayDistance, layerMask);
+        else
+            return Physics.Raycast(ray, out hitInfo, RayDistance);
     }
 }

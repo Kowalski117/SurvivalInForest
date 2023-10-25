@@ -11,13 +11,15 @@ public class StaticInventoryDisplay : InventoryDisplay
         RefreshStaticDisplay();
     }
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         _inventoryHolder.OnInventoryChanged += RefreshStaticDisplay;
     }
 
-    protected virtual void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _inventoryHolder.OnInventoryChanged -= RefreshStaticDisplay;
     }
 

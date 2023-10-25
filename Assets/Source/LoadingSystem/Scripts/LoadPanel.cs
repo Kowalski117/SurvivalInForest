@@ -95,6 +95,8 @@ public class LoadPanel : MonoBehaviour
         {
             _resumeButton.gameObject.SetActive(false);
             _canvasGroup.blocksRaycasts = false;
+            ES3.Save("LastSceneIndex", SceneManager.GetActiveScene().buildIndex);
+            ES3.Save("NextSceneIndex", indexScene);
         }
 
         _loadBarImage.fillAmount = 0;
@@ -105,6 +107,9 @@ public class LoadPanel : MonoBehaviour
             yield return null;
         }
 
+        if (alpha == 1)
+            yield return new WaitForSeconds(_waitForFadeTime);
+
         if (OnFadingDone != null)
             OnFadingDone();
 
@@ -114,7 +119,10 @@ public class LoadPanel : MonoBehaviour
     public void Deactivate()
     {
         if (_playerInputHandler != null)
+        {
             _playerInputHandler.ToggleAllParametrs(true);
+            _playerInputHandler.PlayerHealth.SetActiveCollider(true);
+        }
 
         if (_coroutineDeactivate != null)
         {
@@ -123,6 +131,17 @@ public class LoadPanel : MonoBehaviour
         }
 
         _coroutineDeactivate = StartCoroutine(DeactivateCoroutine());
+    }
+
+    public string GetNameSettingsScreen(int indexScene)
+    {
+        foreach (var sceneParameter in _screenSettings.SceneParameters)
+        {
+            if (indexScene == sceneParameter.SceneIndex)
+                return sceneParameter.SceneName;
+        }
+
+        return null;
     }
 
     private IEnumerator DeactivateCoroutine()
@@ -138,11 +157,7 @@ public class LoadPanel : MonoBehaviour
 
     private void SetSettingsScreen(int indexScene)
     {
-        foreach (var sceneParameter in _screenSettings.SceneParameters)
-        {
-            if (indexScene == sceneParameter.SceneIndex)
-                _sceneNameIndex.text = sceneParameter.SceneName;
-        }
+        _sceneNameIndex.text = GetNameSettingsScreen(indexScene);
 
         _randomIndex = Random.Range(0, _screenSettings.HintSprites.Length);
         _imageHint.sprite = _screenSettings.HintSprites[_randomIndex];

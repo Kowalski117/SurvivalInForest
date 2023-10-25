@@ -398,6 +398,7 @@ GameObject:
   - component: {fileID: 7387929073549103904}
   - component: {fileID: 6304613484113778441}
   - component: {fileID: 6898302981383496669}
+  - component: {fileID: 5912280579038763297}
   m_Layer: 14
   m_Name: SM_Env_Tree_Meadow_01
   m_TagString: Untagged
@@ -434,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTime: 3
+  _spawnTime: 100
   _scaleTime: 3
   _remainder: {fileID: 6046726410172265913}
 --- !u!208 &6304613484113778441
@@ -466,6 +467,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.22392347, y: 0.16893345, z: 0.2402293}
   m_Center: {x: -0.00959212, y: -0.46335855, z: -0.03304095}
+--- !u!114 &5912280579038763297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954770494557141849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 
 --- !u!1 &7100936269381484991
 GameObject:
   m_ObjectHideFlags: 0

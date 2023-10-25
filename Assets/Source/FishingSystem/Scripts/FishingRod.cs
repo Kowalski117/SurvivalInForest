@@ -71,7 +71,6 @@ public class FishingRod : MonoBehaviour
                 _isFishing = true;
                 _renderer.DrawRope();
                 _float.StartFishing(_velocityForse, _currentFishingRod.RandomTime, GetRandomItem());
-                _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
             }
             else
             {
@@ -107,7 +106,10 @@ public class FishingRod : MonoBehaviour
     private void CatchFish(InventoryItemData inventoryItemData)
     {
         if (inventoryItemData != null)
+        {
             _inventoryHolder.AddToInventory(inventoryItemData, _addAmount);
+            _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
+        }
     }
 
     private void MissFish()

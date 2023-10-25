@@ -9,7 +9,7 @@ public class Compass : MonoBehaviour
     [SerializeField] private Image _markerPrefab;
     [SerializeField] private Transform _containerMarker;
     [SerializeField] private float _maxDistance = 50;
-    [SerializeField] private QuestMaker _questMaker;
+    //[SerializeField] private QuestMaker _questMaker;
 
     private List<QuestMaker> _questMakers = new List<QuestMaker>();
 
@@ -24,7 +24,7 @@ public class Compass : MonoBehaviour
 
     private void Start()
     {
-        AddQuestMarket(_questMaker);
+        //AddQuestMarket(_questMaker);
     }
 
     private void Update()
