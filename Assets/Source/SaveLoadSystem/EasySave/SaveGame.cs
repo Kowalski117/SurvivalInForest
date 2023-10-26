@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,13 +16,13 @@ public class SaveGame : MonoBehaviour
 
     private void Start()
     {
-        if (_isStartLoad)
+        if (ES3.KeyExists("StartLastSaveScene") && ES3.Load<bool>("StartLastSaveScene") == true || ES3.KeyExists("TransitionScene") && ES3.Load<bool>("TransitionScene") == true)
             StartCoroutine(WaitForLoad(0.5f));
     }
 
     private void Update()
     {
-        if(_isAutoSave)
+        if (_isAutoSave)
         {
             _timer += Time.deltaTime;
 
@@ -47,6 +45,7 @@ public class SaveGame : MonoBehaviour
     {
         //_loadPanel.gameObject.SetActive(true);
         OnLoadData?.Invoke();
+        ES3.Save("TransitionScene", false);
         //_loadPanel.Load(1, _loadPanel.Deactivate);
     }
 

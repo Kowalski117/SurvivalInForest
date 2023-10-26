@@ -95,6 +95,10 @@ public class LoadPanel : MonoBehaviour
         {
             _resumeButton.gameObject.SetActive(false);
             _canvasGroup.blocksRaycasts = false;
+
+            if (_playerInputHandler != null)
+                _playerInputHandler.PlayerHealth.SetActiveCollider(false);
+
             ES3.Save("LastSceneIndex", SceneManager.GetActiveScene().buildIndex);
             ES3.Save("NextSceneIndex", indexScene);
         }
@@ -166,4 +170,3 @@ public class LoadPanel : MonoBehaviour
         _textHint.text = _screenSettings.HintTexts[_randomIndex];
     }
 }
-

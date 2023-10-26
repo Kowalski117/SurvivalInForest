@@ -25,6 +25,7 @@ public class TransitionHandlerBetweenScenes : MonoBehaviour
         _transitionWindow.ToggleScreen();
         _saveGame.Save();
         _loadPanel.gameObject.SetActive(true);
+        ES3.Save("TransitionScene", true);
         _loadPanel.Load(1, () => SceneManager.LoadScene(_transitionSceneIndex), _transitionSceneIndex);
     }
 
@@ -35,7 +36,7 @@ public class TransitionHandlerBetweenScenes : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out PlayerHealth playerHealth))
+        if (other.TryGetComponent(out PlayerHealth playerHealth))
         {
             _transitionWindow.ToggleScreen();
             _transitionWindow.SetNameScene(_loadPanel.GetNameSettingsScreen(_transitionSceneIndex));

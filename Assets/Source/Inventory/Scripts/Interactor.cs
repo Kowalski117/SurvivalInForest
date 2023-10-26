@@ -44,6 +44,7 @@ public class Interactor : Raycast
 
     private void Start()
     {
+        Save();
         //_sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
     }
 
@@ -243,7 +244,6 @@ public class Interactor : Raycast
                 if (SceneManager.GetActiveScene().buildIndex == sleepPosition.SceneIndex)
                 {
                     _sleepPointSaveData = new SleepPointSaveData(sleepPosition.Position, sleepPosition.Rotation);
-                    Debug.Log("fdsfds");
                 }
             }
         }

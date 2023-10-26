@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
@@ -99,8 +99,7 @@ public class SpawnResource : MonoBehaviour
     {
         if (_isSpawning)
         {
-            PlayerPrefs.SetFloat(_uniqueID.Id + "Time", PlayerPrefs.GetFloat("GameTime—ounter") + _spawnTime);
-            Debug.Log(PlayerPrefs.GetFloat("GameTime—ounter") + _spawnTime);
+            PlayerPrefs.SetFloat(_uniqueID.Id + "Time", PlayerPrefs.GetFloat("GameTime√ëounter") + _elapsedTime);
             PlayerPrefs.Save();
         }
     }
@@ -110,7 +109,7 @@ public class SpawnResource : MonoBehaviour
         if (PlayerPrefs.HasKey(_uniqueID.Id + "Time"))
         {
             float savedTime = PlayerPrefs.GetFloat(_uniqueID.Id + "Time");
-            float gameTime = PlayerPrefs.GetFloat("GameTime—ounter");
+            float gameTime = PlayerPrefs.GetFloat("GameTime√ëounter");
 
             if (savedTime <= gameTime)
             {
@@ -119,7 +118,6 @@ public class SpawnResource : MonoBehaviour
             else
             {
                 _elapsedTime = savedTime - gameTime;
-                Debug.Log(gameObject.name);
                 ResourceDeath();
                 ResourceDisappeared();
             }
