@@ -99,8 +99,7 @@ public class SpawnResource : MonoBehaviour
     {
         if (_isSpawning)
         {
-            PlayerPrefs.SetFloat(_uniqueID.Id + "Time", PlayerPrefs.GetFloat("GameTime—ounter") + _spawnTime);
-            Debug.Log(PlayerPrefs.GetFloat("GameTime—ounter") + _spawnTime);
+            PlayerPrefs.SetFloat(_uniqueID.Id + "Time", PlayerPrefs.GetFloat("GameTime—ounter") + _elapsedTime);
             PlayerPrefs.Save();
         }
     }
@@ -119,7 +118,6 @@ public class SpawnResource : MonoBehaviour
             else
             {
                 _elapsedTime = savedTime - gameTime;
-                Debug.Log(gameObject.name);
                 ResourceDeath();
                 ResourceDisappeared();
             }
