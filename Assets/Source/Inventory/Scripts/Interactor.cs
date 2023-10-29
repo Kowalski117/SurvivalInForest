@@ -140,7 +140,7 @@ public class Interactor : Raycast
                 _inventoryOperator.InstantiateItem(_currentItemPickUp.ItemData, _currentItemPickUp.ItemData.Durability);
                 _isInventoryFull = true;
             }
-            _currentItemPickUp.PicUp();
+            _currentItemPickUp.PickUp();
             _currentItemPickUp = null;
         }
         else if (_currentObjectPickUp != null)

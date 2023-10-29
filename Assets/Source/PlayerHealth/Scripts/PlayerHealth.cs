@@ -1,4 +1,6 @@
+using System.Collections;
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -19,13 +21,9 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     private bool _isRestoringHealth;
     private bool _canRestoreHealth = true;
     private bool _isDied = false;
+    private bool _isRespawned = false;
     private Tween _positionTween;
     private Tween _rotateTween;
-    private float _delay = 1f;
-    private float _offsetY = 0.5f;
-    private int _divisible = 30;
-    private int _multiplier = 100;
-    private float _cornerOffsetZ = 90;
 
     public event UnityAction<float> OnHealthChanged;
     public event UnityAction OnDamageDone;
@@ -34,6 +32,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public event UnityAction OnRevived;
 
     public bool IsDied => _isDied;
+    public bool IsRespawned => _isRespawned;
     public float HealthPercent => CurrentValue / MaxValue;
     public float MaxHealth => MaxValue;
     public ProtectionValue ProtectionValue => _protectionValue;
@@ -58,12 +57,12 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void LowerHealth(float value)
     {
-        if(CurrentValue > 0)
+        if (CurrentValue > 0)
         {
-            if(value >= 0) 
+            if (value >= 0)
             {
                 CurrentValue -= value;
-                OnDamageDone?.Invoke();
+
                 OnHealthChanged?.Invoke(HealthPercent);
 
                 if (CurrentValue <= 0)
@@ -80,6 +79,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public void LowerHealthDamage(float value)
     {
         LowerHealth(value - _protectionValue.Protection);
+        OnDamageDone?.Invoke();
     }
 
     public void RestoringHealth()
@@ -120,7 +120,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         OnHealthChanged?.Invoke(HealthPercent);
     }
 
-    public void TakeDamage(float damage,float overTimeDamage)
+    public void TakeDamage(float damage, float overTimeDamage)
     {
         LowerHealthDamage(damage);
     }
@@ -129,8 +129,9 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         OnDied?.Invoke();
         _isDied = true;
-        _rotateTween = _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, _cornerOffsetZ), _delay);
-        _positionTween = _cameraRoot.DOLocalMoveY(_offsetY, _delay);
+        _rotateTween =
+            _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
+        _positionTween = _cameraRoot.DOLocalMoveY(0.5f, 1f);
         CurrentValue = 0;
         _playerInputHandler.FirstPersonController.enabled = false;
         _playerInputHandler.ToggleInventoryPanels(false);
@@ -142,6 +143,9 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void Reborn()
     {
+        _isRespawned = true;
+        StartCoroutine(DisableRespawn());
+        
         _rotateTween.Kill();
         _positionTween.Kill();
 
@@ -155,7 +159,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         _playerInputHandler.FirstPersonController.enabled = true;
         _playerInputHandler.ToggleInventoryPanels(true);
         SetActiveCollider(true);
-        SetValue(MaxValue * _divisible / _multiplier);
+        SetValue(MaxValue * 30 / 100);
 
         OnHealthChanged?.Invoke(HealthPercent);
     }
@@ -174,20 +178,25 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         PlayerSaveData playerSaveData = new PlayerSaveData(transform.position, transform.rotation);
 
-        ES3.Save(SaveLoadConstants.SceneIndex, SceneManager.GetActiveScene().buildIndex);
-        ES3.Save(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex, playerSaveData);
+        ES3.Save("SceneIndex", SceneManager.GetActiveScene().buildIndex);
+        ES3.Save("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex, playerSaveData);
     }
 
     private void Load()
     {
-        if (ES3.KeyExists(SaveLoadConstants.LastSceneIndex)) 
+        _isRespawned = true;
+        StartCoroutine(DisableRespawn());
+            
+        if (ES3.KeyExists("LastSceneIndex"))
         {
-            int lastSceneIndex = ES3.Load<int>(SaveLoadConstants.LastSceneIndex);
-            int nextSceneIndex = ES3.Load<int>(SaveLoadConstants.NextSceneIndex);
+            int lastSceneIndex = ES3.Load<int>("LastSceneIndex");
+            int nextSceneIndex = ES3.Load<int>("NextSceneIndex");
 
-            if (ES3.KeyExists(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex) &&  _isTransitionLastPosition || lastSceneIndex == 0)
+            if (ES3.KeyExists("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex) &&
+                _isTransitionLastPosition || lastSceneIndex == 0)
             {
-                PlayerSaveData playerSaveData = ES3.Load<PlayerSaveData>(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex);
+                PlayerSaveData playerSaveData =
+                    ES3.Load<PlayerSaveData>("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex);
                 transform.position = playerSaveData.Position;
                 transform.rotation = playerSaveData.Rotation;
                 return;
@@ -205,6 +214,13 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
                 }
             }
         }
+    }
+
+    IEnumerator DisableRespawn()
+    {
+        float secondWait = 1f;
+        yield return new WaitForSeconds(secondWait);
+        _isRespawned = false;
     }
 
     [System.Serializable]

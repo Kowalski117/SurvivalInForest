@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2276745112298898950}
-  - component: {fileID: 8851228994346149607}
+  - component: {fileID: 6993867031206007563}
   - component: {fileID: 3102666152373042882}
   - component: {fileID: 2606470441282626173}
   - component: {fileID: 806562253028577717}
@@ -37,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8851228994346149607
+--- !u!114 &6993867031206007563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,12 +46,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2276745112298898951}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8ea87d14e232a4db1d392903111bff, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b132ca04cf15434fa480f9e53a24a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTime: 500
+  _spawnTime: 1800
   _scaleTime: 3
   _remainder: {fileID: 3619236931086325760}
+  _brokenStone: {fileID: 4950090947848154378, guid: 66bccf846b8f8554984bce0dc5419254, type: 3}
 --- !u!208 &3102666152373042882
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -94,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: def8c399-8013-46e5-886e-4f18cc1533c2
+  _id: 7abe0e8c-444f-48b3-a58e-fe316b4a3e33
 --- !u!1 &2277968886114007726
 GameObject:
   m_ObjectHideFlags: 0

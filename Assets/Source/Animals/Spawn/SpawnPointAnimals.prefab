@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3543332124931949250}
   - component: {fileID: 3543332124931949251}
+  - component: {fileID: 4246899384192912987}
   m_Layer: 0
   m_Name: SpawnPointAnimals
   m_TagString: Untagged
@@ -46,3 +47,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animals: 0
   _distanceToPlayer: 30
+  _timeRespawnAnimal: 5
+  _rabbit: {fileID: 8521634268307526097, guid: 86b48319aa049184db1a139c52cc978c, type: 3}
+  _deer: {fileID: 6653468203151609892, guid: 05e8917a322177945b159dde9cc84cfa, type: 3}
+  _wolf: {fileID: 14977953649279595, guid: 189beaf636122434989281a372337f33, type: 3}
+  _bear: {fileID: 7959532015545930207, guid: 327cebd86caef6e49aa60b511706dea4, type: 3}
+--- !u!136 &4246899384192912987
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3543332124931949249}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 30
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

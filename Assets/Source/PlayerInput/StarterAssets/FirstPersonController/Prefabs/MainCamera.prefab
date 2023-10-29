@@ -5895,6 +5895,9 @@ MonoBehaviour:
   _playerAnimation: {fileID: 894649501}
   _starterAssetsInputs: {fileID: 0}
   _timeHandler: {fileID: 0}
+  _usingLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &4301349176029983706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5990,6 +5993,7 @@ MonoBehaviour:
   _liftingDelay: 0.25
   _removeItemPoint: {fileID: 1327907608905669522}
   _playerTransform: {fileID: 0}
+  _playerPositionLastScene: {fileID: 0}
 --- !u!1 &6209320042551792655
 GameObject:
   m_ObjectHideFlags: 0
@@ -7230,17 +7234,17 @@ MonoBehaviour:
   - 100
   - 100
   - 100
-  - 0
-  - 100
   - 100
   - 100
   - 100
   - 50
   - 100
+  - 50
   - 100
-  - 0
   - 100
-  - 0
+  - 100
+  - 100
+  - 100
   - 100
   - 100
   - 100

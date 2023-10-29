@@ -1,5 +1,6 @@
 using PixelCrushers.QuestMachine.Wrappers;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(UniqueID))]
 public class ItemPickUp : MonoBehaviour
@@ -10,6 +11,8 @@ public class ItemPickUp : MonoBehaviour
     [SerializeField] private float _durability;
     [SerializeField] private int _layerMask = 6;
 
+    public event UnityAction DestroyItem;
+    
     private Outline _outline;
     private Rigidbody _rigidbody;
     private UniqueID _uniqueID;
@@ -40,11 +43,12 @@ public class ItemPickUp : MonoBehaviour
         _durability = durability;
     }
 
-    public void PicUp()
+    public void PickUp()
     {
         _questControl.SendToMessageSystem("Find:" + _itemData.name);
 
         ES3.Save(_uniqueID.Id, _uniqueID.Id);
+        DestroyItem?.Invoke();
         Destroy(this.gameObject);
     }
 
