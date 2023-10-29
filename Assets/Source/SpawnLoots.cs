@@ -2,7 +2,7 @@
 
 public abstract class SpawnLoots : MonoBehaviour
 {
-    public static void Spawn(ItemPickUp itemPickUp, Vector3 position, Transform transform, bool isKinematic, float spawnPointUp, bool isSetParant)
+    public static ItemPickUp Spawn(ItemPickUp itemPickUp, Vector3 position, Transform transform, bool isKinematic, float spawnPointUp, bool isSetParant)
     {
         ItemPickUp current;
 
@@ -18,5 +18,6 @@ public abstract class SpawnLoots : MonoBehaviour
         current.transform.position = new Vector3(current.transform.position.x, transform.position.y + spawnPointUp, current.transform.position.z);
         current.Rigidbody.isKinematic = isKinematic;
         current.GenerateNewID();
+        return current;
     }
 }

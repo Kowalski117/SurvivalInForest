@@ -49,8 +49,8 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 275849469822272307}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -133,8 +133,8 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257624279557874521}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -217,8 +217,8 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1967700590528989107}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 5102820243132678629}
   - component: {fileID: -4665426546801057891}
   - component: {fileID: 9160839008325781066}
+  - component: {fileID: 5914729547955621450}
   m_Layer: 14
   m_Name: SM_Env_Tree_Birch_02
   m_TagString: Untagged
@@ -349,6 +350,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 5
+--- !u!114 &5914729547955621450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5592075822852266847}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 9fa1d7cd-cead-4515-bf54-eb3c4c1ebc96
 --- !u!1 &6047988158397580691
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,8 +412,8 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6047988158397580691}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -619,6 +633,7 @@ MonoBehaviour:
   - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
   - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
   - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  _selectionParticle: {fileID: 0}
   _positionLeaves: {fileID: 4561715875180001834}
   _leaves: {fileID: 2381537158360006883, guid: f34ed04d139a92a48b7979b79de3156b, type: 3}
   _isTreeHasLeaves: 1
@@ -703,7 +718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7785241839539287006, guid: cf6e0814c8cce064eb7b918d4900f649, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 126
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cf6e0814c8cce064eb7b918d4900f649, type: 3}
       propertyPath: m_Name

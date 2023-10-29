@@ -21,7 +21,6 @@ public class BrokenStone : MonoBehaviour
       child.enabled = false;
     }
     yield return new WaitForSeconds(_timeDestroy);
-    Debug.Log("tut");
     Destroy(this.gameObject);
   }
 }

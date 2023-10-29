@@ -87,7 +87,7 @@ public class SpawnResource : MonoBehaviour
         PlayerPrefs.DeleteKey(_uniqueID.Id);
     }
 
-    private void SpawnResurse()
+    private void SpawnResourse()
     {
         _remainder.SetActive(false);
         _resource.gameObject.SetActive(true);
@@ -113,7 +113,7 @@ public class SpawnResource : MonoBehaviour
 
             if (savedTime <= gameTime)
             {
-                SpawnResurse();
+                SpawnResourse();
             }
             else
             {

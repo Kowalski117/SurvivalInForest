@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 383126181761843000}
   - component: {fileID: -2903410161505056084}
   - component: {fileID: 8549927968174032561}
+  - component: {fileID: 1514748340342460012}
   m_Layer: 14
   m_Name: SM_Env_Tree_Birch_01
   m_TagString: Untagged
@@ -97,6 +98,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 5
+--- !u!114 &1514748340342460012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016392496237815170}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 
 --- !u!1 &1034176041135172949
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +465,7 @@ MonoBehaviour:
   - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
   - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
   - {fileID: 3379290452246781424, guid: bf148d5909d175645aec481f68d70d64, type: 3}
+  _selectionParticle: {fileID: 0}
   _positionLeaves: {fileID: 4883572723727704701}
   _leaves: {fileID: 2381537158360006883, guid: f34ed04d139a92a48b7979b79de3156b, type: 3}
   _isTreeHasLeaves: 1
@@ -703,7 +718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -948652362909291789, guid: 5b06689237d121f4895d30164ec8243e, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 126
       objectReference: {fileID: 0}
     - target: {fileID: -851998361458488358, guid: 5b06689237d121f4895d30164ec8243e, type: 3}
       propertyPath: m_LocalRotation.w
