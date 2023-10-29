@@ -64,7 +64,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
                 CurrentValue -= value;
 
                 OnHealthChanged?.Invoke(HealthPercent);
-
+                OnDamageDone?.Invoke();
                 if (CurrentValue <= 0)
                 {
                     Die();
@@ -79,7 +79,6 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public void LowerHealthDamage(float value)
     {
         LowerHealth(value - _protectionValue.Protection);
-        OnDamageDone?.Invoke();
     }
 
     public void RestoringHealth()

@@ -97,6 +97,7 @@
           <e p="Textures" t="Include" />
         </e>
         <e p="LayerCullingDistances.cs" t="Include" />
+        <e p="Materials" t="Include" />
         <e p="ModelsAndUI" t="Include">
           <e p="Blink" t="Include">
             <e p="Art" t="Include">
@@ -5253,6 +5254,13 @@
               <e p="ProtectionValueView.cs" t="Include" />
             </e>
           </e>
+          <e p="Constants" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="GameConstants.cs" t="Include" />
+              <e p="PlayerAnimationConstants.cs" t="Include" />
+              <e p="SaveLoadConstants.cs" t="Include" />
+            </e>
+          </e>
           <e p="CraftingSystem" t="Include">
             <e p="CraftingCategory" t="Include" />
             <e p="CraftRecipe" t="Include">
@@ -5501,6 +5509,7 @@
             </e>
           </e>
           <e p="NPS" t="Include">
+            <e p="Animation" t="Include" />
             <e p="Prefabs" t="Include" />
           </e>
           <e p="PlayerAnimation" t="Include">
@@ -5647,11 +5656,8 @@
             </e>
             <e p="ReadOnlyAttribute.cs" t="Include" />
             <e p="SaveBuildingHandler.cs" t="Include" />
-            <e p="SaveData.cs" t="Include" />
-            <e p="SaveGameHandler.cs" t="Include" />
             <e p="SaveHandler.cs" t="Include" />
             <e p="SaveItemHandler.cs" t="Include" />
-            <e p="SaveLoad.cs" t="Include" />
             <e p="SerializableDictionary.cs" t="Include" />
             <e p="UniqueID.cs" t="Include" />
           </e>
@@ -5672,7 +5678,6 @@
             <e p="Scripts" t="Include">
               <e p="PauseScreen.cs" t="Include" />
               <e p="ScreenUI.cs" t="Include" />
-              <e p="ScreenUIHandler.cs" t="Include" />
             </e>
             <e p="ShopScreen" t="Include">
               <e p="Prefabs" t="Include" />
