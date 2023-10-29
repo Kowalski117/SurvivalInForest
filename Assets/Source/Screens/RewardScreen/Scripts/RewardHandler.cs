@@ -21,15 +21,15 @@ public class RewardHandler : MonoBehaviour
 
     private int _currentStreak
     {
-        get => PlayerPrefs.GetInt("currentStreak", 0);
-        set => PlayerPrefs.SetInt("currentStreak", value);
+        get => PlayerPrefs.GetInt(SaveLoadConstants.CurrentStreak, 0);
+        set => PlayerPrefs.SetInt(SaveLoadConstants.CurrentStreak, value);
     }
 
     private DateTime? _lastClaimTime
     {
         get
         {
-            string data = PlayerPrefs.GetString("lastClaimTime", null);
+            string data = PlayerPrefs.GetString(SaveLoadConstants.LastClaimTime, null);
 
             if (!string.IsNullOrEmpty(data))
                 return DateTime.Parse(data);
@@ -39,9 +39,9 @@ public class RewardHandler : MonoBehaviour
         set
         {
             if (value != null)
-                PlayerPrefs.SetString("lastClaimTime", value.ToString());
+                PlayerPrefs.SetString(SaveLoadConstants.LastClaimTime, value.ToString());
             else
-                PlayerPrefs.DeleteKey("lastClaimTime");
+                PlayerPrefs.DeleteKey(SaveLoadConstants.LastClaimTime);
         }
     }
 
@@ -127,7 +127,6 @@ public class RewardHandler : MonoBehaviour
             }
         }
     }
-
 
     private IEnumerator RewardsStateUpdate()
     {

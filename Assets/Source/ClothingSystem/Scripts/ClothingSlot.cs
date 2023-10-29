@@ -8,9 +8,6 @@ public class ClothingSlot : MonoBehaviour
     private InventorySlotUI _inventorySlotUI;
     private ClothesItemData _clothesItemData;
 
-    private float _timer = 3f;
-    private float _timerTime = 0f;
-
     private void Awake()
     {
         _inventorySlotUI = GetComponent<InventorySlotUI>();
@@ -50,10 +47,8 @@ public class ClothingSlot : MonoBehaviour
     {
         if (inventorySlotUI.AssignedInventorySlot.ItemData != null)
         {
-            if (_inventorySlotUI.AssignedInventorySlot.ItemData is ClothesItemData clothesItemData)
-            {
-                _clothesItemData = clothesItemData;
-            }
+            if (_inventorySlotUI.AssignedInventorySlot.ItemData is ClothesItemData clothesItemData)          
+                _clothesItemData = clothesItemData; 
         }
         else
         {
@@ -64,8 +59,7 @@ public class ClothingSlot : MonoBehaviour
     private void DeselectSlot()
     {
         if (_inventorySlotUI.AssignedInventorySlot.Durability <= 0)
-        {
             _inventorySlotUI.TurnOffHighlight();
-        }
+        
     }
 }

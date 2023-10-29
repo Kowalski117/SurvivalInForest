@@ -1,0 +1,24 @@
+public class SaveLoadConstants
+{
+    public const string StartLastSaveScene = "StartLastSaveScene";
+    public const string TransitionScene = "TransitionScene";
+    public const string LastSceneIndex = "LastSceneIndex";
+    public const string NextSceneIndex = "NextSceneIndex";
+    public const string SceneIndex = "SceneIndex";
+
+    public const string ResourceRevivalTime = "ResourceRevivalTime";
+    public const string GameTimeCounter = "GameTimeCounter";
+
+    public const string PlayerSaveData = "PlayerSaveData";
+    public const string SpawnPosition = "SpawnPosition";
+    public const string GardenBedSaveData = "GardenBed";
+    public const string IdsBuildings = "IdsBuildings";
+    public const string FireSaveData = "Fire";
+
+    public const string CurrentStreak = "CurrentStreak";
+    public const string LastClaimTime = "LastClaimTime";
+
+    public const string Hunger = "Hunger";
+    public const string Thirst = "Thirst";
+    public const string Sleep = "Sleep";
+}

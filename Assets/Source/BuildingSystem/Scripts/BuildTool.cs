@@ -172,7 +172,6 @@ public class BuildTool : MonoBehaviour
             {
                 _spawnBuilding.transform.position = hitPoint;
             }
-
         }
     }
 
@@ -252,7 +251,7 @@ public class BuildTool : MonoBehaviour
         _isMovedBuild = true;
     }
 
-    public virtual void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp, int count)
+    private void SpawnItem(ItemPickUp itemPickUp, float radius, float spawnPointUp, int count)
     {
         if (_deleteModeEnabled && _targetBuilding != null)
         {

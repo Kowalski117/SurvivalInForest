@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Xml;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,7 +10,6 @@ public class Fire : MonoBehaviour
     [SerializeField] private bool _isRemoveAfterFire = false;
     [SerializeField] private InventoryItemData[] _campfireItems;
 
-    private string _fireSaveData = "Fire";
     private float _workingHours = 2f;
     private float _maxHours = 5f;
     private Building _building;
@@ -97,7 +95,6 @@ public class Fire : MonoBehaviour
             OnCompletionTimeUpdate?.Invoke(_currentTime);
         }
 
-
         if (_currentTime == DateTime.MinValue)
         {
             _fireParticle.gameObject.SetActive(false);
@@ -164,14 +161,14 @@ public class Fire : MonoBehaviour
     private void Save()
     {
         FireSaveData fireSaveData = new FireSaveData(_currentTime);
-        ES3.Save(_uniqueId.Id + _fireSaveData, fireSaveData);
+        ES3.Save(_uniqueId.Id + SaveLoadConstants.FireSaveData, fireSaveData);
     }
 
     private void Load()
     {
-        if (ES3.KeyExists(_uniqueId.Id + _fireSaveData))
+        if (ES3.KeyExists(_uniqueId.Id + SaveLoadConstants.FireSaveData))
         {
-            FireSaveData fireSaveData = ES3.Load<FireSaveData>(_uniqueId.Id + _fireSaveData);
+            FireSaveData fireSaveData = ES3.Load<FireSaveData>(_uniqueId.Id + SaveLoadConstants.FireSaveData);
             _currentTime = fireSaveData.CurrentTime;
             EnableParticle();
         }

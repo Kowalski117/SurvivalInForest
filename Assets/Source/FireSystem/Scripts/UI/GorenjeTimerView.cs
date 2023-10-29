@@ -8,7 +8,6 @@ public class GorenjeTimerView : MonoBehaviour
     [SerializeField] private TMP_Text _timerText;
     [SerializeField] private bool _isRotate = false;
 
-    private string _time = "HH:mm";
     private float _minTotalMilliseconds = 10000;
     private Camera _mainCamera;
 
@@ -41,7 +40,7 @@ public class GorenjeTimerView : MonoBehaviour
         if(!_timerText.gameObject.activeInHierarchy)
             _timerText.gameObject.SetActive(true);
 
-        _timerText.text = dateTime.ToString(_time);
+        _timerText.text = dateTime.ToString(GameConstants.HHmm);
 
         if (dateTime.TimeOfDay.TotalMilliseconds < _minTotalMilliseconds)
         {

@@ -16,7 +16,7 @@ public class SaveGame : MonoBehaviour
 
     private void Start()
     {
-        if (ES3.KeyExists("StartLastSaveScene") && ES3.Load<bool>("StartLastSaveScene") == true || ES3.KeyExists("TransitionScene") && ES3.Load<bool>("TransitionScene") == true)
+        if (ES3.KeyExists(SaveLoadConstants.StartLastSaveScene) && ES3.Load<bool>(SaveLoadConstants.StartLastSaveScene) == true || ES3.KeyExists(SaveLoadConstants.TransitionScene) && ES3.Load<bool>(SaveLoadConstants.TransitionScene) == true)
             StartCoroutine(WaitForLoad(0.5f));
     }
 
@@ -36,17 +36,13 @@ public class SaveGame : MonoBehaviour
 
     public void Save()
     {
-        //_loadPanel.gameObject.SetActive(true);
         OnSaveGame?.Invoke();
-        //_loadPanel.Load(1, _loadPanel.Deactivate);
     }
 
     public void Load()
     {
-        //_loadPanel.gameObject.SetActive(true);
         OnLoadData?.Invoke();
-        ES3.Save("TransitionScene", false);
-        //_loadPanel.Load(1, _loadPanel.Deactivate);
+        ES3.Save(SaveLoadConstants.TransitionScene, false);
     }
 
     public void Delete()

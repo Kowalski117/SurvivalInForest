@@ -12,13 +12,9 @@ public class Building : MonoBehaviour
     private BuildingRecipe _buildingRecipe;
     private BoxCollider _boxCollider;
     private Rigidbody _rigidbody;
-    private Transform _colliders;
     private bool _isOverlapping;
-
     private Material[] _defoultMaterial;
-
     private bool _flaggedForDelete;
-    private BuildingSaveData _saveData;
     private UniqueID _uniqueID;
 
     public event UnityAction OnCompletedBuild;
@@ -36,7 +32,6 @@ public class Building : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _boxCollider.isTrigger = true;
         _rigidbody.isKinematic = true;
-        //_renderers = transform.GetComponentsInChildren<Renderer>();
         _defoultMaterial = new Material[_renderers.Length];
 
         if(_colliderGround)

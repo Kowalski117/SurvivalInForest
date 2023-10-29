@@ -99,8 +99,8 @@ public class LoadPanel : MonoBehaviour
             if (_playerInputHandler != null)
                 _playerInputHandler.PlayerHealth.SetActiveCollider(false);
 
-            ES3.Save("LastSceneIndex", SceneManager.GetActiveScene().buildIndex);
-            ES3.Save("NextSceneIndex", indexScene);
+            ES3.Save(SaveLoadConstants.LastSceneIndex, SceneManager.GetActiveScene().buildIndex);
+            ES3.Save(SaveLoadConstants.NextSceneIndex, indexScene);
         }
 
         _loadBarImage.fillAmount = 0;

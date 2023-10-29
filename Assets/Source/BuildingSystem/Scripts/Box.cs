@@ -7,7 +7,7 @@ public class Box : MonoBehaviour, IDamagable
     [SerializeField] private float _maxEndurance;
     [SerializeField] private GameObject _object;
     [SerializeField] private BrokenObject _brokenObject;
-
+    [SerializeField] private Transform _pointForce;
 
     private float _currentEndurance;
     private BrokenObject _currentBrokenObject;
@@ -36,15 +36,19 @@ public class Box : MonoBehaviour, IDamagable
     private void OnEnable()
     {
         SaveGame.OnSaveGame += Save;
+        SaveGame.OnLoadData += Load;
+
         _firstDamage = true;
         _isDead = false;
        _currentBrokenObject = Instantiate(_brokenObject, _object.transform.position, Quaternion.identity, gameObject.transform);
        _currentBrokenObject.gameObject.SetActive(false);
+        _currentBrokenObject.SetPointForce(_pointForce);
     }
 
     private void OnDisable()
     {
         SaveGame.OnSaveGame -= Save;
+        SaveGame.OnLoadData -= Load;
     }
 
     public void Die()
@@ -53,6 +57,7 @@ public class Box : MonoBehaviour, IDamagable
         _currentEndurance = 0;
         _collider.enabled = false;
         _isDead = true;
+
         _currentBrokenObject.DropFragment(_brokenObject.CountObjectFragments,_isDead);
     }
 
@@ -84,9 +89,9 @@ public class Box : MonoBehaviour, IDamagable
         {
             BrokenObjectSaveData brokenObjectSaveData = ES3.Load<BrokenObjectSaveData>(_uniqueID.Id);
             _currentEndurance = brokenObjectSaveData.CurrentEndurance;
-            
+
             if (_currentEndurance <= 0)
-                Die();
+                Destroy(gameObject);
         }
     }
 }

@@ -17,6 +17,8 @@ public class DelayWindow : MonoBehaviour
     private DateTime _time;
     private Coroutine _coroutine;
     private bool _isLoading = false;
+    private float _delay = 0.5f;
+    private float _maximumDivisor = 3;
 
     public event UnityAction OnLoadingComplete;
 
@@ -61,13 +63,13 @@ public class DelayWindow : MonoBehaviour
 
         _loadingBar.fillAmount = 1f;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_delay);
 
         _isLoading = false;
         _timeHandler.AddTimeInHours(skipTime);
-        _survivalHandler.Sleep.LowerValueInFours(skipTime / 3);
-        _survivalHandler.Hunger.LowerValueInFours(skipTime / 3);
-        _survivalHandler.Thirst.LowerValueInFours(skipTime / 3);
+        _survivalHandler.Sleep.LowerValueInFours(skipTime / _maximumDivisor);
+        _survivalHandler.Hunger.LowerValueInFours(skipTime / _maximumDivisor);
+        _survivalHandler.Thirst.LowerValueInFours(skipTime / _maximumDivisor);
         _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);
@@ -83,11 +85,11 @@ public class DelayWindow : MonoBehaviour
         switch (actionType)
         {
             case ActionType.CraftItem:
-                return $"Крафтится {name}, затраченное время - {_time.ToString("HH:mm")}";
+                return $"Крафтится {name}, затраченное время - {_time.ToString(GameConstants.HHmm)}";
             case ActionType.CraftBuild:
-                return $"Строится {name}, затраченное время - {_time.ToString("HH:mm")}";
+                return $"Строится {name}, затраченное время - {_time.ToString(GameConstants.HHmm)}";
             case ActionType.Sleep:
-                return $"Вы спите, затраченное время - {_time.ToString("HH:mm")}";
+                return $"Вы спите, затраченное время - {_time.ToString(GameConstants.HHmm)}";
             default:
                 return string.Empty;
         }

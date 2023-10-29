@@ -22,6 +22,8 @@ public class SurvivalHandler : MonoBehaviour
     private Coroutine _eatCoroutine;
     private bool _isEating = false;
     private bool _isEnable = false;
+    private float _maximumDivisor = 30;
+    private int _percent = 100;
 
     public PlayerHealth PlayerHealth => _health;
     public SurvivalAttribute Hunger => _hunger;
@@ -135,23 +137,23 @@ public class SurvivalHandler : MonoBehaviour
 
     private void Reborn()
     {
-        _hunger.SetValue(_hunger.MaxValueInSeconds * 30 / 100);
-        _thirst.SetValue(_thirst.MaxValueInSeconds * 30 / 100);
-        _sleep.SetValue(_sleep.MaxValueInSeconds * 30 / 100);
+        _hunger.SetValue(_hunger.MaxValueInSeconds * _maximumDivisor / _percent);
+        _thirst.SetValue(_thirst.MaxValueInSeconds * _maximumDivisor / _percent);
+        _sleep.SetValue(_sleep.MaxValueInSeconds * _maximumDivisor / _percent);
     }
 
     private void SaveSurvivalAttributes()
     {
-        ES3.Save("Hunger", _hunger.CurrentAttribute);
-        ES3.Save("Thirst", _thirst.CurrentAttribute);
-        ES3.Save("Sleep", _sleep.CurrentAttribute);
+        ES3.Save(SaveLoadConstants.Hunger, _hunger.CurrentAttribute);
+        ES3.Save(SaveLoadConstants.Thirst, _thirst.CurrentAttribute);
+        ES3.Save(SaveLoadConstants.Sleep, _sleep.CurrentAttribute);
     }
 
     private void LoadSurvivalAttributes()
     {
-        _hunger.SetValue(ES3.Load<float>("Hunger", _hunger.MaxValueInSeconds));
-        _thirst.SetValue(ES3.Load<float>("Thirst", _thirst.MaxValueInSeconds));
-        _sleep.SetValue(ES3.Load<float>("Sleep", _sleep.MaxValueInSeconds));
+        _hunger.SetValue(ES3.Load<float>(SaveLoadConstants.Hunger, _hunger.MaxValueInSeconds));
+        _thirst.SetValue(ES3.Load<float>(SaveLoadConstants.Thirst, _thirst.MaxValueInSeconds));
+        _sleep.SetValue(ES3.Load<float>(SaveLoadConstants.Sleep, _sleep.MaxValueInSeconds));
     }
 
     private void StartCoroutine(float duration)

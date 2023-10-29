@@ -32,9 +32,7 @@ public class BuildHandler : MonoBehaviour
             _playerInputHandler.InventoryPlayerInput.ToggleInventory();
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleBuildPlayerInput(true);
-            //_playerInputHandler.ToggleInventoryInput(false);
             _playerInputHandler.ToggleInteractionInput(false);
-            //_buildTool.SetDeleteModeEnabled(false);
         }
     }
 
@@ -48,7 +46,6 @@ public class BuildHandler : MonoBehaviour
         if (_isTurnOffWindows)
         {
             _playerInputHandler.ToggleBuildPlayerInput(false);
-            //_playerInputHandler.ToggleInventoryInput(true);
             _playerInputHandler.ToggleInteractionInput(true);
             _isTurnOffWindows = false;
         }

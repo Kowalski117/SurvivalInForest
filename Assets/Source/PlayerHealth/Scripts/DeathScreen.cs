@@ -11,6 +11,8 @@ public class DeathScreen : MonoBehaviour
     [SerializeField] private Button _rebirthButtonForAdvertising;
 
     private bool _isDeathScreenOpen;
+    private int _divisible = 3;
+    private int _multiplier = 2;
 
     private void OnEnable()
     {
@@ -35,18 +37,14 @@ public class DeathScreen : MonoBehaviour
         _isDeathScreenOpen = !_isDeathScreenOpen;
 
         if (_isDeathScreenOpen)
-        {
             _screen.gameObject.SetActive(true);
-        }
         else
-        {
             _screen.gameObject.SetActive(false);
-        }
     }
 
     private void RebirthButtonClick()
     {
-        int countSlot = _inventoryHolder.InventorySystem.GetAllFilledSlots().Count / 3 * 2;
+        int countSlot = _inventoryHolder.InventorySystem.GetAllFilledSlots().Count / _divisible * _multiplier;
 
         _inventoryHolder.DeletePartOfInventory(countSlot);
 

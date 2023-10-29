@@ -1,7 +1,6 @@
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.ParticleSystem;
 
 public class PlayerInteraction : Raycast
 {
@@ -25,6 +24,7 @@ public class PlayerInteraction : Raycast
     private Box _currentBrokenObject;
     private InventorySlot _currentInventorySlot;
 
+    private bool _isActiveGoal = false;
     private float _maxDelayFire = 10f;
     private float _nextFireDelay;
     private bool _isEnable;
@@ -71,16 +71,15 @@ public class PlayerInteraction : Raycast
             {
                 if (_nextFireDelay > _currentWeapon.Speed)
                 {
-                    _playerAnimation.Hit(_currentAnim);
+                    _playerAnimation.Hit(_isActiveGoal);
                     _nextFireDelay = 0;
-
                 }
             }
             else if (_currentTool != null && _currentWeapon == null)
             {
                 if (_nextFireDelay > _currentTool.Speed)
                 {
-                    _playerAnimation.Hit(_currentResoure);
+                    _playerAnimation.Hit(_isActiveGoal);
                     _nextFireDelay = 0;
                 }
             }
@@ -114,7 +113,8 @@ public class PlayerInteraction : Raycast
                 }
             }
 
-
+            if (_currentAnim || _currentResoure || _currentBrokenObject)
+                _isActiveGoal = true;
         }
         else
         {
@@ -124,6 +124,7 @@ public class PlayerInteraction : Raycast
                 _currentResoure = null;
                 _currentBrokenObject = null;
                 _selectionParticle = null;
+                _isActiveGoal = false;
                 OnTurnOffBarValue?.Invoke();
             }
         }
@@ -226,11 +227,15 @@ public class PlayerInteraction : Raycast
 
     public void Hit()
     {
-        if (_currentTool != null)
+        if (_currentWeapon != null)
         {
-            _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
-            TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
-            TakeDamageBrokenObject(_currentWeapon.Damage, 0);
+            if(_currentWeapon.MuzzleSound != null)
+                _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
+
+            if(_currentAnim != null)
+                TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
+            else if(_currentBrokenObject != null)
+                TakeDamageBrokenObject(_currentWeapon.Damage, 0);
         }
     }
 
@@ -241,9 +246,12 @@ public class PlayerInteraction : Raycast
             if (_selectionParticle != null)
                 Instantiate(_selectionParticle, _particlePosition, Quaternion.identity);
 
-            TakeDamageResoure(_currentTool.DamageResources, 0);
-            TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
-            TakeDamageBrokenObject(_currentTool.DamageResources, 0);
+            if (_currentResoure != null)
+                TakeDamageResoure(_currentTool.DamageResources, 0);
+            else if (_currentAnim != null)
+                TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
+            else if (_currentBrokenObject != null)
+                TakeDamageBrokenObject(_currentTool.DamageResources, 0);
         }
     }
 
@@ -257,7 +265,6 @@ public class PlayerInteraction : Raycast
         if (animals != null)
         {
             animals.TakeDamage(damage, overTimeDamage);
-            UpdateDurabilityItem(_currentInventorySlot);
 
             OnValueChanged?.Invoke(animals.Health);
 
@@ -266,6 +273,8 @@ public class PlayerInteraction : Raycast
                 OnValueChanged?.Invoke(animals.Health);
                 animals = null;
             }
+
+            UpdateDurabilityItem(_currentInventorySlot);
         }
     }
 
@@ -283,7 +292,6 @@ public class PlayerInteraction : Raycast
         if (_currentBrokenObject != null)
         {
             _currentBrokenObject.TakeDamage(damage, overTimeDamage);
-            UpdateDurabilityItem(_currentInventorySlot);
 
             OnValueChanged?.Invoke(_currentBrokenObject.Endurance);
 
@@ -292,12 +300,14 @@ public class PlayerInteraction : Raycast
                 OnValueChanged?.Invoke(_currentBrokenObject.Endurance);
                 _currentBrokenObject = null;
             }
+
+            UpdateDurabilityItem(_currentInventorySlot);
         }
     }
 
     private void TakeDamageResoure(float damage, float overTimeDamage)
     {
-        if(_currentResoure != null)
+        if (_currentResoure != null)
         {
             if (_currentResoure.ExtractionType == _currentTool.ToolType)
             {
@@ -322,54 +332,4 @@ public class PlayerInteraction : Raycast
             }
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    _currentAnim = other.GetComponentInParent<Animals>();
-
-    //    if (_currentAnim != null)
-    //    {
-    //        OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
-    //    }
-
-    //    if (other.TryGetComponent(out Resource resource))
-    //    {
-    //        if (resource != null)
-    //        {
-    //            _currentResoure = resource;
-    //            OnEnableBarValue?.Invoke(_currentResoure.MaxHealth, _currentResoure.Health);
-    //        }
-
-    //    }
-
-    //    if (other.TryGetComponent(out BrokenObject brokenObject))
-    //    {
-    //        if (brokenObject != null)
-    //        {
-    //            _currentBrokenObject = brokenObject;
-    //            OnEnableBarValue?.Invoke(_currentBrokenObject.MaxEndurance, _currentBrokenObject.Endurance);
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.TryGetComponent(out Resource resource))
-    //    {
-    //        _currentResoure = null;
-    //        OnTurnOffBarValue?.Invoke();
-    //    }
-
-    //    if (other.TryGetComponent(out Animals animals))
-    //    {
-    //        _currentAnim = null;
-    //        OnTurnOffBarValue?.Invoke();
-    //    }
-
-    //    if (other.TryGetComponent(out BrokenObject brokenObject))
-    //    {
-    //        _currentBrokenObject = null;
-    //        OnTurnOffBarValue?.Invoke();
-    //    }
-    //}
 }

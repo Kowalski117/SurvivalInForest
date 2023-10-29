@@ -20,10 +20,6 @@ public class ChestInventory : InventoryHolder, IInteractable
         _uniqueId = GetComponentInParent<UniqueID>();
         base.Awake();
         _distanceHandler = GetComponentInChildren<DistanceHandler>();
-    }
-
-    private void Start()
-    {
         LoadInventory();
     }
 

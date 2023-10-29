@@ -49,7 +49,6 @@ public class ExchangerSlotView : MonoBehaviour
                     _inventoryHolder.AddToInventory(itemToReceive.ItemData, itemToReceive.Amount * _amount, itemToReceive.ItemData.Durability);
                 }
 
-                //gameObject.SetActive(false);
                 _amount = _index;
                 break;
             }

@@ -81,9 +81,6 @@ public class HotbarDisplay : StaticInventoryDisplay
     {
         if (_isActive)
         {
-            if (Slots[_currentIndex].AssignedInventorySlot.ItemData != null)
-                Slots[_currentIndex].AssignedInventorySlot.ItemData.UseItem();
-
             OnItemClicked?.Invoke(Slots[_currentIndex].AssignedInventorySlot);
         }
     }

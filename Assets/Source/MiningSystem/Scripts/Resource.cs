@@ -14,7 +14,6 @@ public abstract class Resource : MonoBehaviour, IDamagable
     [SerializeField] private List<ItemPickUp> _loots;
     [SerializeField] private ParticleSystem _selectionParticle;
 
-
     protected Collider Сollider;
     protected Rigidbody Rigidbody;
 
@@ -22,6 +21,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     private float _radiusSpawnLoots = 1;
     private float _spawnLootUp = 1;
     private bool _isDead;
+    private float _divider = 2;
 
     public event Action Died;
     public event Action Disappeared;
@@ -31,7 +31,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public ToolType ExtractionType => _extractionType;
     public ParticleSystem SelectionParticle => _selectionParticle;
 
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
         Сollider = GetComponent<Collider>();
@@ -97,9 +97,9 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public virtual IEnumerator Precipice()
     {
         DiedEvent();
-        yield return new WaitForSeconds(_disappearanceTime / 2);
+        yield return new WaitForSeconds(_disappearanceTime / _divider);
         Сollider.enabled = false;
-        yield return new WaitForSeconds(_disappearanceTime / 2);
+        yield return new WaitForSeconds(_disappearanceTime / _divider);
         Rigidbody.isKinematic = true;
         gameObject.SetActive(false);
         DisappearedEvent();

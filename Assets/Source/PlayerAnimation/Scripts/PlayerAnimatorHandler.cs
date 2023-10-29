@@ -1,5 +1,4 @@
 using StarterAssets;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -13,13 +12,6 @@ public class PlayerAnimatorHandler : MonoBehaviour
     [SerializeField] private ItemAnimator _defoultItem;
 
     private ItemAnimator _handAnimator;
-
-    private string _speed = "Speed";
-    private string _pickUp = "PickUp";
-    private string _build = "Build";
-    private string[] _hits = { "Hit", "Hit1"};
-    private string _aim = "Aim";
-    private string _pullItem = "PullItem";
 
     private InventoryItemData _currentItemData;
     private InventoryItemData _previousItemData;
@@ -41,9 +33,9 @@ public class PlayerAnimatorHandler : MonoBehaviour
         if(_handAnimator != null)
         {
             if (_starterAssets.move != Vector2.zero)
-                _handAnimator.HandAnimator.SetFloat(_speed, (_firstPersonController.Speed / 10));
+                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, (_firstPersonController.Speed / 10));
             else
-                _handAnimator.HandAnimator.SetFloat(_speed, 0);
+                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, 0);
         }
     }
 
@@ -62,26 +54,26 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public void PickUp()
     {
-        _handAnimator.HandAnimator.SetTrigger(_pickUp);
+        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.PickUp);
     }
 
     public void Build()
     {
         TurnOffAnimations();
-        _handAnimator.HandAnimator.SetBool(_build, true);
+        _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Build, true);
     }
 
     public void Hit(bool isActive)
     {
         if(isActive)
-            _handAnimator.HandAnimator.SetTrigger(_hits[0]);
+            _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.Hit);
         else
-            _handAnimator.HandAnimator.SetTrigger(_hits[1]);
+            _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.HitInAir);
     }
 
     public void Aim(bool value)
     {
-        _handAnimator.HandAnimator.SetBool(_aim, value);
+        _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Aim, value);
     }
 
     public void PullItemAnimation()
@@ -99,7 +91,7 @@ public class PlayerAnimatorHandler : MonoBehaviour
             _handAnimator.ToggleLayer(false);
             _handAnimator = _defoultItem;
             _handAnimator.ToggleLayer(true);
-            _handAnimator.HandAnimator.SetTrigger(_pullItem);
+            _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.PullItem);
         }
 
         return;
@@ -121,7 +113,7 @@ public class PlayerAnimatorHandler : MonoBehaviour
                 if (_handAnimator != item)
                 {
                     _handAnimator = item;
-                    _handAnimator.HandAnimator.SetTrigger(_pullItem);
+                    _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.PullItem);
                 }
             }
             else
@@ -139,6 +131,6 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public void TurnOffAnimations()
     {
-        _handAnimator.HandAnimator.SetBool(_build, false);
+        _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Build, false);
     }
 }
