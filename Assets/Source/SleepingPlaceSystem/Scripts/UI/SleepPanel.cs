@@ -17,6 +17,7 @@ public class SleepPanel : MonoBehaviour
 
     private DateTime _sleepTime;
     private bool _isSleepWindowOpen = false;
+    private float _maximumDivisor = 3;
 
     public static UnityAction<bool> OnStoppedTime;
     public static UnityAction<float> OnSubtractTime;
@@ -44,7 +45,7 @@ public class SleepPanel : MonoBehaviour
     private void Update()
     {
         if(_sleepWindow.gameObject.activeInHierarchy)
-            _timer.text = _sleepTime.AddHours(_survivalHandler.Sleep.MissingValue).ToString("HH:mm");
+            _timer.text = _sleepTime.AddHours(_survivalHandler.Sleep.MissingValue).ToString(GameConstants.HHmm);
     }
 
     private void SleepButtonClick()
@@ -59,10 +60,10 @@ public class SleepPanel : MonoBehaviour
     private void OnLoadingComplete()
     {
         OnSubtractTime?.Invoke(_survivalHandler.Sleep.MissingValue);
-        _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue / 3);
-        _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue / 3);
-        _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue / 3);
-        _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue / 3);
+        _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
+        _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
+        _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
+        _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
 
         OnStoppedTime?.Invoke(true);
         _survivalHandler.TimeHandler.ToggleEnable(true);

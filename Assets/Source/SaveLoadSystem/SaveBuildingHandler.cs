@@ -5,20 +5,18 @@ public class SaveBuildingHandler : SaveHandler
 {
     [SerializeField] private List<BuildingRecipe> _buildingDataList;
 
-    private string _idsBuildings = "idsBuildings";
-
     private Building _currentBuilding;
 
     protected override void SaveBase()
     {
-        ES3.Save(_idsBuildings, Ids);
+        ES3.Save(SaveLoadConstants.IdsBuildings, Ids);
     }
 
     protected override void LoadBase()
     {
-        if (ES3.KeyExists(_idsBuildings)) 
+        if (ES3.KeyExists(SaveLoadConstants.IdsBuildings)) 
         {
-            Ids = ES3.Load<List<string>>(_idsBuildings);
+            Ids = ES3.Load<List<string>>(SaveLoadConstants.IdsBuildings);
 
             foreach (var buildingData in Ids)
             {

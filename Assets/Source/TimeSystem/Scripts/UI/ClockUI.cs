@@ -19,6 +19,6 @@ public class ClockUI : MonoBehaviour
 
     private void UpdateTime(DateTime dateTime)
     {
-        _currentTimeText.text = dateTime.ToString("HH:mm");
+        _currentTimeText.text = dateTime.ToString(GameConstants.HHmm);
     }
 }

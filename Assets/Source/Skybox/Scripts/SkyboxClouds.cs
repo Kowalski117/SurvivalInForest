@@ -6,7 +6,6 @@ public class SkyboxClouds : MonoBehaviour
 
     private void Update()
     {
-        // Вращаем объект по оси Y
         transform.Rotate(0, _speedRotation * Time.deltaTime, 0);
     }
 }

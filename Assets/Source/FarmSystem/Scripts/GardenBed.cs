@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using System.Xml;
 using UnityEngine;
 
 public class GardenBed : MonoBehaviour
@@ -8,7 +7,6 @@ public class GardenBed : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private SeedItemData _seedItem;
 
-    private string _gardenBedSaveData = "GardenBed";
     private ObjectPickUp _currentItem;
     private UniqueID _uniqueID;
 
@@ -40,7 +38,6 @@ public class GardenBed : MonoBehaviour
     private void OnEnable()
     {
         SaveGame.OnSaveGame += Save;
-        //_currentItem.OnPickUp += 
     }
 
     private void OnDisable()
@@ -85,14 +82,14 @@ public class GardenBed : MonoBehaviour
         else
             gardenBedSaveData = new GardenBedSaveData(0, _elapsedTime, Vector3.zero);
 
-        ES3.Save(_uniqueID.Id + _gardenBedSaveData, gardenBedSaveData);
+        ES3.Save(_uniqueID.Id + SaveLoadConstants.GardenBedSaveData, gardenBedSaveData);
     }
 
     private void Load()
     {
-        if (ES3.KeyExists(_uniqueID.Id + _gardenBedSaveData))
+        if (ES3.KeyExists(_uniqueID.Id + SaveLoadConstants.GardenBedSaveData))
         {
-            GardenBedSaveData gardenBedSaveData = ES3.Load<GardenBedSaveData>(_uniqueID.Id + _gardenBedSaveData);
+            GardenBedSaveData gardenBedSaveData = ES3.Load<GardenBedSaveData>(_uniqueID.Id + SaveLoadConstants.GardenBedSaveData);
 
             if(gardenBedSaveData.CurrentItemDataId != 0)
             {

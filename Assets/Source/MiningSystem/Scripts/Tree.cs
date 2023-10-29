@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class Tree : Resource
 {
@@ -9,10 +8,11 @@ public class Tree : Resource
     [SerializeField] private ParticleSystem _leaves;
     [SerializeField] private bool _isTreeHasLeaves;
     [SerializeField] private List<ItemPickUp> _damageLoots;
+    [SerializeField] private List<ItemPickUp> _currentDamageLoots;
 
     private float _radiusSpawn = 3;
     private float _spawnPointUp = 2;
-    [SerializeField] private List<ItemPickUp> _currentDamageLoots;
+    private float _delay = 3;
 
     public override void OnEnable()
     {
@@ -57,8 +57,8 @@ public class Tree : Resource
 
     IEnumerator DeleteLeaves(ParticleSystem leaves)
     {
-        float time = 3f;
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(_delay);
+
         if (leaves != null)
         {
             Destroy(leaves.gameObject);

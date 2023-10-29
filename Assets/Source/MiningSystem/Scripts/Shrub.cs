@@ -5,8 +5,8 @@ public class Shrub : MonoBehaviour
     [SerializeField] private ItemPickUp _item;
     [SerializeField] private int _countItems;
 
-    private const float _radiusSpawn= 0.5f;
-    private const float _spawnPointUp= 0.5f;
+    private const float _radiusSpawn = 0.5f;
+    private const float _spawnPointUp = 0.5f;
 
     private void Start()
     {

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CreativeModeWindow : MonoBehaviour
@@ -38,6 +37,7 @@ public class CreativeModeWindow : MonoBehaviour
         _playerInput.Player.CreativeMode.performed -= ctx => EnableWindow();
         _playerInput.Disable();
     }
+
     public void CreateButtons()
     {
         foreach (var item in _itemDataBase)

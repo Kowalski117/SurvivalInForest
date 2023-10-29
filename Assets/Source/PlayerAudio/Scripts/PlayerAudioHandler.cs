@@ -11,7 +11,6 @@ public class PlayerAudioHandler : MonoBehaviour
     [SerializeField] private AudioClip[] _eatingSounds;
     [SerializeField] private AudioClip[] _drinkingSounds;
 
-    private CharacterController _characterController;
     private AudioSource _audioSource;
     private AudioClip[] _footStepsOverride;
     private AudioClip _jumpSoundOverride;
@@ -20,10 +19,11 @@ public class PlayerAudioHandler : MonoBehaviour
     private bool _isFootstepPlaying = false;
     private bool _isJumping = false;
     private Coroutine _coroutine;
+    private float _longDelay = 0.5f;
+    private float _shortDelay = 0.25f;
 
     private void Awake()
     {
-        _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -43,7 +43,7 @@ public class PlayerAudioHandler : MonoBehaviour
             }
             _audioSource.PlayOneShot(_audioSource.clip);
             _isJumping = true;
-            StartCoroutine(0.5f);
+            StartCoroutine(_longDelay);
         }
     }
 
@@ -78,7 +78,7 @@ public class PlayerAudioHandler : MonoBehaviour
             }
             _audioSource.Play();
             _isFootstepPlaying = true;
-            StartCoroutine(0.5f);
+            StartCoroutine(_longDelay);
             _isJumping = true;
         }
     }
@@ -90,9 +90,9 @@ public class PlayerAudioHandler : MonoBehaviour
             _isFootstepPlaying = true;
 
             if (isSprint && !isStealth)
-                StartCoroutine(0.25f);
+                StartCoroutine(_shortDelay);
             else
-                StartCoroutine(0.5f);
+                StartCoroutine(_longDelay);
 
             if (!_isInSpecialSurface)
             {

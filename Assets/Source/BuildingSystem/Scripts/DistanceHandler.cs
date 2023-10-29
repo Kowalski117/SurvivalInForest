@@ -41,12 +41,4 @@ public class DistanceHandler : MonoBehaviour
             _playerHealth = playerHealth;
         }
     }
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
-    //    {
-    //        _playerHealth = null;
-    //    }
-    //}
 }

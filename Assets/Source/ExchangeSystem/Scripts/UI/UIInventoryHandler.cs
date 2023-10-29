@@ -1,4 +1,3 @@
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using UnityEngine;
 
 public class UIInventoryHandler : MonoBehaviour
@@ -74,7 +73,6 @@ public class UIInventoryHandler : MonoBehaviour
 
         if (_isInventoryOpen)
         {
-            //_playerInputHandler.ToggleBuildPlayerInput(false);
             _playerBackpackPanel.CanvasGroup.alpha = 1;
             _playerBackpackPanel.CanvasGroup.blocksRaycasts = true;
             _playerInputHandler.SetCursorVisible(true);
@@ -92,7 +90,6 @@ public class UIInventoryHandler : MonoBehaviour
             _playerBackpackPanel.CanvasGroup.alpha = 0;
             _playerBackpackPanel.CanvasGroup.blocksRaycasts = false;
             _playerInputHandler.SetCursorVisible(false);
-            //_playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInteractionInput(true);
             _playerInputHandler.ToggleHotbarDisplay(true);
         }

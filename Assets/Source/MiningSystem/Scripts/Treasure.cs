@@ -1,6 +1,4 @@
-using System;
 using DG.Tweening;
-using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,8 +13,9 @@ public class Treasure : Resource
     private Vector3 _lootObjectPosition;
     private Tween _tweenTransform;
     private Tween _tweenLoot;
+    private int _protected = 100;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         _lootObjectPosition = _lootObject.transform.localPosition;
@@ -35,7 +34,7 @@ public class Treasure : Resource
     public override void TakeDamage(float damage, float overTimeDamage)
     {
         base.TakeDamage(damage, overTimeDamage);
-        float damagePercentage = Health / MaxHealth * 100;
+        float damagePercentage = Health / MaxHealth * _protected;
 
         if (damagePercentage < _array[_index])
         {

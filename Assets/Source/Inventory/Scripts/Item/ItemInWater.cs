@@ -56,17 +56,6 @@ public class ItemInWater : MonoBehaviour
         }
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.TryGetComponent(out Water water))
-    //    {
-    //        if (_itemPickUp.ItemData.TypeBehaviorInWater == TypeBehaviorInWater.PopsUp)
-    //        {
-    //            ClearTween();
-    //        }
-    //    }
-    //}
-
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.collider.gameObject.layer == _groundLayer)

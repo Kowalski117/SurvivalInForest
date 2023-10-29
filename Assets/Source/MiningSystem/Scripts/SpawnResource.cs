@@ -99,18 +99,20 @@ public class SpawnResource : MonoBehaviour
     {
         if (_isSpawning)
         {
-            PlayerPrefs.SetFloat(_uniqueID.Id + "Time", PlayerPrefs.GetFloat("GameTimeÑounter") + _elapsedTime);
+            PlayerPrefs.SetFloat(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime, PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter) + _elapsedTime);
+            Debug.Log(PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter) + _elapsedTime);
             PlayerPrefs.Save();
         }
     }
 
     private void Load()
     {
-        if (PlayerPrefs.HasKey(_uniqueID.Id + "Time"))
+        if (PlayerPrefs.HasKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime))
         {
-            float savedTime = PlayerPrefs.GetFloat(_uniqueID.Id + "Time");
-            float gameTime = PlayerPrefs.GetFloat("GameTimeÑounter");
-
+            float savedTime = PlayerPrefs.GetFloat(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime);
+            float gameTime = PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter);
+            Debug.Log(PlayerPrefs.GetFloat(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime));
+            Debug.Log(PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter));
             if (savedTime <= gameTime)
             {
                 SpawnResurse();

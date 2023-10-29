@@ -4,8 +4,6 @@ public class GameTimeСounter : MonoBehaviour
 {
     private float _timeCounter;
 
-    private string _gameTime = "GameTimeСounter";
-
     private void OnEnable()
     {
         SaveGame.OnSaveGame += Save;
@@ -25,12 +23,12 @@ public class GameTimeСounter : MonoBehaviour
 
     private void Save()
     {
-        PlayerPrefs.SetFloat(_gameTime, _timeCounter);
+        PlayerPrefs.SetFloat(SaveLoadConstants.GameTimeCounter, _timeCounter);
         PlayerPrefs.Save();
     }
 
     private void Load()
     {
-        _timeCounter = PlayerPrefs.GetFloat(_gameTime);
+        _timeCounter = PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter);
     }
 }

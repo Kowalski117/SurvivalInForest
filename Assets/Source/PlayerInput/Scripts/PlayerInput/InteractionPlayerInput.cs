@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,7 +12,6 @@ public class InteractionPlayerInput : MonoBehaviour
     public event UnityAction<bool> OnAttack;
     public event UnityAction OnUse;
     public event UnityAction OnAim;
-
 
     private void Awake()
     {

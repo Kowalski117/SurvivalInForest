@@ -35,16 +35,6 @@ public class InventoryItemData : ScriptableObject
     {
         _id = id;
     }
-
-    public void UseItem()
-    {
-        
-    }
-
-    public void UpdateParametrs(TMP_Text text)
-    {
-
-    }
 }
 
 public enum ItemType

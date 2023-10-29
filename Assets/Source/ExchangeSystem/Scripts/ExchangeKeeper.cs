@@ -26,8 +26,6 @@ public class ExchangeKeeper : MonoBehaviour, IInteractable
         _distanceHandler.OnDistanceExceeded -= Interact;
     }
 
-    public void EndInteraction() { }
-
     public void Interact()
     {
         OnExchangeDisplayRequested?.Invoke(this);

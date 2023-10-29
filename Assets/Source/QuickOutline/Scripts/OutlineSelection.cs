@@ -23,7 +23,6 @@ public class OutlineSelection : Raycast
                     }
 
                     outline.OutlineWidth = _outlineWidth;
-                    //outline.enabled = true;
                     outline.OutlineColor = _outlineColor;
 
                     _previousOutline = outline;

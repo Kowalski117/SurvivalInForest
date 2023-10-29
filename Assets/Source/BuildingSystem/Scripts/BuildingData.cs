@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Building System/ Build Data", order = 51)]
+[CreateAssetMenu(menuName = "Building System / Build Data", order = 51)]
 public class BuildingData : ScriptableObject
 {
     [SerializeField] private string _displayName;
@@ -20,14 +20,6 @@ public class BuildingData : ScriptableObject
     {
         _id = id;
     }
-}
-
-public enum PartType
-{
-    Wall = 0,
-    Room = 1,
-    Corridor = 3,
-    Decoration = 4
 }
 
 #if UNITY_EDITOR

@@ -1,8 +1,5 @@
-using DG.Tweening;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static PlayerHealth;
 using UnityEngine.SceneManagement;
 
 public class Interactor : Raycast
@@ -35,7 +32,6 @@ public class Interactor : Raycast
 
     private int _addAmount = 1;
 
-
     public event UnityAction<float, string> OnTimeUpdate;
 
     public float LookTimerPracent => _lookTimer / _liftingDelay;
@@ -45,7 +41,6 @@ public class Interactor : Raycast
     private void Start()
     {
         Save();
-        //_sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
     }
 
     private void OnEnable()
@@ -167,7 +162,6 @@ public class Interactor : Raycast
         _isStartingPick = true;
     }
 
-
     public void StartPickUpAninationEvent()
     {
         _isStartingPick = false;
@@ -248,14 +242,14 @@ public class Interactor : Raycast
             }
         }
 
-        ES3.Save("SpawnPosition" + SceneManager.GetActiveScene().buildIndex, _sleepPointSaveData);
+        ES3.Save(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex, _sleepPointSaveData);
     }
 
     private void Load()
     {
-        if (ES3.KeyExists("SpawnPosition" + SceneManager.GetActiveScene().buildIndex))
+        if (ES3.KeyExists(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex))
         {
-            _sleepPointSaveData = ES3.Load<SleepPointSaveData>("SpawnPosition" + SceneManager.GetActiveScene().buildIndex);
+            _sleepPointSaveData = ES3.Load<SleepPointSaveData>(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex);
             return;
         }
     }
