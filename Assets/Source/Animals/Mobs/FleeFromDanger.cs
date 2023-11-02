@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class FleeFromDanger : Action
 {
-    public AnimalsMovement Animals;
+    public SetMovement SetMovement;
     public float RandomPointRadius;
 
     private NavMeshPath _navMeshPath;
@@ -15,34 +15,34 @@ public class FleeFromDanger : Action
     {
         _navMeshPath = new NavMeshPath();
 
-        if (Animals.FleeRadius <= 0)
+        if (SetMovement.FleeRadius <= 0)
         {
             RandomPointRadius = 1;
         }
         else
         {
-            RandomPointRadius = Animals.FleeRadius;
+            RandomPointRadius = SetMovement.FleeRadius;
         }
     }
 
     public override TaskStatus OnUpdate()
     {
-        if (Animals.IsRuning == false ||
-            (Animals.Agent.pathEndPosition - Animals.transform.position).magnitude < 1)
+        if (SetMovement.IsRuning == false ||
+            (SetMovement.Agent.pathEndPosition - SetMovement.transform.position).magnitude < 1)
         {
             bool isCorrectPoint = false;
             while (!isCorrectPoint)
             {
                 NavMeshHit navmeshHit;
                 NavMesh.SamplePosition(
-                    Animals.transform.position + new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f).normalized *
+                    SetMovement.transform.position + new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f).normalized *
                     RandomPointRadius, out navmeshHit, RandomPointRadius, NavMesh.AllAreas);
                 _randomPoint = navmeshHit.position;
-                Animals.Agent.CalculatePath(_randomPoint, _navMeshPath);
+                SetMovement.Agent.CalculatePath(_randomPoint, _navMeshPath);
                 if (_navMeshPath.status == NavMeshPathStatus.PathComplete) isCorrectPoint = true;
             }
 
-            Animals.Run(_randomPoint);
+            SetMovement.Run(_randomPoint);
             return TaskStatus.Success;
         }
 

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class GoToSpawnPoint : Action
 {
-    public AnimalsMovement Animals;
+    public SetMovement SetMovement;
     public float RandomPointRadius;
 
     private NavMeshPath _navMeshPath;
@@ -12,13 +12,13 @@ public class GoToSpawnPoint : Action
 
     public override void OnStart()
     {
-        if (Animals.SpawnPointRadius <= 0)
+        if (SetMovement.SpawnPointRadius <= 0)
         {
             RandomPointRadius = 1;
         }
         else
         {
-            RandomPointRadius = Animals.SpawnPointRadius;
+            RandomPointRadius = SetMovement.SpawnPointRadius;
         }
     }
 
@@ -26,19 +26,19 @@ public class GoToSpawnPoint : Action
     {
         _navMeshPath = new NavMeshPath();
 
-        if ((Animals.Agent.pathEndPosition - Animals.transform.position).magnitude < 1)
+        if ((SetMovement.Agent.pathEndPosition - SetMovement.transform.position).magnitude == 0)
         {
             bool isCorrectPoint = false;
             while (!isCorrectPoint)
             {
                 NavMeshHit navmeshHit; 
-                NavMesh.SamplePosition(Animals.SpawnPoint + Random.insideUnitSphere * RandomPointRadius,out navmeshHit, RandomPointRadius, NavMesh.AllAreas);
+                NavMesh.SamplePosition(SetMovement.SpawnPoint + Random.insideUnitSphere * RandomPointRadius,out navmeshHit, RandomPointRadius, NavMesh.AllAreas);
                 _randomPoint = navmeshHit.position;
-                Animals.Agent.CalculatePath(_randomPoint, _navMeshPath);
+                SetMovement.Agent.CalculatePath(_randomPoint, _navMeshPath);
                 if (_navMeshPath.status == NavMeshPathStatus.PathComplete) isCorrectPoint = true;
             }
 
-            Animals.Walk(_randomPoint);
+            SetMovement.Walk(_randomPoint);
             return TaskStatus.Inactive;
         }
 

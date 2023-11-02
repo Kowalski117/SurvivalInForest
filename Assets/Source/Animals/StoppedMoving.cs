@@ -3,10 +3,10 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class StoppedMoving : Action
 {
-    public AnimalsMovement Animals;
+    public SetMovement SetMovement;
 
     public override void OnStart()
     {
-        Animals.Agent.destination = transform.position;
+        SetMovement.Agent.destination = transform.position;
     }
 }

@@ -2,7 +2,7 @@ using BehaviorDesigner.Runtime.Tasks;
 using DG.Tweening;
 using Action = BehaviorDesigner.Runtime.Tasks.Action;
 
-public class TurnToPlayer : Action
+public class TurnEnemyToPlayer : Action
 {
     public SharedPlayer Player;
     public SharedEnemy Enemy;

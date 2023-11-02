@@ -375,8 +375,8 @@ GameObject:
   - component: {fileID: 527477653}
   - component: {fileID: 8460797693642337893}
   - component: {fileID: 1321323317006421455}
-  - component: {fileID: 5779132596087176848}
   - component: {fileID: 4258742043862253642}
+  - component: {fileID: 6897795007257843317}
   - component: {fileID: 8521634268307526097}
   - component: {fileID: 5156387951003520814}
   - component: {fileID: 527477652}
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startWhenEnabled: 1
   asynchronousLoad: 0
-  pauseWhenDisabled: 0
+  pauseWhenDisabled: 1
   restartWhenComplete: 0
   logTaskChanges: 0
   group: 0
@@ -554,18 +554,18 @@ MonoBehaviour:
       JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(422.999939,-50.0000229)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(-3.81469727E-06,110)"},"ID":1,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(0,110)"},"ID":2,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-1274.006,140.833344)"},"ID":3,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"GetNearbyPlayer","NodeData":{"Offset":"(-182.2449,109.166733)"},"ID":4,"Name":"Get
         Nearby Player","Instant":true,"SharedFloatRadius":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":10},"SharedPlayerNearbyObjectReturn":{"Type":"SharedPlayer","Name":"_nearbyPlayer","IsShared":true}},{"Type":"PlayerStealthModeAndWithinViewRadius","NodeData":{"Offset":"(-1.90734863E-06,110)"},"ID":5,"Name":"Player
         Stealth Mode And Within View Radius","Instant":true,"SharedPlayerPlayer":{"Type":"SharedPlayer","Name":"_nearbyPlayer","IsShared":true},"SharedBoolIsAttack":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isAttacking","IsShared":true,"BooleanmValue":false},"Singleangle":110},{"Type":"FleeFromDanger","NodeData":{"Offset":"(182.2449,109.166733)"},"ID":6,"Name":"Flee
-        From Danger","Instant":true,"AnimalsMovementAnimals":0,"SingleRandomPointRadius":30}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-812.8235,140.416672)"},"ID":7,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"GetNearbyEnemy","NodeData":{"Offset":"(-69.5833359,109.5834)"},"ID":8,"Name":"Get
+        From Danger","Instant":true,"SetMovementSetMovement":0,"SingleRandomPointRadius":30}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-812.8235,140.416672)"},"ID":7,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"GetNearbyEnemy","NodeData":{"Offset":"(-69.5833359,109.5834)"},"ID":8,"Name":"Get
         Nearby Enemy","Instant":true,"SharedFloatRadius":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedEnemyNearbyObjectReturn":{"Type":"SharedEnemy","Name":"_nearbyEnemy","IsShared":true}},{"Type":"FleeFromDanger","NodeData":{"Offset":"(70,109.5834)"},"ID":9,"Name":"Flee
-        From Danger","Instant":true,"AnimalsMovementAnimals":1,"SingleRandomPointRadius":30}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-525.061951,144.604477)"},"ID":10,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.HasReceivedEvent","NodeData":{"Offset":"(-69.98242,114.335991)"},"ID":11,"Name":"Take
+        From Danger","Instant":true,"SetMovementSetMovement":1,"SingleRandomPointRadius":30}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-525.061951,144.604477)"},"ID":10,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.HasReceivedEvent","NodeData":{"Offset":"(-69.98242,114.335991)"},"ID":11,"Name":"Take
         Damage","Instant":true,"SharedStringeventName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"TakeDamage"}},{"Type":"FleeFromDanger","NodeData":{"Offset":"(51.9148254,114.335991)"},"ID":12,"Name":"Flee
-        From Danger","Instant":true,"AnimalsMovementAnimals":2,"SingleRandomPointRadius":30}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-203.67543,143.869949)"},"ID":13,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.HasReceivedEvent","NodeData":{"Offset":"(-74.25647,109.58419)"},"ID":14,"Name":"Take
+        From Danger","Instant":true,"SetMovementSetMovement":2,"SingleRandomPointRadius":30}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-203.67543,143.869949)"},"ID":13,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.HasReceivedEvent","NodeData":{"Offset":"(-74.25647,109.58419)"},"ID":14,"Name":"Take
         Damage","Instant":true,"SharedStringeventName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"TakeDamage"},"SharedVariablestoredValue1":{"Type":"SharedMob","Name":"_nearbyMob","IsShared":true,"MobMovementmValue":3}},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.Math.SetBool","NodeData":{"Offset":"(55.74353,109.58419)"},"ID":15,"Name":"Set
         isTakenDamage","Instant":true,"SharedBoolboolValue":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolstoreResult":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isDamageTaken","IsShared":true,"BooleanmValue":false}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-3.615223,247.917557)"},"ID":16,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.Math.BoolComparison","NodeData":{"Offset":"(-144.25647,110.000854)"},"ID":17,"Name":"Is
         Damage Taken","Instant":true,"SharedBoolbool1":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isDamageTaken","IsShared":true,"BooleanmValue":false},"SharedBoolbool2":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true}},{"Type":"FleeFromDanger","NodeData":{"Offset":"(-4.25646973,110.000854)"},"ID":18,"Name":"Flee
-        From Danger","Instant":true,"AnimalsMovementAnimals":4,"SingleRandomPointRadius":30},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(115.74353,110.000854)"},"ID":19,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":10},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":20}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(245.74353,110.000854)"},"ID":20,"Name":"Is
-        Stopped Moving","Instant":true,"AnimalsMovementAnimals":5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.Math.SetBool","NodeData":{"Offset":"(385.74353,110.000854)"},"ID":21,"Name":"Set
+        From Danger","Instant":true,"SetMovementSetMovement":4,"SingleRandomPointRadius":30},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(115.74353,110.000854)"},"ID":19,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":10},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":20}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(245.74353,110.000854)"},"ID":20,"Name":"Is
+        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.Math.SetBool","NodeData":{"Offset":"(385.74353,110.000854)"},"ID":21,"Name":"Set
         isTakenDamage","Instant":true,"SharedBoolboolValue":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedBoolstoreResult":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isDamageTaken","IsShared":true,"BooleanmValue":false}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(715.4967,137.857132)"},"ID":22,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"GoToSpawnPoint","NodeData":{"Offset":"(-52.9729652,137.027039)"},"ID":23,"Name":"Go
-        To Spawn Point","Instant":true,"AnimalsMovementAnimals":6,"SingleRandomPointRadius":10},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(80.54054,137.027039)"},"ID":24,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":10},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":20}}]}]}]},"Variables":[{"Type":"SharedPlayer","Name":"_nearbyPlayer","IsShared":true},{"Type":"SharedMob","Name":"_nearbyMob","IsShared":true,"MobMovementmValue":7},{"Type":"SharedEnemy","Name":"_nearbyEnemy","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isDamageTaken","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isAttacking","IsShared":true,"BooleanmValue":false}]}'
+        To Spawn Point","Instant":true,"SetMovementSetMovement":6,"SingleRandomPointRadius":10},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(80.54054,137.027039)"},"ID":24,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":10},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":20}}]}]}]},"Variables":[{"Type":"SharedPlayer","Name":"_nearbyPlayer","IsShared":true},{"Type":"SharedMob","Name":"_nearbyMob","IsShared":true,"MobMovementmValue":7},{"Type":"SharedEnemy","Name":"_nearbyEnemy","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isDamageTaken","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"_isAttacking","IsShared":true,"BooleanmValue":false}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
@@ -607,18 +607,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5779132596087176848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2438967882976369583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdcf8f8ce10ac1a4bb545b3d1d06f781, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4258742043862253642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,11 +619,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac947667e85e14f488b29cee9c1a8ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animals: {fileID: 8521634268307526097}
   _speedRun: 5
   _speedWalk: 2
-  _fleeRadius: 50
   _spawnPointRadius: 10
+  _fleeRadius: 50
+  _animals: {fileID: 8521634268307526097}
+--- !u!114 &6897795007257843317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438967882976369583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af883875923d3a04ab67494ebf0eaeb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8521634268307526097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,7 +666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47e96d762f861824cbdaf517f174a23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animalsMovement: {fileID: 4258742043862253642}
+  setMovement: {fileID: 4258742043862253642}
   ShowGizmos: 0
   _colorFleeRadius: {r: 0, g: 1, b: 0, a: 1}
   _colorSpawnPoint: {r: 0, g: 0, b: 1, a: 1}
