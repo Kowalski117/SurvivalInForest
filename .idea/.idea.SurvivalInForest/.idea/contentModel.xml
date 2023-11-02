@@ -5178,9 +5178,7 @@
         <e p="Source" t="Include">
           <e p="Animals" t="Include">
             <e p="Animals.cs" t="Include" />
-            <e p="AnimalsMovement.cs" t="Include" />
             <e p="AnimalsSound.cs" t="Include" />
-            <e p="AnimationAnimals.cs" t="Include" />
             <e p="ChaseMob.cs" t="Include" />
             <e p="ChasePlayer.cs" t="Include" />
             <e p="Enemy" t="Include">
@@ -5206,6 +5204,9 @@
             </e>
             <e p="Particle" t="Include" />
             <e p="PlayerStealthModeAndWithinViewRadius.cs" t="Include" />
+            <e p="SetAnimation.cs" t="Include" />
+            <e p="SetAnimationAnimals.cs" t="Include" />
+            <e p="SetMovement.cs" t="Include" />
             <e p="SharedEnemy.cs" t="Include" />
             <e p="SharedMob.cs" t="Include" />
             <e p="SharedPlayer.cs" t="Include" />
@@ -5214,8 +5215,8 @@
               <e p="SpawnPointAnimals.cs" t="Include" />
             </e>
             <e p="StoppedMoving.cs" t="Include" />
+            <e p="TurnEnemyToPlayer.cs" t="Include" />
             <e p="TurnOffAllAnimations.cs" t="Include" />
-            <e p="TurnToPlayer.cs" t="Include" />
             <e p="ViewGizmos.cs" t="Include" />
           </e>
           <e p="BuildingSystem" t="Include">
@@ -5508,9 +5509,19 @@
               <e p="Tree.cs" t="Include" />
             </e>
           </e>
-          <e p="NPS" t="Include">
+          <e p="NPC" t="Include">
             <e p="Animation" t="Include" />
             <e p="Prefabs" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="GoToPoint.cs" t="Include" />
+              <e p="NPC.cs" t="Include" />
+              <e p="NPCMovement.cs" t="Include" />
+              <e p="SetAnimationNPC.cs" t="Include" />
+              <e p="SharedNPC.cs" t="Include" />
+              <e p="TurnAwayFromObject.cs" t="Include" />
+              <e p="TurnNPCToObject.cs" t="Include" />
+              <e p="TurnNPCToPlayer.cs" t="Include" />
+            </e>
           </e>
           <e p="PlayerAnimation" t="Include">
             <e p="AnimationsWithoutObjects" t="Include">

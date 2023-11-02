@@ -1,12 +1,15 @@
 using BehaviorDesigner.Runtime.Tasks;
+using UnityEngine;
 
 public class IsStoppedMoving : Action
 {
-    public AnimalsMovement Animals;
+    [SerializeField] private float _minMagnitude;
     
+    public SetMovement SetMovement;
+
     public override TaskStatus OnUpdate()
     {
-        if ((Animals.Agent.pathEndPosition - Animals.transform.position).magnitude < 1)
+        if ((SetMovement.Agent.pathEndPosition - SetMovement.transform.position).magnitude <= _minMagnitude)
             return TaskStatus.Success;
         else
             return TaskStatus.Running;

@@ -2,11 +2,11 @@ using BehaviorDesigner.Runtime.Tasks;
 
 public class TurnOffAllAnimations : Action
 {
-    public AnimalsMovement Animals;
+    public SetMovement SetMovement;
 
     public override void OnStart()
     {
-        Animals.TurnOffAnimations();
+        SetMovement.TurnOffAnimations();
     }
 
 }

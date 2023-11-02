@@ -1,16 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AnimalsMovement))]
+[RequireComponent(typeof(SetMovement))]
 public class ViewGizmos : MonoBehaviour
 {
-    [SerializeField] private AnimalsMovement _animalsMovement;
+    [SerializeField] private SetMovement setMovement;
     [SerializeField] private bool ShowGizmos;
     [SerializeField] private Color _colorFleeRadius = Color.green;
     [SerializeField] private Color _colorSpawnPoint = Color.blue;
 
     private void Start()
     {
-        _animalsMovement = GetComponent<AnimalsMovement>();
+        setMovement = GetComponent<SetMovement>();
     }
 
     private void OnDrawGizmos()
@@ -18,11 +18,11 @@ public class ViewGizmos : MonoBehaviour
         if (ShowGizmos)
         {
             Gizmos.color = _colorFleeRadius;
-            Gizmos.DrawWireSphere(transform.position, _animalsMovement.FleeRadius);
+            Gizmos.DrawWireSphere(transform.position, setMovement.FleeRadius);
             Gizmos.color = _colorSpawnPoint;
-            Gizmos.DrawSphere(_animalsMovement.SpawnPoint, 1);
+            Gizmos.DrawSphere(setMovement.SpawnPoint, 1);
             Gizmos.color = _colorSpawnPoint;
-            Gizmos.DrawWireSphere(_animalsMovement.SpawnPoint, _animalsMovement.SpawnPointRadius);
+            Gizmos.DrawWireSphere(setMovement.SpawnPoint, setMovement.SpawnPointRadius);
         }
     }
 }

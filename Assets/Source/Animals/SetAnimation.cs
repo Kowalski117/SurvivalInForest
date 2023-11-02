@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AnimationAnimals : MonoBehaviour
+public abstract class SetAnimation : MonoBehaviour
 {
     NavMeshAgent _agent;
-    private Animator _animator;
+    protected Animator Animator;
     private string _speed = "Speed";
     private string _death = "Death";
     private string _eat = "Eat";
@@ -13,12 +13,11 @@ public class AnimationAnimals : MonoBehaviour
     private string _attacks ="Attack";
     private string _howl ="Howl";
     private static int _maxAttacksAnimation = 3;
-
-
+    
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _animator = GetComponent<Animator>();
+        Animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -26,28 +25,28 @@ public class AnimationAnimals : MonoBehaviour
         if (_agent.velocity.magnitude > 0)
             TurnOffAnimations();
 
-        _animator.SetFloat(_speed, (_agent.velocity.magnitude / 10)); 
+        Animator.SetFloat(_speed, (_agent.velocity.magnitude / 10)); 
     }
     
     public void Attack()
     {
         TurnOffAnimations();
         string attack = _attacks + Random.Range(1,_maxAttacksAnimation+1);
-        _animator.SetTrigger(attack);
+        Animator.SetTrigger(attack);
     }
 
     public void Death()
     {
         TurnOffAnimations();
-        _animator.SetBool(_death, true);
+        Animator.SetBool(_death, true);
     }
 
-    public void TurnOffAnimations()
+    public virtual void TurnOffAnimations()
     {
-        _animator.SetBool(_sit,false);
-        _animator.SetBool(_sleep, false);
-        _animator.SetBool(_eat, false); 
-        _animator.SetBool(_howl, false);
+        Animator.SetBool(_sit,false);
+        Animator.SetBool(_sleep, false);
+        Animator.SetBool(_eat, false); 
+        Animator.SetBool(_howl, false);
     }
 
 }

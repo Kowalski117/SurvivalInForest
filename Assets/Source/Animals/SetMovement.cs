@@ -1,44 +1,32 @@
 using UnityEngine;
 using UnityEngine.AI;
-using DG.Tweening;
 
-[RequireComponent(typeof(AnimationAnimals))]
+[RequireComponent(typeof(SetAnimation))]
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class AnimalsMovement : MonoBehaviour
+public abstract class SetMovement : MonoBehaviour
 {
-    [SerializeField] private Animals _animals;
     [SerializeField] private float _speedRun;
     [SerializeField] private float _speedWalk;
-    [SerializeField] private float _fleeRadius;
     [SerializeField] private float _spawnPointRadius;
-
+    [SerializeField] private float _fleeRadius;
+    
     private NavMeshAgent _agent;
     private Vector3 _spawnPoint;
     private bool _isRuning;
+    
+    protected SetAnimation SetAnimation;
 
-    protected AnimationAnimals AnimationAnimals;
-
+    public float FleeRadius => _fleeRadius;
     public NavMeshAgent Agent => _agent;
     public Vector3 SpawnPoint => _spawnPoint;
     public bool IsRuning => _isRuning;
-    public float FleeRadius => _fleeRadius;
     public float SpawnPointRadius => _spawnPointRadius;
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        AnimationAnimals = GetComponent<AnimationAnimals>();
+        SetAnimation = GetComponent<SetAnimation>();
         _spawnPoint = transform.position;
-    }
-
-    private void OnEnable()
-    {
-        _animals.Died += Death;
-    }
-
-    private void OnDisable()
-    {
-        _animals.Died -= Death;
     }
 
     public void Walk(Vector3 point)
@@ -54,14 +42,9 @@ public abstract class AnimalsMovement : MonoBehaviour
         _agent.speed = _speedRun;
         _agent.SetDestination(point);
     }
-
-    public void Death()
-    {
-        AnimationAnimals.Death();
-    }
-
+    
     public void TurnOffAnimations()
     {
-        AnimationAnimals.TurnOffAnimations();
+        SetAnimation.TurnOffAnimations();
     }
 }
