@@ -5,6 +5,7 @@ public class ItemAnimator : MonoBehaviour
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private Animator _animatorHand;
     [SerializeField] private Transform _particleSpawnPoint;
+    [SerializeField] private Transform[] _additionalSubjects;
     [SerializeField] private int _indexLayer;
 
     public InventoryItemData ItemData => _itemData;
@@ -30,6 +31,14 @@ public class ItemAnimator : MonoBehaviour
 
     public void ToggleItem(bool isActive)
     {
+        if (_additionalSubjects.Length > 0) 
+        {
+            for (int i = 0; i < _additionalSubjects.Length; i++)
+            {
+                _additionalSubjects[i].gameObject.SetActive(isActive);
+            }
+        }
+
         transform.gameObject.SetActive(isActive);
     }
 }
