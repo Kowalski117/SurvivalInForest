@@ -59,9 +59,12 @@ public class ChestInventory : InventoryHolder, IInteractable
             {
                 foreach (var slot in SetLootItem().Items)
                 {
-                    for (int i = 0; i < slot.Amount; i++)
+                    for (int i = 0; i < slot.Items.Length; i++)
                     {
-                        PrimaryInventorySystem.AddToInventory(slot.ItemData, 1, slot.ItemData.Durability);
+                        for(int j = 0; j < slot.Items[i].Amount; j++)
+                        {
+                            PrimaryInventorySystem.AddToInventory(slot.Items[i].ItemData, 1, slot.Items[i].ItemData.Durability);
+                        }
                     }
                 }
             }

@@ -89,6 +89,7 @@ public class PlayerInteraction : Raycast
         {
             _particlePosition = hitInfo.point;
             _currentAnim = hitInfo.collider.GetComponentInParent<Animals>();
+
             if (_currentAnim != null)
             {
                 OnEnableBarValue?.Invoke(_currentAnim.MaxHealth, _currentAnim.Health);
@@ -176,7 +177,6 @@ public class PlayerInteraction : Raycast
 
     public bool IsShoot()
     {
-
         if (_nextFireDelay > _currentWeapon.Speed)
         {
             if (_inventory.RemoveInventory(_currentWeapon.Bullet.ItemData, 1))

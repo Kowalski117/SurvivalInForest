@@ -94,8 +94,6 @@ public class PlayerInventoryHolder : InventoryHolder
             InventorySaveData saveData = ES3.Load<InventorySaveData>(_invetoryId);
             _playerInputHandler.FirstPersonController.enabled = false;
             PrimaryInventorySystem = saveData.InventorySystem;
-            //transform.position = saveData.Position;
-            //transform.rotation = saveData.Rotation;
             _playerInputHandler.FirstPersonController.enabled = true;
 
             base.LoadInventory();

@@ -91,14 +91,12 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     private void UpdateUiSlotEvent()
     {
-        if (_assignedInventorySlot.ItemData != null)
-        {
-            OnItemUpdate?.Invoke(this);
-        }
-        else
+        if (_assignedInventorySlot.ItemData == null)
         {
             CleanUiSlotEvent();
         }
+
+        OnItemUpdate?.Invoke(this);
     }
     
     public void CleanUiSlotEvent()
