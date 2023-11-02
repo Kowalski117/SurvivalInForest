@@ -10,16 +10,10 @@ public class SpawnAnimals : MonoBehaviour
     private void Start()
     {
         _listSpawnPoint = new List<SpawnPointAnimals>(GetComponentsInChildren<SpawnPointAnimals>());
-        StartCoroutine(Wait());
-    }
 
-    IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(3f);
-        
         for (int i = 0; i < _listSpawnPoint.Count; i++)
         {
-            _listSpawnPoint[i].Spawn(_player);
+            _listSpawnPoint[i].Init(_player);
         }
     }
 }

@@ -1,4 +1,4 @@
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityBehaviour;
+using BehaviorDesigner.Runtime.Tasks.Unity.Math;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,6 +20,7 @@ public class TimeHandler : MonoBehaviour
     [SerializeField] private Color _nightAmblientLight;
     [SerializeField] private Color _dayColorFog;
     [SerializeField] private Color _nightColorFog;
+    [SerializeField] private Vector2 _fogDensity;
     [SerializeField] private Material _dayMaterial;
     [SerializeField] private Material _nightMaterial;
     [SerializeField] private AnimationCurve _sunLightIntensityCurve;
@@ -153,6 +154,8 @@ public class TimeHandler : MonoBehaviour
         RenderSettings.ambientLight = Color.Lerp(_nightAmblientLight, _dayAmblientLight, _ambientLightCurve.Evaluate(sunDotProduct));
         RenderSettings.skybox.Lerp(_dayMaterial, _nightMaterial, _ambientLightCurve.Evaluate(moonDotProduct));
         RenderSettings.fogColor = Color.Lerp(_dayColorFog, _nightColorFog, _ambientLightCurve.Evaluate(moonDotProduct));
+        RenderSettings.fogDensity = Mathf.Lerp(_fogDensity.x, _fogDensity.y, _ambientLightCurve.Evaluate(moonDotProduct));
+
         _camera.backgroundColor = Color.Lerp(_dayColorFog, _nightColorFog,_ambientLightCurve.Evaluate(moonDotProduct));
     }
 

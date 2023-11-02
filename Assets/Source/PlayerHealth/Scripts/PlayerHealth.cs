@@ -128,8 +128,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         OnDied?.Invoke();
         _isDied = true;
-        _rotateTween =
-            _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
+        _rotateTween = _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
         _positionTween = _cameraRoot.DOLocalMoveY(0.5f, 1f);
         CurrentValue = 0;
         _playerInputHandler.FirstPersonController.enabled = false;
@@ -177,8 +176,8 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         PlayerSaveData playerSaveData = new PlayerSaveData(transform.position, transform.rotation);
 
-        ES3.Save("SceneIndex", SceneManager.GetActiveScene().buildIndex);
-        ES3.Save("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex, playerSaveData);
+        ES3.Save(SaveLoadConstants.SceneIndex, SceneManager.GetActiveScene().buildIndex);
+        ES3.Save(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex, playerSaveData);
     }
 
     private void Load()
@@ -186,16 +185,16 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         _isRespawned = true;
         StartCoroutine(DisableRespawn());
             
-        if (ES3.KeyExists("LastSceneIndex"))
+        if (ES3.KeyExists(SaveLoadConstants.LastSceneIndex))
         {
-            int lastSceneIndex = ES3.Load<int>("LastSceneIndex");
-            int nextSceneIndex = ES3.Load<int>("NextSceneIndex");
+            int lastSceneIndex = ES3.Load<int>(SaveLoadConstants.LastSceneIndex);
+            int nextSceneIndex = ES3.Load<int>(SaveLoadConstants.NextSceneIndex);
 
-            if (ES3.KeyExists("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex) &&
+            if (ES3.KeyExists(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex) &&
                 _isTransitionLastPosition || lastSceneIndex == 0)
             {
                 PlayerSaveData playerSaveData =
-                    ES3.Load<PlayerSaveData>("PlayerSaveData" + SceneManager.GetActiveScene().buildIndex);
+                    ES3.Load<PlayerSaveData>(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex);
                 transform.position = playerSaveData.Position;
                 transform.rotation = playerSaveData.Rotation;
                 return;

@@ -24,7 +24,7 @@ public class GardenBed : MonoBehaviour
 
     private void Start()
     {
-        Load();
+        //Load();
     }
 
     private void Update()
@@ -38,11 +38,13 @@ public class GardenBed : MonoBehaviour
     private void OnEnable()
     {
         SaveGame.OnSaveGame += Save;
+        SaveGame.OnLoadData += Load;
     }
 
     private void OnDisable()
     {
         SaveGame.OnSaveGame -= Save;
+        SaveGame.OnLoadData -= Load;
     }
 
     public bool StartGrowingSeed(InventoryItemData inventoryItemData, Vector3 scale = default(Vector3))
@@ -66,11 +68,11 @@ public class GardenBed : MonoBehaviour
         _currentItem.transform.DOScale(Vector3.one, time);
         yield return new WaitForSeconds(time);
         _currentItem.Enable();
+        Save();
         _currentItem = null;
         _currentItemData = null;
         _isPlantGrows = false;
         _elapsedTime = 0;
-        Save();
     }
 
     private void Save()

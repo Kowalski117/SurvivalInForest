@@ -22,6 +22,7 @@ public enum ClothingType
     Torso,
     Legs,
     Backpack,
+    Shoes,
 }
 
 public enum TypeOfClothingUse

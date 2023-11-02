@@ -38,9 +38,20 @@ public class Interactor : Raycast
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
     public SleepPointSaveData SleepPointSaveData => _sleepPointSaveData;
 
-    private void Start()
+    protected override void Awake()
     {
-        Save();
+        base.Awake();
+
+        if (_sleepPointSaveData.Position == Vector3.zero)
+        {
+            foreach (var sleepPosition in _playerPositionLastScene.SleepPositions)
+            {
+                if (SceneManager.GetActiveScene().buildIndex == sleepPosition.SceneIndex)
+                {
+                    _sleepPointSaveData = new SleepPointSaveData(sleepPosition.Position, sleepPosition.Rotation);
+                }
+            }
+        }
     }
 
     private void OnEnable()
@@ -147,11 +158,14 @@ public class Interactor : Raycast
         {
             foreach (var inventoryData in _currentObjectPickUp.ObjectItemsData.Items)
             {
-                for (int i = 0; i < inventoryData.Amount; i++)
+                for (int i = 0; i < inventoryData.Items.Length; i++)
                 {
-                    if (!_playerInventoryHolder.AddToInventory(inventoryData.ItemData, _addAmount, inventoryData.ItemData.Durability))
+                    for (int j = 0; j < inventoryData.Items[i].Amount; j++)
                     {
-                        _inventoryOperator.InstantiateItem(inventoryData.ItemData, inventoryData.ItemData.Durability);
+                        if (!_playerInventoryHolder.AddToInventory(inventoryData.Items[i].ItemData, _addAmount, inventoryData.Items[i].ItemData.Durability))
+                        {
+                            _inventoryOperator.InstantiateItem(inventoryData.Items[i].ItemData, inventoryData.Items[i].ItemData.Durability);
+                        }
                     }
                 }
             }
@@ -231,17 +245,7 @@ public class Interactor : Raycast
 
     private void Save()
     {
-        if (_sleepPointSaveData.Position == Vector3.zero)
-        {
-            foreach (var sleepPosition in _playerPositionLastScene.SleepPositions)
-            {
-                if (SceneManager.GetActiveScene().buildIndex == sleepPosition.SceneIndex)
-                {
-                    _sleepPointSaveData = new SleepPointSaveData(sleepPosition.Position, sleepPosition.Rotation);
-                }
-            }
-        }
-
+        Debug.Log(_sleepPointSaveData.Position);
         ES3.Save(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex, _sleepPointSaveData);
     }
 

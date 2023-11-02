@@ -107,7 +107,8 @@ public class Building : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        _isOverlapping = true;
+        if(!other.GetComponent<SpawnPointAnimals>())
+            _isOverlapping = true;
     }
 
     private void OnTriggerExit(Collider other)
