@@ -6,6 +6,16 @@ public class TutorialHandler : Raycast
     [SerializeField] private InfoObjectData[] _infoObjects;
     [SerializeField] private LayerMask _layerMask;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        foreach (var obj in _infoObjects)
+        {
+            obj.Init();
+        }
+    }
+
     private void Update()
     {
         if(IsRayHittingSomething(_layerMask, out RaycastHit hitInfo))
@@ -18,12 +28,10 @@ public class TutorialHandler : Raycast
     {
         if (gameObject.TryGetComponent(out InfoObject infoObject))
         {
-            Debug.Log("1");
             foreach (var info in _infoObjects)
             {
                 if (infoObject.InfoObjectSO == info && !info.IsDone)
                 {
-                    Debug.Log("2");
                     _infoScreen.Init(info.Name, info.Description, info.Sprite);
                     _infoScreen.ToggleScreen();
                     info.SetIsDone(true);
