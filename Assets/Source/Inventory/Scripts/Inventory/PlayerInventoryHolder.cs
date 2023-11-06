@@ -7,7 +7,6 @@ public class PlayerInventoryHolder : InventoryHolder
     [SerializeField] private BackpackInventory _backpackInventory;
     [SerializeField] private ClothesInventory _clothesInventory;
      
-    private string _invetoryId = "InventoryData";
     private InventoryItemData _currentItemData;
 
     public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
@@ -84,14 +83,14 @@ public class PlayerInventoryHolder : InventoryHolder
     protected override void SaveInventory()
     {
         InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
-        ES3.Save(_invetoryId, saveData);
+        ES3.Save(SaveLoadConstants.PlayerInvetory, saveData);
     }
 
     protected override void LoadInventory()
     {
-        if (ES3.KeyExists(_invetoryId))
+        if (ES3.KeyExists(SaveLoadConstants.PlayerInvetory))
         {
-            InventorySaveData saveData = ES3.Load<InventorySaveData>(_invetoryId);
+            InventorySaveData saveData = ES3.Load<InventorySaveData>(SaveLoadConstants.PlayerInvetory);
             _playerInputHandler.FirstPersonController.enabled = false;
             PrimaryInventorySystem = saveData.InventorySystem;
             _playerInputHandler.FirstPersonController.enabled = true;

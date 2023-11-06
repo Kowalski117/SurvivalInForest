@@ -10,6 +10,8 @@ public class SaveLoadConstants
     public const string GameTimeCounter = "GameTimeCounter";
 
     public const string PlayerSaveData = "PlayerSaveData";
+    public const string BackpackInventory = "BackpackInventory";
+    public const string PlayerInvetory = "PlayerInventory";
     public const string SpawnPosition = "SpawnPosition";
     public const string GardenBedSaveData = "GardenBed";
     public const string IdsBuildings = "IdsBuildings";
