@@ -11,6 +11,6 @@ public class TurnNPCToObject : Action
 
     public override void OnStart()
     {
-        Npc.Value.transform.DOLookAt(Transform.Value.position,SpeedRotate);
+        Npc.Value.transform.DOLookAt(Transform.Value.position,SpeedRotate,axisConstraint: AxisConstraint.Y);
     }
 }

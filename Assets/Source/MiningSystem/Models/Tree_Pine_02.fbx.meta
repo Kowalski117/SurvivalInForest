@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 125b93efba8217c489faeab1e32d4ef6
+guid: 899d9171d1274af40bc01533e3b17843
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Default_Bark
+    second: {fileID: 2100000, guid: 345f71609ad0fd246bb03ba1dc7d8747, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Default_Leaves
+    second: {fileID: 2100000, guid: 87153f4c0f602d94c86167d9ab9672a0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -34,7 +44,10 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages: []
+    lODScreenPercentages:
+    - 0.25
+    - 0.125
+    - 0.01
     globalScale: 1
     meshCompression: 3
     addColliders: 0
@@ -95,7 +108,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
