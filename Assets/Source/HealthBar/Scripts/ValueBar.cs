@@ -20,6 +20,7 @@ public class ValueBar : MonoBehaviour
         _playerInteraction.OnValueChanged += UpdateBar;
 
         _playerHealth.OnDied += TurnOffBar;
+        _playerHealth.OnRevived += TurnOffBar;
     }
 
     private void OnDisable()
@@ -29,6 +30,7 @@ public class ValueBar : MonoBehaviour
         _playerInteraction.OnValueChanged -= UpdateBar;
 
         _playerHealth.OnDied -= TurnOffBar;
+        _playerHealth.OnRevived -= TurnOffBar;
     }
 
     public void UpdateBar(float value)

@@ -1,10 +1,15 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PixelCrushers.QuestMachine.Demo.DemoInventory;
 
 public class InventoryOperator : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
     [SerializeField] private Transform _removeItemPoint;
+    [SerializeField] private float _creationDelay = 0.2f;
+
+    private Coroutine _coroutine;
 
     private void OnEnable()
     {
@@ -20,14 +25,52 @@ public class InventoryOperator : MonoBehaviour
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
-            for (int i = 0; i < inventorySlot.AssignedInventorySlot.Size; i++)
-            {
-                InstantiateItem(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability);
-            }
+            StartCoroutine(CreateItemsWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, inventorySlot.AssignedInventorySlot.Size));
+
             _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, inventorySlot.AssignedInventorySlot.Size);
 
             if (inventorySlot.AssignedInventorySlot.ItemData == null)
                 inventorySlot.TurnOffHighlight();
+        }
+    }
+
+    public void StartCreateItems(InventoryItemData itemData, float durability, int itemCount)
+    {
+        if(_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        /*_coroutine =*/ StartCoroutine(CreateItemsWithDelay(itemData, durability, itemCount)); 
+    }
+
+    public void StartCreateItems(List<InventorySlot> itemData)
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        /*_coroutine =*/ StartCoroutine(CreateItemsWithDelay(itemData));
+    }
+
+    private IEnumerator CreateItemsWithDelay(InventoryItemData itemData, float durability, int itemCount)
+    {
+        for (int i = 0; i < itemCount; i++)
+        {
+            InstantiateItem(itemData, durability);
+            yield return new WaitForSeconds(_creationDelay);
+        }
+    }
+
+    private IEnumerator CreateItemsWithDelay(List<InventorySlot> itemData)
+    {
+        for (int i = 0; i < itemData.Count; i++)
+        {
+            StartCreateItems(itemData[i].ItemData, itemData[i].Durability, itemData[i].Size);
+            yield return new WaitForSeconds(_creationDelay * itemData[i].Size);
         }
     }
 
@@ -39,34 +82,5 @@ public class InventoryOperator : MonoBehaviour
             itemPickUp.GenerateNewID();
             itemPickUp.UpdateDurability(durability);
         }
-    }
-
-    public List<InventoryItem> GetItemsWithInsufficientSpace(InventoryItem[] items)
-    {
-        List<InventoryItem> itemsWithInsufficientSpace = new List<InventoryItem>();
-
-        foreach (var itemData in items)
-        {
-            int remainingAmount = itemData.Amount; // Сначала устанавливаем оставшееся количество на максимальное количество предметов.
-
-            while (remainingAmount > 0) // Пока есть оставшееся количество предметов.
-            {
-                bool addedSuccessfully = _playerInventoryHolder.AddToInventory(itemData.ItemData, 1, itemData.ItemData.Durability);
-
-                if (!addedSuccessfully)
-                {
-                    // Если не удалось добавить ни одного предмета, добавляем оставшееся количество, которое можно вместить, в список itemsWithInsufficientSpace.
-                    itemsWithInsufficientSpace.Add(new InventoryItem(itemData.ItemData, remainingAmount));
-                    break; // Завершаем цикл, так как не можем добавить больше этого предмета.
-                }
-                else
-                {
-                    // Уменьшаем оставшееся количество предметов на 1, так как был успешно добавлен один предмет в инвентарь.
-                    remainingAmount--;
-                }
-            }
-        }
-
-        return itemsWithInsufficientSpace;
     }
 }

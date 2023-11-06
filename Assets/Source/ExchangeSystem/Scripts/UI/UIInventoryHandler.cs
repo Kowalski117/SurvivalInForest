@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UIInventoryHandler : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class UIInventoryHandler : MonoBehaviour
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
+
+    public event UnityAction OnInventoryClosed;
 
     public bool IsInventoryOpen => _isInventoryOpen;
 
@@ -84,6 +87,7 @@ public class UIInventoryHandler : MonoBehaviour
         }
         else
         {
+            OnInventoryClosed?.Invoke();
             _mouseItemData.ReturnCurrentSlot();
             _playerBackpackPanel.ResetSelection();
             _playerHotbarInventory.ResetSelection();

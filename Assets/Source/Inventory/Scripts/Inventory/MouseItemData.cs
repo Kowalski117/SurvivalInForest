@@ -17,7 +17,7 @@ public class MouseItemData : MonoBehaviour
     private InventorySlotUI _previousSlot;
     private InventoryItemData _currentItemData;
 
-    public static UnityAction OnUpdatedSlots;
+    public event UnityAction OnUpdatedSlots;
 
     public InventorySlotUI InventorySlotUI => _inventorySlotUI;
     public InventorySlotUI CurrentSlot => _previousSlot;

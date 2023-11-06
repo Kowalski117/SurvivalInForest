@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -148,7 +149,7 @@ public class Interactor : Raycast
         {
             if (!_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, _addAmount, _currentItemPickUp.Durability))
             {
-                _inventoryOperator.InstantiateItem(_currentItemPickUp.ItemData, _currentItemPickUp.ItemData.Durability);
+                _inventoryOperator.StartCreateItems(_currentItemPickUp.ItemData, _currentItemPickUp.ItemData.Durability, _addAmount);
                 _isInventoryFull = true;
             }
             _currentItemPickUp.PickUp();
@@ -164,7 +165,7 @@ public class Interactor : Raycast
                     {
                         if (!_playerInventoryHolder.AddToInventory(inventoryData.Items[i].ItemData, _addAmount, inventoryData.Items[i].ItemData.Durability))
                         {
-                            _inventoryOperator.InstantiateItem(inventoryData.Items[i].ItemData, inventoryData.Items[i].ItemData.Durability);
+                            _inventoryOperator.StartCreateItems(inventoryData.Items[i].ItemData, inventoryData.Items[i].ItemData.Durability, _addAmount);
                         }
                     }
                 }

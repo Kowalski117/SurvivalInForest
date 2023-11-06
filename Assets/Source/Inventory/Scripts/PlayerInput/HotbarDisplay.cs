@@ -50,6 +50,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.Hotbar5.performed += ctx => Hotbar(4);
         _playerInput.Inventory.Hotbar6.performed += ctx => Hotbar(5);
         _playerInput.Inventory.UseItem.performed += ctx => UseItem();
+        MouseInventoryItem.OnUpdatedSlots += UpdateSlot;
 
         foreach (var slot in Slots)
         {
@@ -69,6 +70,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.Hotbar6.performed -= ctx => Hotbar(5);
         _playerInput.Inventory.UseItem.performed -= ctx => UseItem();
         _playerInput.Disable();
+        MouseInventoryItem.OnUpdatedSlots += UpdateSlot;
 
         foreach (var slot in Slots)
         {
@@ -143,11 +145,17 @@ public class HotbarDisplay : StaticInventoryDisplay
             if (Slots[i] == clickedSlot && clickedSlot.AssignedInventorySlot.ItemData != null)
             {
                 _currentIndex = i;
+                UpdateSlot(clickedSlot);
             }
         }
     }
 
     private void UpdateSlot(InventorySlotUI slot)
+    {
+        UpdateSlot();
+    }
+
+    private void UpdateSlot()
     {
         OnItemSwitched?.Invoke(Slots[_currentIndex]);
     }

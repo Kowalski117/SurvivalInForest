@@ -22,11 +22,13 @@ public class ExchangeHandler : MonoBehaviour
     private void OnEnable()
     {
         ExchangeKeeper.OnExchangeDisplayRequested += DisplayShopWindow;
+        _inventoryHandler.OnInventoryClosed += CloseWindow;
     }
 
     private void OnDisable()
     {
         ExchangeKeeper.OnExchangeDisplayRequested -= DisplayShopWindow;
+        _inventoryHandler.OnInventoryClosed -= CloseWindow;
     }
 
     private void DisplayShopWindow(ExchangeKeeper exchangeKeeper)
@@ -43,14 +45,14 @@ public class ExchangeHandler : MonoBehaviour
             }
             else
             {
-                _panel.gameObject.SetActive(false);
+                CloseWindow();
             }
         }
         else
         {
             _isShopOpen = false;
             exchangeKeeper.DistanceHandler.SetActive(_isShopOpen);
-            _panel.gameObject.SetActive(false);
+            CloseWindow();
         }
     }
 
@@ -89,6 +91,11 @@ public class ExchangeHandler : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void CloseWindow()
+    {
+        _panel.gameObject.SetActive(false);
     }
 }
 
