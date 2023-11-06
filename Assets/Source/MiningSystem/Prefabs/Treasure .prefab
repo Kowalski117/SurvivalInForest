@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 7400426031986704814}
   - component: {fileID: 7415026891261011277}
   - component: {fileID: 7415026891261011279}
-  - component: {fileID: 1621152386179462598}
+  - component: {fileID: 7367731860666213737}
   m_Layer: 18
   m_Name: SM_Prop_Hay_Pile_01_Green (1)
   m_TagString: Untagged
@@ -238,8 +238,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 955b83eb2606efc4b83ca6d0e014b699, type: 2}
   - {fileID: 11400000, guid: 909c22361c032a4498a0625e6ffa85c9, type: 2}
   _lootObject: {fileID: 8637010559191012645}
---- !u!136 &1621152386179462598
-CapsuleCollider:
+--- !u!65 &7367731860666213737
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -248,10 +248,9 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.6
-  m_Height: 2.9
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.5, z: 0}
+  serializedVersion: 2
+  m_Size: {x: 1.3, y: 1, z: 1.3}
+  m_Center: {x: 0, y: 0.37, z: 0}
 --- !u!1 &7415026890183502644
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,12 +341,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7415026890183502644}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 
+  _id: 39f31d3e-1751-4557-8071-d6691c677e68
   _isGenerateAwake: 0
 --- !u!1001 &7415026891267740375
 PrefabInstance:
@@ -418,7 +417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253552, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _id
-      value: 4aec2ef2-3abc-44c2-b124-7a4ac9b582ba
+      value: 8c39bc75-ed88-4405-b82b-94b79cf76e56
       objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253554, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _isDeleteAfterSelection

@@ -475,6 +475,7 @@ GameObject:
   - component: {fileID: 5025718983600773008}
   - component: {fileID: 6653390171701209208}
   - component: {fileID: 1507542266625401402}
+  - component: {fileID: 9009870239790975311}
   m_Layer: 14
   m_Name: Tree
   m_TagString: Untagged
@@ -571,6 +572,19 @@ MonoBehaviour:
   - {fileID: 2225950771271003358, guid: ee9b56c31c137f7469216c6c77d61eef, type: 3}
   - {fileID: 2225950771271003358, guid: ee9b56c31c137f7469216c6c77d61eef, type: 3}
   _currentDamageLoots: []
+--- !u!114 &9009870239790975311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9008898864725839286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: 4af5c1bd8516304418d7702ffac787eb, type: 2}
 --- !u!1 &9060881320051738903
 GameObject:
   m_ObjectHideFlags: 0
