@@ -1712,6 +1712,7 @@ GameObject:
   - component: {fileID: 2499025277081196469}
   - component: {fileID: 1216886111331905424}
   - component: {fileID: 581378204662578194}
+  - component: {fileID: 7283345082452097666}
   m_Layer: 8
   m_Name: Bear
   m_TagString: Untagged
@@ -1745,7 +1746,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5315341837002527602}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: b7822eb5951163b48830b6d9bcbf48b4, type: 3}
   m_Controller: {fileID: 9100000, guid: 6b74c0471f91af34f8e98a4d46810410, type: 2}
   m_CullingMode: 0
@@ -1764,7 +1765,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5315341837002527602}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
   m_Name: 
@@ -1860,7 +1861,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5315341837002527602}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -2082,6 +2083,23 @@ CapsuleCollider:
   m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7283345082452097666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315341837002527602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbcd7a8e1990f1e409fcc88436a8b6b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animals: {fileID: 7959532015545930207}
+  _animator: {fileID: 1470459660514579378}
+  _agent: {fileID: 1377059864}
+  _behaviour: {fileID: 1310134555670586107}
+  _setAnimationAnimals: {fileID: 8802752881232221576}
 --- !u!1 &5456023070281353451
 GameObject:
   m_ObjectHideFlags: 0

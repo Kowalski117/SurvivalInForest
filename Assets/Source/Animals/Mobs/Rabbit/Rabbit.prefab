@@ -382,6 +382,7 @@ GameObject:
   - component: {fileID: 527477652}
   - component: {fileID: 4068232759512464486}
   - component: {fileID: 8914443898064383022}
+  - component: {fileID: 802383032212110973}
   m_Layer: 8
   m_Name: Rabbit
   m_TagString: Untagged
@@ -415,7 +416,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2438967882976369583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 0962bdca27eaca34aaa15f7fdf608faf, type: 3}
   m_Controller: {fileID: 9100000, guid: 6544e249e662eff4aa4f1db7e70977a5, type: 2}
   m_CullingMode: 1
@@ -530,7 +531,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2438967882976369583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
   m_Name: 
@@ -592,7 +593,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2438967882976369583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -714,6 +715,23 @@ CapsuleCollider:
   m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0.33, z: 0}
+--- !u!114 &802383032212110973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438967882976369583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbcd7a8e1990f1e409fcc88436a8b6b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animals: {fileID: 8521634268307526097}
+  _animator: {fileID: 2346013699818363103}
+  _agent: {fileID: 1321323317006421455}
+  _behaviour: {fileID: 8460797693642337893}
+  _setAnimationAnimals: {fileID: 6897795007257843317}
 --- !u!1 &2438973099241778913
 GameObject:
   m_ObjectHideFlags: 0

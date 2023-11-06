@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: -4220110688315070228}
   - component: {fileID: -8894024530144944974}
   - component: {fileID: 8302660217463573604}
+  - component: {fileID: 3124370751182258854}
   m_Layer: 8
   m_Name: Deer
   m_TagString: Untagged
@@ -619,7 +620,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2025137566998704627}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: be659c40c417e754d9ec8d221cc03fc6, type: 3}
   m_Controller: {fileID: 9100000, guid: fa269838c3ab75841a2fc9663a10d24c, type: 2}
   m_CullingMode: 0
@@ -638,7 +639,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2025137566998704627}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -660,7 +661,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2025137566998704627}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
   m_Name: 
@@ -930,6 +931,23 @@ CapsuleCollider:
   m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0.89, z: 0}
+--- !u!114 &3124370751182258854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025137566998704627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbcd7a8e1990f1e409fcc88436a8b6b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animals: {fileID: 6653468203151609892}
+  _animator: {fileID: 1214795639850803858}
+  _agent: {fileID: 1608057179}
+  _behaviour: {fileID: 9029019881409889758}
+  _setAnimationAnimals: {fileID: 3950810857950402767}
 --- !u!1 &2213129154094815899
 GameObject:
   m_ObjectHideFlags: 0
