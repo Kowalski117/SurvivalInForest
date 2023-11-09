@@ -9,6 +9,13 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="AddressableAssetsData" t="Include">
+          <e p="AssetGroups" t="Include">
+            <e p="Schemas" t="Include" />
+          </e>
+          <e p="AssetGroupTemplates" t="Include" />
+          <e p="DataBuilders" t="Include" />
+        </e>
         <e p="ButtonScenes.cs" t="Include" />
         <e p="dddddsss.cs" t="Include" />
         <e p="Dialogue" t="Include" />
@@ -1642,6 +1649,21 @@
               </e>
               <e p="readme.txt" t="Include" />
               <e p="Textures" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Pixel Crushers" t="Include">
+          <e p="Dialogue System" t="Include">
+            <e p="Third Party Support" t="Include">
+              <e p="Localization Package Support" t="Include">
+                <e p="_README.txt" t="Include" />
+                <e p="Scripts" t="Include">
+                  <e p="DialogueSystemLocalizationPackageBridge.cs" t="Include" />
+                  <e p="Editor" t="Include">
+                    <e p="DialogueToLocalizationTableWindow.cs" t="Include" />
+                  </e>
+                </e>
+              </e>
             </e>
           </e>
         </e>
@@ -5358,9 +5380,7 @@
             <e p="Materials" t="Include" />
           </e>
           <e p="DialoguesAndQuests" t="Include">
-            <e p="Data" t="Include">
-              <e p="Fake" t="Include" />
-            </e>
+            <e p="Data" t="Include" />
             <e p="Prefabs" t="Include" />
           </e>
           <e p="EatEffect" t="Include">
@@ -5540,6 +5560,9 @@
                 <e p="LoadingScreenSettings.cs" t="Include" />
               </e>
             </e>
+          </e>
+          <e p="Localization" t="Include">
+            <e p="Locale" t="Include" />
           </e>
           <e p="Materials" t="Include" />
           <e p="MiningSystem" t="Include">

@@ -79,8 +79,6 @@ GameObject:
   - component: {fileID: 97351053}
   - component: {fileID: 97351052}
   - component: {fileID: 456532887}
-  - component: {fileID: 1634960409}
-  - component: {fileID: 1126536397}
   m_Layer: 9
   m_Name: PlayerCapsule
   m_TagString: Player
@@ -895,34 +893,6 @@ MonoBehaviour:
   _drinkingSounds:
   - {fileID: 8300000, guid: 742d26a10577bd349bdf08de17fa3948, type: 3}
 --- !u!114 &456532887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1273947896634751010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c60fb93605c24d34e81d5fc6bb1c8786, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inventoryHolder: {fileID: 7366031901037708989}
-  _manualWorkbench: {fileID: 7366031901037708973}
---- !u!114 &1634960409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1273947896634751010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c60fb93605c24d34e81d5fc6bb1c8786, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inventoryHolder: {fileID: 7366031901037708989}
-  _manualWorkbench: {fileID: 7366031901037708973}
---- !u!114 &1126536397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
