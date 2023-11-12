@@ -80,7 +80,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxEndurance: 100
+  _object: {fileID: 0}
   _brokenObject: {fileID: 6728917805973116805}
+  _pointForce: {fileID: 0}
 --- !u!208 &5651449396114055759
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -110,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 41a3ddfc-8dd7-4faa-bd36-b28d7d46cbbf
+  _isGenerateAwake: 1
 --- !u!1001 &5648371409834371291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -242,6 +245,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1019897071908531138, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5497875930764367127, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
       propertyPath: startingItems.Array.size
       value: 3
@@ -270,7 +277,9 @@ PrefabInstance:
       propertyPath: _id
       value: 710c88d2-0487-4445-a124-a7ee5e62d1a5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4036370433574711557, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
+    - {fileID: 4642508947414506188, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
 --- !u!1 &6728595104480650571 stripped
 GameObject:
@@ -289,6 +298,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e877d66c50819c4a9f8b4e9b59b49aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3984851373137561169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6728595104480650571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &6734174304051061053 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4818500250270266, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
@@ -353,13 +380,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 944028980, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}
 --- !u!1 &6728917805973116805 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1234376043896746, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}
   m_PrefabInstance: {fileID: 6729936672853166127}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8018528362947177209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6728917805973116805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &6734055103792930359 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4964086646461976, guid: 5278b16ea019ebd46828c7ff64b50651, type: 3}

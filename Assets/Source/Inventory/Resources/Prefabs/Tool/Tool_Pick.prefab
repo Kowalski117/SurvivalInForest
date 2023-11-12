@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 3723506246388128696}
   - component: {fileID: 7528341362337643160}
   - component: {fileID: 249965837947126362}
-  - component: {fileID: 5243545079393952973}
   - component: {fileID: 64749968235789922}
   - component: {fileID: 4204342373292991513}
   - component: {fileID: -611586398800648554}
   - component: {fileID: -383822020996091539}
+  - component: {fileID: 1623975665794210961}
   m_Layer: 6
   m_Name: Tool_Pick
   m_TagString: Untagged
@@ -102,7 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: e97bbbdd-8988-444f-82ce-b3c793161c36
+  _id: 30f48da2-5426-4561-b4d5-6db418742b9d
+  _isGenerateAwake: 1
 --- !u!114 &249965837947126362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,24 +125,6 @@ MonoBehaviour:
     _durability: 0
   _durability: 0
   _layerMask: 6
---- !u!114 &5243545079393952973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3745332471273047796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!54 &64749968235789922
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -226,3 +209,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1623975665794210961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3745332471273047796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

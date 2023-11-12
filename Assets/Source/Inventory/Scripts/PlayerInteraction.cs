@@ -1,3 +1,4 @@
+using DuloGames.UI;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +15,7 @@ public class PlayerInteraction : Raycast
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
     [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private LayerMask _usingLayer;
+    [SerializeField] private AudioClip[] _hitInAirClips;
 
     private WeaponItemData _currentWeapon;
     private ToolItemData _currentTool;
@@ -31,6 +33,7 @@ public class PlayerInteraction : Raycast
     private float _hourInSeconds = 3600;
     private Vector3 _particlePosition;
     private ParticleSystem _selectionParticle;
+    private AudioClip _selectionAudioClip;
 
     public event UnityAction<InventoryItemData> OnUpdateItemData;
     public event UnityAction<WeaponItemData> OnUpdateWeaponItemData;
@@ -61,7 +64,6 @@ public class PlayerInteraction : Raycast
 
     private void Update()
     {
-
         if (_nextFireDelay <= _maxDelayFire)
             _nextFireDelay += Time.deltaTime;
 
@@ -72,6 +74,10 @@ public class PlayerInteraction : Raycast
                 if (_nextFireDelay > _currentWeapon.Speed)
                 {
                     _playerAnimation.Hit(_isActiveGoal);
+
+                    if (!_isActiveGoal)
+                        _audioSource.PlayOneShot(_hitInAirClips[Random.Range(0, _hitInAirClips.Length)]);
+
                     _nextFireDelay = 0;
                 }
             }
@@ -80,6 +86,10 @@ public class PlayerInteraction : Raycast
                 if (_nextFireDelay > _currentTool.Speed)
                 {
                     _playerAnimation.Hit(_isActiveGoal);
+
+                    if (!_isActiveGoal)
+                        _audioSource.PlayOneShot(_hitInAirClips[Random.Range(0, _hitInAirClips.Length)]);
+
                     _nextFireDelay = 0;
                 }
             }
@@ -100,7 +110,8 @@ public class PlayerInteraction : Raycast
                 if (resource != null)
                 {
                     _currentResoure = resource;
-                    _selectionParticle = _currentResoure.SelectionParticle;
+                    _selectionParticle = _currentResoure.DamageDoneParticleParticle;
+                    _selectionAudioClip = _currentResoure.DamageDoneAudioClip;
                     OnEnableBarValue?.Invoke(_currentResoure.MaxHealth, _currentResoure.Health);
                 }
             }
@@ -119,12 +130,13 @@ public class PlayerInteraction : Raycast
         }
         else
         {
-            if(_currentAnim != null || _currentResoure != null || _currentBrokenObject != null)
+            if(_currentAnim == null || _currentResoure == null || _currentBrokenObject == null)
             {
                 _currentAnim = null;
                 _currentResoure = null;
                 _currentBrokenObject = null;
                 _selectionParticle = null;
+                _selectionAudioClip = null;
                 _isActiveGoal = false;
                 OnTurnOffBarValue?.Invoke();
             }
@@ -229,10 +241,9 @@ public class PlayerInteraction : Raycast
     {
         if (_currentWeapon != null)
         {
-            if(_currentWeapon.MuzzleSound != null)
-                _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
+            PlayEffect();
 
-            if(_currentAnim != null)
+            if (_currentAnim != null)
                 TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
             else if(_currentBrokenObject != null)
                 TakeDamageBrokenObject(_currentWeapon.Damage, 0);
@@ -243,8 +254,7 @@ public class PlayerInteraction : Raycast
     {
         if (_currentTool != null)
         {
-            if (_selectionParticle != null)
-                Instantiate(_selectionParticle, _particlePosition, Quaternion.identity);
+            PlayEffect();
 
             if (_currentResoure != null)
                 TakeDamageResoure(_currentTool.DamageResources, 0);
@@ -331,5 +341,14 @@ public class PlayerInteraction : Raycast
                 _currentResoure = null;
             }
         }
+    }
+
+    private void PlayEffect()
+    {
+        if (_selectionParticle)
+            Instantiate(_selectionParticle, _particlePosition, Quaternion.identity);
+
+        if (_selectionAudioClip)
+            _audioSource.PlayOneShot(_selectionAudioClip);
     }
 }

@@ -246,7 +246,6 @@ public class Interactor : Raycast
 
     private void Save()
     {
-        Debug.Log(_sleepPointSaveData.Position);
         ES3.Save(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex, _sleepPointSaveData);
     }
 

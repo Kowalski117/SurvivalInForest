@@ -8,6 +8,7 @@ public class Box : MonoBehaviour, IDamagable
     [SerializeField] private GameObject _object;
     [SerializeField] private BrokenObject _brokenObject;
     [SerializeField] private Transform _pointForce;
+    [SerializeField] private AudioClip[] _damageClips;
 
     private float _currentEndurance;
     private BrokenObject _currentBrokenObject;
@@ -20,6 +21,7 @@ public class Box : MonoBehaviour, IDamagable
 
     public float MaxEndurance => _maxEndurance;
     public float Endurance => _currentEndurance;
+    public AudioClip DamageClip => _damageClips[Random.Range(0, _damageClips.Length)];
 
     private void Awake()
     {
