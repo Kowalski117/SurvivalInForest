@@ -10,7 +10,7 @@ public class ObjectPickUp : MonoBehaviour
     [SerializeField] private bool _isDeleteAfterSelection = true;
 
     private UniqueID _uniqueID;
-    private Outline _outline;
+    private OutlineObject _outline;
     private Rigidbody _rigidbody;
     private string _object = "Object_";
 
@@ -21,7 +21,7 @@ public class ObjectPickUp : MonoBehaviour
     private void Awake()
     {
         _uniqueID = GetComponent<UniqueID>();
-        _outline = GetComponent<Outline>();
+        _outline = GetComponent<OutlineObject>();
         _rigidbody= GetComponent<Rigidbody>();
         _rigidbody.isKinematic = true;
     }
@@ -56,7 +56,7 @@ public class ObjectPickUp : MonoBehaviour
     {
         enabled = true;
 
-        if(_outline)
+        if (_outline)
             _outline.enabled = true;
 
         gameObject.layer = _layerMask;

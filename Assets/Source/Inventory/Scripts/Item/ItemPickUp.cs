@@ -13,7 +13,7 @@ public class ItemPickUp : MonoBehaviour
 
     public event UnityAction DestroyItem;
     
-    private Outline _outline;
+    private OutlineObject _outline;
     private Rigidbody _rigidbody;
     private UniqueID _uniqueID;
 
@@ -24,7 +24,7 @@ public class ItemPickUp : MonoBehaviour
 
     private void Awake()
     {
-        _outline = GetComponent<Outline>();
+        _outline = GetComponent<OutlineObject>();
         _questControl = GetComponent<QuestControl>();
         _uniqueID = GetComponent<UniqueID>();
         _durability = _itemData.Durability;

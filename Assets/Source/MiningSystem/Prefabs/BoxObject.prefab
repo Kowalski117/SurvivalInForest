@@ -138,7 +138,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2093164878461052964}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
@@ -231,6 +231,12 @@ MonoBehaviour:
   _object: {fileID: 2093164878461052964}
   _brokenObject: {fileID: 9166748051586212790, guid: 7f6c8525bb2f6174f85a95319237e7b0, type: 3}
   _pointForce: {fileID: 1408103247}
+  _damageClips:
+  - {fileID: 8300000, guid: 76138bbd4252e8549ac791f1777922fb, type: 3}
+  - {fileID: 8300000, guid: 6b32b65425799214a96ddc134d39483d, type: 3}
+  - {fileID: 8300000, guid: 1e8c9bc837ff1bf4c9c5d0904fabd9ba, type: 3}
+  - {fileID: 8300000, guid: ae700b04885c59a4fac4cbe8b2e12fa8, type: 3}
+  - {fileID: 8300000, guid: 750f5191f10bdd54b836267e793546af, type: 3}
 --- !u!208 &1008940466853633518
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -338,10 +344,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7591004686422047558, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
       propertyPath: _id
-      value: 3909729b-0be5-49eb-b07f-bf03e062fee4
+      value: 5166596a-1a6a-48fb-b5c6-e255dec0e583
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4036370433574711557, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
+--- !u!1 &2093405075483056874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1491101567614540, guid: e35b608308de57746b8a7cea43fc068a, type: 3}
+  m_PrefabInstance: {fileID: 2091931875347539110}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3821196288988669329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2093405075483056874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &2096731924409900700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4818500250270266, guid: e35b608308de57746b8a7cea43fc068a, type: 3}

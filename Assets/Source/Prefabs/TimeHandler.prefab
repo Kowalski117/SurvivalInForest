@@ -48,8 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964de1d6d25b4c047b2f1b2559a2a157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dayCounter: 0
   _timeMultiplier: 60
-  _startHour: 11
+  _startHour: 12
   _sunriseHour: 7
   _dayHour: 10
   _sunsetHour: 22
@@ -59,7 +60,10 @@ MonoBehaviour:
   _moonLight: {fileID: 4325092404722072637}
   _maxMoonLightIntensity: 0.5
   _dayAmblientLight: {r: 0.972549, g: 0.827451, b: 0.5254902, a: 1}
-  _nightAmblientLight: {r: 0.16470589, g: 0.4, b: 0.49019608, a: 1}
+  _nightAmblientLight: {r: 0.12156863, g: 0.14117648, b: 0.14901961, a: 1}
+  _dayColorFog: {r: 0.44313726, g: 0.44313726, b: 0.44313726, a: 1}
+  _nightColorFog: {r: 0.08627451, g: 0.08627451, b: 0.08627451, a: 1}
+  _fogDensity: {x: 0.01, y: 0.05}
   _dayMaterial: {fileID: 2100000, guid: 221f9488657b1f1498bb5860cf4c5ff3, type: 2}
   _nightMaterial: {fileID: 2100000, guid: ac22932ac7381fd4e9ed4bd20bb55d60, type: 2}
   _sunLightIntensityCurve:
@@ -153,6 +157,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _starsParticle: {fileID: 5254880166979318711}
+  _camera: {fileID: 0}
 --- !u!1 &4325092403200579809
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,6 +643,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skybox
       objectReference: {fileID: 0}
+    - target: {fileID: 4491769773565587598, guid: 3691f3767719e9c4189ffdcb859459ab, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4491806723070247680, guid: 3691f3767719e9c4189ffdcb859459ab, type: 3}
       propertyPath: m_Layer
       value: 15
@@ -778,7 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e18f50e3aac686740aafed2b51886f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedRotation: 10
+  _speedRotation: 0.3
 --- !u!1001 &1806824927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -954,6 +963,10 @@ PrefabInstance:
     - target: {fileID: 8424199757040022007, guid: e4c9c81bcf3a15f4c8903b2314f92259, type: 3}
       propertyPath: m_Name
       value: Stars
+      objectReference: {fileID: 0}
+    - target: {fileID: 8424199757040022007, guid: e4c9c81bcf3a15f4c8903b2314f92259, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4c9c81bcf3a15f4c8903b2314f92259, type: 3}

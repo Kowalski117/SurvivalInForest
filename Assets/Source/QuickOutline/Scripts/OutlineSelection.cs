@@ -4,10 +4,10 @@ public class OutlineSelection : Raycast
 {
     [SerializeField] private float _outlineWidth;
     [SerializeField] private Color _outlineColor;
-    [SerializeField] private Outline.Mode _outlineMode = Outline.Mode.OutlineVisible;
+    [SerializeField] private OutlineObject.Mode _outlineMode = OutlineObject.Mode.OutlineVisible;
     [SerializeField] private LayerMask _outlineLayerMask;
     [SerializeField] private bool _isTrigger = true;
-    private Outline _previousOutline;
+    private OutlineObject _previousOutline;
 
     void Update()
     {
@@ -15,7 +15,7 @@ public class OutlineSelection : Raycast
         {
             if (IsRayHittingSomething(_outlineLayerMask, out RaycastHit hitInfo))
             {
-                if (hitInfo.collider.TryGetComponent(out Outline outline))
+                if (hitInfo.collider.TryGetComponent(out OutlineObject outline))
                 {
                     if (_previousOutline != null)
                     {
@@ -43,10 +43,9 @@ public class OutlineSelection : Raycast
     {
         if (_isTrigger)
         {
-            if (other.TryGetComponent(out Outline outline))
+            if (other.TryGetComponent(out OutlineObject outline))
             {
                 outline.OutlineWidth = _outlineWidth;
-                outline.enabled = true;
                 outline.OutlineColor = _outlineColor;
             }
         }
@@ -56,9 +55,9 @@ public class OutlineSelection : Raycast
     {
         if (_isTrigger)
         {
-            if (other.TryGetComponent(out Outline outline))
+            if (other.TryGetComponent(out OutlineObject outline))
             {
-                outline.enabled = false;
+                outline.OutlineWidth = 0;
             }
         }
     }

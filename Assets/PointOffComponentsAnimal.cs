@@ -1,6 +1,4 @@
-using BehaviorDesigner.Runtime;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class PointOffComponentsAnimal : MonoBehaviour
 {

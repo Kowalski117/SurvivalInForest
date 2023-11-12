@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -22,7 +21,9 @@ public class Interactor : Raycast
     [SerializeField] private Transform _removeItemPoint;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private PlayerPosition _playerPositionLastScene;
+    [SerializeField] private PlayerAudioHandler _playerAudioHandler;
 
+    private AudioSource _audioSource; 
     private bool _isStartingPick = true;
     private float _lookTimer = 0;
     private ItemPickUp _currentItemPickUp;
@@ -41,6 +42,7 @@ public class Interactor : Raycast
 
     protected override void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
         base.Awake();
 
         if (_sleepPointSaveData.Position == Vector3.zero)
@@ -145,6 +147,9 @@ public class Interactor : Raycast
 
     public void PickUpAninationEvent()
     {
+        _isIconFilled = false;
+        _isStartingPick = true;
+
         if (_currentItemPickUp != null)
         {
             if (!_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, _addAmount, _currentItemPickUp.Durability))
@@ -173,8 +178,7 @@ public class Interactor : Raycast
             _currentObjectPickUp.PicUp();
             _currentObjectPickUp = null;
         }
-        _isIconFilled = false;
-        _isStartingPick = true;
+        _audioSource.PlayOneShot(_playerAudioHandler.PickUpClip);
     }
 
     public void StartPickUpAninationEvent()
@@ -246,7 +250,6 @@ public class Interactor : Raycast
 
     private void Save()
     {
-        Debug.Log(_sleepPointSaveData.Position);
         ES3.Save(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex, _sleepPointSaveData);
     }
 

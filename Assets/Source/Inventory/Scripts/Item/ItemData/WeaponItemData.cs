@@ -9,8 +9,6 @@ public class WeaponItemData : InventoryItemData
     [SerializeField] private float _overTimeDamage;
     [SerializeField] private float _speed;
     [SerializeField] private ItemPickUp _bullet;
-    [SerializeField] private ParticleSystem _muzzleFlash;
-    [SerializeField] private ParticleSystem _hitEffect;
     [SerializeField] private AudioClip _muzzleSound;
 
     public WeaponType WeaponType => _weaponType;
@@ -18,8 +16,6 @@ public class WeaponItemData : InventoryItemData
     public float OverTimeDamage => _overTimeDamage;   
     public float Speed => _speed;
     public ItemPickUp Bullet => _bullet;
-    public ParticleSystem MuzzleFlash => _muzzleFlash;
-    public ParticleSystem HitEffect => _hitEffect;
     public AudioClip MuzzleSound => _muzzleSound;
 }
 

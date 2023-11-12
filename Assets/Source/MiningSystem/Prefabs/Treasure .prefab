@@ -233,7 +233,10 @@ MonoBehaviour:
   _extractionType: 5
   _disappearanceTime: 10
   _loots: []
-  _selectionParticle: {fileID: 2611327634490146045, guid: 4c2423cb0415f10459a92d33d3535b4d, type: 3}
+  _damageDoneParticle: {fileID: 2611327634490146045, guid: 4c2423cb0415f10459a92d33d3535b4d, type: 3}
+  _damageDoneAudioClips:
+  - {fileID: 8300000, guid: f904a88a48f5e8e4da431550af5b7c5c, type: 3}
+  - {fileID: 8300000, guid: 7deeaf993f4eb1841a5e4533740f066c, type: 3}
   _lootItems:
   - {fileID: 11400000, guid: 955b83eb2606efc4b83ca6d0e014b699, type: 2}
   - {fileID: 11400000, guid: 909c22361c032a4498a0625e6ffa85c9, type: 2}
@@ -355,6 +358,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7415026890183502643}
     m_Modifications:
+    - target: {fileID: 377673320635071016, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253549, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -418,6 +425,10 @@ PrefabInstance:
     - target: {fileID: 1241767526390253552, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _id
       value: 8c39bc75-ed88-4405-b82b-94b79cf76e56
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241767526390253552, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
+      propertyPath: _isGenerateAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253554, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _isDeleteAfterSelection

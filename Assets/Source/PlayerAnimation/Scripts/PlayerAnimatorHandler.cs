@@ -18,6 +18,11 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public ItemAnimator CurrentItemAnimation => _handAnimator;
 
+    private void Awake()
+    {
+        SwitchToItem(_currentItemData);
+    }
+
     private void OnEnable()
     {
         _hotbarDisplay.OnItemSwitched += Init;
@@ -50,6 +55,7 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
         if (_currentItemData != _previousItemData)
             PullItemAnimation();
+
     }
 
     public void PickUp()
@@ -65,10 +71,14 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public void Hit(bool isActive)
     {
-        if(isActive)
+        if (isActive)
+        {
             _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.Hit);
+        }
         else
+        {
             _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.HitInAir);
+        }
     }
 
     public void Aim(bool value)
@@ -78,9 +88,9 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     public void PullItemAnimation()
     {
-        if (_currentItemData == null || !_itemsAnimator.Any(item => _currentItemData == item.ItemData))
+        if (_currentItemData == _defoultItem.ItemData || !_itemsAnimator.Any(item => _currentItemData == item.ItemData))
             SwitchToDefaultItem();
-        else
+        else 
             SwitchToItem(_currentItemData);
     }
 
@@ -88,12 +98,13 @@ public class PlayerAnimatorHandler : MonoBehaviour
     {
         if (_handAnimator != _defoultItem)
         {
-            _handAnimator.ToggleLayer(false);
+            if(_handAnimator != null ) 
+                _handAnimator.ToggleLayer(false);
+
             _handAnimator = _defoultItem;
             _handAnimator.ToggleLayer(true);
             _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.PullItem);
         }
-
         return;
     }
 
@@ -118,12 +129,17 @@ public class PlayerAnimatorHandler : MonoBehaviour
             }
             else
             {
-                if(_handAnimator != null) 
+                if(_handAnimator != null && _handAnimator != _defoultItem) 
                 {
                     if (_handAnimator.IndexLayer == item.IndexLayer || _handAnimator.HandAnimator == item.HandAnimator)
+                    {
                         item.ToggleItem(false);
+                    }
                     else
+                    {
                         item.ToggleAnimator(false);
+                    }
+
                 }
             }
         }

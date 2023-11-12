@@ -1,3 +1,4 @@
+using IL3DN;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -107,7 +108,7 @@ public class Building : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(!other.GetComponent<SpawnPointAnimals>())
+        if(!other.GetComponent<SpawnPointAnimals>() && !other.GetComponent<PointOffComponentsAnimal>() && !other.GetComponent<IL3DN_ChangeWalkingSound>())
             _isOverlapping = true;
     }
 

@@ -168,6 +168,7 @@ namespace StarterAssets
         public void TogglePersonController(bool toggle)
         {
             _isEnable = toggle;
+            _audioHandler.SetEnable(toggle);
         }
 
         private void GroundedCheck()

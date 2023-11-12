@@ -46,6 +46,28 @@ public class LoadPanel : MonoBehaviour
         _resumeButton.onClick.RemoveListener(Deactivate);
     }
 
+    public void StartLoad(int index)
+    {
+        ES3.Save(SaveLoadConstants.StartLastSaveScene, false);
+        LoadScene(index);
+    }
+
+    public void StartLoadLastSave()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.SceneIndex))
+        {
+            int indexScene = ES3.Load<int>(SaveLoadConstants.SceneIndex);
+            ES3.Save(SaveLoadConstants.StartLastSaveScene, true);
+            LoadScene(indexScene);
+        }
+    }
+
+    public void LoadScene(int index)
+    {
+        gameObject.SetActive(true);
+        Load(1, () => SceneManager.LoadScene(index), index);
+    }
+
     public void Load(float alpha, UnityAction OnFadingDone, int indexScene)
     {
         //if (alpha == 1)

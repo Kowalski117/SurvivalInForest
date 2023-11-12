@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class OutlineSwitch : MonoBehaviour
 {
-    private Outline _outline;
+    private OutlineObject _outline;
     private Building _building;
 
     private void Awake()
     {
         _building = GetComponentInParent<Building>();
-        _outline = GetComponent<Outline>();
+        _outline = GetComponent<OutlineObject>();
         _outline.enabled = false;
     }
 

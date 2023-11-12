@@ -1,34 +1,51 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class ScreenUI : MonoBehaviour
 {
     [SerializeField] protected PlayerInputHandler PlayerInputHandler;
     [SerializeField] private CanvasGroup _panel;
+    [SerializeField] private Button _exitButton;
 
     private bool _isOpenScreen = false;
 
     public event UnityAction OnOpenScreen;
     public event UnityAction OnCloseScreen;
+    public event UnityAction OnExitButton;
+
+    public bool IsOpenScreen => _isOpenScreen;
 
     protected virtual void OnEnable()
     {
-        PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied += Close;
+        if (PlayerInputHandler)
+            PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied += Close;
+
+        if(_exitButton)
+            _exitButton.onClick.AddListener(ExitButtonClick);
     }
 
     protected virtual void OnDisable()
     {
-        PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied -= Close;
+        if (PlayerInputHandler)
+            PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied -= Close;
+
+        if (_exitButton)
+            _exitButton.onClick.RemoveListener(ExitButtonClick);
     }
 
     public void OpenScreen()
     {
+        _isOpenScreen = true;
+        OnOpenScreen?.Invoke();
         _panel.blocksRaycasts = true;
         _panel.alpha = Mathf.Lerp(0, 1, 1);
     }
 
     public void CloseScreen()
     {
+        _isOpenScreen = false;
+        OnCloseScreen?.Invoke();
         _panel.blocksRaycasts = false;
         _panel.alpha = _panel.alpha = Mathf.Lerp(1, 0, 1);
     }
@@ -40,17 +57,23 @@ public class ScreenUI : MonoBehaviour
         if (_isOpenScreen)
         {
             OpenScreen();
-            PlayerInputHandler.BuildTool.DeleteBuilding();
-            PlayerInputHandler.SetCursorVisible(true);
-            PlayerInputHandler.ToggleAllInput(false);
-            OnOpenScreen?.Invoke();
+
+            if (PlayerInputHandler)
+            {
+                PlayerInputHandler.BuildTool.DeleteBuilding();
+                PlayerInputHandler.SetCursorVisible(true);
+                PlayerInputHandler.ToggleAllInput(false);
+            }
         }
         else
         {
             CloseScreen();
-            PlayerInputHandler.SetCursorVisible(false);
-            PlayerInputHandler.ToggleAllInput(true);
-            OnCloseScreen?.Invoke();
+
+            if (PlayerInputHandler)
+            {
+                PlayerInputHandler.SetCursorVisible(false);
+                PlayerInputHandler.ToggleAllInput(true);
+            }
         }
     }
 
@@ -61,5 +84,10 @@ public class ScreenUI : MonoBehaviour
         PlayerInputHandler.SetCursorVisible(false);
         PlayerInputHandler.ToggleAllInput(true);
         OnCloseScreen?.Invoke();
+    }
+
+    protected virtual void ExitButtonClick()
+    {
+        OnExitButton?.Invoke();
     }
 }

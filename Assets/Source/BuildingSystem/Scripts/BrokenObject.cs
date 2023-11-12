@@ -7,7 +7,7 @@ public class BrokenObject : MonoBehaviour
     [SerializeField] private List<Rigidbody> _objectFragments;
     [SerializeField] private float _timeDestroyFragments = 30f;
     [SerializeField] private float _timeBetweenFragments = 0.2f;
-    
+
     private Transform _pointForce;
     private float _force = 3f;
 
@@ -26,7 +26,7 @@ public class BrokenObject : MonoBehaviour
         _pointForce = pointForce;
     }
 
-    public void DropFragment(int count,bool isDead)
+    public void DropFragment(int count, bool isDead)
     {
         for (int i = 0; i < count; i++)
         {
@@ -53,7 +53,7 @@ public class BrokenObject : MonoBehaviour
             fragmentRigidbody.isKinematic = false;
 
             Vector3 forceDirection = (_pointForce.position - fragmentRigidbody.position).normalized;
-            fragmentRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
+            fragmentRigidbody.AddForce(-forceDirection * forceMagnitude, ForceMode.Impulse);
         }
     }
 

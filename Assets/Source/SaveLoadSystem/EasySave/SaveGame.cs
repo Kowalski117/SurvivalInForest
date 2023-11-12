@@ -7,7 +7,6 @@ public class SaveGame : MonoBehaviour
     [SerializeField] private LoadPanel _loadPanel;
     [SerializeField] private bool _isAutoSave;
     [SerializeField] private float _autoSaveDelay;
-    [SerializeField] private bool _isStartLoad = true;
 
     float _timer = 0;
 

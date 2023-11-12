@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 8134674438853195276}
   - component: {fileID: 676922447}
   - component: {fileID: 676922446}
-  - component: {fileID: 676922445}
   - component: {fileID: -767357315775826596}
   - component: {fileID: -4991657231724415526}
   m_Layer: 6
@@ -104,7 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 50935ceb-840f-4b1c-aa6c-c6fae9688277
+  _id: 6978a740-7a25-4e83-8562-cdfc9b06ba28
+  _isGenerateAwake: 1
 --- !u!114 &6041835305332165898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,10 +135,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 126291174881565950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 1
+  outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 0
   precomputeOutline: 0
@@ -187,24 +187,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: fec4589b13ba5c44bbdd4ae91470ff0f, type: 3}
---- !u!114 &676922445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126291174881565950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &-767357315775826596
 MonoBehaviour:
   m_ObjectHideFlags: 0

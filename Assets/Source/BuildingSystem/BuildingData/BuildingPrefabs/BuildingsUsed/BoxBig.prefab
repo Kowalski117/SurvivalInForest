@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 73000b8c-4dc1-4339-90d9-3d2222c861d0
+  _isGenerateAwake: 1
 --- !u!1001 &2981222812877144919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,6 +182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 64582673759103798, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
+    - {fileID: 1700732051, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e09a598f8d47d3549a1cfa79857bb3a9, type: 3}
 --- !u!23 &2958092090174798309 stripped
 MeshRenderer:
@@ -235,6 +237,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264dd96b8d51b5f47b7ccb0dd62fe6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6534868270009058208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2979790595626782669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &9064788577522266082
 PrefabInstance:
   m_ObjectHideFlags: 0

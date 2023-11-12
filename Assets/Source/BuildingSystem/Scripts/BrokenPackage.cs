@@ -4,14 +4,14 @@ public class BrokenPackage : MonoBehaviour
 {
     private Box _box;
     private Collider _collider;
-    private Outline _outline;
+    private OutlineObject _outline;
     private DistanceHandler _distanceHandler;
 
     private void Awake()
     {
         _box = GetComponentInParent<Box>();
         _collider = GetComponent<Collider>();
-        _outline = GetComponent<Outline>();
+        _outline = GetComponent<OutlineObject>();
         _distanceHandler = GetComponentInChildren<DistanceHandler>();
     }
 

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class AnimationEvent : MonoBehaviour
 {
+    [SerializeField] private PlayerAudioHandler _playerAudioHandler;
+
     private PlayerInteraction _playerInteraction;
 
     private void Awake()
@@ -17,5 +19,10 @@ public class AnimationEvent : MonoBehaviour
     public void HitEvent()
     {
         _playerInteraction.Hit();
+    }
+
+    public void HitInAir()
+    {
+        _playerAudioHandler.PlayHitInAirClip();
     }
 }
