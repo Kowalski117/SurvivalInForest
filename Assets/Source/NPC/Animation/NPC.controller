@@ -61,7 +61,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: FinalTalking
+    m_ConditionEvent: Talking3
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6467984445370761126}
@@ -256,13 +256,13 @@ AnimatorStateMachine:
     m_Position: {x: 800, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7481378248017316714}
-    m_Position: {x: 800, y: 350, z: 0}
+    m_Position: {x: 810, y: 260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6467984445370761126}
-    m_Position: {x: 800, y: 300, z: 0}
+    m_Position: {x: 810, y: 360, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7052392382284740933}
-    m_Position: {x: 800, y: 400, z: 0}
+    m_Position: {x: 810, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4522959993557349220}
     m_Position: {x: 800, y: 50, z: 0}
@@ -486,13 +486,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: FinalTalking
+  - m_Name: Talking
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Talking
+  - m_Name: Talking3
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -882,7 +882,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FinalTalking
+  m_Name: Talking3
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
