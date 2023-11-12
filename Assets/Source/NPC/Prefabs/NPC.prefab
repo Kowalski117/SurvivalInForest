@@ -566,12 +566,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3732512725270993089}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3735758792724089563}
-  m_Father: {fileID: 3736063062099208201}
+  m_Father: {fileID: 8639651608691810532}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3732514240933906783
@@ -1016,11 +1016,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3732863223415843425}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3736063062099208201}
+  m_Father: {fileID: 8639651608691810532}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3615885521315447001
@@ -1709,7 +1709,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3736063062099208201}
+  - component: {fileID: 8639651608691810532}
   - component: {fileID: 3646778860565323367}
   - component: {fileID: 1022745617090473425}
   - component: {fileID: -1355995121848749644}
@@ -1733,15 +1733,15 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3736063062099208201
-Transform:
+--- !u!224 &8639651608691810532
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3733436725928684435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.427, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 194.7131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1751,6 +1751,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 174.79538, y: 18.849789}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &3646778860565323367
 Animator:
   serializedVersion: 4
@@ -1804,26 +1809,26 @@ MonoBehaviour:
         NPC To Player","Instant":true,"SharedPlayerPlayer":{"Type":"SharedPlayer","Name":"_player","IsShared":true},"SharedNPCNpc":{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":0},"SingleSpeedRotate":0.5}]},{"Type":"StoppedMoving","NodeData":{"Offset":"(120,105.83342)"},"ID":7,"Name":"Stopped
         Moving","Instant":true,"SetMovementSetMovement":1}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(206.4867,120)"},"ID":8,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSelector","NodeData":{"Offset":"(-3.52204132,131.375854)"},"ID":9,"Name":"Random
         Selector","Instant":true,"Int32seed":0,"BooleanuseSeed":false,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-229.132111,183.333237)","Collapsed":true},"ID":10,"Name":"GoToWell","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-486.0434,147.77774)"},"ID":11,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}},{"Type":"GoToPoint","NodeData":{"Offset":"(-376.043427,147.77774)"},"ID":12,"Name":"Go
-        To Point","Instant":true,"SetMovement_setMovement":2,"SharedTransform_point":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-265.217438,149.130432)"},"ID":13,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(-145.217438,149.130432)"},"ID":14,"Name":"Is
-        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":3},{"Type":"CheckingDistansTransformAndObject","NodeData":{"Offset":"(43.6796875,152.611633)"},"ID":15,"Name":"Checking
-        Distans Transform And Object","Instant":true,"SharedTransform_object":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true},"Single_minDistance":1},{"Type":"TurnNPCToObject","NodeData":{"Offset":"(240.584473,154.0567)"},"ID":16,"Name":"Turn
-        NPC To Object","Instant":true,"SharedTransformTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true},"SharedNPCNpc":{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":4},"SingleSpeedRotate":0.5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetTrigger","NodeData":{"Offset":"(366.923279,146.154053)"},"ID":17,"Name":"Set
-        Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":5},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Swing"}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(478.216675,149.795837)"},"ID":18,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-56.5126839,178.095245)","Collapsed":true},"ID":19,"Name":"GoToBench","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-303.5715,150.319611)"},"ID":20,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}},{"Type":"GoToPoint","NodeData":{"Offset":"(-185.71434,145.7143)"},"ID":21,"Name":"Go
-        To Point","Instant":true,"SetMovement_setMovement":6,"SharedTransform_point":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-79.99994,147.142944)"},"ID":22,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(44.3782654,153.971375)"},"ID":23,"Name":"Is
-        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":7},{"Type":"CheckingDistansTransformAndObject","NodeData":{"Offset":"(234.582031,145.472534)"},"ID":24,"Name":"Checking
-        Distans Transform And Object","Instant":true,"SharedTransform_object":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true},"Single_minDistance":1},{"Type":"TurnAwayFromObject","NodeData":{"Offset":"(430.61676,147.239517)"},"ID":25,"Name":"Turn
-        Away From Object","Instant":true,"SharedTransformTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true},"SharedNPCNpc":{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":8},"SingleSpeedRotate":0.5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetBoolParameter","NodeData":{"Offset":"(588.50824,146.663086)"},"ID":26,"Name":"Set
-        Bool Parameter","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":9},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Sit"},"SharedBoolboolValue":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"BooleansetOnce":false},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(716.109558,152.856934)"},"ID":27,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(99.04762,180)","Collapsed":true},"ID":28,"Name":"GoToShrub","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-340,120)"},"ID":29,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}},{"Type":"GoToPoint","NodeData":{"Offset":"(-230,120)"},"ID":30,"Name":"Go
-        To Point","Instant":true,"SetMovement_setMovement":10,"SharedTransform_point":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-120,120)"},"ID":31,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(0,120)"},"ID":32,"Name":"Is
-        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":11},{"Type":"CheckingDistansTransformAndObject","NodeData":{"Offset":"(183.875549,122.218979)"},"ID":33,"Name":"Checking
-        Distans Transform And Object","Instant":true,"SharedTransform_object":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true},"Single_minDistance":1},{"Type":"TurnAwayFromObject","NodeData":{"Offset":"(381.665833,123.414612)"},"ID":34,"Name":"Turn
-        Away From Object","Instant":true,"SharedTransformTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true},"SharedNPCNpc":{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":12},"SingleSpeedRotate":0.5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetTrigger","NodeData":{"Offset":"(522.406555,119.110657)"},"ID":35,"Name":"Set
-        Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":13},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Taking"}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(637.120239,120)"},"ID":36,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(272.834473,176.100159)","Collapsed":true},"ID":37,"Name":"GoToRandomPoint","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-154.230179,152.424255)"},"ID":38,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}},{"Type":"GoToSpawnPoint","NodeData":{"Offset":"(-22.2020226,145.342316)"},"ID":39,"Name":"Go
-        To Spawn Point","Instant":true,"SetMovementSetMovement":14,"SingleRandomPointRadius":30},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(98.93616,150.511963)"},"ID":40,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(217.048782,154.6217)"},"ID":41,"Name":"Is
-        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":15},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSelector","NodeData":{"Offset":"(362.973053,154.324432)"},"ID":42,"Name":"Random
+        To Point","Instant":true,"SetMovement_setMovement":2,"SharedTransform_point":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true,"TransformmValue":3}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-265.217438,149.130432)"},"ID":13,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(-145.217438,149.130432)"},"ID":14,"Name":"Is
+        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":4},{"Type":"CheckingDistansTransformAndObject","NodeData":{"Offset":"(43.6796875,152.611633)"},"ID":15,"Name":"Checking
+        Distans Transform And Object","Instant":true,"SharedTransform_object":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true,"TransformmValue":5},"Single_minDistance":1},{"Type":"TurnNPCToObject","NodeData":{"Offset":"(240.584473,154.0567)"},"ID":16,"Name":"Turn
+        NPC To Object","Instant":true,"SharedTransformTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true,"TransformmValue":6},"SharedNPCNpc":{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":7},"SingleSpeedRotate":0.5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetTrigger","NodeData":{"Offset":"(366.923279,146.154053)"},"ID":17,"Name":"Set
+        Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":8},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Swing"}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(478.216675,149.795837)"},"ID":18,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-56.5126839,178.095245)","Collapsed":true},"ID":19,"Name":"GoToBench","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-303.5715,150.319611)"},"ID":20,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}},{"Type":"GoToPoint","NodeData":{"Offset":"(-185.71434,145.7143)"},"ID":21,"Name":"Go
+        To Point","Instant":true,"SetMovement_setMovement":9,"SharedTransform_point":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true,"TransformmValue":10}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-79.99994,147.142944)"},"ID":22,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(44.3782654,153.971375)"},"ID":23,"Name":"Is
+        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":11},{"Type":"CheckingDistansTransformAndObject","NodeData":{"Offset":"(234.582031,145.472534)"},"ID":24,"Name":"Checking
+        Distans Transform And Object","Instant":true,"SharedTransform_object":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true,"TransformmValue":12},"Single_minDistance":1},{"Type":"TurnAwayFromObject","NodeData":{"Offset":"(430.61676,147.239517)"},"ID":25,"Name":"Turn
+        Away From Object","Instant":true,"SharedTransformTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true,"TransformmValue":13},"SharedNPCNpc":{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":14},"SingleSpeedRotate":0.5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetBoolParameter","NodeData":{"Offset":"(588.50824,146.663086)"},"ID":26,"Name":"Set
+        Bool Parameter","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":15},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Sit"},"SharedBoolboolValue":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"BooleansetOnce":false},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(716.109558,152.856934)"},"ID":27,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(99.04762,180)","Collapsed":true},"ID":28,"Name":"GoToShrub","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-340,120)"},"ID":29,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}},{"Type":"GoToPoint","NodeData":{"Offset":"(-230,120)"},"ID":30,"Name":"Go
+        To Point","Instant":true,"SetMovement_setMovement":16,"SharedTransform_point":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true,"TransformmValue":17}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-120,120)"},"ID":31,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(0,120)"},"ID":32,"Name":"Is
+        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":18},{"Type":"CheckingDistansTransformAndObject","NodeData":{"Offset":"(183.875549,122.218979)"},"ID":33,"Name":"Checking
+        Distans Transform And Object","Instant":true,"SharedTransform_object":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true,"TransformmValue":19},"Single_minDistance":1},{"Type":"TurnAwayFromObject","NodeData":{"Offset":"(381.665833,123.414612)"},"ID":34,"Name":"Turn
+        Away From Object","Instant":true,"SharedTransformTransform":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true,"TransformmValue":20},"SharedNPCNpc":{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":21},"SingleSpeedRotate":0.5},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetTrigger","NodeData":{"Offset":"(522.406555,119.110657)"},"ID":35,"Name":"Set
+        Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":22},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Taking"}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(637.120239,120)"},"ID":36,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(272.834473,176.100159)","Collapsed":true},"ID":37,"Name":"GoToRandomPoint","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-154.230179,152.424255)"},"ID":38,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}},{"Type":"GoToSpawnPoint","NodeData":{"Offset":"(-22.2020226,145.342316)"},"ID":39,"Name":"Go
+        To Spawn Point","Instant":true,"SetMovementSetMovement":23,"SingleRandomPointRadius":30},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(98.93616,150.511963)"},"ID":40,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0}},{"Type":"IsStoppedMoving","NodeData":{"Offset":"(217.048782,154.6217)"},"ID":41,"Name":"Is
+        Stopped Moving","Instant":true,"Single_minMagnitude":0,"SetMovementSetMovement":24},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSelector","NodeData":{"Offset":"(362.973053,154.324432)"},"ID":42,"Name":"Random
         Selector","Instant":true,"Int32seed":0,"BooleanuseSeed":false,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-117.692123,114.358994)"},"ID":43,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetTrigger","NodeData":{"Offset":"(-68.46152,117.179489)"},"ID":44,"Name":"Set
-        Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":16},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"PickingUp"}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(39.4874878,117.179489)"},"ID":45,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(111.538162,106.503174)"},"ID":46,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetBoolParameter","NodeData":{"Offset":"(-57.9486237,116.263756)"},"ID":47,"Name":"Set
-        Bool Parameter","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":17},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"SitOnTheGrass"},"SharedBoolboolValue":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"BooleansetOnce":false},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(74.4688339,121.758194)"},"ID":48,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]}]}]}]}]}]}]},"Variables":[{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":18},{"Type":"SharedPlayer","Name":"_player","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true}]}'
+        Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":25},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"PickingUp"}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(39.4874878,117.179489)"},"ID":45,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(111.538162,106.503174)"},"ID":46,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetBoolParameter","NodeData":{"Offset":"(-57.9486237,116.263756)"},"ID":47,"Name":"Set
+        Bool Parameter","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":26},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"SitOnTheGrass"},"SharedBoolboolValue":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"BooleansetOnce":false},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(74.4688339,121.758194)"},"ID":48,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":40},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":50}}]}]}]}]}]}]}]},"Variables":[{"Type":"SharedNPC","Name":"_npc","IsShared":true,"NPCmValue":27},{"Type":"SharedPlayer","Name":"_player","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_well","IsShared":true,"TransformmValue":28},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_bench","IsShared":true,"TransformmValue":29},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"_shrub","IsShared":true,"TransformmValue":30}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
@@ -1833,22 +1838,34 @@ MonoBehaviour:
         - {fileID: 3958569482532887977}
         - {fileID: 4278380737146010451}
         - {fileID: 4278380737146010451}
+        - {fileID: 0}
         - {fileID: 4278380737146010451}
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 3958569482532887977}
+        - {fileID: 3733436725928684435}
+        - {fileID: 4278380737146010451}
+        - {fileID: 0}
+        - {fileID: 4278380737146010451}
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 3958569482532887977}
+        - {fileID: 3733436725928684435}
+        - {fileID: 4278380737146010451}
+        - {fileID: 0}
+        - {fileID: 4278380737146010451}
+        - {fileID: 0}
+        - {fileID: 0}
         - {fileID: 3958569482532887977}
         - {fileID: 3733436725928684435}
         - {fileID: 4278380737146010451}
         - {fileID: 4278380737146010451}
-        - {fileID: 3958569482532887977}
-        - {fileID: 3733436725928684435}
-        - {fileID: 4278380737146010451}
-        - {fileID: 4278380737146010451}
-        - {fileID: 3958569482532887977}
-        - {fileID: 3733436725928684435}
-        - {fileID: 4278380737146010451}
-        - {fileID: 4278380737146010451}
         - {fileID: 3733436725928684435}
         - {fileID: 3733436725928684435}
         - {fileID: 3958569482532887977}
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
         byteData: 
         byteDataArray: 
       Version: 1.7.2
@@ -1944,7 +1961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: f784c748-68bf-428f-b92c-11e4ddafdcc0
+  _id: 02434b48-f4e2-43c0-8baa-b7c5d85e23f1
   _isGenerateAwake: 1
 --- !u!114 &5555649862676878846
 MonoBehaviour:
@@ -1984,7 +2001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2185d538298c73f418ba252c3e3e01ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_key: Trader
+  m_key: NPC
   m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 1
   m_restoreStateOnStart: 0
@@ -1996,12 +2013,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4169b981b043be4e825faa740551ccf, type: 2}
   m_deletedStaticQuests: []
   m_id:
-    m_text: Trader
+    m_text: NPC
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_displayName:
-    m_text: Trader
+    m_text: NPC
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
@@ -2059,7 +2076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: NPC
-  persistentDataName: 
+  persistentDataName: NPC_66850
   portrait: {fileID: 0}
   spritePortrait: {fileID: 0}
   barkUISettings:
@@ -2152,8 +2169,8 @@ MonoBehaviour:
   allowBarksDuringConversations: 0
   skipBarkIfNoValidEntries: 0
   cacheBarkLines: 0
-  conversation: First Acquaintance
-  conversationConversant: {fileID: 0}
+  conversation: NPC Dialogue
+  conversationConversant: {fileID: 8639651608691810532}
   conversationActor: {fileID: 0}
   startConversationEntryID: -1
   startConversationEntryTitle: 
@@ -2234,7 +2251,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3736063062099208201}
+  m_Father: {fileID: 8639651608691810532}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &6304336605616863465
