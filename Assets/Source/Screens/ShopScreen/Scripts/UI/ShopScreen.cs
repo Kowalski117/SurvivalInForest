@@ -1,34 +1,8 @@
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
-
 public class ShopScreen : ScreenUI
 {
-    [SerializeField] private Button _exitButton;
-
-    public event UnityAction OnExitButton;
-
-    protected override void OnEnable()
+    protected override void ExitButtonClick()
     {
-        base.OnEnable();
-
-        _exitButton.onClick.AddListener(ExitButtonClick);
-
-        PlayerInputHandler.ScreenPlayerInput.OnToggleShopScreen += ToggleScreen;
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-
-        _exitButton.onClick.RemoveListener(ExitButtonClick);
-
-        PlayerInputHandler.ScreenPlayerInput.OnToggleShopScreen -= ToggleScreen;
-    }
-
-    public void ExitButtonClick()
-    {
-        OnExitButton?.Invoke();
+        base.ExitButtonClick();
         ToggleScreen();
     }
 }

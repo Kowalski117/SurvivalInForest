@@ -22,11 +22,9 @@ public class TransitionHandlerBetweenScenes : MonoBehaviour
 
     private void TransitionButton()
     {
-        _transitionWindow.ToggleScreen();
         _saveGame.Save();
-        _loadPanel.gameObject.SetActive(true);
         ES3.Save(SaveLoadConstants.TransitionScene, true);
-        _loadPanel.Load(1, () => SceneManager.LoadScene(_transitionSceneIndex), _transitionSceneIndex);
+        _loadPanel.LoadScene(_transitionSceneIndex);
     }
 
     private void ExitScreen()
