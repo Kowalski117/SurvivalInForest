@@ -6,68 +6,59 @@ public class BloodyScreen : MonoBehaviour
 {
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private CanvasGroup _screen;
-    [SerializeField] private float _alphaPlus;
     [SerializeField] private float _speenAlpha;
+    [SerializeField] private float _repeatDelay;
 
     private Tween _bloodyTween;
     private Coroutine _showBloodCoroutine;
     private Coroutine _removeBloodCoroutine;
+    private bool _isPlayCoroutine = false;
 
     private void OnEnable()
     {
         _playerHealth.OnDamageDone += ShowBlood;
-        _playerHealth.OnRestoringHealth += RemoveBlood;
+        _playerHealth.OnRestoringHealth += TurnOffBlow;
         _playerHealth.OnRevived += TurnOffBlow;
     }
 
     private void OnDisable()
     {
         _playerHealth.OnDamageDone -= ShowBlood;
-        _playerHealth.OnRestoringHealth -= RemoveBlood;
+        _playerHealth.OnRestoringHealth -= TurnOffBlow;
         _playerHealth.OnRevived -= TurnOffBlow;
     }
 
     private void TurnOffBlow()
     {
         _screen.alpha = 0;
+        _isPlayCoroutine = true;
+        StopCoroutine(_showBloodCoroutine);
         ClearTween();
     }
 
     private void ShowBlood()
     {
-        if (_removeBloodCoroutine != null)
+        if(!_isPlayCoroutine)
         {
-            StopCoroutine(_removeBloodCoroutine);
-        }
+            if (_showBloodCoroutine != null)
+            {
+                StopCoroutine(_showBloodCoroutine);
+            }
 
-        if (_showBloodCoroutine != null)
-        {
-            StopCoroutine(_showBloodCoroutine);
+            _showBloodCoroutine = StartCoroutine(ChangeAlpha(_screen, _speenAlpha, _repeatDelay));
         }
-
-        _showBloodCoroutine = StartCoroutine(ChangeAlpha(_screen, _screen.alpha + _alphaPlus, _speenAlpha));
     }
 
-    private void RemoveBlood()
-    {
-        if (_showBloodCoroutine != null)
-        {
-            StopCoroutine(_showBloodCoroutine);
-        }
-
-        if (_removeBloodCoroutine != null)
-        {
-            StopCoroutine(_removeBloodCoroutine);
-        }
-
-        _removeBloodCoroutine = StartCoroutine(ChangeAlpha(_screen, -_screen.alpha, _speenAlpha));
-    }
-
-    private IEnumerator ChangeAlpha(CanvasGroup canvasGroup, float targetAlpha, float delay)
+    private IEnumerator ChangeAlpha(CanvasGroup canvasGroup, float delay, float repeatDelay)
     {
         ClearTween();
-        _bloodyTween = canvasGroup.DOFade(canvasGroup.alpha + targetAlpha, delay);
+        _isPlayCoroutine = true;
+        _bloodyTween = canvasGroup.DOFade(1, delay);
         yield return new WaitForSeconds(delay);
+        _bloodyTween = canvasGroup.DOFade(0, delay);
+        yield return new WaitForSeconds(repeatDelay);
+
+        _showBloodCoroutine = StartCoroutine(ChangeAlpha(canvasGroup, delay, repeatDelay));
     }
 
     private void ClearTween()

@@ -3,13 +3,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(AudioSource))]
 public class Fire : MonoBehaviour
 {
     [SerializeField] private CraftObject _craftObject;
     [SerializeField] private GameObject _fireParticle;
     [SerializeField] private bool _isRemoveAfterFire = false;
     [SerializeField] private InventoryItemData[] _campfireItems;
+    [SerializeField] private AudioClip _gorenjeClip;
 
+    private AudioSource _audioSource;
     private float _workingHours = 2f;
     private float _maxHours = 5f;
     private Building _building;
@@ -25,6 +28,7 @@ public class Fire : MonoBehaviour
 
     private void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
         _uniqueId = GetComponentInParent<UniqueID>();
         _collider = GetComponent<SphereCollider>();
         _timeHandler = FindObjectOfType<TimeHandler>();
@@ -100,8 +104,9 @@ public class Fire : MonoBehaviour
             _fireParticle.gameObject.SetActive(false);
             _craftObject.TurnOff();
             _isFire = false;
+            _audioSource.Stop();
 
-            if(_isRemoveAfterFire)
+            if (_isRemoveAfterFire)
                 Destroy(gameObject);
         }
     }
@@ -118,6 +123,8 @@ public class Fire : MonoBehaviour
         _craftObject.enabled = true;
         _fireParticle.gameObject.SetActive(true);
         _isFire = true;
+        _audioSource.clip = _gorenjeClip;
+        _audioSource.Play();
     }
 
     private void ReduceTime(float time)

@@ -4,11 +4,17 @@ public class Torch : MonoBehaviour
 {
     [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] private PlayerAnimatorHandler _playerAnimatorHandler;
+    [SerializeField] private AudioClip _gorenjeClip;
+    [SerializeField] private AudioClip _hitClip;
 
+    private AudioSource _audioSource;
     private ToolItemData _currentTool;
     private bool _isEnable = false;
-    private float _timer = 1f;
-    private float _timerTime = 0f;
+
+    private void Awake()
+    {
+        _audioSource = GetComponent<AudioSource>();
+    }
 
     private void OnEnable()
     {
@@ -34,11 +40,18 @@ public class Torch : MonoBehaviour
         {
             _currentTool = itemData;
             _isEnable = true;
+
+            if (!_audioSource.isPlaying)
+            {
+                _audioSource.clip = _gorenjeClip;
+                _audioSource.Play();
+            }
         }
         else
         {
             _currentTool = null;
             _isEnable = false;
+            _audioSource.Stop();
         }
     }
 }

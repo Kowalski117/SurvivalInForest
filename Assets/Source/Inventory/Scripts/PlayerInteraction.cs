@@ -1,4 +1,3 @@
-using DuloGames.UI;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,12 +9,11 @@ public class PlayerInteraction : Raycast
     [SerializeField] private ToolItemData _armItemData;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private LayerMask _creatureLayer;
-    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private PlayerAudioHandler _playerAudioHandler;
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
     [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private LayerMask _usingLayer;
-    [SerializeField] private AudioClip[] _hitInAirClips;
 
     private WeaponItemData _currentWeapon;
     private ToolItemData _currentTool;
@@ -75,9 +73,6 @@ public class PlayerInteraction : Raycast
                 {
                     _playerAnimation.Hit(_isActiveGoal);
 
-                    if (!_isActiveGoal)
-                        _audioSource.PlayOneShot(_hitInAirClips[Random.Range(0, _hitInAirClips.Length)]);
-
                     _nextFireDelay = 0;
                 }
             }
@@ -86,9 +81,6 @@ public class PlayerInteraction : Raycast
                 if (_nextFireDelay > _currentTool.Speed)
                 {
                     _playerAnimation.Hit(_isActiveGoal);
-
-                    if (!_isActiveGoal)
-                        _audioSource.PlayOneShot(_hitInAirClips[Random.Range(0, _hitInAirClips.Length)]);
 
                     _nextFireDelay = 0;
                 }
@@ -121,6 +113,7 @@ public class PlayerInteraction : Raycast
                 if (brokenObject != null)
                 {
                     _currentBrokenObject = brokenObject;
+                    _selectionAudioClip = _currentBrokenObject.DamageClip;
                     OnEnableBarValue?.Invoke(_currentBrokenObject.MaxEndurance, _currentBrokenObject.Endurance);
                 }
             }
@@ -145,6 +138,7 @@ public class PlayerInteraction : Raycast
 
     public void UpdateItemData(InventorySlotUI slotUI)
     {
+        _nextFireDelay = _maxDelayFire;
         _previousItemData = _currentItemData;
         _currentInventorySlot = slotUI.AssignedInventorySlot;
         _currentItemData = _currentInventorySlot.ItemData;
@@ -194,8 +188,7 @@ public class PlayerInteraction : Raycast
             if (_inventory.RemoveInventory(_currentWeapon.Bullet.ItemData, 1))
             {
                 _playerAnimation.Hit(true);
-                _audioSource.PlayOneShot(_currentWeapon.MuzzleSound);
-                //_currentWeapon.MuzzleFlash.Play();
+                _playerAudioHandler.PlayOneShot(_currentWeapon.MuzzleSound);
                 _nextFireDelay = 0;
                 return true;
             }
@@ -241,12 +234,11 @@ public class PlayerInteraction : Raycast
     {
         if (_currentWeapon != null)
         {
-            PlayEffect();
-
             if (_currentAnim != null)
                 TakeDamageAnimal(_currentAnim, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
             else if(_currentBrokenObject != null)
                 TakeDamageBrokenObject(_currentWeapon.Damage, 0);
+            PlayEffect();
         }
     }
 
@@ -254,14 +246,13 @@ public class PlayerInteraction : Raycast
     {
         if (_currentTool != null)
         {
-            PlayEffect();
-
             if (_currentResoure != null)
                 TakeDamageResoure(_currentTool.DamageResources, 0);
             else if (_currentAnim != null)
                 TakeDamageAnimal(_currentAnim, _currentTool.DamageLiving, 0);
             else if (_currentBrokenObject != null)
                 TakeDamageBrokenObject(_currentTool.DamageResources, 0);
+            PlayEffect();
         }
     }
 
@@ -288,15 +279,6 @@ public class PlayerInteraction : Raycast
         }
     }
 
-    private void CreateParticle(InventoryItemData inventoryItemData, ParticleSystem particle)
-    {
-        if(_playerAnimation.CurrentItemAnimation.ItemData == inventoryItemData)
-        {
-            if (_playerAnimation.CurrentItemAnimation.ParticleSpawnPoint != null && particle != null)
-                Instantiate(particle, _playerAnimation.CurrentItemAnimation.ParticleSpawnPoint.position, Quaternion.identity);
-        }
-    }
-    
     private void TakeDamageBrokenObject(float damage, float overTimeDamage)
     {
         if (_currentBrokenObject != null)
@@ -324,7 +306,6 @@ public class PlayerInteraction : Raycast
                 if(!(_currentResoure is Stone stone && stone.ResourseType == _currentTool.ResourseType || _currentTool.ResourseType == ResourseType.All ))
                     return;
 
-                CreateParticle(_currentTool, _currentTool.HitEffect);
                 _currentResoure.TakeDamage(damage, overTimeDamage);
                 UpdateDurabilityItem(_currentInventorySlot);
             }
@@ -349,6 +330,6 @@ public class PlayerInteraction : Raycast
             Instantiate(_selectionParticle, _particlePosition, Quaternion.identity);
 
         if (_selectionAudioClip)
-            _audioSource.PlayOneShot(_selectionAudioClip);
+            _playerAudioHandler.PlayOneShot(_selectionAudioClip);
     }
 }
