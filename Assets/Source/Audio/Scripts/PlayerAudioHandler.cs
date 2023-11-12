@@ -11,6 +11,10 @@ public class PlayerAudioHandler : MonoBehaviour
     [SerializeField] private AudioClip[] _eatingSounds;
     [SerializeField] private AudioClip[] _drinkingSounds;
 
+    [SerializeField] private AudioClip[] _hitInAirClips;
+    [SerializeField] private AudioClip _pickUpClip;
+
+    private PlayerHealth _playerHealth;
     private AudioSource _audioSource;
     private AudioClip[] _footStepsOverride;
     private AudioClip _jumpSoundOverride;
@@ -21,15 +25,50 @@ public class PlayerAudioHandler : MonoBehaviour
     private Coroutine _coroutine;
     private float _longDelay = 0.5f;
     private float _shortDelay = 0.25f;
+    private bool _isEnable;
+
+    public AudioClip[] HitInAirClips => _hitInAirClips;
+    public AudioClip PickUpClip => _pickUpClip;
 
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
+        _playerHealth = GetComponent<PlayerHealth>();
+    }
+
+    private void OnEnable()
+    {
+        _playerHealth.OnDied += TurnOffSpecialSurface;
+    }
+
+    private void OnDisable()
+    {
+        _playerHealth.OnDied -= TurnOffSpecialSurface;
+    }
+
+    public void SetEnable(bool enable)
+    {
+        _isEnable = enable;
+    }
+
+    public void PlayOneShot(AudioClip audioClip)
+    {
+        _audioSource.PlayOneShot(audioClip);
+    }
+
+    public void PlayHitInAirClip()
+    {
+        _audioSource.PlayOneShot(_hitInAirClips[Random.Range(0, _hitInAirClips.Length)]);
+    }
+
+    public void PlayItemPickUpClip()
+    {
+        _audioSource.PlayOneShot(_pickUpClip);
     }
 
     public void PlayEatingSound(float eatValue, float drinkValue)
     {
-        if(eatValue > 0 || drinkValue > 0)
+        if(eatValue > 0 || drinkValue > 0 && _isEnable)
         {
             if (eatValue >= drinkValue)
             {
@@ -49,7 +88,7 @@ public class PlayerAudioHandler : MonoBehaviour
 
     public void PlayLandingSound(bool isJumping)
     {
-        if (_isJumping && !isJumping)
+        if (_isJumping && !isJumping && _isEnable)
         {
             if (_isInSpecialSurface)
             {
@@ -66,7 +105,7 @@ public class PlayerAudioHandler : MonoBehaviour
 
     public void PlayJumpSound(bool isJumping)
     {
-        if (!_isJumping && isJumping)
+        if (!_isJumping && isJumping && _isEnable)
         {
             if (_isInSpecialSurface)
             {
@@ -85,7 +124,7 @@ public class PlayerAudioHandler : MonoBehaviour
 
     public void PlayFootStepAudio(bool isSprint, bool isStealth)
     {
-        if (!_isFootstepPlaying)
+        if (!_isFootstepPlaying && _isEnable)
         {
             _isFootstepPlaying = true;
 
@@ -136,9 +175,14 @@ public class PlayerAudioHandler : MonoBehaviour
         _isJumping = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void TurnOffSpecialSurface()
     {
-        if (other.TryGetComponent(out IL3DN_ChangeWalkingSound soundScript))
+        _isInSpecialSurface = false;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent(out IL3DN_ChangeWalkingSound soundScript) && !_isInSpecialSurface)
         {
             if (soundScript != null)
             {
