@@ -53,8 +53,6 @@ MonoBehaviour:
   _colliderGround: {fileID: 7766027847528998618}
   _renderers:
   - {fileID: 2723662083101088319}
-  _defoultMaterial:
-  - {fileID: 2100000, guid: c0273817d9b557c4cbe78d17e9f64976, type: 2}
 --- !u!54 &8506248896580008075
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -96,7 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 7cdc2557-2fa2-42f5-8d3b-362a32640981
+  _id: 71798864-fb06-4d22-a849-647fa7278d84
+  _isGenerateAwake: 1
 --- !u!1 &485775828309152385
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,11 +196,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5789340284435480354}
-  - component: {fileID: 6146816512563765719}
-  m_Layer: 7
+  - component: {fileID: 6697746838373704258}
+  m_Layer: 25
   m_Name: ColliderGround (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -213,25 +212,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2348220000105004709}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.224, y: 0, z: 0}
+  m_LocalPosition: {x: -1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8659654091096945704}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6146816512563765719
-BoxCollider:
+--- !u!135 &6697746838373704258
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2348220000105004709}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 0.045577765, z: 3}
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2457797957001872987
 GameObject:
@@ -242,11 +241,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1289010577631065840}
-  - component: {fileID: 854954126199243457}
-  m_Layer: 7
+  - component: {fileID: 3597773818136930548}
+  m_Layer: 25
   m_Name: ColliderGround (3)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -258,25 +257,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2457797957001872987}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.249}
+  m_LocalPosition: {x: 0, y: 0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8659654091096945704}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &854954126199243457
-BoxCollider:
+--- !u!135 &3597773818136930548
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2457797957001872987}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 0.045577765, z: 1.5}
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2513291030005104064
 GameObject:
@@ -287,11 +286,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5975915452222826862}
-  - component: {fileID: 238280379989817386}
-  m_Layer: 7
+  - component: {fileID: 3055498664913910779}
+  m_Layer: 25
   m_Name: ColliderGround (4)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -303,25 +302,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2513291030005104064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2.21}
+  m_LocalPosition: {x: 0, y: 0, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8659654091096945704}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &238280379989817386
-BoxCollider:
+--- !u!135 &3055498664913910779
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2513291030005104064}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 0.045577765, z: 1.5}
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3737080151972714793
 GameObject:
@@ -332,11 +331,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5754596319961477154}
-  - component: {fileID: 8083699746738989930}
-  m_Layer: 7
+  - component: {fileID: 719986170312883929}
+  m_Layer: 25
   m_Name: ColliderGround (2)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -348,25 +347,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3737080151972714793}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.255, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8659654091096945704}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8083699746738989930
-BoxCollider:
+--- !u!135 &719986170312883929
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3737080151972714793}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 0.045577765, z: 3}
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6583225534081621523
 GameObject:

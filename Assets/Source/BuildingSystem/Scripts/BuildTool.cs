@@ -14,6 +14,7 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
     [SerializeField] private LayerMask _deleteModeLayerMask;
+    [SerializeField] private int _foundationConnectionLayer;
     [SerializeField] private Transform _rayOrigin;
     [SerializeField] private Material _buildingMatPositive;
     [SerializeField] private Material _buildingMatNegative;
@@ -163,10 +164,23 @@ public class BuildTool : MonoBehaviour
 
             if(_recipe.BuildingData.Type == ItemType.Build)
             {
-                hitPoint += terrainNormal * 0.1f;
-                Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
-                Vector3 roundedPosition = new Vector3(Mathf.Round(gridPosition.x), hitPoint.y, Mathf.Round(gridPosition.z));
-                _spawnBuilding.transform.position = roundedPosition;
+                if(hitInfo.collider.gameObject.layer == _foundationConnectionLayer)
+                {
+                    Debug.Log("1");
+                    _spawnBuilding.transform.position = hitInfo.collider.transform.position;
+                    //_spawnBuilding.transform.rotation = hitInfo.collider.transform.rotation;
+                }
+                else
+                {
+                    Debug.Log("2");
+                    //hitPoint += terrainNormal * 0.1f;
+                    //Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
+                    //Vector3 roundedPosition = new Vector3(Mathf.Round(gridPosition.x), hitPoint.y, Mathf.Round(gridPosition.z));
+                    //_spawnBuilding.transform.position = roundedPosition;
+
+                    _spawnBuilding.transform.position = hitPoint;
+
+                }
             }
             else if(_recipe.BuildingData.Type == ItemType.InteractBuilding)
             {

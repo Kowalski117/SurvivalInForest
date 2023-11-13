@@ -9,17 +9,26 @@ public class BuildingData : ScriptableObject
     [SerializeField] private Sprite _icon;
     [SerializeField] private Building _prefab;
     [SerializeField] private ItemType _type;
+    [SerializeField] private BuildType _buildType;
 
     public string DisplayName => _displayName;
     public int Id => _id;
     public Sprite Icon => _icon;
     public Building Prefab => _prefab;
     public ItemType Type => _type;
+    public BuildType BuildType => _buildType;
 
     public void SetId(int id)
     {
         _id = id;
     }
+}
+
+public enum BuildType
+{
+    None = 0,
+    Floor = 1,
+    Wall = 2,
 }
 
 #if UNITY_EDITOR
