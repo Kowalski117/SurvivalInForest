@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 935899b62f48ae5498594680ed17d133, type: 3}
-  m_Name: Dialogue Database
+  m_Name: Dialogue Database (Auto-Backup)
   m_EditorClassIdentifier: 
   version: 
   author: 
@@ -91,7 +91,7 @@ MonoBehaviour:
   - id: 1
     fields:
     - title: Name
-      value: PickBerry
+      value: PickBerries
       type: 0
       typeString: CustomFieldType_Text
     - title: Pictures
@@ -191,6 +191,20 @@ MonoBehaviour:
       value: 
       type: 0
       typeString: CustomFieldType_Text
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
+  - id: 2
+    fields:
+    - title: Name
+      value: Berries
+      type: 0
+      typeString: 
+    - title: Initial Value
+      value: 0
+      type: 1
+      typeString: CustomFieldType_Number
     - title: Description
       value: 
       type: 0
@@ -387,7 +401,7 @@ MonoBehaviour:
         destinationDialogueID: 3
         isConnector: 0
         priority: 2
-      conditionsString: CurrentQuestState("PickBerry") == "unassigned"
+      conditionsString: CurrentQuestState("PickBerries") == "unassigned"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -3068,10 +3082,10 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 'SetQuestState("PickBerry", "active");
+      userScript: 'SetQuestState("PickBerries", "active");
 
         ShowAlert("New
-        Quest: PickBerry")'
+        Quest: PickBerries")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3147,7 +3161,7 @@ MonoBehaviour:
         destinationDialogueID: 45
         isConnector: 0
         priority: 2
-      conditionsString: CurrentQuestState("PickBerry") == "active"
+      conditionsString: CurrentQuestState("PickBerries") == "active"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -3212,14 +3226,14 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: GetQuestNodeState("PickBerry", "PickBerrys")  == "active"
+      conditionsString: Variable["Berries"] <= 5
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 286.52942
+        x: 288
         y: 218
         width: 160
         height: 30
@@ -3283,14 +3297,14 @@ MonoBehaviour:
         destinationDialogueID: 46
         isConnector: 0
         priority: 2
-      conditionsString: GetQuestNodeState("PickBerry", "Return")  == "active"
+      conditionsString: Variable["Berries"] >= 5
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 496.30786
+        x: 496
         y: 218
         width: 160
         height: 30
@@ -3500,7 +3514,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: SetQuestState("PickBerry", "success")
+      userScript: SetQuestState("PickBerries", "success")
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3564,7 +3578,7 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: CurrentQuestState("PickBerry") == "success"
+      conditionsString: CurrentQuestState("PickBerries") == "success"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -3576,7 +3590,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 110.063736, y: 0}
+    canvasScrollPosition: {x: 0, y: 0}
     canvasZoom: 0.86000013
   syncInfo:
     syncActors: 0

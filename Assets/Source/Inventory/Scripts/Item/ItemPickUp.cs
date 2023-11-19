@@ -1,3 +1,4 @@
+using PixelCrushers.DialogueSystem;
 using PixelCrushers.QuestMachine.Wrappers;
 using UnityEngine;
 using UnityEngine.Events;
@@ -45,8 +46,7 @@ public class ItemPickUp : MonoBehaviour
 
     public void PickUp()
     {
-        _questControl.SendToMessageSystem("Find:" + _itemData.name);
-
+        _questControl.SendToMessageSystem("PickUp:"+_itemData.DisplayName);
         ES3.Save(_uniqueID.Id, _uniqueID.Id);
         DestroyItem?.Invoke();
         Destroy(this.gameObject);
