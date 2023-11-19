@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ScreenUI : MonoBehaviour
 {
     [SerializeField] protected PlayerInputHandler PlayerInputHandler;
+    [SerializeField] private UIInventoryHandler _inventoryHandler;
     [SerializeField] private CanvasGroup _panel;
     [SerializeField] private Button _exitButton;
 
@@ -61,8 +62,10 @@ public class ScreenUI : MonoBehaviour
             if (PlayerInputHandler)
             {
                 PlayerInputHandler.BuildTool.DeleteBuilding();
-                PlayerInputHandler.SetCursorVisible(true);
                 PlayerInputHandler.ToggleAllInput(false);
+
+                if (_inventoryHandler && !_inventoryHandler.IsInventoryOpen)
+                    PlayerInputHandler.SetCursorVisible(true);
             }
         }
         else
@@ -71,8 +74,10 @@ public class ScreenUI : MonoBehaviour
 
             if (PlayerInputHandler)
             {
-                PlayerInputHandler.SetCursorVisible(false);
                 PlayerInputHandler.ToggleAllInput(true);
+
+                if(_inventoryHandler && !_inventoryHandler.IsInventoryOpen)
+                    PlayerInputHandler.SetCursorVisible(false);
             }
         }
     }

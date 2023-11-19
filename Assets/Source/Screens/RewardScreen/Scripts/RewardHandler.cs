@@ -13,8 +13,9 @@ public class RewardHandler : MonoBehaviour
 
     private DailyRewardsScreen _dailyRewardsScreen;
 
+    private string _defoultTime = "00:00:00";
     private bool _isClaimReward;
-    private float _claimCooldown = 24f / 24/ 60 / 6/ 2;
+    private float _claimCooldown = 24f / 24 / 60 / 6 / 2;
     private float _claimDeadline = 48f / 24 / 60 / 6 / 2;
 
     private Coroutine _claimCoroutine;
@@ -162,15 +163,13 @@ public class RewardHandler : MonoBehaviour
     private void UpdateRewardsUI()
     {
         if (_isClaimReward)
-            _statusText.text = "Получи награду!";
+            _statusText.text = _defoultTime;
         else
         {
             var nextClaimTime = _lastClaimTime.Value.AddHours(_claimCooldown);
             var currentClaimCooldown = nextClaimTime - DateTime.UtcNow;
 
-            string cd = $"{currentClaimCooldown.Hours:D2}:{currentClaimCooldown.Minutes:D2}:{currentClaimCooldown.Seconds:D2}";
-
-            _statusText.text = $"До получения подарка осталось {cd}";
+            _statusText.text = $"{currentClaimCooldown.Hours:D2}:{currentClaimCooldown.Minutes:D2}:{currentClaimCooldown.Seconds:D2}";
         }
     }
 
@@ -180,7 +179,8 @@ public class RewardHandler : MonoBehaviour
         {
             if(i == index)
             {
-                _rewardSlots[i].ToggleSlot(true);
+                if(i - 1 >= 0)
+                    _rewardSlots[i-1].ToggleSlot(true);
             }
             else
             {
