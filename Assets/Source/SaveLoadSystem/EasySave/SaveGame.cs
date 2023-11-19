@@ -15,6 +15,12 @@ public class SaveGame : MonoBehaviour
 
     private void Start()
     {
+        if(ES3.KeyExists(SaveLoadConstants.IsNewGame) && ES3.Load<bool>(SaveLoadConstants.IsNewGame) == true)
+        {
+            Delete();
+            StartCoroutine(WaitForLoad(0.5f));
+        }
+
         if (ES3.KeyExists(SaveLoadConstants.StartLastSaveScene) && ES3.Load<bool>(SaveLoadConstants.StartLastSaveScene) == true || ES3.KeyExists(SaveLoadConstants.TransitionScene) && ES3.Load<bool>(SaveLoadConstants.TransitionScene) == true)
             StartCoroutine(WaitForLoad(0.5f));
     }
@@ -47,6 +53,7 @@ public class SaveGame : MonoBehaviour
     public void Delete()
     {
         ES3.DeleteFile();
+        PlayerPrefs.DeleteAll();
     }
 
     private IEnumerator WaitForLoad(float delay)

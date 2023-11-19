@@ -184,7 +184,6 @@ public class SpawnPointAnimals : MonoBehaviour
         if (_isReborn)
         {
             PlayerPrefs.SetFloat(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime, PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter) + _elapsedTime);
-            Debug.Log(PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter) + _elapsedTime);
             PlayerPrefs.Save();
         }
     }

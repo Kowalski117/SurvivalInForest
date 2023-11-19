@@ -11,27 +11,31 @@ public class BloodyScreen : MonoBehaviour
 
     private Tween _bloodyTween;
     private Coroutine _showBloodCoroutine;
-    private Coroutine _removeBloodCoroutine;
     private bool _isPlayCoroutine = false;
 
     private void OnEnable()
     {
         _playerHealth.OnDamageDone += ShowBlood;
         _playerHealth.OnRestoringHealth += TurnOffBlow;
-        _playerHealth.OnRevived += TurnOffBlow;
+        _playerHealth.OnRevived += ClearBlow;
     }
 
     private void OnDisable()
     {
         _playerHealth.OnDamageDone -= ShowBlood;
         _playerHealth.OnRestoringHealth -= TurnOffBlow;
-        _playerHealth.OnRevived -= TurnOffBlow;
+        _playerHealth.OnRevived -= ClearBlow;
     }
 
     private void TurnOffBlow()
     {
         _screen.alpha = 0;
-        _isPlayCoroutine = true;
+        _isPlayCoroutine = false;
+    }
+
+    private void ClearBlow()
+    {
+        _screen.alpha = 0;
         StopCoroutine(_showBloodCoroutine);
         ClearTween();
     }
@@ -58,7 +62,8 @@ public class BloodyScreen : MonoBehaviour
         _bloodyTween = canvasGroup.DOFade(0, delay);
         yield return new WaitForSeconds(repeatDelay);
 
-        _showBloodCoroutine = StartCoroutine(ChangeAlpha(canvasGroup, delay, repeatDelay));
+        if(_isPlayCoroutine)
+            _showBloodCoroutine = StartCoroutine(ChangeAlpha(canvasGroup, delay, repeatDelay));
     }
 
     private void ClearTween()

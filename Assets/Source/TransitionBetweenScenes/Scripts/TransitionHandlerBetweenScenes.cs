@@ -24,6 +24,7 @@ public class TransitionHandlerBetweenScenes : MonoBehaviour
     {
         _saveGame.Save();
         ES3.Save(SaveLoadConstants.TransitionScene, true);
+        ES3.Save(SaveLoadConstants.IsNewGame, false);
         _loadPanel.LoadScene(_transitionSceneIndex);
     }
 

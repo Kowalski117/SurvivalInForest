@@ -12,8 +12,10 @@ public class DelayWindow : MonoBehaviour
     [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
-    [SerializeField] private TMP_Text _text;
+    [SerializeField] private TMP_Text _nameText;
+    [SerializeField] private TMP_Text _timerText;
 
+    private AudioSource _audioSource;
     private DateTime _time;
     private Coroutine _coroutine;
     private bool _isLoading = false;
@@ -21,6 +23,11 @@ public class DelayWindow : MonoBehaviour
     private float _maximumDivisor = 3;
 
     public event UnityAction OnLoadingComplete;
+
+    private void Awake()
+    {
+        _audioSource = GetComponent<AudioSource>();
+    }
 
     public void ShowLoadingWindow(float delay, float skipTime, string name, ActionType actionType)
     {
@@ -38,6 +45,7 @@ public class DelayWindow : MonoBehaviour
 
     private IEnumerator LoadingRoutine(float delay, float skipTime, string name, ActionType actionType)
     {
+        _audioSource.Play();
         _isLoading = true;
         _survivalHandler.TimeHandler.ToggleEnable(false);
         _playerInputHandler.ToggleAllInput(false);
@@ -46,8 +54,8 @@ public class DelayWindow : MonoBehaviour
 
         _time = _time + TimeSpan.FromHours(skipTime);
 
-        string actionText = GetActionText(actionType, name);
-        _text.text = actionText;
+        _nameText.text = name;
+        _timerText.text = _time.ToString(GameConstants.HHmm);
 
         float elapsedTime = 0f;
         float duration = delay;
@@ -78,21 +86,7 @@ public class DelayWindow : MonoBehaviour
         _time = DateTime.MinValue;
 
         OnLoadingComplete?.Invoke();
-    }
-
-    private string GetActionText(ActionType actionType, string name)
-    {
-        switch (actionType)
-        {
-            case ActionType.CraftItem:
-                return $"Крафтится {name}, затраченное время - {_time.ToString(GameConstants.HHmm)}";
-            case ActionType.CraftBuild:
-                return $"Строится {name}, затраченное время - {_time.ToString(GameConstants.HHmm)}";
-            case ActionType.Sleep:
-                return $"Вы спите, затраченное время - {_time.ToString(GameConstants.HHmm)}";
-            default:
-                return string.Empty;
-        }
+        _audioSource.Stop();
     }
 }
 

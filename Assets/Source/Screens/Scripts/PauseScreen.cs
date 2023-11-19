@@ -9,6 +9,7 @@ public class PauseScreen : MenuScreen
     [SerializeField] private ShopScreen _shopScreen;
     [SerializeField] private DailyRewardsScreen _dailyRewardsScreen;
 
+    [SerializeField] private Button _pauseButton;
     [SerializeField] private Button _shopButton;
     [SerializeField] private Button _dailyRewardsButton;
     [SerializeField] private Button _continueButton;
@@ -27,6 +28,7 @@ public class PauseScreen : MenuScreen
         _saveButton.onClick.AddListener(SaveButtonClick);
         _exitMainMenuButton.onClick.AddListener(ExitMainMenuButtonClick);
 
+        _pauseButton.onClick.AddListener(ToggleAllScreen);
         PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleAllScreen;
     }
 
@@ -39,6 +41,7 @@ public class PauseScreen : MenuScreen
         _saveButton.onClick.RemoveListener(SaveButtonClick);
         _exitMainMenuButton.onClick.RemoveListener(ExitMainMenuButtonClick);
 
+        _pauseButton.onClick.RemoveListener(ToggleAllScreen);
         PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleAllScreen;
     }
 

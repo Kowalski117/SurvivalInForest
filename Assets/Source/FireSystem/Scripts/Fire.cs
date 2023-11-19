@@ -21,16 +21,15 @@ public class Fire : MonoBehaviour
     private TimeHandler _timeHandler;
     private bool _isFire = false;
     private bool _isEnable = true;
-    private SphereCollider _collider;
     private UniqueID _uniqueId;
 
     public event UnityAction<DateTime> OnCompletionTimeUpdate;
+    public event UnityAction<bool> OnToggledFire;
 
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _uniqueId = GetComponentInParent<UniqueID>();
-        _collider = GetComponent<SphereCollider>();
         _timeHandler = FindObjectOfType<TimeHandler>();
         _building = GetComponentInParent<Building>();
         _fireParticle.gameObject.SetActive(false);
@@ -39,11 +38,6 @@ public class Fire : MonoBehaviour
 
     private void Start()
     {
-        if(_craftObject.IsEnabledInitially == true)
-        {
-            _collider.enabled = false;
-        }
-
         Load();
     }
 
@@ -104,6 +98,7 @@ public class Fire : MonoBehaviour
             _fireParticle.gameObject.SetActive(false);
             _craftObject.TurnOff();
             _isFire = false;
+            OnToggledFire?.Invoke(_isFire);
             _audioSource.Stop();
 
             if (_isRemoveAfterFire)
@@ -119,10 +114,10 @@ public class Fire : MonoBehaviour
 
     private void EnableParticle()
     {
-        _collider.enabled = true;
         _craftObject.enabled = true;
         _fireParticle.gameObject.SetActive(true);
         _isFire = true;
+        OnToggledFire?.Invoke(_isFire);
         _audioSource.clip = _gorenjeClip;
         _audioSource.Play();
     }

@@ -12,14 +12,13 @@ public class LoadPanel : MonoBehaviour
     [SerializeField] private LoadingScreenSettings _screenSettings;
     [SerializeField] private Image _imageHint;
     [SerializeField] private Image _loadBarImage;
+    [SerializeField] private Transform _loadBarTransform;
     [SerializeField] private TMP_Text _sceneNameIndex;
     [SerializeField] private TMP_Text _textHint;
     [SerializeField] private TMP_Text _loadBarText;
     [SerializeField] private Button _resumeButton;
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private GameObject _text;
-    [SerializeField] private Image _panel;
-    [SerializeField] private Image _image;
     [SerializeField] private float _fadeSpeed;
     [SerializeField] private bool _isStart = false;
 
@@ -49,6 +48,7 @@ public class LoadPanel : MonoBehaviour
     public void StartLoad(int index)
     {
         ES3.Save(SaveLoadConstants.StartLastSaveScene, false);
+        ES3.Save(SaveLoadConstants.IsNewGame, true);
         LoadScene(index);
     }
 
@@ -58,6 +58,7 @@ public class LoadPanel : MonoBehaviour
         {
             int indexScene = ES3.Load<int>(SaveLoadConstants.SceneIndex);
             ES3.Save(SaveLoadConstants.StartLastSaveScene, true);
+            ES3.Save(SaveLoadConstants.IsNewGame, false);
             LoadScene(indexScene);
         }
     }
@@ -111,6 +112,7 @@ public class LoadPanel : MonoBehaviour
 
             _canvasGroup.blocksRaycasts = true;
             _loadBarText.enabled = false;
+            _loadBarTransform.gameObject.SetActive(false);
             _resumeButton.gameObject.SetActive(true);
         }
         else if (alpha == 1)
@@ -124,7 +126,7 @@ public class LoadPanel : MonoBehaviour
             ES3.Save(SaveLoadConstants.LastSceneIndex, SceneManager.GetActiveScene().buildIndex);
             ES3.Save(SaveLoadConstants.NextSceneIndex, indexScene);
         }
-
+        _loadBarTransform.gameObject.SetActive(true);
         _loadBarImage.fillAmount = 0;
 
         while (_canvasGroup.alpha != 1)

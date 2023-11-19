@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PositionButton : MonoBehaviour
 {
-    [SerializeField] private Vector3 position;
+    [SerializeField] private Transform _position;
 
     private CreativeModeWindow _creativeModeWindow;
 
@@ -13,6 +13,6 @@ public class PositionButton : MonoBehaviour
 
     public void SetPosiion()
     {
-        _creativeModeWindow.PlayerInventoryHolder.gameObject.transform.position = position;
+        _creativeModeWindow.StartTeleportPlayer(_position);
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,6 +29,7 @@ public class CraftingHandler : MonoBehaviour
     public event UnityAction OnUpdateSlotInventory;
 
     public Transform CraftingWindow => _craftingWindow;
+    public Crafting—ategory CurrentCrafting—ategory => _currentCategory;
 
     private void Awake()
     {
@@ -65,7 +65,7 @@ public class CraftingHandler : MonoBehaviour
 
         foreach (var button in _craftingCategoryButtons)
         {
-            button.SelectButton(_defoultColor);
+            button.ToggleButton(false);
         }
 
         DisplayCraftWindow(_manualWorkbench.Crafting—ategory);
@@ -108,9 +108,9 @@ public class CraftingHandler : MonoBehaviour
         foreach (var button in _craftingCategoryButtons)
         {
             if (button.ItemType == itemType)
-                button.SelectButton(_selectColor);
+                button.ToggleButton(true);
             else
-                button.SelectButton(_defoultColor);
+                button.ToggleButton(false);
         }
 
         foreach (var slot in _craftItemSlots)
