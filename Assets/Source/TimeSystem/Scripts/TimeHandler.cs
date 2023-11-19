@@ -90,11 +90,6 @@ public class TimeHandler : MonoBehaviour
         _isEnabled = isActive;
     }
 
-    public void SetEnable(bool isActive)
-    {
-        _isEnabled = isActive;
-    }
-
     private void UpdateTimeDay()
     {
         _currentTime = _currentTime.AddSeconds(Time.deltaTime * _timeMultiplier);

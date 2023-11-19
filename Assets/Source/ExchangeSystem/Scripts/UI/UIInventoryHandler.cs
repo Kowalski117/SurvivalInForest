@@ -5,7 +5,7 @@ public class UIInventoryHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private PlayerHealth _playerHealth;
-    [SerializeField] private DynamicInventoryDisplay _inventoryPanel;
+    [SerializeField] private DynamicInventoryDisplay _chestInventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
     [SerializeField] private StaticInventoryDisplay _playerHotbarInventory;
     [SerializeField] private ClothesInventory _clothesInventory;
@@ -21,7 +21,7 @@ public class UIInventoryHandler : MonoBehaviour
 
     private void Awake()
     {
-        _inventoryPanel.gameObject.SetActive(false);
+        _chestInventoryPanel.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -54,19 +54,19 @@ public class UIInventoryHandler : MonoBehaviour
 
             if (_isChestOpen)
             {
-                _inventoryPanel.gameObject.SetActive(true);
-                _inventoryPanel.RefreshDynamicInventory(chestInventory.InventorySystem, offset);
+                _chestInventoryPanel.gameObject.SetActive(true);
+                _chestInventoryPanel.RefreshDynamicInventory(chestInventory.InventorySystem, offset);
             }
             else
             {
-                _inventoryPanel.gameObject.SetActive(false);
+                _chestInventoryPanel.gameObject.SetActive(false);
             }
         }
         else
         {
             _isChestOpen = false;
             chestInventory.DistanceHandler.SetActive(_isChestOpen);
-            _inventoryPanel.gameObject.SetActive(false);
+            _chestInventoryPanel.gameObject.SetActive(false);
         }
     }
 

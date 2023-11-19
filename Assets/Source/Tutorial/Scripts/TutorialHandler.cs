@@ -9,11 +9,16 @@ public class TutorialHandler : Raycast
     protected override void Awake()
     {
         base.Awake();
+    }
 
-        foreach (var obj in _infoObjects)
-        {
-            obj.Init();
-        }
+    private void OnEnable()
+    {
+        SaveGame.OnLoadData += InitInfoObjects;
+    }
+
+    private void OnDisable()
+    {
+        SaveGame.OnLoadData -= InitInfoObjects;
     }
 
     private void Update()
@@ -37,6 +42,14 @@ public class TutorialHandler : Raycast
                     info.SetIsDone(true);
                 }
             }
+        }
+    }
+
+    private void InitInfoObjects()
+    {
+        foreach (var obj in _infoObjects)
+        {
+            obj.Init();
         }
     }
 }

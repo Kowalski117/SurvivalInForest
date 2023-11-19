@@ -6,8 +6,11 @@ public class CraftingCategoryButton : MonoBehaviour
     [SerializeField] private CraftingHandler _craftingHandler;
     [SerializeField] private ItemType _itemType;
     [SerializeField] private Image _image;
+    [SerializeField] private Image _frameImage;
 
     private Button _button;
+    private Color _defoutColor = Color.white;
+    private Color _selectColor = Color.black;
 
     public ItemType ItemType => _itemType;
 
@@ -26,9 +29,18 @@ public class CraftingCategoryButton : MonoBehaviour
         _button.onClick.RemoveListener(OpenCategory);
     }
 
-    public void SelectButton(Color color)
+    public void ToggleButton(bool isActive)
     {
-        _image.color = color;
+        if(isActive)
+        {
+            _frameImage.gameObject.SetActive(true);
+            _image.color = _selectColor;
+        }
+        else
+        {
+            _frameImage.gameObject.SetActive(false);
+            _image.color = _defoutColor;
+        }
     }
 
     private void OpenCategory()

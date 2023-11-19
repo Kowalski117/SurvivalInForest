@@ -50,6 +50,7 @@ public class ExchangerSlotView : MonoBehaviour
                 }
 
                 _amount = _index;
+                UpdateAmount();
                 break;
             }
         }

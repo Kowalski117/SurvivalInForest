@@ -6,30 +6,28 @@ public class CraftObject : MonoBehaviour
     [SerializeField] private bool _isEnabledInitially = false;
 
     private Building _building;
-    private SphereCollider _sphereCollider;
     private BoxCollider _boxCollider;
-    private ManualWorkbench _workbench;
-    private DistanceHandler _distanceHandler;
+    private Fire _fire;
+    private bool _isEnabled = false;
 
     public bool IsEnabledInitially => _isEnabledInitially;
+    public CraftingÑategory CraftingÑategory => _craftingÑategory;
+    public bool IsEnabled => _isEnabled;
 
     private void Awake()
     {
         _building = GetComponentInParent<Building>();
-        _sphereCollider = GetComponent<SphereCollider>();
         _boxCollider = GetComponent<BoxCollider>();
-        _distanceHandler = GetComponentInChildren<DistanceHandler>();
+        _fire = GetComponent<Fire>();
 
         if (_building != null)
         {
             _boxCollider.enabled = false;
-            _sphereCollider.enabled = false;
         }
 
         if (_isEnabledInitially)
         {
             _boxCollider.enabled = true;
-            _sphereCollider.enabled = true;
         }
     }
 
@@ -40,7 +38,10 @@ public class CraftObject : MonoBehaviour
             _building.OnCompletedBuild += EnableCollider;
         }
 
-        _distanceHandler.OnDistanceExceeded += SetDefoultCrafts;
+        if (_fire != null)
+        {
+            _fire.OnToggledFire += ToggleEnable;
+        }
     }
 
     private void OnDisable()
@@ -50,56 +51,32 @@ public class CraftObject : MonoBehaviour
             _building.OnCompletedBuild -= EnableCollider;
         }
 
-        _distanceHandler.OnDistanceExceeded -= SetDefoultCrafts;
+        if (_fire != null)
+        {
+            _fire.OnToggledFire -= ToggleEnable;
+        }
     }
 
     public void TurnOff()
     {
-        _sphereCollider.enabled = false;
-
-        if(_workbench != null)
-        {
-            _workbench.CraftingHandler.DisplayCraftWindow(_workbench.CraftingÑategory);
-            _workbench = null;
-            _distanceHandler.SetActive(false);
-        }
-
-        enabled = false;
-    }
-
-    private void SetDefoultCrafts()
-    {
-        _workbench.CraftingHandler.DisplayCraftWindow(_workbench.CraftingÑategory);
-        _workbench = null;
-        _distanceHandler.SetActive(false);
+        _isEnabled = false;
     }
 
     private void EnableCollider()
     {
-        _sphereCollider.enabled = true;
+        _isEnabled = true;
+    }
+
+    private void ToggleEnable(bool enable)
+    {
+        if (enable)
+            EnableCollider();
+        else
+            TurnOff();
     }
 
     private void OnDestroy()
     {
         TurnOff();
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
-        {
-            _workbench = manualWorkbench;
-            manualWorkbench.CraftingHandler.DisplayCraftWindow(_craftingÑategory);
-            _distanceHandler.SetActive(true);
-        }
-    }
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.TryGetComponent(out ManualWorkbench manualWorkbench))
-    //    {
-    //        manualWorkbench.CraftingHandler.DisplayCraftWindow(manualWorkbench.CraftingÑategory);
-    //        _workbench = null;
-    //    }
-    //}
 }

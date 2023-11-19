@@ -87,6 +87,6 @@ public class PlayerInputHandler : MonoBehaviour
         SetCursorVisible(!visible);
         TogglePersonController(visible);
         _survivalHandler.SetEnable(visible);
-        _survivalHandler.TimeHandler.SetEnable(visible);
+        _survivalHandler.TimeHandler.ToggleEnable(visible);
     }
 }

@@ -1,17 +1,26 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Xml;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CreativeModeWindow : MonoBehaviour
 { 
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private PlayerInputHandler _inputHandler;
+    [SerializeField] private UIInventoryHandler _inventoryUI;
     [SerializeField] private List<InventoryItemData> _itemDataBase;
     [SerializeField] private ItemButton _itemButtonPrefab;
     [SerializeField] private Transform _window;
     [SerializeField] private Transform _container;
+    [SerializeField] private Transform _minePoint;
+    [SerializeField] private Transform _npcPoint;
+    [SerializeField] private Transform _waterPoint;
 
     private bool _isCreativeModeOpen = false;
+    private float _delay = 0.25f;
     private PlayerInput _playerInput;
 
     public PlayerInventoryHolder PlayerInventoryHolder => _inventoryHolder;
@@ -29,12 +38,12 @@ public class CreativeModeWindow : MonoBehaviour
     private void OnEnable()
     {
         _playerInput.Enable();
-        _playerInput.Player.CreativeMode.performed += ctx => EnableWindow();
+        _playerInput.Player.CreativeMode.performed += ctx => ToggleWindow();
     }
 
     private void OnDisable()
     {
-        _playerInput.Player.CreativeMode.performed -= ctx => EnableWindow();
+        _playerInput.Player.CreativeMode.performed -= ctx => ToggleWindow();
         _playerInput.Disable();
     }
 
@@ -47,18 +56,20 @@ public class CreativeModeWindow : MonoBehaviour
         }
     }
 
-    public void EnableWindow()
+    public void ToggleWindow()
     {
         _isCreativeModeOpen = !_isCreativeModeOpen;
 
         if (_isCreativeModeOpen)
         {
-            _inputHandler.SetCursorVisible(true);
+            if(!_inventoryUI.IsInventoryOpen)
+                _inputHandler.SetCursorVisible(true);
             _window.gameObject.SetActive(true);
         }
         else
         {
-            _inputHandler.SetCursorVisible(false);
+            if (!_inventoryUI.IsInventoryOpen)
+                _inputHandler.SetCursorVisible(false);
             _window.gameObject.SetActive(false);
         }
     }
@@ -98,5 +109,18 @@ public class CreativeModeWindow : MonoBehaviour
         {
             _itemDataBase.Add(item);
         }
+    }
+
+    public void StartTeleportPlayer(Transform point)
+    {
+        StartCoroutine(TeleportPlayer(point));
+    }
+
+    private IEnumerator TeleportPlayer(Transform point)
+    {
+        _inputHandler.TogglePersonController(false);
+        _inputHandler.gameObject.transform.position = point.position;
+        yield return new WaitForSeconds(_delay);
+        _inputHandler.TogglePersonController(true);
     }
 }
