@@ -15,6 +15,7 @@
           </e>
           <e p="AssetGroupTemplates" t="Include" />
           <e p="DataBuilders" t="Include" />
+          <e p="WebGL" t="Include" />
         </e>
         <e p="ButtonScenes.cs" t="Include" />
         <e p="dddddsss.cs" t="Include" />
@@ -5292,6 +5293,27 @@
             <e p="TurnOffAllAnimations.cs" t="Include" />
             <e p="ViewGizmos.cs" t="Include" />
           </e>
+          <e p="Audio" t="Include">
+            <e p="Prefabs" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="PlayerAudioHandler.cs" t="Include" />
+              <e p="Resources" t="Include">
+                <e p="TouchingGround.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Sounds" t="Include">
+              <e p="Fire" t="Include" />
+              <e p="Resources" t="Include">
+                <e p="ByAir" t="Include" />
+                <e p="Shovel" t="Include" />
+              </e>
+              <e p="Torch" t="Include" />
+              <e p="Walk" t="Include">
+                <e p="Stone" t="Include" />
+                <e p="Wooden" t="Include" />
+              </e>
+            </e>
+          </e>
           <e p="BuildingSystem" t="Include">
             <e p="BuildingData" t="Include">
               <e p="Build" t="Include" />
@@ -5382,6 +5404,9 @@
           <e p="DialoguesAndQuests" t="Include">
             <e p="Data" t="Include" />
             <e p="Prefabs" t="Include" />
+            <e p="Quests" t="Include">
+              <e p="New Folder" t="Include" />
+            </e>
           </e>
           <e p="EatEffect" t="Include">
             <e p="Scripts" t="Include">
@@ -5604,7 +5629,7 @@
             <e p="Hands" t="Include">
               <e p="Axe" t="Include" />
               <e p="Bow" t="Include" />
-              <e p="Hand" t="Include" />
+              <e p="Empty" t="Include" />
               <e p="Knife" t="Include" />
               <e p="Shovel" t="Include" />
               <e p="Spear" t="Include" />
@@ -5619,12 +5644,6 @@
             </e>
             <e p="Tool" t="Include" />
             <e p="Weapon" t="Include" />
-          </e>
-          <e p="PlayerAudio" t="Include">
-            <e p="Scripts" t="Include">
-              <e p="PlayerAudioHandler.cs" t="Include" />
-            </e>
-            <e p="Sounds" t="Include" />
           </e>
           <e p="PlayerHealth" t="Include">
             <e p="Scripts" t="Include">
@@ -5729,7 +5748,7 @@
               <e p="Scenes" t="Include" />
             </e>
             <e p="Scripts" t="Include">
-              <e p="Outline.cs" t="Include" />
+              <e p="OutlineObject.cs" t="Include" />
               <e p="OutlineSelection.cs" t="Include" />
               <e p="OutlineSwitch.cs" t="Include" />
             </e>
@@ -5747,6 +5766,21 @@
             <e p="UniqueID.cs" t="Include" />
           </e>
           <e p="Screens" t="Include">
+            <e p="LeaderboardScreen" t="Include">
+              <e p="Prefabs" t="Include" />
+              <e p="Scripts" t="Include">
+                <e p="UI" t="Include">
+                  <e p="LeaderboardScreen.cs" t="Include" />
+                </e>
+              </e>
+            </e>
+            <e p="MainMenu" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="UI" t="Include">
+                  <e p="MainMenuScreen.cs" t="Include" />
+                </e>
+              </e>
+            </e>
             <e p="RewardScreen" t="Include">
               <e p="DayRewardsData" t="Include" />
               <e p="Prefabs" t="Include" />
@@ -5761,8 +5795,17 @@
               </e>
             </e>
             <e p="Scripts" t="Include">
+              <e p="MenuScreen.cs" t="Include" />
               <e p="PauseScreen.cs" t="Include" />
               <e p="ScreenUI.cs" t="Include" />
+            </e>
+            <e p="SettingScreen" t="Include">
+              <e p="Prefabs" t="Include" />
+              <e p="Scripts" t="Include">
+                <e p="UI" t="Include">
+                  <e p="SettingScreen.cs" t="Include" />
+                </e>
+              </e>
             </e>
             <e p="ShopScreen" t="Include">
               <e p="Prefabs" t="Include" />

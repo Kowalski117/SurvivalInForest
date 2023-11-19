@@ -42,7 +42,7 @@ public class Box : MonoBehaviour, IDamagable
 
         _firstDamage = true;
         _isDead = false;
-       _currentBrokenObject = Instantiate(_brokenObject, _object.transform.position, Quaternion.identity, gameObject.transform);
+       _currentBrokenObject = Instantiate(_brokenObject, _object.transform.position, _object.transform.rotation, gameObject.transform);
        _currentBrokenObject.gameObject.SetActive(false);
         _currentBrokenObject.SetPointForce(_pointForce);
     }
