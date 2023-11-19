@@ -1,4 +1,5 @@
 using IL3DN;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,9 +15,11 @@ public class Building : MonoBehaviour
     private BoxCollider _boxCollider;
     private Rigidbody _rigidbody;
     private bool _isOverlapping;
+    private bool _isPlace = false;
     private Material[] _defoultMaterial;
     private bool _flaggedForDelete;
     private UniqueID _uniqueID;
+    private FoundationConnection[] _foundationConnections;
 
     public event UnityAction OnCompletedBuild;
 
@@ -34,8 +37,9 @@ public class Building : MonoBehaviour
         _boxCollider.isTrigger = true;
         _rigidbody.isKinematic = true;
         _defoultMaterial = new Material[_renderers.Length];
+        _foundationConnections = GetComponentsInChildren<FoundationConnection>();
 
-        if(_colliderGround)
+        if (_colliderGround)
             _colliderGround.SetActive(false);
 
         for (int i = 0; i < _renderers.Length; i++)
@@ -65,7 +69,7 @@ public class Building : MonoBehaviour
 
         if (_colliderGround)
             _colliderGround.SetActive(true);
-
+        _isPlace = true;
         Save();
     }
 
@@ -100,16 +104,30 @@ public class Building : MonoBehaviour
         _flaggedForDelete = false;
     }
 
+    public bool IsElementListConnections(FoundationConnection foundationConnection)
+    {
+        return _foundationConnections.Contains(foundationConnection) ? true : false;
+    }
+
     public void Save()
     {
         BuildingSaveData itemSaveData = new BuildingSaveData(_buildingRecipe.BuildingData.Id, transform.position, transform.rotation);
         ES3.Save(_uniqueID.Id, itemSaveData);
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        Debug.Log("13");
+
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if(!other.GetComponent<SpawnPointAnimals>() && !other.GetComponent<PointOffComponentsAnimal>() && !other.GetComponent<IL3DN_ChangeWalkingSound>())
-            _isOverlapping = true;
+        if (!_isPlace)
+        {
+            if (!other.GetComponent<SpawnPointAnimals>() && !other.GetComponent<PointOffComponentsAnimal>() && !other.GetComponent<IL3DN_ChangeWalkingSound>() && !other.GetComponent<FoundationConnection>())
+                _isOverlapping = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)

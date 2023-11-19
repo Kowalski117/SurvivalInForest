@@ -13,6 +13,7 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private float _rotateSnapAngle = 45f;
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
+    [SerializeField] private LayerMask _furnitureModeLayerMask;
     [SerializeField] private LayerMask _deleteModeLayerMask;
     [SerializeField] private int _foundationConnectionLayer;
     [SerializeField] private Transform _rayOrigin;
@@ -28,6 +29,7 @@ public class BuildTool : MonoBehaviour
     private Building _spawnBuilding;
     private Building _targetBuilding;
     private Quaternion _lastRotation;
+    private FoundationConnection _currentFoundationConnection;
 
     private float _radiusSpawn = 2f;
     private float _spawnPointUp = 0.5f;
@@ -157,34 +159,30 @@ public class BuildTool : MonoBehaviour
     {
         _spawnBuilding.UpdateMaterial(_spawnBuilding.IsOverlapping ? _buildingMatNegative : _buildingMatPositive);
 
-        if (IsRayHittingSomething(_buildModeLayerMask, out RaycastHit hitInfo))
+        if (_recipe.BuildingData.Type == ItemType.Build)
         {
-            Vector3 hitPoint = hitInfo.point;
-            Vector3 terrainNormal = hitInfo.normal;
-
-            if(_recipe.BuildingData.Type == ItemType.Build)
+            if (IsRayHittingSomething(_buildModeLayerMask, out RaycastHit hitInfo))
             {
-                if(hitInfo.collider.gameObject.layer == _foundationConnectionLayer)
+                if (hitInfo.collider.TryGetComponent(out FoundationConnection foundationConnection))
                 {
-                    Debug.Log("1");
-                    _spawnBuilding.transform.position = hitInfo.collider.transform.position;
-                    //_spawnBuilding.transform.rotation = hitInfo.collider.transform.rotation;
+                    _currentFoundationConnection = foundationConnection;
+
+                    if (_currentFoundationConnection.BuildType == _recipe.BuildingData.BuildType)
+                        _spawnBuilding.transform.position = foundationConnection.PointPlaceFloor.position;
+                    else
+                        _spawnBuilding.transform.position = hitInfo.collider.transform.position;
                 }
                 else
                 {
-                    Debug.Log("2");
-                    //hitPoint += terrainNormal * 0.1f;
-                    //Vector3 gridPosition = WorldGrid.GridPositionFromWorldPoint3D(hitPoint, 1f);
-                    //Vector3 roundedPosition = new Vector3(Mathf.Round(gridPosition.x), hitPoint.y, Mathf.Round(gridPosition.z));
-                    //_spawnBuilding.transform.position = roundedPosition;
-
-                    _spawnBuilding.transform.position = hitPoint;
-
+                    _spawnBuilding.transform.position = hitInfo.point;
                 }
             }
-            else if(_recipe.BuildingData.Type == ItemType.InteractBuilding)
+        }
+        else
+        {
+            if (IsRayHittingSomething(_furnitureModeLayerMask, out RaycastHit hit))
             {
-                _spawnBuilding.transform.position = hitPoint;
+                _spawnBuilding.transform.position = hit.point;
             }
         }
     }
@@ -209,6 +207,8 @@ public class BuildTool : MonoBehaviour
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
         _isMovedBuild = false;
+        _playerInputHandler.ToggleBuildPlayerInput(true);
+
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
