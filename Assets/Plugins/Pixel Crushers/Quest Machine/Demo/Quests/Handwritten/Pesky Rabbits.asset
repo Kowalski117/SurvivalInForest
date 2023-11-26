@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -62,6 +63,8 @@ MonoBehaviour:
   m_timesAccepted: 0
   m_cooldownSeconds: 0
   m_cooldownSecondsRemaining: 0
+  m_noRepeatIfSuccessful: 0
+  m_saveAllIfWaitingToStart: 0
   m_state: 0
   m_stateInfoList:
   - m_actionList: []
@@ -183,7 +186,7 @@ MonoBehaviour:
     m_canvasRect:
       serializedVersion: 2
       x: 267
-      y: 1
+      y: 0
       width: 120
       height: 48
   - m_id:
@@ -340,17 +343,20 @@ MonoBehaviour:
       width: 120
       height: 48
   m_goalEntityTypeName: 
+  m_nextContentID: 0
 --- !u!114 &11410100
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5acd9aaaa3b44d5419945259bebbe84a, type: 3}
   m_Name: IconQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_image: {fileID: 21300000, guid: c8b169cef698b3349bed4b8d0a2d9c76, type: 3}
   m_caption:
     m_text: Carrots
@@ -362,14 +368,16 @@ MonoBehaviour:
 --- !u!114 &11411588
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5acd9aaaa3b44d5419945259bebbe84a, type: 3}
   m_Name: IconQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_image: {fileID: 21300000, guid: e7af2fb322441f745b809a38382edd5b, type: 3}
   m_caption:
     m_text: Coins
@@ -381,14 +389,16 @@ MonoBehaviour:
 --- !u!114 &11413208
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 005ad42cc1945d043becd6daacec5a25, type: 3}
   m_Name: ButtonQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_image: {fileID: 21300000, guid: e7af2fb322441f745b809a38382edd5b, type: 3}
   m_caption:
     m_text: Coins
@@ -406,8 +416,9 @@ MonoBehaviour:
 --- !u!114 &11413572
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -420,8 +431,9 @@ MonoBehaviour:
 --- !u!114 &11419022
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -457,8 +469,9 @@ MonoBehaviour:
 --- !u!114 &11420122
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -494,14 +507,16 @@ MonoBehaviour:
 --- !u!114 &11421504
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Thank you for scaring away those pesky rabbits!
     m_stringAsset: {fileID: 0}
@@ -510,14 +525,16 @@ MonoBehaviour:
 --- !u!114 &11426552
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -528,14 +545,16 @@ MonoBehaviour:
 --- !u!114 &11428968
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -546,14 +565,16 @@ MonoBehaviour:
 --- !u!114 &11429170
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Earned 5 coins.
     m_stringAsset: {fileID: 0}
@@ -562,14 +583,16 @@ MonoBehaviour:
 --- !u!114 &11429186
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: You scared away some rabbits. Return to {QUESTGIVER} for your reward.
     m_stringAsset: {fileID: 0}
@@ -578,14 +601,16 @@ MonoBehaviour:
 --- !u!114 &11431002
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Thanks for scaring away those rabbits!
     m_stringAsset: {fileID: 0}
@@ -594,14 +619,16 @@ MonoBehaviour:
 --- !u!114 &11437348
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: You helped {QUESTGIVER} by scaring away the rabbits.
     m_stringAsset: {fileID: 0}
@@ -610,14 +637,16 @@ MonoBehaviour:
 --- !u!114 &11438312
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: I'm {QUESTGIVER}. Those pesky rabbits are eating my carrots! Will you
       swing your sword at 3 of them to scare them away?
@@ -627,14 +656,16 @@ MonoBehaviour:
 --- !u!114 &11441180
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -645,8 +676,9 @@ MonoBehaviour:
 --- !u!114 &11441306
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -659,14 +691,16 @@ MonoBehaviour:
 --- !u!114 &11443498
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: '{#rabbits}/3 scared away.'
     m_stringAsset: {fileID: 0}
@@ -675,8 +709,9 @@ MonoBehaviour:
 --- !u!114 &11443978
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -697,14 +732,16 @@ MonoBehaviour:
 --- !u!114 &11452590
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: 'New Quest: Pesky Rabbits'
     m_stringAsset: {fileID: 0}
@@ -713,14 +750,16 @@ MonoBehaviour:
 --- !u!114 &11452734
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: 'Choose your reward:'
     m_stringAsset: {fileID: 0}
@@ -729,8 +768,9 @@ MonoBehaviour:
 --- !u!114 &11455810
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -751,8 +791,9 @@ MonoBehaviour:
 --- !u!114 &11456344
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -765,14 +806,16 @@ MonoBehaviour:
 --- !u!114 &11457440
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -783,14 +826,16 @@ MonoBehaviour:
 --- !u!114 &11457552
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Talk to {QUESTGIVER}
     m_stringAsset: {fileID: 0}
@@ -799,8 +844,9 @@ MonoBehaviour:
 --- !u!114 &11459396
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -816,14 +862,16 @@ MonoBehaviour:
 --- !u!114 &11459898
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: '{#rabbits}/3 Scared'
     m_stringAsset: {fileID: 0}
@@ -832,14 +880,16 @@ MonoBehaviour:
 --- !u!114 &11461496
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 005ad42cc1945d043becd6daacec5a25, type: 3}
   m_Name: ButtonQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_image: {fileID: 21300000, guid: c8b169cef698b3349bed4b8d0a2d9c76, type: 3}
   m_caption:
     m_text: Carrots
@@ -857,14 +907,16 @@ MonoBehaviour:
 --- !u!114 &11466630
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 0
   m_headingText:
     m_text: Reward
@@ -875,14 +927,16 @@ MonoBehaviour:
 --- !u!114 &11467690
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: I hope you can scare those rabbits away before they eat all our carrots.
     m_stringAsset: {fileID: 0}
@@ -891,14 +945,16 @@ MonoBehaviour:
 --- !u!114 &11470854
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Received 2 carrots.
     m_stringAsset: {fileID: 0}
@@ -907,8 +963,9 @@ MonoBehaviour:
 --- !u!114 &11475976
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -921,14 +978,16 @@ MonoBehaviour:
 --- !u!114 &11476594
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -939,14 +998,16 @@ MonoBehaviour:
 --- !u!114 &11481062
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: 'You will be able to choose from:'
     m_stringAsset: {fileID: 0}
@@ -955,8 +1016,9 @@ MonoBehaviour:
 --- !u!114 &11488146
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -971,14 +1033,16 @@ MonoBehaviour:
 --- !u!114 &11492276
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
   m_Name: HeadingTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_useQuestTitle: 1
   m_headingText:
     m_text: 
@@ -989,8 +1053,9 @@ MonoBehaviour:
 --- !u!114 &11494094
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1026,14 +1091,16 @@ MonoBehaviour:
 --- !u!114 &11496988
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: You agreed to scare away 3 rabbits for {QUESTGIVER}.
     m_stringAsset: {fileID: 0}
@@ -1042,14 +1109,16 @@ MonoBehaviour:
 --- !u!114 &11497930
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
   m_Name: BodyTextQuestContent
   m_EditorClassIdentifier: 
+  m_contentID: -1
   m_bodyText:
     m_text: Return to {QUESTGIVER}.
     m_stringAsset: {fileID: 0}
