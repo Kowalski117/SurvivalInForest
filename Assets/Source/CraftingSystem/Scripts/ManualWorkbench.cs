@@ -25,6 +25,8 @@ public class ManualWorkbench : Raycast
             {
                 ResetCraft();
             }
+
+
         }
         else
         {

@@ -4,11 +4,11 @@ public class CraftObject : MonoBehaviour
 {
     [SerializeField] private CraftingÑategory _craftingÑategory;
     [SerializeField] private bool _isEnabledInitially = false;
+    [SerializeField] private bool _isEnabled = false;
 
     private Building _building;
     private BoxCollider _boxCollider;
     private Fire _fire;
-    private bool _isEnabled = false;
 
     public bool IsEnabledInitially => _isEnabledInitially;
     public CraftingÑategory CraftingÑategory => _craftingÑategory;

@@ -1,4 +1,6 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityRenderer;
 using StarterAssets;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -14,6 +16,9 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private Transform _inventoryPanels;
     [SerializeField] private PlayerHealth _playerHealth;
 
+    private bool _isCursorEnable;
+    private bool _isPreviusCursorEnable;
+
     public FirstPersonController FirstPersonController => _firstPersonController;
     public InventoryPlayerInput InventoryPlayerInput => _inventoryPlayerInput;
     public InteractionPlayerInput InteractionPlayerInput => _interactionPlayerInput;
@@ -26,16 +31,27 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Start()
     {
-        SetCursorVisible(true);
+        //ToggleAllParametrs(false);
+        //SetCursorVisible(true);
+        StartCoroutine(WaitForLoad(1f));
+    }
+
+    private void Update()
+    {
+        if (_isCursorEnable != _isPreviusCursorEnable)
+            ToggleCursor(_isCursorEnable);
+    }
+
+    private IEnumerator WaitForLoad(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         ToggleAllParametrs(false);
     }
 
     public void SetCursorVisible(bool visible)
     {
-        _firstPersonController.ToggleCamera(!visible);
-
-        Cursor.visible = visible;
-        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+        _isPreviusCursorEnable = _isCursorEnable;
+        _isCursorEnable = visible;
     }
 
     public void TogglePersonController(bool visible)
@@ -88,5 +104,17 @@ public class PlayerInputHandler : MonoBehaviour
         TogglePersonController(visible);
         _survivalHandler.SetEnable(visible);
         _survivalHandler.TimeHandler.ToggleEnable(visible);
+    }
+
+    private void ToggleCursor(bool visible)
+    {
+        Cursor.visible = visible;
+        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+        _firstPersonController.ToggleCamera(!visible);
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        ToggleCursor(_isCursorEnable);
     }
 }

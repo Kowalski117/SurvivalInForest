@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class HealthMetricView : MonoBehaviour
+public class HealthMetricView : ValueMetricView
 {
     [SerializeField] private PlayerHealth _health;
-    [SerializeField] private Image _image;
 
     private void OnEnable()
     {
@@ -14,10 +12,5 @@ public class HealthMetricView : MonoBehaviour
     private void OnDisable()
     {
         _health.OnHealthChanged += UpdateFillAmount;
-    }
-
-    protected void UpdateFillAmount(float amount)
-    {
-        _image.fillAmount = amount;
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 public class BuildHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private UIInventoryHandler _inventoryHandler;
     [SerializeField] private BuildTool _buildTool;
 
     private bool _isTurnOffWindows = false;
@@ -29,10 +30,10 @@ public class BuildHandler : MonoBehaviour
 
         if (_isTurnOffWindows)
         {
-            _playerInputHandler.InventoryPlayerInput.ToggleInventory();
-            _playerInputHandler.SetCursorVisible(false);
+            _inventoryHandler.TurnOffDisplayInventory();
             _playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInteractionInput(false);
+            //_playerInputHandler.SetCursorVisible(false); //вот ту тпоходу дич
         }
     }
 

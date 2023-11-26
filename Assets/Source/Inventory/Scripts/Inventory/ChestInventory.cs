@@ -8,30 +8,30 @@ public class ChestInventory : InventoryHolder, IInteractable
     [SerializeField] private ObjectItemsData[] _startingItems;
 
     private UniqueID _uniqueId;
-    private DistanceHandler _distanceHandler;
+    //private DistanceHandler _distanceHandler;
 
     public static UnityAction<ChestInventory, int> OnDinamicChestDisplayRequested;
     public UnityAction<IInteractable> OnInteractionComplete { get; set; }
 
-    public DistanceHandler DistanceHandler => _distanceHandler;
+    //public DistanceHandler DistanceHandler => _distanceHandler;
 
     protected override void Awake()
     {
         _uniqueId = GetComponentInParent<UniqueID>();
         base.Awake();
-        _distanceHandler = GetComponentInChildren<DistanceHandler>();
+        //_distanceHandler = GetComponentInChildren<DistanceHandler>();
         LoadInventory();
     }
 
-    private void OnEnable()
-    {
-        _distanceHandler.OnDistanceExceeded += Interact;
-    }
+    //private void OnEnable()
+    //{
+    //    _distanceHandler.OnDistanceExceeded += Interact;
+    //}
 
-    private void OnDisable()
-    {
-        _distanceHandler.OnDistanceExceeded -= Interact;
-    }
+    //private void OnDisable()
+    //{
+    //    _distanceHandler.OnDistanceExceeded -= Interact;
+    //}
 
     public void Interact()
     {
