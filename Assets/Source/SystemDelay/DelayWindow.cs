@@ -49,6 +49,7 @@ public class DelayWindow : MonoBehaviour
         _isLoading = true;
         _survivalHandler.TimeHandler.ToggleEnable(false);
         _playerInputHandler.ToggleAllInput(false);
+        _playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleScreenPlayerInput(false);
         _loadingPanel.gameObject.SetActive(true);
 

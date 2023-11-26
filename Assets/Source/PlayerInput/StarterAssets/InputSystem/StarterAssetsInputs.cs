@@ -20,6 +20,8 @@ namespace StarterAssets
         [Header("Movement Settings")]
         public bool analogMovement;
 
+        //private bool cursorInputForLook => Cursor.lockState;
+
 #if ENABLE_INPUT_SYSTEM
         public void OnMove(InputValue value)
         {
@@ -95,10 +97,7 @@ namespace StarterAssets
             attack = newAttackState;
         }
 
-        //private void OnApplicationFocus(bool hasFocus)
-        //{
-        //    SetCursorState(cursorLocked);
-        //}
+
 
         //public void SetCursorState(bool newState)
         //{
