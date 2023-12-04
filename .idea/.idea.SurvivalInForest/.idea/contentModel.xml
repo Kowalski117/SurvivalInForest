@@ -5422,12 +5422,15 @@
           </e>
           <e p="CutScene" t="Include">
             <e p="Materials" t="Include" />
+            <e p="Signals" t="Include" />
+            <e p="Sound" t="Include" />
           </e>
           <e p="DialoguesAndQuests" t="Include">
             <e p="Data" t="Include" />
             <e p="Prefabs" t="Include" />
             <e p="Quests" t="Include">
-              <e p="New Folder" t="Include" />
+              <e p="Main" t="Include" />
+              <e p="Resident" t="Include" />
             </e>
           </e>
           <e p="EatEffect" t="Include">
@@ -5550,6 +5553,7 @@
               </e>
               <e p="Inventory" t="Include">
                 <e p="BackpackInventory.cs" t="Include" />
+                <e p="ChestHandler.cs" t="Include" />
                 <e p="ChestInventory.cs" t="Include" />
                 <e p="ClothesInventory.cs" t="Include" />
                 <e p="InventoryHolder.cs" t="Include" />
@@ -5611,6 +5615,10 @@
           </e>
           <e p="Localization" t="Include">
             <e p="Locale" t="Include" />
+            <e p="Quests" t="Include">
+              <e p="Main" t="Include" />
+              <e p="Resident" t="Include" />
+            </e>
           </e>
           <e p="Materials" t="Include" />
           <e p="MiningSystem" t="Include">
@@ -5867,6 +5875,7 @@
               <e p="SurvivalAttribute.cs" t="Include" />
               <e p="SurvivalHandler.cs" t="Include" />
               <e p="UI" t="Include">
+                <e p="AttributeMetricView.cs" t="Include" />
                 <e p="HealthMetricView.cs" t="Include" />
                 <e p="StaminaValueMetricView.cs" t="Include" />
                 <e p="ValueMetricView.cs" t="Include" />
