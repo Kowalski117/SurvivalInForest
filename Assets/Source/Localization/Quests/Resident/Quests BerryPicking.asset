@@ -18,8 +18,15 @@ MonoBehaviour:
   - en
   - ru
   m_languageValues: 00000000060000000500000004000000
-  m_fieldKeys: 0e0000000f00000010000000110000001200000013000000140000001a000000150000001600000017000000
+  m_fieldKeys: 1e0000000e0000000f00000010000000110000001200000013000000140000001a00000015000000160000001d000000
   m_fieldValues:
+  - m_fieldName: id
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - BerryPicking
+    - BerryPicking
+    - BerryPicking
+    - 
   - m_fieldName: title
     m_keys: 04000000050000000600000000000000
     m_values:
@@ -44,16 +51,16 @@ MonoBehaviour:
   - m_fieldName: journalPickActive
     m_keys: 04000000050000000600000000000000
     m_values:
-    - "{#berry}/{>#berry} \u044F\u0433\u043E\u0434"
-    - '{#berry}/{>#berry} berries'
-    - '{#berry}/{>#berry} meyveleri'
+    - "\u042F\u0433\u043E\u0434: {#Berry}/{>#Berry}"
+    - 'Berries: {#Berry}/{>#Berry}'
+    - 'Meyveler: {#Berry}/{>#Berry}'
     - 
   - m_fieldName: journalPickTrue
     m_keys: 04000000050000000600000000000000
     m_values:
-    - "{#berry}/{>#berry} \u044F\u0433\u043E\u0434"
-    - '{#berry}/{>#berry} berries'
-    - '{#berry}/{>#berry} meyveleri'
+    - "\u042F\u0433\u043E\u0434: {#Berry}/{>#Berry}"
+    - 'Berries: {#Berry}/{>#Berry}'
+    - 'Meyveler: {#Berry}/{>#Berry}'
     - 
   - m_fieldName: journalReturnActive
     m_keys: 04000000050000000600000000000000
@@ -80,16 +87,16 @@ MonoBehaviour:
   - m_fieldName: HUDPickActive
     m_keys: 04000000050000000600000000000000
     m_values:
-    - "{#berry}/{>#berry} \u044F\u0433\u043E\u0434"
-    - '{#berry}/{>#berry} berries'
-    - '{#berry}/{>#berry} meyveleri'
+    - "\u042F\u0433\u043E\u0434: {#Berry}/{>#Berry}"
+    - 'Berries: {#Berry}/{>#Berry}'
+    - 'Meyveler: {#Berry}/{>#Berry}'
     - 
   - m_fieldName: HUDPickTrue
     m_keys: 04000000050000000600000000000000
     m_values:
-    - "{#berry}/{>#berry} \u044F\u0433\u043E\u0434"
-    - '{#berry}/{>#berry} berries'
-    - '{#berry}/{>#berry} meyveleri'
+    - "\u042F\u0433\u043E\u0434: {#Berry}/{>#Berry}"
+    - 'Berries: {#Berry}/{>#Berry}'
+    - 'Meyveler: {#Berry}/{>#Berry}'
     - 
   - m_fieldName: HUDReturnActive
     m_keys: 04000000050000000600000000000000
@@ -99,4 +106,4 @@ MonoBehaviour:
     - "Sakine geri d\xF6n"
     - 
   m_nextLanguageID: 7
-  m_nextFieldID: 27
+  m_nextFieldID: 31

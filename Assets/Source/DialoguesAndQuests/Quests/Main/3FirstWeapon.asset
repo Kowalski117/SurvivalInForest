@@ -1,60 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8596433949190824926
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
-  m_Name: BodyTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_bodyText:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 17
---- !u!114 &-7095796733474525202
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
-  m_Name: BodyTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_bodyText:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 16
---- !u!114 &-6644776947783898555
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
-  m_Name: BodyTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_bodyText:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 23
---- !u!114 &-5652589847847159528
+--- !u!114 &-6277886773545939973
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,7 +20,45 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
---- !u!114 &-976418110482571368
+--- !u!114 &-3684746595738184796
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 732e99ba3b575dc4dad61a69b0417c96, type: 3}
+  m_Name: QuestStateQuestCondition
+  m_EditorClassIdentifier: 
+  m_requiredQuestID:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 11400000, guid: bb56e2872ff01a744adc8d30b01ecd77, type: 2}
+    m_textTableFieldID: 8
+  m_requiredState: 2
+--- !u!114 &-2480605385764891741
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
+  m_Name: HeadingTextQuestContent
+  m_EditorClassIdentifier: 
+  m_contentID: -1
+  m_useQuestTitle: 1
+  m_headingText:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
+  m_headingLevel: 1
+--- !u!114 &-198705994292975795
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,28 +74,8 @@ MonoBehaviour:
   m_bodyText:
     m_text: 
     m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 21
---- !u!114 &-3567528130207496
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c47e1bb9cdd9a474c8d3f5d555d7533a, type: 3}
-  m_Name: HeadingTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_useQuestTitle: 0
-  m_headingText:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 26
-  m_headingLevel: 1
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 7
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,27 +86,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 641a501636ec3644993211c008d9a8a4, type: 3}
-  m_Name: BerryPicking
+  m_Name: 3FirstWeapon
   m_EditorClassIdentifier: 
   m_isInstance: 0
   m_originalAsset: {fileID: 0}
   m_fileVersion: 1
   m_id:
-    m_text: BerryPicking
+    m_text: 
     m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 1
   m_title:
     m_text: 
     m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 14
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 2
   m_icon: {fileID: 0}
   m_group:
     m_text: 
     m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 15
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 3
   m_labels: []
   m_questGiverID:
     m_text: 
@@ -151,10 +115,11 @@ MonoBehaviour:
     m_textTableFieldID: 0
   m_isTrackable: 1
   m_showInTrackHUD: 1
-  m_isAbandonable: 1
+  m_isAbandonable: 0
   m_rememberIfAbandoned: 0
   m_autostartConditionSet:
-    m_conditionList: []
+    m_conditionList:
+    - {fileID: -3684746595738184796}
     m_conditionCountMode: 0
     m_minConditionCount: 0
     m_numTrueConditions: 0
@@ -182,16 +147,17 @@ MonoBehaviour:
     m_categorizedContentList:
     - m_contentList: []
     - m_contentList:
-      - {fileID: 2140176583649283780}
-      - {fileID: -7095796733474525202}
+      - {fileID: -2480605385764891741}
+      - {fileID: 5939275623122961318}
     - m_contentList:
-      - {fileID: -3567528130207496}
+      - {fileID: 7530385209188938860}
+      - {fileID: -198705994292975795}
   - m_actionList: []
     m_categorizedContentList:
     - m_contentList: []
     - m_contentList:
-      - {fileID: -5652589847847159528}
-      - {fileID: 2246191751868807717}
+      - {fileID: -6277886773545939973}
+      - {fileID: 1723555382963860688}
     - m_contentList: []
   - m_actionList: []
     m_categorizedContentList:
@@ -210,14 +176,14 @@ MonoBehaviour:
     - m_contentList: []
   m_counterList:
   - m_name:
-      m_text: berry
+      m_text: WoodenSpear
       m_stringAsset: {fileID: 0}
       m_textTable: {fileID: 0}
       m_textTableFieldID: 0
     m_currentValue: 0
     m_randomizeInitialValue: 0
     m_minValue: 0
-    m_maxValue: 5
+    m_maxValue: 1
     m_updateMode: 1
     m_messageEventList:
     - m_senderSpecifier: 0
@@ -233,12 +199,12 @@ MonoBehaviour:
         m_textTable: {fileID: 0}
         m_textTableFieldID: 0
       m_message:
-        m_text: PickUp
+        m_text: Craft
         m_stringAsset: {fileID: 0}
         m_textTable: {fileID: 0}
         m_textTableFieldID: 0
       m_parameter:
-        m_text: Berry
+        m_text: WoodenSpear
         m_stringAsset: {fileID: 0}
         m_textTable: {fileID: 0}
         m_textTableFieldID: 0
@@ -246,7 +212,7 @@ MonoBehaviour:
       m_literalValue: 1
   m_nodeList:
   - m_id:
-      m_text: PickBerry
+      m_text: Quest-70668.start
       m_stringAsset: {fileID: 0}
       m_textTable: {fileID: 0}
       m_textTableFieldID: 0
@@ -287,12 +253,12 @@ MonoBehaviour:
     m_childIndexList: 01000000
     m_canvasRect:
       serializedVersion: 2
-      x: 198
-      y: 19
+      x: 200
+      y: 20
       width: 120
       height: 48
   - m_id:
-      m_text: Pick
+      m_text: CraftSpear
       m_stringAsset: {fileID: 0}
       m_textTable: {fileID: 0}
       m_textTableFieldID: 0
@@ -319,76 +285,25 @@ MonoBehaviour:
       m_categorizedContentList:
       - m_contentList: []
       - m_contentList:
-        - {fileID: -8596433949190824926}
+        - {fileID: 2901402845374356627}
       - m_contentList:
-        - {fileID: -976418110482571368}
+        - {fileID: 4034975782406555075}
     - m_actionList: []
       m_categorizedContentList:
       - m_contentList: []
-      - m_contentList:
-        - {fileID: 2636782702155913778}
-      - m_contentList:
-        - {fileID: 989950032842167447}
+      - m_contentList: []
+      - m_contentList: []
     m_conditionSet:
       m_conditionList:
-      - {fileID: 6500128114445054133}
+      - {fileID: 8971654404967822360}
       m_conditionCountMode: 1
       m_minConditionCount: 0
       m_numTrueConditions: 0
     m_childIndexList: 02000000
     m_canvasRect:
       serializedVersion: 2
-      x: 199.11319
-      y: 86.113205
-      width: 120
-      height: 48
-  - m_id:
-      m_text: Return
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_internalName:
-      m_text: 
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_nodeType: 4
-    m_isOptional: 0
-    m_state: 0
-    m_speaker:
-      m_text: 
-      m_stringAsset: {fileID: 0}
-      m_textTable: {fileID: 0}
-      m_textTableFieldID: 0
-    m_stateInfoList:
-    - m_actionList: []
-      m_categorizedContentList:
-      - m_contentList: []
-      - m_contentList: []
-      - m_contentList: []
-    - m_actionList: []
-      m_categorizedContentList:
-      - m_contentList: []
-      - m_contentList:
-        - {fileID: 5061845682452228306}
-      - m_contentList:
-        - {fileID: -6644776947783898555}
-    - m_actionList: []
-      m_categorizedContentList:
-      - m_contentList: []
-      - m_contentList: []
-      - m_contentList: []
-    m_conditionSet:
-      m_conditionList:
-      - {fileID: 2939316730423170465}
-      m_conditionCountMode: 1
-      m_minConditionCount: 0
-      m_numTrueConditions: 0
-    m_childIndexList: 03000000
-    m_canvasRect:
-      serializedVersion: 2
-      x: 198
-      y: 160
+      x: 200
+      y: 88
       width: 120
       height: 48
   - m_id:
@@ -433,13 +348,13 @@ MonoBehaviour:
     m_childIndexList: 
     m_canvasRect:
       serializedVersion: 2
-      x: 200
-      y: 225
+      x: 199
+      y: 168
       width: 120
       height: 35
   m_goalEntityTypeName: 
   m_nextContentID: 0
---- !u!114 &989950032842167447
+--- !u!114 &1723555382963860688
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -455,9 +370,63 @@ MonoBehaviour:
   m_bodyText:
     m_text: 
     m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 22
---- !u!114 &2140176583649283780
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 6
+--- !u!114 &2901402845374356627
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
+  m_Name: BodyTextQuestContent
+  m_EditorClassIdentifier: 
+  m_contentID: -1
+  m_bodyText:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 5
+--- !u!114 &4034975782406555075
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
+  m_Name: BodyTextQuestContent
+  m_EditorClassIdentifier: 
+  m_contentID: -1
+  m_bodyText:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 8
+--- !u!114 &5939275623122961318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
+  m_Name: BodyTextQuestContent
+  m_EditorClassIdentifier: 
+  m_contentID: -1
+  m_bodyText:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 4
+--- !u!114 &7530385209188938860
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -477,99 +446,7 @@ MonoBehaviour:
     m_textTable: {fileID: 0}
     m_textTableFieldID: 0
   m_headingLevel: 1
---- !u!114 &2246191751868807717
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
-  m_Name: BodyTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_bodyText:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 20
---- !u!114 &2636782702155913778
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
-  m_Name: BodyTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_bodyText:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 18
---- !u!114 &2939316730423170465
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5682394e55a192147a020b9edf624e51, type: 3}
-  m_Name: MessageQuestCondition
-  m_EditorClassIdentifier: 
-  m_senderSpecifier: 0
-  m_senderID:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_targetSpecifier: 0
-  m_targetID:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_message:
-    m_text: Discussed Quest
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_parameter:
-    m_text: PickBerry
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 0}
-    m_textTableFieldID: 0
-  m_value:
-    m_valueType: 0
-    m_intValue: 0
-    m_stringValue: 
---- !u!114 &5061845682452228306
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0ed0c4e68ee98946bb5016adda42373, type: 3}
-  m_Name: BodyTextQuestContent
-  m_EditorClassIdentifier: 
-  m_contentID: -1
-  m_bodyText:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 15f4ce136ea59b5438b29428264bb140, type: 2}
-    m_textTableFieldID: 19
---- !u!114 &6500128114445054133
+--- !u!114 &8971654404967822360
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -584,6 +461,6 @@ MonoBehaviour:
   m_counterIndex: 0
   m_counterValueMode: 0
   m_requiredCounterValue:
-    m_valueType: 3
-    m_literalValue: 0
+    m_valueType: 0
+    m_literalValue: 1
     m_counterIndex: 0
