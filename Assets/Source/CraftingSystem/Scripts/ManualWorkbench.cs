@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ManualWorkbench : Raycast
@@ -8,6 +9,9 @@ public class ManualWorkbench : Raycast
 
     private CraftObject _craftObject;
     private CraftingÑategory _currentCraftingÑategory;
+
+    public event Action OnInteractionStarted;
+    public event Action OnInteractionFinished;
 
     public CraftingHandler CraftingHandler => _craftingHandler;
     public CraftingÑategory CraftingÑategory => _craftingÑategory;
@@ -20,6 +24,7 @@ public class ManualWorkbench : Raycast
             {
                 _currentCraftingÑategory = craftObject.CraftingÑategory;
                 _craftingHandler.DisplayCraftWindow(craftObject.CraftingÑategory);
+                OnInteractionStarted?.Invoke();
             }
             else if(craftObject && !craftObject.IsEnabled)
             {
@@ -40,6 +45,7 @@ public class ManualWorkbench : Raycast
         {
             _currentCraftingÑategory = null;
             _craftingHandler.DisplayCraftWindow(_craftingÑategory);
+            OnInteractionFinished?.Invoke();
         }
     }
 }

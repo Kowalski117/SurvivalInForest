@@ -32,43 +32,29 @@ public class UIInventoryHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        //ChestInventory.OnDinamicChestDisplayRequested += DisplayChestInventory;
         _playerInputHandler.InventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
-
         _playerHealth.OnDied += TurnOffDisplayInventory;
     }
 
     private void OnDisable()
     {
-        //ChestInventory.OnDinamicChestDisplayRequested -= DisplayChestInventory;
         _playerInputHandler.InventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
-
         _playerHealth.OnDied -= TurnOffDisplayInventory;
     }
 
     public void DisplayChestInventory(ChestInventory chestInventory, int offset)
     {
-        //if (!_isInventoryOpen)
-        //{
-            _isChestOpen = !_isChestOpen;
-            //chestInventory.DistanceHandler.SetActive(_isChestOpen);
+        _isChestOpen = !_isChestOpen;
 
-            if (_isChestOpen)
-            {
-                _chestInventoryPanel.gameObject.SetActive(true);
-                _chestInventoryPanel.RefreshDynamicInventory(chestInventory.InventorySystem, offset);
-            }
-            else
-            {
-                _chestInventoryPanel.gameObject.SetActive(false);
-            }
-        //}
-        //else
-        //{
-        //    _isChestOpen = false;
-        //    chestInventory.DistanceHandler.SetActive(_isChestOpen);
-        //    _chestInventoryPanel.gameObject.SetActive(false);
-        //}
+        if (_isChestOpen)
+        {
+            _chestInventoryPanel.gameObject.SetActive(true);
+            _chestInventoryPanel.RefreshDynamicInventory(chestInventory.InventorySystem, offset);
+        }
+        else
+        {
+            _chestInventoryPanel.gameObject.SetActive(false);
+        }
     }
 
     public void DisplayPlayerInventory(InventorySystem inventoryDisplay, int offset)

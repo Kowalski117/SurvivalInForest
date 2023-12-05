@@ -1,10 +1,12 @@
 using System;
 using UnityEngine.Events;
 using UnityEngine;
+using PixelCrushers.QuestMachine;
 
 public class CraftItemSlotView : CraftSlotView
 {
     private ItemRecipe _recipe;
+    private QuestControl _questControl;
 
     public event UnityAction<ItemRecipe, PlayerInventoryHolder> OnCreateRecipeButtonClick;
 
@@ -20,7 +22,7 @@ public class CraftItemSlotView : CraftSlotView
         CraftedButton.onClick.RemoveListener(OnCreateRecipeButton);
     }
 
-    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, Crafting—ategory Òategory, DelayWindow loadingWindow)
+    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, Crafting—ategory Òategory, DelayWindow loadingWindow, QuestControl questControl)
     {
         CraftedTime = DateTime.MinValue;
         _recipe = craftRecipe;
@@ -31,6 +33,7 @@ public class CraftItemSlotView : CraftSlotView
         CraftedName.text = craftRecipe.CraftedItem.DisplayName;
         CraftedTime = CraftedTime + TimeSpan.FromHours(craftRecipe.CraftingTime);
         CraftedTimeText.text = CraftedTime.ToString("HH:mm");
+        _questControl = questControl;
 
         foreach (var ingridient in craftRecipe.CraftingIngridients)
         {
@@ -52,7 +55,7 @@ public class CraftItemSlotView : CraftSlotView
     private void OnLoadingComplete()
     {
         OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
-
+        _questControl.SendToMessageSystem(MessageConstants.Craft + _recipe.CraftedItem.DisplayName);
         LoadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 }

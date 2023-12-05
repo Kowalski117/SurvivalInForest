@@ -6,7 +6,6 @@ using UnityEngine.Events;
 [RequireComponent(typeof(UniqueID))]
 public class ItemPickUp : MonoBehaviour
 {
-    [SerializeField] private QuestControl _questControl;
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private ItemPickUpSaveData _itemSaveData;
     [SerializeField] private float _durability;
@@ -14,6 +13,7 @@ public class ItemPickUp : MonoBehaviour
 
     public event UnityAction DestroyItem;
     
+    private QuestControl _questControl;
     private OutlineObject _outline;
     private Rigidbody _rigidbody;
     private UniqueID _uniqueID;
@@ -46,7 +46,7 @@ public class ItemPickUp : MonoBehaviour
 
     public void PickUp()
     {
-        _questControl.SendToMessageSystem("PickUp:"+_itemData.DisplayName);
+        _questControl.SendToMessageSystem(MessageConstants.PickUp + _itemData.Id);
         ES3.Save(_uniqueID.Id, _uniqueID.Id);
         DestroyItem?.Invoke();
         Destroy(this.gameObject);

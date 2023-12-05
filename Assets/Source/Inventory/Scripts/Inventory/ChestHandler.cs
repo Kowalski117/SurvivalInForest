@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ChestHandler : Raycast
@@ -9,6 +8,9 @@ public class ChestHandler : Raycast
 
     private ChestInventory _chestInventory;
 
+    public event Action OnInteractionStarted;
+    public event Action OnInteractionFinished;
+
     private void Update()
     {
         if (IsRayHittingSomething(_layerMask, out RaycastHit hitInfo))
@@ -16,8 +18,11 @@ public class ChestHandler : Raycast
             if (hitInfo.collider.TryGetComponent(out ChestInventory chestInventory))
             {
                 _chestInventory = chestInventory;
-                if(!_inventoryHandler.IsChestOpen)
+                if (!_inventoryHandler.IsChestOpen)
+                {
                     _inventoryHandler.DisplayChestInventory(_chestInventory, 0);
+                    OnInteractionStarted?.Invoke(); 
+                }
             }
         }
         else
@@ -32,6 +37,7 @@ public class ChestHandler : Raycast
         {
             _inventoryHandler.DisplayChestInventory(_chestInventory, 0);
             _chestInventory = null;
+            OnInteractionFinished?.Invoke();
         }
     }
 }

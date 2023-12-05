@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using PixelCrushers.QuestMachine;
 
 [RequireComponent(typeof (UniqueID))]
 public class SpawnResource : MonoBehaviour
 {
     [SerializeField] private float _spawnTime;
     [SerializeField] private float _scaleTime;
-    [SerializeField] private GameObject _remainder; 
+    [SerializeField] private GameObject _remainder;
+    [SerializeField] private string _id;
 
     private Resource _resource;
     private Coroutine _coroutineSpawn;
@@ -17,6 +19,7 @@ public class SpawnResource : MonoBehaviour
     private bool _isSpawning = false;
     private float _elapsedTime = 0;
     private UniqueID _uniqueID;
+    private QuestControl _questControl;
 
     private void Awake()
     {
@@ -55,6 +58,7 @@ public class SpawnResource : MonoBehaviour
     private void ResourceDeath()
     {
         _remainder.SetActive(true);
+        _questControl.SendToMessageSystem(MessageConstants.Broken + _id);
     }
 
     private void ResourceDisappeared()

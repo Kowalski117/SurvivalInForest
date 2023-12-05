@@ -1,3 +1,4 @@
+using PixelCrushers.QuestMachine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class CraftingHandler : MonoBehaviour
     private List<CraftItemSlotView> _craftItemSlots = new List<CraftItemSlotView>();
     private List<CraftBuildSlotView> _craftBuildSlots = new List<CraftBuildSlotView>();
 
+    private QuestControl _questControl;
     private Crafting—ategory _currentCategory;
     private bool _isCraftPlayerOpen = false;
 
@@ -33,6 +35,7 @@ public class CraftingHandler : MonoBehaviour
 
     private void Awake()
     {
+        _questControl = GetComponent<QuestControl>();
         _craftingWindow.gameObject.SetActive(false);
     }
 
@@ -77,7 +80,7 @@ public class CraftingHandler : MonoBehaviour
         {
             CraftItemSlotView craftSlot = Instantiate(_craftItemSlotPrefab, _containerForSlots);
             _craftItemSlots.Add(craftSlot);
-            craftSlot.Init(_inventoryHolder, recipe, craftingCategory, _loadingWindow);
+            craftSlot.Init(_inventoryHolder, recipe, craftingCategory, _loadingWindow, _questControl);
         }
 
         foreach (var recipe in craftingCategory.RecipeBuildingLists)
@@ -115,26 +118,18 @@ public class CraftingHandler : MonoBehaviour
 
         foreach (var slot in _craftItemSlots)
         {
-            if (slot.Recipe.CraftedItem.Type == itemType && _currentCategory == slot.Category)
-            {
-                slot.OpenForCrafting();
-            }
-            else
-            {
-                slot.CloseForCrafting();
-            }
+            if (slot.Recipe.CraftedItem.Type == itemType && _currentCategory == slot.Category)            
+                slot.OpenForCrafting();           
+            else            
+                slot.CloseForCrafting();          
         }
 
         foreach (var slot in _craftBuildSlots)
         {
-            if (slot.Recipe.BuildingData.Type == itemType && _currentCategory == slot.Category)
-            {
-                slot.OpenForCrafting();
-            }
-            else
-            {
-                slot.CloseForCrafting();
-            }
+            if (slot.Recipe.BuildingData.Type == itemType && _currentCategory == slot.Category)           
+                slot.OpenForCrafting();           
+            else            
+                slot.CloseForCrafting();          
         }
     }
 

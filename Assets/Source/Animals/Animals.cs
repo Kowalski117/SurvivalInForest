@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using BehaviorDesigner.Runtime;
+using PixelCrushers.QuestMachine;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,6 +15,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     [SerializeField] private float _healh;
     [SerializeField] private float _armor;
     [SerializeField] private ParticleSystem _blood;
+    [SerializeField] private string _id;
 
     private float _radiusSpawnLoots = 1;
     private float _spawnLootUp = 0.5f;
@@ -26,6 +28,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     private ParticleSystem _currentBlood;
     private string _takeDamage = "TakeDamage";
     private string _takeDamageOverTime = "TakeDamageOverTime";
+    private QuestControl _questControl;
 
     public event UnityAction DestroyAnimal;
     public event UnityAction Died;
@@ -39,6 +42,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
         _behaviorTree = GetComponent<BehaviorTree>();
         _rigidbody = GetComponent<Rigidbody>();
         _agent = GetComponent<NavMeshAgent>();
+        _questControl = GetComponentInParent<QuestControl>();
         _maxHealth = _healh;
     }
 
@@ -79,6 +83,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
         _agent.enabled = false;
         _isDead = true;
         Died?.Invoke();
+        _questControl.SendToMessageSystem(MessageConstants.Dead + _id);
     }
 
     private void SpawnLoot()

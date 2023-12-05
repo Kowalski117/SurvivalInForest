@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class HotbarDisplay : StaticInventoryDisplay
 {
     [SerializeField] private SurvivalHandler _survivalHandler;
+    [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
 
     private int _maxIndexSize = 6;
     private int _currentIndex = 0;
@@ -50,6 +50,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.Hotbar5.performed += ctx => Hotbar(4);
         _playerInput.Inventory.Hotbar6.performed += ctx => Hotbar(5);
         _playerInput.Inventory.UseItem.performed += ctx => UseItem();
+        _playerInput.Inventory.RemoveItem.performed += ctx => RemoveItem();
         MouseInventoryItem.OnUpdatedSlots += UpdateSlot;
 
         foreach (var slot in Slots)
@@ -69,6 +70,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         _playerInput.Inventory.Hotbar5.performed -= ctx => Hotbar(4);
         _playerInput.Inventory.Hotbar6.performed -= ctx => Hotbar(5);
         _playerInput.Inventory.UseItem.performed -= ctx => UseItem();
+        _playerInput.Inventory.RemoveItem.performed -= ctx => RemoveItem();
         _playerInput.Disable();
         MouseInventoryItem.OnUpdatedSlots += UpdateSlot;
 
@@ -79,7 +81,7 @@ public class HotbarDisplay : StaticInventoryDisplay
         }
     }
 
-    private void UseItem()
+    public void UseItem()
     {
         if (_isActive)
         {
@@ -96,6 +98,12 @@ public class HotbarDisplay : StaticInventoryDisplay
     {
         Slots[_currentIndex].ToggleHighlight();
         _isActive = isActive;
+    }
+
+    public void RemoveItem()
+    {
+        if (Slots[_currentIndex])
+            InventoryOperator.RemoveItem(Slots[_currentIndex]);
     }
 
     private void ChangeIndex(int direction)
