@@ -27,7 +27,7 @@ public class SpawnResource : MonoBehaviour
         _resurseLocalePosition = _resource.transform.localPosition;
         _resurseLocaleRotation = _resource.transform.localRotation;
         _resurseLocaleScale = _resource.transform.localScale;
-
+        _questControl = GetComponentInParent<QuestControl>();
         _uniqueID = GetComponent<UniqueID>();
     }
 

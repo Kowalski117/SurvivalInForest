@@ -25,7 +25,7 @@ public class SpawnStone: MonoBehaviour
         _resource = gameObject.GetComponentInChildren<Resource>();
         _resurseLocaleScale = _resource.transform.localScale;
         _uniqueID = GetComponent<UniqueID>();
-        _questControl = GetComponent<QuestControl>();
+        _questControl = GetComponentInParent<QuestControl>();
     }
     
     private void Update()

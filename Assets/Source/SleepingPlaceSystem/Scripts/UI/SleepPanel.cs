@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SleepPanel : MonoBehaviour
@@ -19,8 +18,8 @@ public class SleepPanel : MonoBehaviour
     private bool _isSleepWindowOpen = false;
     private float _maximumDivisor = 3;
 
-    public static UnityAction<bool> OnStoppedTime;
-    public static UnityAction<float> OnSubtractTime;
+    public static Action<bool> OnStoppedTime;
+    public static Action<float> OnSubtractTime;
 
     private void Start()
     {
@@ -29,19 +28,34 @@ public class SleepPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        SleepingPlace.OnInteractionSleepingPlace += DisplaySleepWindow;
-
         _sleepButton.onClick.AddListener(SleepButtonClick);
         _exitButton.onClick.AddListener(ExitButtonClick);
     }
 
     private void OnDisable()
     {
-        SleepingPlace.OnInteractionSleepingPlace -= DisplaySleepWindow;
-
         _sleepButton.onClick.RemoveListener(SleepButtonClick);
         _exitButton.onClick.RemoveListener(ExitButtonClick);
     }
+
+    public void DisplaySleepWindow()
+    {
+        _isSleepWindowOpen = !_isSleepWindowOpen;
+
+        if (_isSleepWindowOpen)
+        {
+            _playerInputHandler.SetCursorVisible(_isSleepWindowOpen);
+            _playerInputHandler.ToggleInventoryInput(!_isSleepWindowOpen);
+            _sleepWindow.gameObject.SetActive(true);
+        }
+        else
+        {
+            _playerInputHandler.SetCursorVisible(_isSleepWindowOpen);
+            _playerInputHandler.ToggleInventoryInput(!_isSleepWindowOpen);
+            _sleepWindow.gameObject.SetActive(false);
+        }
+    }
+
     private void Update()
     {
         if(_sleepWindow.gameObject.activeInHierarchy)
@@ -76,23 +90,5 @@ public class SleepPanel : MonoBehaviour
         _playerInputHandler.SetCursorVisible(!_isSleepWindowOpen);
         _playerInputHandler.ToggleInventoryInput(_isSleepWindowOpen);
         _sleepWindow.gameObject.SetActive(false);
-    }
-
-    private void DisplaySleepWindow()
-    {
-        _isSleepWindowOpen = !_isSleepWindowOpen;
-
-        if (_isSleepWindowOpen)
-        {
-            _playerInputHandler.SetCursorVisible(_isSleepWindowOpen);
-            _playerInputHandler.ToggleInventoryInput(!_isSleepWindowOpen);
-            _sleepWindow.gameObject.SetActive(true);
-        }
-        else
-        {
-            _playerInputHandler.SetCursorVisible(_isSleepWindowOpen);
-            _playerInputHandler.ToggleInventoryInput(!_isSleepWindowOpen);
-            _sleepWindow.gameObject.SetActive(false);
-        }
     }
 }

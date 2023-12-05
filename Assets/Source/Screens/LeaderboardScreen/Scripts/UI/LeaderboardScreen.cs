@@ -1,23 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
+using Agava.YandexGames;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LeaderboardScreen : ScreenUI
 {
-    private void Awake()
+    [SerializeField] private Leaderboard _leaderboard;
+    [SerializeField] private AuthorizationPanel _authorizationPanel;
+
+    private void Authorization()
     {
-        CloseScreen();
+        if (!YandexGamesSdk.IsInitialized)
+            return;
+
+        if (PlayerAccount.IsAuthorized)
+        {
+            PlayerAccount.RequestPersonalProfileDataPermission();
+            _leaderboard.Fill();
+            OpenScreen();
+        }
+        else
+        {
+            _authorizationPanel.OpenScreen();
+        }
     }
 
-    protected override void OnEnable()
+    public override void ToggleScreen()
     {
-        base.OnEnable();
-    }
+        IsOpenScreen = !IsOpenScreen;
 
-    protected override void OnDisable()
-    {
-        base.OnDisable();
+        if (IsOpenScreen)
+        {
+            Authorization();
+        }
+        else
+        {
+            CloseScreen();
+
+            if(_authorizationPanel.IsOpenPanel)
+                _authorizationPanel.CloseScreen();
+        }
     }
 
     protected override void ExitButtonClick()
