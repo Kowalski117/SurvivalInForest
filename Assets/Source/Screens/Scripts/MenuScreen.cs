@@ -24,14 +24,14 @@ public class MenuScreen : ScreenUI
 
     protected void SettingButtonClick()
     {
-        if (!_settingScreen.IsOpenScreen)
+        if (!_settingScreen.IsOpenPanel)
             CloseAllScreens();
         _settingScreen.ToggleScreen();
     }
 
     protected void LeaderboardButtonClick()
     {
-        if (!_leaderboardScreen.IsOpenScreen)
+        if (!_leaderboardScreen.IsOpenPanel)
             CloseAllScreens();
         _leaderboardScreen.ToggleScreen();
     }

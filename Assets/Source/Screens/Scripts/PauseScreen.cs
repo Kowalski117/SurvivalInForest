@@ -49,7 +49,7 @@ public class PauseScreen : MenuScreen
     {
         ToggleScreen();
 
-        if (!IsOpenScreen)
+        if (!IsOpenPanel)
             CloseAllScreens();
     }
 
@@ -84,7 +84,7 @@ public class PauseScreen : MenuScreen
 
     private void ToggleShopScreen()
     {
-        if (!_shopScreen.IsOpenScreen)
+        if (!_shopScreen.IsOpenPanel)
             CloseAllScreens();
 
         _shopScreen.ToggleScreen();
@@ -92,7 +92,7 @@ public class PauseScreen : MenuScreen
 
     private void ToggleDailyRewardsScreen()
     {
-        if (!_dailyRewardsScreen.IsOpenScreen)
+        if (!_dailyRewardsScreen.IsOpenPanel)
             CloseAllScreens();
         
         _dailyRewardsScreen.ToggleScreen();

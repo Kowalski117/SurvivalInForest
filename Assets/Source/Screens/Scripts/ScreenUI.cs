@@ -9,13 +9,18 @@ public class ScreenUI : MonoBehaviour
     [SerializeField] private CanvasGroup _panel;
     [SerializeField] private Button _exitButton;
 
-    private bool _isOpenScreen = false;
+    protected bool IsOpenScreen = false;
 
     public event UnityAction OnOpenScreen;
     public event UnityAction OnCloseScreen;
     public event UnityAction OnExitButton;
 
-    public bool IsOpenScreen => _isOpenScreen;
+    public bool IsOpenPanel => IsOpenScreen;
+
+    private void Awake()
+    {
+        CloseScreen();
+    }
 
     protected virtual void OnEnable()
     {
@@ -37,7 +42,7 @@ public class ScreenUI : MonoBehaviour
 
     public void OpenScreen()
     {
-        _isOpenScreen = true;
+        IsOpenScreen = true;
         OnOpenScreen?.Invoke();
         _panel.blocksRaycasts = true;
         _panel.alpha = Mathf.Lerp(0, 1, 1);
@@ -45,17 +50,21 @@ public class ScreenUI : MonoBehaviour
 
     public void CloseScreen()
     {
-        _isOpenScreen = false;
+        IsOpenScreen = false;
         OnCloseScreen?.Invoke();
-        _panel.blocksRaycasts = false;
-        _panel.alpha = _panel.alpha = Mathf.Lerp(1, 0, 1);
+
+        if (_panel)
+        {
+            _panel.blocksRaycasts = false;
+            _panel.alpha = _panel.alpha = Mathf.Lerp(1, 0, 1);
+        }
     }
 
-    public void ToggleScreen()
+    public virtual void ToggleScreen()
     {
-        _isOpenScreen = !_isOpenScreen;
+        IsOpenScreen = !IsOpenScreen;
 
-        if (_isOpenScreen)
+        if (IsOpenScreen)
         {
             OpenScreen();
 
@@ -84,7 +93,7 @@ public class ScreenUI : MonoBehaviour
 
     public void Close()
     {
-        _isOpenScreen = false;
+        IsOpenScreen = false;
         CloseScreen();
         PlayerInputHandler.SetCursorVisible(false);
         PlayerInputHandler.ToggleAllInput(true);
