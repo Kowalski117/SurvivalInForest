@@ -5317,6 +5317,7 @@
           <e p="Audio" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="ButtonFx.cs" t="Include" />
               <e p="PlayerAudioHandler.cs" t="Include" />
               <e p="Resources" t="Include">
                 <e p="TouchingGround.cs" t="Include" />
@@ -5375,6 +5376,7 @@
           <e p="Constants" t="Include">
             <e p="Scripts" t="Include">
               <e p="GameConstants.cs" t="Include" />
+              <e p="MessageConstants.cs" t="Include" />
               <e p="PlayerAnimationConstants.cs" t="Include" />
               <e p="SaveLoadConstants.cs" t="Include" />
             </e>
@@ -5422,16 +5424,16 @@
           </e>
           <e p="CutScene" t="Include">
             <e p="Materials" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="CutScene.cs" t="Include" />
+            </e>
             <e p="Signals" t="Include" />
             <e p="Sound" t="Include" />
           </e>
           <e p="DialoguesAndQuests" t="Include">
             <e p="Data" t="Include" />
             <e p="Prefabs" t="Include" />
-            <e p="Quests" t="Include">
-              <e p="Main" t="Include" />
-              <e p="Resident" t="Include" />
-            </e>
+            <e p="Quests" t="Include" />
           </e>
           <e p="EatEffect" t="Include">
             <e p="Scripts" t="Include">
@@ -5612,13 +5614,11 @@
                 <e p="LoadingScreenSettings.cs" t="Include" />
               </e>
             </e>
+            <e p="Sprites" t="Include" />
           </e>
           <e p="Localization" t="Include">
             <e p="Locale" t="Include" />
-            <e p="Quests" t="Include">
-              <e p="Main" t="Include" />
-              <e p="Resident" t="Include" />
-            </e>
+            <e p="Quests" t="Include" />
           </e>
           <e p="Materials" t="Include" />
           <e p="MiningSystem" t="Include">
@@ -5731,7 +5731,9 @@
                   <e p="VirtualInputs" t="Include" />
                 </e>
                 <e p="Scripts" t="Include">
+                  <e p="AttackButton.cs" t="Include" />
                   <e p="CanvasInputs" t="Include">
+                    <e p="MobileButtonsHandler.cs" t="Include" />
                     <e p="UICanvasControllerInput.cs" t="Include" />
                   </e>
                   <e p="Utilities" t="Include">
@@ -5802,6 +5804,7 @@
               <e p="Prefabs" t="Include" />
               <e p="Scripts" t="Include">
                 <e p="UI" t="Include">
+                  <e p="AuthorizationPanel.cs" t="Include" />
                   <e p="LeaderboardScreen.cs" t="Include" />
                 </e>
               </e>
@@ -5947,6 +5950,14 @@
             </e>
           </e>
           <e p="Yandex" t="Include">
+            <e p="LeaderBoard" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="Leaderboard.cs" t="Include" />
+                <e p="LeaderboardElement.cs" t="Include" />
+                <e p="LeaderboardPlayer.cs" t="Include" />
+                <e p="LeaderboardView.cs" t="Include" />
+              </e>
+            </e>
             <e p="Scripts" t="Include">
               <e p="YandexAds.cs" t="Include" />
               <e p="YandexInitialization.cs" t="Include" />
