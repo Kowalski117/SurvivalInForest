@@ -90,7 +90,6 @@ namespace StarterAssets
         private bool _isEnable = true;
         private bool _isEnableCamera = true;
         private bool _isInWater = false;
-        private bool _isStealth = false;
         private bool _isComing => _speed < SprintSpeed ? false : true;
 
         private const float _threshold = 0.01f;

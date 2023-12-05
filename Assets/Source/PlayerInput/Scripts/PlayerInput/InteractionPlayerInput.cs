@@ -7,7 +7,7 @@ public class InteractionPlayerInput : MonoBehaviour
     private bool _isEnable = true;
 
     public event UnityAction OnInteractedConstruction;
-    public event UnityAction OnHit;
+    public event UnityAction OnAddedFire;
     public event UnityAction OnPickUp;
     public event UnityAction<bool> OnAttack;
     public event UnityAction OnUse;
@@ -22,9 +22,10 @@ public class InteractionPlayerInput : MonoBehaviour
     {
         _playerInput.Enable();
         _playerInput.Player.InteractionConstruction.performed += ctx => InteractedConstruction();
-        _playerInput.Player.Hit.performed += ctx => Hit();
+        _playerInput.Player.AddFire.performed += ctx => AddFire();
+        //_playerInput.Player.Hit.performed += ctx => Hit();
         _playerInput.Player.PickUp.performed += ctx => PickUp();
-        _playerInput.WeaponSystem.Attack.performed += ctx => Attack();
+        _playerInput.WeaponSystem.Attack.performed += ctx => Attack(_playerInput.WeaponSystem.Attack.IsPressed());
         _playerInput.WeaponSystem.Use.performed += ctx => Use();
         _playerInput.WeaponSystem.Aim.performed += ctx => Aim();
     }
@@ -32,9 +33,10 @@ public class InteractionPlayerInput : MonoBehaviour
     private void OnDisable()
     {
         _playerInput.Player.InteractionConstruction.performed -= ctx => InteractedConstruction();
-        _playerInput.Player.Hit.performed -= ctx => Hit();
+        _playerInput.Player.AddFire.performed -= ctx => AddFire();
+        //_playerInput.Player.Hit.performed -= ctx => Hit();
         _playerInput.Player.PickUp.performed -= ctx => PickUp();
-        _playerInput.WeaponSystem.Attack.performed -= ctx => Attack();
+        _playerInput.WeaponSystem.Attack.performed -= ctx => Attack(_playerInput.WeaponSystem.Attack.IsPressed());
         _playerInput.WeaponSystem.Use.performed -= ctx => Use();
         _playerInput.WeaponSystem.Aim.performed -= ctx => Aim();
         _playerInput.Disable();
@@ -46,10 +48,10 @@ public class InteractionPlayerInput : MonoBehaviour
             OnInteractedConstruction?.Invoke();
     }
 
-    private void Hit()
+    public void AddFire()
     {
         if (_isEnable)
-            OnHit?.Invoke();
+            OnAddedFire?.Invoke();
     }
 
     private void PickUp()
@@ -58,11 +60,11 @@ public class InteractionPlayerInput : MonoBehaviour
             OnPickUp?.Invoke();
     }
 
-    public void Attack()
+    public void Attack(bool isPressed)
     {
         if (_isEnable)
         {
-            OnAttack?.Invoke(_playerInput.WeaponSystem.Attack.IsPressed());
+            OnAttack?.Invoke(isPressed);
         }
         else
         {

@@ -1,4 +1,3 @@
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityRenderer;
 using StarterAssets;
 using System.Collections;
 using UnityEngine;
@@ -20,6 +19,7 @@ public class PlayerInputHandler : MonoBehaviour
     private bool _isPreviusCursorEnable;
 
     public FirstPersonController FirstPersonController => _firstPersonController;
+    public HotbarDisplay HotbarDisplay => _hotbarDisplay;
     public InventoryPlayerInput InventoryPlayerInput => _inventoryPlayerInput;
     public InteractionPlayerInput InteractionPlayerInput => _interactionPlayerInput;
     public BuildPlayerInput BuildPlayerInput => _buildPlayerInput;

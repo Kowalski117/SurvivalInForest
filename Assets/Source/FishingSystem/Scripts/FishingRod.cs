@@ -1,3 +1,4 @@
+using PixelCrushers.QuestMachine;
 using UnityEngine;
 
 public class FishingRod : MonoBehaviour
@@ -11,6 +12,7 @@ public class FishingRod : MonoBehaviour
     [SerializeField] private float _distance = 10;
     [SerializeField] private float _velocityForse = 50;
 
+    private QuestControl _questControl;
     private bool _isFishing = false;
     private bool _isAllowedFishing = true;
     private bool _isEnable = false;
@@ -19,6 +21,11 @@ public class FishingRod : MonoBehaviour
     private float _timer = 0;
     private int _maxRandomNumder = 100;
     private int _addAmount = 1;
+
+    private void Awake()
+    {
+        _questControl = GetComponent<QuestControl>();
+    }
 
     private void OnEnable()
     {
@@ -109,6 +116,7 @@ public class FishingRod : MonoBehaviour
         {
             _inventoryHolder.AddToInventory(inventoryItemData, _addAmount);
             _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
+            _questControl.SendToMessageSystem(MessageConstants.Ñaught + inventoryItemData.Id);
         }
     }
 

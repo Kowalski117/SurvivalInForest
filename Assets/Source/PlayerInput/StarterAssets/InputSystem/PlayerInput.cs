@@ -125,6 +125,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7143e62-69cb-4e6f-9f3e-4c05cea77c8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -424,6 +433,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""CreativeMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39ccaa0b-dd47-45c5-8b4c-b0360c36dcb1"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -516,6 +536,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""InteractItem"",
                     ""type"": ""Button"",
                     ""id"": ""06be1997-3cb1-4744-a839-dec16b3fb82a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RemoveItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e58c3a1-38ee-4114-8cb3-71940d4124b4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -630,6 +659,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""InteractItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84bb6f9a-83cf-4056-8fca-5b5169056352"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RemoveItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -923,6 +963,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Hit = m_Player.FindAction("Hit", throwIfNotFound: true);
         m_Player_InteractionConstruction = m_Player.FindAction("InteractionConstruction", throwIfNotFound: true);
         m_Player_CreativeMode = m_Player.FindAction("CreativeMode", throwIfNotFound: true);
+        m_Player_AddFire = m_Player.FindAction("AddFire", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Hotbar1 = m_Inventory.FindAction("Hotbar 1", throwIfNotFound: true);
@@ -935,6 +976,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Inventory_UseItem = m_Inventory.FindAction("Use Item", throwIfNotFound: true);
         m_Inventory_SelectInventoryItem = m_Inventory.FindAction("SelectInventoryItem", throwIfNotFound: true);
         m_Inventory_InteractItem = m_Inventory.FindAction("InteractItem", throwIfNotFound: true);
+        m_Inventory_RemoveItem = m_Inventory.FindAction("RemoveItem", throwIfNotFound: true);
         // BuildSystem
         m_BuildSystem = asset.FindActionMap("BuildSystem", throwIfNotFound: true);
         m_BuildSystem_PutBuilding = m_BuildSystem.FindAction("PutBuilding", throwIfNotFound: true);
@@ -1021,6 +1063,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Hit;
     private readonly InputAction m_Player_InteractionConstruction;
     private readonly InputAction m_Player_CreativeMode;
+    private readonly InputAction m_Player_AddFire;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1036,6 +1079,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Hit => m_Wrapper.m_Player_Hit;
         public InputAction @InteractionConstruction => m_Wrapper.m_Player_InteractionConstruction;
         public InputAction @CreativeMode => m_Wrapper.m_Player_CreativeMode;
+        public InputAction @AddFire => m_Wrapper.m_Player_AddFire;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1078,6 +1122,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @CreativeMode.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCreativeMode;
                 @CreativeMode.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCreativeMode;
                 @CreativeMode.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCreativeMode;
+                @AddFire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddFire;
+                @AddFire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddFire;
+                @AddFire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddFire;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1115,6 +1162,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @CreativeMode.started += instance.OnCreativeMode;
                 @CreativeMode.performed += instance.OnCreativeMode;
                 @CreativeMode.canceled += instance.OnCreativeMode;
+                @AddFire.started += instance.OnAddFire;
+                @AddFire.performed += instance.OnAddFire;
+                @AddFire.canceled += instance.OnAddFire;
             }
         }
     }
@@ -1133,6 +1183,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_UseItem;
     private readonly InputAction m_Inventory_SelectInventoryItem;
     private readonly InputAction m_Inventory_InteractItem;
+    private readonly InputAction m_Inventory_RemoveItem;
     public struct InventoryActions
     {
         private @PlayerInput m_Wrapper;
@@ -1147,6 +1198,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @UseItem => m_Wrapper.m_Inventory_UseItem;
         public InputAction @SelectInventoryItem => m_Wrapper.m_Inventory_SelectInventoryItem;
         public InputAction @InteractItem => m_Wrapper.m_Inventory_InteractItem;
+        public InputAction @RemoveItem => m_Wrapper.m_Inventory_RemoveItem;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1186,6 +1238,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @InteractItem.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInteractItem;
                 @InteractItem.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInteractItem;
                 @InteractItem.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnInteractItem;
+                @RemoveItem.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemoveItem;
+                @RemoveItem.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemoveItem;
+                @RemoveItem.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnRemoveItem;
             }
             m_Wrapper.m_InventoryActionsCallbackInterface = instance;
             if (instance != null)
@@ -1220,6 +1275,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @InteractItem.started += instance.OnInteractItem;
                 @InteractItem.performed += instance.OnInteractItem;
                 @InteractItem.canceled += instance.OnInteractItem;
+                @RemoveItem.started += instance.OnRemoveItem;
+                @RemoveItem.performed += instance.OnRemoveItem;
+                @RemoveItem.canceled += instance.OnRemoveItem;
             }
         }
     }
@@ -1428,6 +1486,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnHit(InputAction.CallbackContext context);
         void OnInteractionConstruction(InputAction.CallbackContext context);
         void OnCreativeMode(InputAction.CallbackContext context);
+        void OnAddFire(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {
@@ -1441,6 +1500,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnUseItem(InputAction.CallbackContext context);
         void OnSelectInventoryItem(InputAction.CallbackContext context);
         void OnInteractItem(InputAction.CallbackContext context);
+        void OnRemoveItem(InputAction.CallbackContext context);
     }
     public interface IBuildSystemActions
     {

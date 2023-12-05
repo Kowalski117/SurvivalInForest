@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "AddFire",
+                    "type": "Button",
+                    "id": "d7143e62-69cb-4e6f-9f3e-4c05cea77c8e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -402,6 +411,17 @@
                     "action": "CreativeMode",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39ccaa0b-dd47-45c5-8b4c-b0360c36dcb1",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddFire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -494,6 +514,15 @@
                     "name": "InteractItem",
                     "type": "Button",
                     "id": "06be1997-3cb1-4744-a839-dec16b3fb82a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RemoveItem",
+                    "type": "Button",
+                    "id": "2e58c3a1-38ee-4114-8cb3-71940d4124b4",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -608,6 +637,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "InteractItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "84bb6f9a-83cf-4056-8fca-5b5169056352",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RemoveItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
