@@ -2,8 +2,9 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class ExchangeHandler : MonoBehaviour
+public class ExchangeHandler : Raycast
 {
+    [SerializeField] private LayerMask LayerMask;
     [SerializeField] private UIInventoryHandler _inventoryHandler;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private Transform _panel;
@@ -13,6 +14,10 @@ public class ExchangeHandler : MonoBehaviour
     [SerializeField] private TMP_Text _nameText;
 
     private bool _isShopOpen = false;
+    private ExchangeKeeper _exchangeKeeper;
+
+    public event Action OnInteractionStarted;
+    public event Action OnInteractionFinished;
 
     private void Start()
     {
@@ -21,38 +26,43 @@ public class ExchangeHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        ExchangeKeeper.OnExchangeDisplayRequested += DisplayShopWindow;
         _inventoryHandler.OnInventoryClosed += CloseWindow;
     }
 
     private void OnDisable()
     {
-        ExchangeKeeper.OnExchangeDisplayRequested -= DisplayShopWindow;
         _inventoryHandler.OnInventoryClosed -= CloseWindow;
     }
 
-    private void DisplayShopWindow(ExchangeKeeper exchangeKeeper)
+    private void Update()
     {
-        if (!_inventoryHandler.IsInventoryOpen)
+        if (IsRayHittingSomething(LayerMask, out RaycastHit hitInfo))
         {
-            _isShopOpen = !_isShopOpen;
-            exchangeKeeper.DistanceHandler.SetActive(_isShopOpen);
-
-            if (_isShopOpen)
+            if (hitInfo.collider.TryGetComponent(out ExchangeKeeper exchangeKeeper))
             {
-                _panel.gameObject.SetActive(true);
-                CreateSlots();
-            }
-            else
-            {
-                CloseWindow();
+                _exchangeKeeper = exchangeKeeper;
+                if (_exchangeKeeper && !_isShopOpen)
+                {
+                    _panel.gameObject.SetActive(true);
+                    CreateSlots();
+                    _isShopOpen = true;
+                    OnInteractionStarted?.Invoke();
+                }
             }
         }
         else
         {
-            _isShopOpen = false;
-            exchangeKeeper.DistanceHandler.SetActive(_isShopOpen);
+            Close();
+        }
+    }
+
+    private void Close()
+    {
+        if (_exchangeKeeper != null && _isShopOpen)
+        {
+            _exchangeKeeper = null;
             CloseWindow();
+            OnInteractionFinished?.Invoke();
         }
     }
 
@@ -96,6 +106,7 @@ public class ExchangeHandler : MonoBehaviour
     private void CloseWindow()
     {
         _panel.gameObject.SetActive(false);
+        _isShopOpen = false;
     }
 }
 

@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class Interactor : Raycast
@@ -16,12 +16,14 @@ public class Interactor : Raycast
     [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private InventoryOperator _inventoryOperator;
+    [SerializeField] private SleepPanel _sleepPanel;
 
     [SerializeField] private float _liftingDelay = 2f;
     [SerializeField] private Transform _removeItemPoint;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private PlayerPosition _playerPositionLastScene;
     [SerializeField] private PlayerAudioHandler _playerAudioHandler;
+    [SerializeField] private bool _isKeyPickUp = true;
 
     private AudioSource _audioSource; 
     private bool _isStartingPick = true;
@@ -31,14 +33,19 @@ public class Interactor : Raycast
     private bool _isIconFilled = false;
     private bool _isInventoryFull = false;
     private SleepPointSaveData _sleepPointSaveData;
+    private SleepingPlace _currentSleepingPlace;
+    private Fire _currentFire;
 
     private int _addAmount = 1;
 
-    public event UnityAction<float, string> OnTimeUpdate;
+    public event Action<float, string> OnTimeUpdate;
+    public event Action OnInteractionStarted;
+    public event Action OnInteractionFinished;
 
     public float LookTimerPracent => _lookTimer / _liftingDelay;
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
     public SleepPointSaveData SleepPointSaveData => _sleepPointSaveData;
+    public Fire CurrentFire => _currentFire;
 
     protected override void Awake()
     {
@@ -60,8 +67,9 @@ public class Interactor : Raycast
     private void OnEnable()
     {
         _playerInputHandler.InteractionPlayerInput.OnPickUp += PickUpItem;
-        _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable += InteractableInventory;
+        //_playerInputHandler.InventoryPlayerInput.OnToggleIInteractable += InteractableInventory;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction += InteractableConstruction;
+        _playerInputHandler.InteractionPlayerInput.OnAddedFire += AddFire;
 
         _hotbarDisplay.OnItemClicked += PlantSeed;
 
@@ -72,8 +80,9 @@ public class Interactor : Raycast
     private void OnDisable()
     {
         _playerInputHandler.InteractionPlayerInput.OnPickUp -= PickUpItem;
-        _playerInputHandler.InventoryPlayerInput.OnToggleIInteractable -= InteractableInventory;
+        //_playerInputHandler.InventoryPlayerInput.OnToggleIInteractable -= InteractableInventory;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
+        _playerInputHandler.InteractionPlayerInput.OnAddedFire -= AddFire;
 
         _hotbarDisplay.OnItemClicked -= PlantSeed;
 
@@ -100,7 +109,6 @@ public class Interactor : Raycast
                 if (_lookTimer >= _liftingDelay && !_isIconFilled)
                 {
                     _isIconFilled = true;
-                    _playerAnimation.PickUp();
 
                     if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp) && itemPickUp.enabled)
                     {
@@ -111,7 +119,11 @@ public class Interactor : Raycast
                         _currentObjectPickUp = objectPickUp;
                     }
 
-                    PickUpAninationEvent();
+                    if (!_isKeyPickUp)
+                    {
+                        _playerAnimation.PickUp();
+                        PickUpAninationEvent();
+                    }
                 }
                 else
                 {
@@ -123,9 +135,42 @@ public class Interactor : Raycast
                 ResetLookTimer();
             }
         }
+        else if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hit))
+        {
+            if (hit.collider.TryGetComponent(out SleepingPlace interactable))
+            {
+                if (!_currentSleepingPlace)
+                {
+                    _currentSleepingPlace = interactable;
+                    OnInteractionStarted?.Invoke();
+                }
+
+            }
+            else if (hit.collider.TryGetComponent(out Fire fire))
+            {
+                if (!_currentFire)
+                {
+                    _currentFire = fire;
+
+                    if(_currentFire.IsFire)
+                        OnInteractionStarted?.Invoke();
+                }
+            }
+        }
         else
         {
             ResetLookTimer();
+
+            if (_currentSleepingPlace)
+            {
+                _currentSleepingPlace = null;
+                OnInteractionFinished?.Invoke();
+            }
+            else if (_currentFire)
+            {
+                _currentFire = null;
+                OnInteractionFinished?.Invoke();
+            }
         }
     }
 
@@ -186,51 +231,45 @@ public class Interactor : Raycast
         _isStartingPick = false;
     }
     
-    private void InteractableInventory()
-    {
-        if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hitInfo))
-        {
-            if (hitInfo.collider.TryGetComponent(out IInteractable interactable))
-            {
-                interactable.Interact();
-            }
-        }
-    }
+    //private void InteractableInventory()
+    //{
+    //    if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hitInfo))
+    //    {
+    //        if (hitInfo.collider.TryGetComponent(out IInteractable interactable))
+    //        {
+    //            interactable.Interact();
+    //        }
+    //    }
+    //}
 
     private void InteractableConstruction()
     {
-        if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hitInfo))
+        if (_currentSleepingPlace)
         {
-            if (hitInfo.collider.TryGetComponent(out SleepingPlace interactable))
-            {
-                interactable.Interact(this, out bool interactSuccessful);
-                _sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
-            }
+            _sleepPanel.DisplaySleepWindow();
+            _sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
+        }
+    }
 
-            if (hitInfo.collider.TryGetComponent(out Fire fire))
-            {
-                InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
+    private void AddFire()
+    {
+        if (_currentFire)
+        {
+            InventorySlot slot = _hotbarDisplay.GetInventorySlotUI().AssignedInventorySlot;
 
-                if (fire.AddFire(slot))
-                {
-                    _playerInventoryHolder.RemoveInventory(slot, _addAmount);
-                }
+            if (_currentFire.AddFire(slot))
+            {
+                _playerInventoryHolder.RemoveInventory(slot, _addAmount);
             }
         }
     }
 
     private void PickUpItem()
     {
-        if (IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo))
+        if((_currentItemPickUp || _currentObjectPickUp) && _isKeyPickUp)
         {
-            if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
-            {
-                if (LookTimerPracent >= 1)
-                {
-                    _playerAnimation.PickUp();
-                    _currentItemPickUp = itemPickUp;
-                }
-            }
+            _playerAnimation.PickUp();
+            PickUpAninationEvent();
         }
     }
 

@@ -1,44 +1,18 @@
 using UnityEngine;
-using UnityEngine.Events;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(UniqueID))]
-public class ChestInventory : InventoryHolder, IInteractable
+public class ChestInventory : InventoryHolder
 {
     [SerializeField] private ObjectItemsData[] _startingItems;
 
     private UniqueID _uniqueId;
-    //private DistanceHandler _distanceHandler;
-
-    public static UnityAction<ChestInventory, int> OnDinamicChestDisplayRequested;
-    public UnityAction<IInteractable> OnInteractionComplete { get; set; }
-
-    //public DistanceHandler DistanceHandler => _distanceHandler;
 
     protected override void Awake()
     {
         _uniqueId = GetComponentInParent<UniqueID>();
-        base.Awake();
-        //_distanceHandler = GetComponentInChildren<DistanceHandler>();
+        base.Awake();;
         LoadInventory();
     }
-
-    //private void OnEnable()
-    //{
-    //    _distanceHandler.OnDistanceExceeded += Interact;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    _distanceHandler.OnDistanceExceeded -= Interact;
-    //}
-
-    public void Interact()
-    {
-        OnDinamicChestDisplayRequested?.Invoke(this, 0);
-    }
-
-    public void EndInteraction() { }
 
     protected override void SaveInventory()
     {

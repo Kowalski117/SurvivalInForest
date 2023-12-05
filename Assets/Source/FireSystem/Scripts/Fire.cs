@@ -26,6 +26,8 @@ public class Fire : MonoBehaviour
     public event UnityAction<DateTime> OnCompletionTimeUpdate;
     public event UnityAction<bool> OnToggledFire;
 
+    public bool IsFire => _isFire;
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();

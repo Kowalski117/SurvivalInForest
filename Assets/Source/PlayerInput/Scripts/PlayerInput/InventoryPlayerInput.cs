@@ -42,6 +42,6 @@ public class InventoryPlayerInput : MonoBehaviour
 
     public void ToggleIInteractable()
     {
-        OnToggleIInteractable?.Invoke();
+        //OnToggleIInteractable?.Invoke();
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using Unity.Mathematics;
+using PixelCrushers.QuestMachine;
 
 [RequireComponent(typeof (UniqueID))]
 public class SpawnStone: MonoBehaviour
@@ -10,10 +11,11 @@ public class SpawnStone: MonoBehaviour
     [SerializeField] private float _scaleTime;
     [SerializeField] private GameObject _remainder;
     [SerializeField] private BrokenStone _brokenStone;
+    [SerializeField] private string _id;
 
     private Resource _resource;
     private Vector3 _resurseLocaleScale;
-    
+    private QuestControl _questControl;
     private bool _isSpawning = false;
     private float _elapsedTime = 0;
     private UniqueID _uniqueID;
@@ -23,6 +25,7 @@ public class SpawnStone: MonoBehaviour
         _resource = gameObject.GetComponentInChildren<Resource>();
         _resurseLocaleScale = _resource.transform.localScale;
         _uniqueID = GetComponent<UniqueID>();
+        _questControl = GetComponentInParent<QuestControl>();
     }
     
     private void Update()
@@ -47,6 +50,7 @@ public class SpawnStone: MonoBehaviour
 
     private void ResourceDeath()
     {
+        _questControl.SendToMessageSystem(MessageConstants.Broken + _id);
         _remainder.SetActive(true);
         Instantiate(_brokenStone, transform.position,quaternion.identity,this.transform);
         StartCoroutine(SpawnOverTime());

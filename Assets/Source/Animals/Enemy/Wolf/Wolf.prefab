@@ -2162,7 +2162,7 @@ AudioSource:
   m_GameObject: {fileID: 8740600263493788160}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2516991768726018257, guid: 43682b8fc4e62b3418f9c681d27b0f22, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -2347,8 +2347,8 @@ MonoBehaviour:
         byteData: 
         byteDataArray: 
       Version: 1.7.2
-  gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
+  gizmoViewMode: 0
+  showBehaviorDesignerGizmo: 0
 --- !u!195 &5988165783454715342
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2419,6 +2419,7 @@ MonoBehaviour:
   _healh: 100
   _armor: 0
   _blood: {fileID: 4551350313092073054, guid: 5dd148f3168a5994c98f52e00ae31894, type: 3}
+  _id: Wolf
   _damage: 20
   _overTimeDamage: 2
 --- !u!114 &4948622969606009015

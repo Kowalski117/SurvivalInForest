@@ -84,7 +84,6 @@ public class SpawnPointAnimals : MonoBehaviour
 
     private void SpawnAnimal()
     {
-        
         Animals currentAnimalsPrefab = null;
         int range;
         switch (_animals)

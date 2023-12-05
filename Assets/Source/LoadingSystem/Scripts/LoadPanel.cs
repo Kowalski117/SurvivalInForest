@@ -18,16 +18,20 @@ public class LoadPanel : MonoBehaviour
     [SerializeField] private TMP_Text _loadBarText;
     [SerializeField] private Button _resumeButton;
     [SerializeField] private CanvasGroup _canvasGroup;
+    [SerializeField] private CanvasGroup _blackWindow;
     [SerializeField] private GameObject _text;
     [SerializeField] private float _fadeSpeed;
     [SerializeField] private bool _isStart = false;
 
-    private const float _waitForFadeTime = 5f;
+    private const float _waitForFadeTime = 4f;
     private const float _zeroVolume = -80f;
 
     private Coroutine _coroutine;
+    private Coroutine _coroutine1;
     private Coroutine _coroutineDeactivate;
     private int _randomIndex = 0;
+
+    public event UnityAction OnDeactivated;
 
     private void Start()
     {
@@ -85,7 +89,7 @@ public class LoadPanel : MonoBehaviour
             _coroutine = null;
         }
 
-        _coroutine = StartCoroutine(Fade(alpha, OnFadingDone, indexScene));
+         _coroutine = StartCoroutine(Fade(alpha, OnFadingDone, indexScene));
     }
 
     private IEnumerator Fade(float alpha, UnityAction OnFadingDone, int indexScene)
@@ -157,7 +161,7 @@ public class LoadPanel : MonoBehaviour
             StopCoroutine(_coroutineDeactivate);
             _coroutineDeactivate = null;
         }
-
+        OnDeactivated?.Invoke();
         _coroutineDeactivate = StartCoroutine(DeactivateCoroutine());
     }
 
@@ -179,7 +183,7 @@ public class LoadPanel : MonoBehaviour
             _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 0, Time.deltaTime * _fadeSpeed);
             yield return null;
         }
-
+        _canvasGroup.alpha = 0;
         gameObject.SetActive(false);
     }
 
