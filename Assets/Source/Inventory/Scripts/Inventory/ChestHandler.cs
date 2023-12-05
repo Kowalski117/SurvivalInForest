@@ -18,7 +18,7 @@ public class ChestHandler : Raycast
             if (hitInfo.collider.TryGetComponent(out ChestInventory chestInventory))
             {
                 _chestInventory = chestInventory;
-                if (!_inventoryHandler.IsChestOpen)
+                if (_inventoryHandler && !_inventoryHandler.IsChestOpen)
                 {
                     _inventoryHandler.DisplayChestInventory(_chestInventory, 0);
                     OnInteractionStarted?.Invoke(); 
