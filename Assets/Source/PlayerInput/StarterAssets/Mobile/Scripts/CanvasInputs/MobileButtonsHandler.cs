@@ -19,7 +19,6 @@ public class MobileButtonsHandler : MonoBehaviour
     [SerializeField] private Button _addFireButton;
     [SerializeField] private Button _toggleIntaractableButton;
     [SerializeField] private Button _useItemButton;
-    [SerializeField] private Button _removeItemButton;
     [SerializeField] private Button _rotateBuildButton;
     [SerializeField] private Button _destroyBuildButton;
     [SerializeField] private Button _putBuildButton;
@@ -120,7 +119,6 @@ public class MobileButtonsHandler : MonoBehaviour
             _interactedConstructionButton.gameObject.SetActive(false);
             _toggleIntaractableButton.gameObject.SetActive(false);
             _useItemButton.gameObject.SetActive(false);
-            _removeItemButton.gameObject.SetActive(false);
         }
     }
 
@@ -135,7 +133,6 @@ public class MobileButtonsHandler : MonoBehaviour
         _attackButton.gameObject.SetActive(true);
         _sprintButton.gameObject.SetActive(true);
         _stealthButton.gameObject.SetActive(true);
-        _removeItemButton.gameObject.SetActive(true);
 
         ToggleButtons(_currentSlot);
     }
