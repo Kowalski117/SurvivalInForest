@@ -19,6 +19,8 @@ namespace StarterAssets
         public float SprintSpeed = 6.0f;
         [Tooltip("Rotation speed of the character")]
         public float RotationSpeed = 1.0f;
+        [SerializeField] private float _maxRotationSpeed = 10;
+        [SerializeField] private float _minRotationSpeed = 0.5f;
         [Tooltip("Acceleration and deceleration")]
         public float SpeedChangeRate = 10.0f;
 
@@ -157,6 +159,11 @@ namespace StarterAssets
         {
             if(_isEnableCamera)
                 CameraRotation();
+        }
+
+        public void UpdateRotationSpeed(float value)
+        {
+            RotationSpeed = Mathf.Lerp(_minRotationSpeed, _maxRotationSpeed, value);
         }
 
         public void ToggleCamera(bool toggle)

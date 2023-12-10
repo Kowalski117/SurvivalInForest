@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LoadPanel : MonoBehaviour
 {
-    //[SerializeField] private AudioManager _audioManager;
+    [SerializeField] private AudioHandler _audioHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private LoadingScreenSettings _screenSettings;
     [SerializeField] private Image _imageHint;
@@ -18,7 +18,6 @@ public class LoadPanel : MonoBehaviour
     [SerializeField] private TMP_Text _loadBarText;
     [SerializeField] private Button _resumeButton;
     [SerializeField] private CanvasGroup _canvasGroup;
-    [SerializeField] private CanvasGroup _blackWindow;
     [SerializeField] private GameObject _text;
     [SerializeField] private float _fadeSpeed;
     [SerializeField] private bool _isStart = false;
@@ -75,13 +74,11 @@ public class LoadPanel : MonoBehaviour
 
     public void Load(float alpha, UnityAction OnFadingDone, int indexScene)
     {
-        //if (alpha == 1)
-        //    _audioManager.FadeIn();
+        if (alpha == 1)
+            _audioHandler.FadeIn();
 
-        //if (alpha == 0)
-        //    _audioManager.FadeOut();
-
-        _canvasGroup.blocksRaycasts = true;
+        if (alpha == 0)
+            _audioHandler.FadeOut();
 
         if (_coroutine != null)
         {
@@ -95,11 +92,11 @@ public class LoadPanel : MonoBehaviour
     private IEnumerator Fade(float alpha, UnityAction OnFadingDone, int indexScene)
     {
         SetSettingsScreen(indexScene);
+        _canvasGroup.blocksRaycasts = true;
 
         if (alpha == 0)
         {
             _canvasGroup.alpha = 1;
-            _canvasGroup.blocksRaycasts = false;
             float elapsedTime = 0;
             float targetTime = _waitForFadeTime;
             _loadBarText.enabled = true;
@@ -122,7 +119,6 @@ public class LoadPanel : MonoBehaviour
         else if (alpha == 1)
         {
             _resumeButton.gameObject.SetActive(false);
-            _canvasGroup.blocksRaycasts = false;
 
             if (_playerInputHandler != null)
                 _playerInputHandler.PlayerHealth.SetActiveCollider(false);

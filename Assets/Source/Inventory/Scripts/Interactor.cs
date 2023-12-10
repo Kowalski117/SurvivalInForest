@@ -56,6 +56,7 @@ public class Interactor : Raycast
         {
             foreach (var sleepPosition in _playerPositionLastScene.SleepPositions)
             {
+           
                 if (SceneManager.GetActiveScene().buildIndex == sleepPosition.SceneIndex)
                 {
                     _sleepPointSaveData = new SleepPointSaveData(sleepPosition.Position, sleepPosition.Rotation);
@@ -94,6 +95,11 @@ public class Interactor : Raycast
     {
         HandleLookTimer();
         HandleInventoryFull();
+    }
+
+    public void UpdateIsKeyPickUp(bool isKeyPickUp)
+    {
+        _isKeyPickUp = !isKeyPickUp;
     }
 
     private void HandleLookTimer()
