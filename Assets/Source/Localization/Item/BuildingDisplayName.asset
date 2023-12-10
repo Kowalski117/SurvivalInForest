@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9839ff07fc3994aa17c3c6b5ecfd28, type: 3}
+  m_Name: BuildingDisplayName
+  m_EditorClassIdentifier: 
+  m_languageKeys:
+  - Default
+  - ru
+  - en
+  - tr
+  m_languageValues: 00000000010000000200000003000000
+  m_fieldKeys: 0b00000002000000030000000400000005000000060000000700000008000000090000000a0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000
+  m_fieldValues:
+  - m_fieldName: Bake
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041F\u0435\u0447\u044C"
+    - Bake
+    - "Pi\u015Fmek"
+    - 
+  - m_fieldName: Bed
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0440\u043E\u0432\u0430\u0442\u044C"
+    - Bed
+    - Yatak
+    - 
+  - m_fieldName: BigBonfire
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0411\u043E\u043B\u044C\u0448\u043E\u0439 \u043A\u043E\u0441\u0442\u0435\u0440"
+    - Big bonfire
+    - "B\xFCy\xFCk \u015Fenlik ate\u015Fi"
+    - 
+  - m_fieldName: Boiler
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u043E\u0442\u0435\u043B"
+    - Boiler
+    - Kazan
+    - 
+  - m_fieldName: BigChest
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0411\u043E\u043B\u044C\u0448\u043E\u0439 \u0441\u0443\u043D\u0434\u0443\u043A"
+    - Big chest
+    - "B\xFCy\xFCk g\xF6\u011F\xFCs"
+    - 
+  - m_fieldName: SmallChest
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0438\u0439 \u0441\u0443\u043D\u0434\u0443\u043A"
+    - A small chest
+    - "K\xFC\xE7\xFCk Bir G\xF6\u011F\xFCs"
+    - 
+  - m_fieldName: PotGround
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0413\u043E\u0440\u0448\u043E\u043A \u0441 \u0437\u0435\u043C\u043B\u0435\u0439"
+    - Pot with the ground
+    - Zeminde tencere
+    - 
+  - m_fieldName: LittleBinfire
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0438\u0439 \u043A\u043E\u0441\u0442\u0435\u0440"
+    - Little bonfire
+    - "K\xFC\xE7\xFCk \u015Fenlik ate\u015Fi"
+    - 
+  - m_fieldName: Tent
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041F\u0430\u043B\u0430\u0442\u043A\u0430"
+    - Tent
+    - "\xC7ad\u0131r"
+    - 
+  - m_fieldName: CraftingTable
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0412\u0435\u0440\u0441\u0442\u0430\u043A"
+    - Crafting table
+    - "\u0130\u015F\xE7ilik masas\u0131"
+    - 
+  - m_fieldName: StoneWall
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430"
+    - Stone wall
+    - "Ta\u015F duvar"
+    - 
+  - m_fieldName: StoneWallWithDoor
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430
+      \u0441 \u0434\u0432\u0435\u0440\u044C\u044E"
+    - A stone wall with a door
+    - "Kap\u0131l\u0131 Ta\u015F Duvar"
+    - 
+  - m_fieldName: StoneWallWithInsert
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430
+      \u0441\u043E \u0432\u0441\u0442\u0430\u0432\u043A\u0430\u043C\u0438"
+    - Stone wall with inserts
+    - "Ekleri olan ta\u015F duvar"
+    - 
+  - m_fieldName: StoneWallWithInsertAndDoor
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430
+      \u0441\u043E \u0432\u0441\u0442\u0430\u0432\u043A\u0430\u043C\u0438 \u0438
+      \u0434\u0432\u0435\u0440\u044C\u044E"
+    - Stone wall with inserts and door
+    - "Ekler ve kap\u0131 ile ta\u015F duvar"
+    - 
+  - m_fieldName: StoneWallWithInsertAndWindow
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430
+      \u0441\u043E \u0432\u0441\u0442\u0430\u0432\u043A\u0430\u043C\u0438 \u0438
+      \u043E\u043A\u043D\u043E\u043C"
+    - Stone wall with inserts and window
+    - "Ekler ve pencereli ta\u015F duvar"
+    - 
+  - m_fieldName: StoneWallWithWindow
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0430\u043C\u0435\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430
+      \u0441 \u043E\u043A\u043D\u043E\u043C"
+    - Stone wall with window
+    - "Pencereli ta\u015F duvar"
+    - 
+  - m_fieldName: WoodenFloor
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u044B\u0439 \u043F\u043E\u043B/\u043F\u043E\u0442\u043E\u043B\u043E\u043A"
+    - Wooden floor/ceiling
+    - "Ah\u015Fap zemin/tavan"
+    - 
+  - m_fieldName: WoodenSteps
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u044B\u0435 \u0441\u0442\u0443\u043F\u0435\u043D\u0438"
+    - Wooden steps
+    - "Ah\u015Fap basamaklar"
+    - 
+  - m_fieldName: WoodenWall
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430"
+    - Wooden wall
+    - "Ah\u015Fap duvar"
+    - 
+  - m_fieldName: WoodenWithDoor
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u0430\u044F \u0441\u0442\u0435\u043D\u0430
+      \u0441 \u0434\u0432\u0435\u0440\u044C\u044E"
+    - Wooden wall with a door
+    - "Bir kap\u0131 ile ah\u015Fap duvar"
+    - 
+  - m_fieldName: WoodenWithWindow
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u0430\u044F \u0441\u0442\u0440\u0435\u043B\u0430
+      \u0441 \u043E\u043A\u043D\u043E\u043C"
+    - Wooden arrow with a window
+    - "Pencereli ah\u015Fap ok"
+    - 
+  m_nextLanguageID: 4
+  m_nextFieldID: 23
