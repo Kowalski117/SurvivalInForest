@@ -12,21 +12,33 @@ public class InventoryOperator : MonoBehaviour
 
     private void OnEnable()
     {
-        InventorySlotUI.OnItemRemove += RemoveItem;
+        InventorySlotUI.OnItemRemove += RemoveItems;
     }
 
     private void OnDisable()
     {
-        InventorySlotUI.OnItemRemove -= RemoveItem;
+        InventorySlotUI.OnItemRemove -= RemoveItems;
     }
 
-    public void RemoveItem(InventorySlotUI inventorySlot)
+    public void RemoveItems(InventorySlotUI inventorySlot)
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
             StartCoroutine(CreateItemsWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, inventorySlot.AssignedInventorySlot.Size));
 
             _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, inventorySlot.AssignedInventorySlot.Size);
+
+            if (inventorySlot.AssignedInventorySlot.ItemData == null)
+                inventorySlot.TurnOffHighlight();
+        }
+    }
+
+    public void RemoveItem(InventorySlotUI inventorySlot)
+    {
+        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
+        {
+            StartCoroutine(CreateItemsWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, 1));
+            _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, 1);
 
             if (inventorySlot.AssignedInventorySlot.ItemData == null)
                 inventorySlot.TurnOffHighlight();

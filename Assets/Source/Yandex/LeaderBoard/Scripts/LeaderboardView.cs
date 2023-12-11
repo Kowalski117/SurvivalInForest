@@ -26,6 +26,7 @@ public class LeaderboardView : MonoBehaviour
         foreach (var element in _spawnedElements)
         {
             Destroy(element.gameObject);
+            Debug.Log(element);
         }
 
         _spawnedElements = new List<LeaderboardElement>();

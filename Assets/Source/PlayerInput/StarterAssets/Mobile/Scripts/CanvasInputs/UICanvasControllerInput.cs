@@ -68,14 +68,14 @@ namespace StarterAssets
             _playerInputHandler.HotbarDisplay.UseItem();
         }
 
-        public void RemoveItem()
-        {
-            _playerInputHandler.HotbarDisplay.RemoveItem();
-        }
-
         public void AimBow()
         {
             _playerInputHandler.InteractionPlayerInput.Aim();
+        }
+
+        public void ShootBow()
+        {
+            _playerInputHandler.InteractionPlayerInput.Use();
         }
     }
 }

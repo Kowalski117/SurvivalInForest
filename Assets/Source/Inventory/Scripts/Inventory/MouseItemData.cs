@@ -82,7 +82,7 @@ public class MouseItemData : MonoBehaviour
             }
             else
             {
-                _inventoryOperator.RemoveItem(_inventorySlotUI);
+                _inventoryOperator.RemoveItems(_inventorySlotUI);
             }
 
             Toggle(false);

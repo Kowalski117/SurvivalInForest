@@ -48,9 +48,10 @@ public class DelayWindow : MonoBehaviour
         _audioSource.Play();
         _isLoading = true;
         _survivalHandler.TimeHandler.ToggleEnable(false);
-        _playerInputHandler.ToggleAllInput(false);
         _playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleScreenPlayerInput(false);
+        _playerInputHandler.ToggleAllInput(false);
+
         _loadingPanel.gameObject.SetActive(true);
 
         _time = _time + TimeSpan.FromHours(skipTime);

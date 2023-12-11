@@ -16,13 +16,6 @@ public class ValueMetricView : MonoBehaviour
     protected void UpdateFillAmount(float amount)
     {
         _image.fillAmount = amount;
-
-        Color color;
-        if (_image.fillAmount <= 0.7f)
-        {
-            color = Color.Lerp(_minAmountColor, _defoultColor, (amount - 0.3f) / 0.4f);
-            //color = Color.Lerp(_minAmountColor, _defoultColor, amount * 2);
-            _image.color = color;
-        }
+        _image.color = Color.Lerp(_minAmountColor, _defoultColor, (amount - 0.3f) / 0.4f);
     }
 }

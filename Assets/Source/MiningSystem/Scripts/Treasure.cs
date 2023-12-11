@@ -1,10 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Treasure : Resource
 {
-    [SerializeField] private ObjectItemsData[] _lootItems;
     [SerializeField] private ObjectPickUp _lootObject;
 
     private int[] _array = new int[] { 75, 50, 25, 0};
@@ -27,7 +25,6 @@ public class Treasure : Resource
         _index = 0;
         _lootObject.gameObject.SetActive(true);
         _lootObject.TurnOff();
-        SetRandomLoot();
         _lootObject.transform.localPosition = _lootObjectPosition;
     }
 
@@ -50,12 +47,6 @@ public class Treasure : Resource
         _lootObject.Enable();
         Сollider.enabled = false;
         base.Die();
-    }
-    
-    private void SetRandomLoot()
-    {
-        int index = Random.Range(0, _lootItems.Length);
-        _lootObject.Init(_lootItems[index]);
     }
 
     private void ChangePosition()

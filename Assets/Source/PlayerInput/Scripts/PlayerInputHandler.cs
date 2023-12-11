@@ -14,9 +14,9 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private Transform _inventoryPanels;
     [SerializeField] private PlayerHealth _playerHealth;
+    [SerializeField] private Interactor _interactor;
 
     private bool _isCursorEnable;
-    private bool _isPreviusCursorEnable;
 
     public FirstPersonController FirstPersonController => _firstPersonController;
     public HotbarDisplay HotbarDisplay => _hotbarDisplay;
@@ -28,18 +28,11 @@ public class PlayerInputHandler : MonoBehaviour
     public BuildTool BuildTool => _buildTool;
     public Transform InventoryPanels => _inventoryPanels;
     public PlayerHealth PlayerHealth => _playerHealth;
+    public Interactor Interactor => _interactor;
 
     private void Start()
     {
-        //ToggleAllParametrs(false);
-        //SetCursorVisible(true);
         StartCoroutine(WaitForLoad(1f));
-    }
-
-    private void Update()
-    {
-        if (_isCursorEnable != _isPreviusCursorEnable)
-            ToggleCursor(_isCursorEnable);
     }
 
     private IEnumerator WaitForLoad(float delay)
@@ -50,8 +43,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void SetCursorVisible(bool visible)
     {
-        _isPreviusCursorEnable = _isCursorEnable;
         _isCursorEnable = visible;
+        ToggleCursor(_isCursorEnable);
     }
 
     public void TogglePersonController(bool visible)
@@ -115,6 +108,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        ToggleCursor(_isCursorEnable);
+        ToggleCursor(hasFocus);
     }
 }

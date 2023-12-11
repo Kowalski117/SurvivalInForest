@@ -115,12 +115,6 @@ public class Building : MonoBehaviour
         ES3.Save(_uniqueID.Id, itemSaveData);
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        Debug.Log("13");
-
-    }
-
     private void OnTriggerStay(Collider other)
     {
         if (!_isPlace)

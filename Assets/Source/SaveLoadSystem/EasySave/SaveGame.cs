@@ -1,17 +1,21 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class SaveGame : MonoBehaviour
 {
     [SerializeField] private LoadPanel _loadPanel;
+    [SerializeField] private YandexAds _yandexAds;
     [SerializeField] private bool _isAutoSave;
     [SerializeField] private float _autoSaveDelay;
+    [SerializeField] private int _notificationTime = 10;
 
-    float _timer = 0;
+    private float _timer = 0;
 
-    public static UnityAction OnSaveGame;
-    public static UnityAction OnLoadData;
+    public Action<int> OnNotifyPlayer;
+    public Action OnCloseNotifierPlayer;
+    public static Action OnSaveGame;
+    public static Action OnLoadData;
 
     private void Start()
     {
@@ -34,7 +38,14 @@ public class SaveGame : MonoBehaviour
             if (_timer >= _autoSaveDelay)
             {
                 _timer = 0;
+                OnCloseNotifierPlayer?.Invoke();
+                _yandexAds.ShowInterstitial();
                 Save();
+            }
+
+            if(_timer >= _autoSaveDelay - _notificationTime)
+            {
+                OnNotifyPlayer?.Invoke(_notificationTime);
             }
         }
     }

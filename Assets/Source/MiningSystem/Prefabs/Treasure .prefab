@@ -237,9 +237,7 @@ MonoBehaviour:
   _damageDoneAudioClips:
   - {fileID: 8300000, guid: f904a88a48f5e8e4da431550af5b7c5c, type: 3}
   - {fileID: 8300000, guid: 7deeaf993f4eb1841a5e4533740f066c, type: 3}
-  _lootItems:
-  - {fileID: 11400000, guid: 955b83eb2606efc4b83ca6d0e014b699, type: 2}
-  - {fileID: 11400000, guid: 909c22361c032a4498a0625e6ffa85c9, type: 2}
+  _lootItems: {fileID: 11400000, guid: 955b83eb2606efc4b83ca6d0e014b699, type: 2}
   _lootObject: {fileID: 8637010559191012645}
 --- !u!65 &7367731860666213737
 BoxCollider:
@@ -350,7 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 39f31d3e-1751-4557-8071-d6691c677e68
+  _id: a33b7120-d47c-493d-9856-e12d469fe0d1
   _isGenerateAwake: 0
 --- !u!1001 &7415026891267740375
 PrefabInstance:
@@ -425,12 +423,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253552, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _id
-      value: 8c39bc75-ed88-4405-b82b-94b79cf76e56
+      value: ab7d89d6-e43e-4190-b940-3c5f14ac183b
       objectReference: {fileID: 0}
     - target: {fileID: 1241767526390253552, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _isGenerateAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1241767526390253554, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
+      propertyPath: _objectItemsData
+      value: 
+      objectReference: {fileID: 11400000, guid: 955b83eb2606efc4b83ca6d0e014b699, type: 2}
     - target: {fileID: 1241767526390253554, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
       propertyPath: _isDeleteAfterSelection
       value: 0
@@ -447,7 +449,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1241767526390253552, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cc08667ddfc90c14f9d66c0fbb804761, type: 3}
 --- !u!114 &8637010559191012645 stripped
 MonoBehaviour:

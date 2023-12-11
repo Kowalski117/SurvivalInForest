@@ -101,7 +101,7 @@ public abstract class InventoryDisplay : MonoBehaviour
             }
             else
             {
-                InventoryOperator.RemoveItem(MouseInventoryItem.InventorySlotUI);
+                InventoryOperator.RemoveItems(MouseInventoryItem.InventorySlotUI);
             }
 
             MouseInventoryItem.CleanSlot();

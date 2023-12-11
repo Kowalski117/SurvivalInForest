@@ -22,6 +22,7 @@ public class SurvivalAttribute : MonoBehaviour
     private void Awake()
     {
         CurrentValue = _maxValue;
+        OnValueChanged?.Invoke(ValuePercent);
     }
 
     public void ReplenishValue(float value)
@@ -52,5 +53,6 @@ public class SurvivalAttribute : MonoBehaviour
     public void SetValue(float value)
     {
         CurrentValue = value;
+        OnValueChanged?.Invoke(ValuePercent);
     }
 }

@@ -85,5 +85,10 @@ namespace IL3DN
             Gizmos.DrawLine(end, end - front * 2);
 
         }
+
+        public void UpdateWind(bool isActive)
+        {
+            Wind = isActive;
+        }
     }
 }
