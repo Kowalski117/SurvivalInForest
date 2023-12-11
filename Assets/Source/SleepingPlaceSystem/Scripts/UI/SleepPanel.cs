@@ -3,57 +3,31 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SleepPanel : MonoBehaviour
+public class SleepPanel : ScreenUI
 {
     [SerializeField] private TMP_Text _timer;
     [SerializeField] private Button _sleepButton;
-    [SerializeField] private Button _exitButton;
     [SerializeField] private Transform _sleepWindow;
     [SerializeField] private SurvivalHandler _survivalHandler;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private DelayWindow _loadingWindow;
     [SerializeField] private SaveGame _saveGame;
 
     private DateTime _sleepTime;
-    private bool _isSleepWindowOpen = false;
     private float _maximumDivisor = 3;
 
     public static Action<bool> OnStoppedTime;
     public static Action<float> OnSubtractTime;
 
-    private void Start()
+    protected override void OnEnable()
     {
-        _sleepWindow.gameObject.SetActive(false);
-    }
-
-    private void OnEnable()
-    {
+        base.OnEnable();
         _sleepButton.onClick.AddListener(SleepButtonClick);
-        _exitButton.onClick.AddListener(ExitButtonClick);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _sleepButton.onClick.RemoveListener(SleepButtonClick);
-        _exitButton.onClick.RemoveListener(ExitButtonClick);
-    }
-
-    public void DisplaySleepWindow()
-    {
-        _isSleepWindowOpen = !_isSleepWindowOpen;
-
-        if (_isSleepWindowOpen)
-        {
-            _playerInputHandler.SetCursorVisible(_isSleepWindowOpen);
-            _playerInputHandler.ToggleInventoryInput(!_isSleepWindowOpen);
-            _sleepWindow.gameObject.SetActive(true);
-        }
-        else
-        {
-            _playerInputHandler.SetCursorVisible(_isSleepWindowOpen);
-            _playerInputHandler.ToggleInventoryInput(!_isSleepWindowOpen);
-            _sleepWindow.gameObject.SetActive(false);
-        }
     }
 
     private void Update()
@@ -64,7 +38,7 @@ public class SleepPanel : MonoBehaviour
 
     private void SleepButtonClick()
     {
-        ExitButtonClick();
+        CloseScreen();
         _loadingWindow.ShowLoadingWindow(3, _survivalHandler.Sleep.MissingValue, string.Empty, ActionType.Sleep);
         _survivalHandler.TimeHandler.ToggleEnable(false);
         OnStoppedTime?.Invoke(false);
@@ -74,8 +48,8 @@ public class SleepPanel : MonoBehaviour
     private void OnLoadingComplete()
     {
         OnSubtractTime?.Invoke(_survivalHandler.Sleep.MissingValue);
-        _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
-        _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
+        _survivalHandler.TimeHandler.AddTime(_survivalHandler.Sleep.MissingValue);
+        _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MissingValue);
         _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
         _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
 
@@ -85,10 +59,8 @@ public class SleepPanel : MonoBehaviour
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
-    private void ExitButtonClick()
+    protected override void ExitButtonClick()
     {
-        _playerInputHandler.SetCursorVisible(!_isSleepWindowOpen);
-        _playerInputHandler.ToggleInventoryInput(_isSleepWindowOpen);
-        _sleepWindow.gameObject.SetActive(false);
+        ToggleScreen();
     }
 }

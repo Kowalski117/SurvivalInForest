@@ -31,7 +31,7 @@ public class BuildHandler : MonoBehaviour
         if (_isTurnOffWindows)
         {
             _inventoryHandler.TurnOffDisplayInventory();
-            _playerInputHandler.ToggleBuildPlayerInput(true);
+            //_playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInteractionInput(false);
             //_playerInputHandler.SetCursorVisible(false); //вот ту тпоходу дич
         }
@@ -46,7 +46,7 @@ public class BuildHandler : MonoBehaviour
     {
         if (_isTurnOffWindows)
         {
-            _playerInputHandler.ToggleBuildPlayerInput(false);
+            //_playerInputHandler.ToggleBuildPlayerInput(false);
             _playerInputHandler.ToggleInteractionInput(true);
             _isTurnOffWindows = false;
         }

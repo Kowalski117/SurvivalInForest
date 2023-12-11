@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
@@ -36,6 +37,9 @@ public class ItemButton : MonoBehaviour
 
     private void AddItem()
     {
-        _inventoryHolder.AddToInventory(_inventoryItemData, _amount, _inventoryItemData.Durability);
+        if(Keyboard.current.leftShiftKey.isPressed)
+            _inventoryHolder.AddToInventory(_inventoryItemData, 50, _inventoryItemData.Durability);
+        else
+            _inventoryHolder.AddToInventory(_inventoryItemData, _amount, _inventoryItemData.Durability);
     }
 }

@@ -72,5 +72,10 @@ namespace StarterAssets
         {
             _playerInputHandler.InteractionPlayerInput.Aim();
         }
+
+        public void ShootBow()
+        {
+            _playerInputHandler.InteractionPlayerInput.Use();
+        }
     }
 }

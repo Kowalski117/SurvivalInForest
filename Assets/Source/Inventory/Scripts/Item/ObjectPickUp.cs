@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(UniqueID))]
 public class ObjectPickUp : MonoBehaviour
 {
     [SerializeField] private int _layerMask = 6;
@@ -24,6 +23,9 @@ public class ObjectPickUp : MonoBehaviour
         _outline = GetComponent<OutlineObject>();
         _rigidbody= GetComponent<Rigidbody>();
         _rigidbody.isKinematic = true;
+
+        if(!_uniqueID)
+            _uniqueID = GetComponentInParent<UniqueID>();
     }
 
     public void Init(ObjectItemsData objectItemsData)
