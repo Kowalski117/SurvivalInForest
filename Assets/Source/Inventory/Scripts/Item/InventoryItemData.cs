@@ -1,5 +1,5 @@
-using BehaviorDesigner.Runtime;
-using TMPro;
+using PixelCrushers.DialogueSystem;
+using PixelCrushers.Wrappers;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +8,9 @@ public class InventoryItemData : ScriptableObject
 {
     [SerializeField] private int _id = -1;
     [SerializeField] private ItemType _type;
+    [SerializeField] private string _fieldTextTable;
+    [SerializeField] private TextTable _textTableDisplayName;
+    [SerializeField] private TextTable _textTableDescription;
     [SerializeField] private string _displayName;
     [TextArea(4,4)]
     [SerializeField] private string _description;
@@ -21,8 +24,8 @@ public class InventoryItemData : ScriptableObject
 
     public int Id => _id;
     public ItemType Type => _type;
-    public string DisplayName => _displayName;
-    public string Description => _description;
+    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_fieldTextTable,Localization.language);
+    public string Description => _textTableDescription.GetFieldTextForLanguage(_fieldTextTable, Localization.language);
     public Sprite Icon => _icon;
     public int MaxStackSize => _maxStackSize;
     public ItemPickUp ItemPrefab => _itemPrefab;

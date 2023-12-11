@@ -5433,7 +5433,10 @@
           <e p="DialoguesAndQuests" t="Include">
             <e p="Data" t="Include" />
             <e p="Prefabs" t="Include" />
-            <e p="Quests" t="Include" />
+            <e p="Quests" t="Include">
+              <e p="Main" t="Include" />
+              <e p="Resident" t="Include" />
+            </e>
           </e>
           <e p="EatEffect" t="Include">
             <e p="Scripts" t="Include">
@@ -5452,6 +5455,7 @@
             </e>
             <e p="BrokenHouse" t="Include" />
             <e p="Cave" t="Include" />
+            <e p="Mountains" t="Include" />
             <e p="Prefabs" t="Include" />
             <e p="RadioTower" t="Include" />
           </e>
@@ -5617,8 +5621,12 @@
             <e p="Sprites" t="Include" />
           </e>
           <e p="Localization" t="Include">
+            <e p="Item" t="Include" />
             <e p="Locale" t="Include" />
-            <e p="Quests" t="Include" />
+            <e p="Quests" t="Include">
+              <e p="Main" t="Include" />
+              <e p="Resident" t="Include" />
+            </e>
           </e>
           <e p="Materials" t="Include" />
           <e p="MiningSystem" t="Include">

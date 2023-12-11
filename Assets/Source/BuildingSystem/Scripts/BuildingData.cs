@@ -1,3 +1,5 @@
+using PixelCrushers.DialogueSystem;
+using PixelCrushers.Wrappers;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,8 +12,10 @@ public class BuildingData : ScriptableObject
     [SerializeField] private Building _prefab;
     [SerializeField] private ItemType _type;
     [SerializeField] private BuildType _buildType;
+    [SerializeField] private string _fieldTextTable;
+    [SerializeField] private TextTable _textTableDisplayName;
 
-    public string DisplayName => _displayName;
+    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_fieldTextTable,Localization.language);
     public int Id => _id;
     public Sprite Icon => _icon;
     public Building Prefab => _prefab;
