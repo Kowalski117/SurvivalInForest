@@ -31,6 +31,7 @@ public class GeneralSettings : MonoBehaviour
         _movementOfTrees.onValueChanged.AddListener(ChangeMovementOfTrees);
         _lowTextureWater.onValueChanged.AddListener(ChangeLowTextureWater);
         _hightTextureWater.onValueChanged.AddListener(ChangeHightTextureWater);
+        _language.onValueChanged.AddListener(ChangeLanguage);
     }
 
     private void OnDisable()
@@ -40,6 +41,7 @@ public class GeneralSettings : MonoBehaviour
         _movementOfTrees.onValueChanged.RemoveListener(ChangeMovementOfTrees);
         _lowTextureWater.onValueChanged.RemoveListener(ChangeLowTextureWater);
         _hightTextureWater.onValueChanged.RemoveListener(ChangeHightTextureWater);
+        _language.onValueChanged.RemoveListener(ChangeLanguage);
     }
 
     private void ChangeSensitivity(float value)
@@ -69,6 +71,6 @@ public class GeneralSettings : MonoBehaviour
 
     private void ChangeLanguage(int value)
     {
-
+        PixelCrushers.DialogueSystem.DialogueManager.SetLanguage("en");
     }
 }
