@@ -21,6 +21,7 @@ public class AuthorizationPanel : ScreenUI
     private void AuthorizationButtonClick()
     {
         PlayerAccount.Authorize();
+
         CloseScreen();
     }
 

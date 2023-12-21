@@ -9,17 +9,6 @@ public class InfoScreen : ScreenUI
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private Image _image;
 
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-    }
-
     public void Init(string nameText, string descriptionText, Sprite sprite)
     {
         _nameText.text = nameText;

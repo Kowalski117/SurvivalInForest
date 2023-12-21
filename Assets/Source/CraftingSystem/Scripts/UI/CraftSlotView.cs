@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftSlotView : MonoBehaviour
+public abstract class CraftSlotView : MonoBehaviour
 {
     [SerializeField] protected Image CraftedIcon;
     [SerializeField] protected TMP_Text CraftedName;
@@ -28,6 +28,7 @@ public class CraftSlotView : MonoBehaviour
         {
             ingridient.UpdateAmount(InventoryHolder);
         }
+        UpdateLanguage();
     }
 
     public void CloseForCrafting()
@@ -39,5 +40,7 @@ public class CraftSlotView : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
+
+    protected abstract void UpdateLanguage();
 }
 

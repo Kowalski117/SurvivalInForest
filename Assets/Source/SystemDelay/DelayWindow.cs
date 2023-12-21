@@ -14,6 +14,7 @@ public class DelayWindow : MonoBehaviour
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _timerText;
+    [SerializeField] private TMP_Text _actionText;
 
     private AudioSource _audioSource;
     private DateTime _time;
@@ -58,7 +59,7 @@ public class DelayWindow : MonoBehaviour
 
         _nameText.text = name;
         _timerText.text = _time.ToString(GameConstants.HHmm);
-
+        SetActionText(actionType);
         float elapsedTime = 0f;
         float duration = delay;
 
@@ -90,11 +91,33 @@ public class DelayWindow : MonoBehaviour
         OnLoadingComplete?.Invoke();
         _audioSource.Stop();
     }
+
+    private void SetActionText(ActionType actionType)
+    {
+        if(actionType == ActionType.CraftItem)
+        {
+            _actionText.text = "Крафтится:";
+        }
+        else if(actionType == ActionType.CraftBuild)
+        {
+            _actionText.text = "Строится:";
+        }
+        else if(actionType == ActionType.Sleep) 
+        {
+            _actionText.text = "Спит:";
+            _nameText.text = "...";
+        }
+        else if(actionType == ActionType.Preparing)
+        {
+            _actionText.text = "Готовится:";
+        }
+    }
 }
 
 public enum ActionType
 {
     CraftItem,
     CraftBuild,
-    Sleep
+    Sleep,
+    Preparing
 }

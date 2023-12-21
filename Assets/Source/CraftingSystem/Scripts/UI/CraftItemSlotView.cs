@@ -2,6 +2,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine;
 using PixelCrushers.QuestMachine;
+using PixelCrushers.DialogueSystem;
 
 public class CraftItemSlotView : CraftSlotView
 {
@@ -47,7 +48,11 @@ public class CraftItemSlotView : CraftSlotView
     {
         if (InventoryHolder.CheckIfCanCraft(_recipe))
         {
-            LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName, ActionType.CraftItem);
+            if(_recipe.CraftedItem.Type == ItemType.Food)
+                LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName, ActionType.Preparing);
+            else
+                LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName, ActionType.CraftItem);
+
             LoadingWindow.OnLoadingComplete += OnLoadingComplete;
         }
     }
@@ -57,5 +62,10 @@ public class CraftItemSlotView : CraftSlotView
         OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
         _questControl.SendToMessageSystem(MessageConstants.Craft + _recipe.CraftedItem.DisplayName);
         LoadingWindow.OnLoadingComplete -= OnLoadingComplete;
+    }
+
+    protected override void UpdateLanguage()
+    {
+        CraftedName.text = _recipe.CraftedItem.DisplayName;
     }
 }

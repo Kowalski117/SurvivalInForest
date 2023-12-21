@@ -6,6 +6,8 @@ public class TutorialHandler : Raycast
     [SerializeField] private InfoObjectData[] _infoObjects;
     [SerializeField] private LayerMask _layerMask;
 
+    private InfoObject _infoObject;
+
     protected override void Awake()
     {
         base.Awake();
@@ -27,6 +29,16 @@ public class TutorialHandler : Raycast
         {
             CheckObject(hitInfo.transform.gameObject);
         }
+        else
+        {
+            if (_infoObject)
+            {
+                _infoObject = null;
+
+                if(_infoScreen.IsOpenPanel)
+                    _infoScreen.ToggleScreen();
+            }
+        }
     }
 
     private void CheckObject(GameObject gameObject)
@@ -37,6 +49,7 @@ public class TutorialHandler : Raycast
             {
                 if (infoObject.InfoObjectSO == info && !info.IsDone)
                 {
+                    _infoObject = infoObject;
                     _infoScreen.Init(info.Name, info.Description, info.Sprite);
                     _infoScreen.ToggleScreen();
                     info.SetIsDone(true);

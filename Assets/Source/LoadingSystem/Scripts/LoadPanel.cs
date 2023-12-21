@@ -74,11 +74,8 @@ public class LoadPanel : MonoBehaviour
 
     public void Load(float alpha, UnityAction OnFadingDone, int indexScene)
     {
-        if (alpha == 1)
+        //if (alpha == 1)
             _audioHandler.FadeIn();
-
-        if (alpha == 0)
-            _audioHandler.FadeOut();
 
         if (_coroutine != null)
         {
@@ -139,7 +136,9 @@ public class LoadPanel : MonoBehaviour
             yield return new WaitForSeconds(_waitForFadeTime);
 
         if (OnFadingDone != null)
+        {
             OnFadingDone();
+        }
 
         yield break;
     }
@@ -158,6 +157,7 @@ public class LoadPanel : MonoBehaviour
             _coroutineDeactivate = null;
         }
         OnDeactivated?.Invoke();
+        _audioHandler.FadeOut();
         _coroutineDeactivate = StartCoroutine(DeactivateCoroutine());
     }
 

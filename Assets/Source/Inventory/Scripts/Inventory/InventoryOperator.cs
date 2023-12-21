@@ -87,7 +87,7 @@ public class InventoryOperator : MonoBehaviour
 
     public void InstantiateItem(InventoryItemData itemData, float durability)
     {
-        if (itemData.ItemPrefab != null)
+        if (itemData != null && itemData.ItemPrefab != null)
         {
             ItemPickUp itemPickUp = Instantiate(itemData.ItemPrefab, _removeItemPoint.position, Quaternion.identity);
             itemPickUp.GenerateNewID();

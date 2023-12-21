@@ -14,6 +14,7 @@ public class PlayerInteraction : Raycast
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
     [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private LayerMask _usingLayer;
+    [SerializeField] private ShakeEffect _shakeEffect;
 
     private WeaponItemData _currentWeapon;
     private ToolItemData _currentTool;
@@ -331,5 +332,8 @@ public class PlayerInteraction : Raycast
 
         if (_selectionAudioClip)
             _playerAudioHandler.PlayOneShot(_selectionAudioClip);
+
+        if(_shakeEffect)
+            _shakeEffect.StartShake();
     }
 }
