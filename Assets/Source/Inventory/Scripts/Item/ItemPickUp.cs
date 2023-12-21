@@ -46,7 +46,7 @@ public class ItemPickUp : MonoBehaviour
 
     public void PickUp()
     {
-        _questControl.SendToMessageSystem(MessageConstants.PickUp + _itemData.Id);
+        _questControl.SendToMessageSystem(MessageConstants.PickUp + _itemData.Name);
         ES3.Save(_uniqueID.Id, _uniqueID.Id);
         DestroyItem?.Invoke();
         Destroy(this.gameObject);

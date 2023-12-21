@@ -12,15 +12,16 @@ public class BuildingData : ScriptableObject
     [SerializeField] private Building _prefab;
     [SerializeField] private ItemType _type;
     [SerializeField] private BuildType _buildType;
-    [SerializeField] private string _fieldTextTable;
+    [SerializeField] private string _name;
     [SerializeField] private TextTable _textTableDisplayName;
 
-    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_fieldTextTable,Localization.language);
+    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_name,Localization.language);
     public int Id => _id;
     public Sprite Icon => _icon;
     public Building Prefab => _prefab;
     public ItemType Type => _type;
     public BuildType BuildType => _buildType;
+    public string Name => _name;
 
     public void SetId(int id)
     {

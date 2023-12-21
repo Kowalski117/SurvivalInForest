@@ -7,5 +7,5 @@ public class MessageConstants : MonoBehaviour
     public const string Craft = "Craft:";
     public const string Broken = "Broken:";
     public const string Dead = "Dead:";
-    public const string Ñaught = "Ñaught:";
+    public const string Ð¡aught = "Ð¡aught:";
 }

@@ -22,13 +22,13 @@ public class CraftItemSlotView : CraftSlotView
         CraftedButton.onClick.RemoveListener(OnCreateRecipeButton);
     }
 
-    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, Crafting—ategory Òategory, DelayWindow loadingWindow, QuestControl questControl)
+    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, Crafting–°ategory —Åategory, DelayWindow loadingWindow, QuestControl questControl)
     {
         CraftedTime = DateTime.MinValue;
         _recipe = craftRecipe;
         InventoryHolder = playerInventory;
         LoadingWindow = loadingWindow;
-        Crafting—ategory = Òategory;
+        Crafting–°ategory = —Åategory;
         CraftedIcon.sprite = craftRecipe.CraftedItem.Icon;
         CraftedName.text = craftRecipe.CraftedItem.DisplayName;
         CraftedTime = CraftedTime + TimeSpan.FromHours(craftRecipe.CraftingTime);
@@ -55,7 +55,7 @@ public class CraftItemSlotView : CraftSlotView
     private void OnLoadingComplete()
     {
         OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
-        _questControl.SendToMessageSystem(MessageConstants.Craft + _recipe.CraftedItem.DisplayName);
+        _questControl.SendToMessageSystem(MessageConstants.Craft + _recipe.CraftedItem.Name);
         LoadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 }

@@ -1,4 +1,5 @@
 using BehaviorDesigner.Runtime.Tasks.Unity.UnityRenderer;
+using PixelCrushers.QuestMachine;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -31,6 +32,7 @@ public class BuildTool : MonoBehaviour
     private Building _targetBuilding;
     private Quaternion _lastRotation;
     private FoundationConnection _currentFoundationConnection;
+    private QuestControl _questControl;
 
     private float _radiusSpawn = 2f;
     private float _spawnPointUp = 0.5f;
@@ -45,6 +47,7 @@ public class BuildTool : MonoBehaviour
     private void Awake()
     {
         _camera = Camera.main;
+        _questControl = GetComponent<QuestControl>();
     }
 
     private void OnEnable()
@@ -208,6 +211,8 @@ public class BuildTool : MonoBehaviour
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
         _isMovedBuild = false;
+        _questControl.SendToMessageSystem(MessageConstants.Build + _recipe.BuildingData.Name);
+        
         //_playerInputHandler.ToggleBuildPlayerInput(true);
 
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;

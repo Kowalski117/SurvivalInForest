@@ -15,7 +15,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     [SerializeField] private float _healh;
     [SerializeField] private float _armor;
     [SerializeField] private ParticleSystem _blood;
-    [SerializeField] private string _id;
+    [SerializeField] private string _name;
 
     private float _radiusSpawnLoots = 1;
     private float _spawnLootUp = 0.5f;
@@ -83,7 +83,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
         _agent.enabled = false;
         _isDead = true;
         Died?.Invoke();
-        _questControl.SendToMessageSystem(MessageConstants.Dead + _id);
+        _questControl.SendToMessageSystem(MessageConstants.Dead + _name);
     }
 
     private void SpawnLoot()

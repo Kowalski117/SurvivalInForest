@@ -14,6 +14,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     [SerializeField] private List<ItemPickUp> _loots;
     [SerializeField] private ParticleSystem _damageDoneParticle;
     [SerializeField] private AudioClip[] _damageDoneAudioClips;
+    [SerializeField] private string _name;
 
     protected Collider Сollider;
     protected Rigidbody Rigidbody;
@@ -31,6 +32,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     public float MaxHealth => _maxHealth;
     public ToolType ExtractionType => _extractionType;
     public ParticleSystem DamageDoneParticleParticle => _damageDoneParticle;
+    public string Name => _name;
     public AudioClip DamageDoneAudioClip => _damageDoneAudioClips[Random.Range(0, _damageDoneAudioClips.Length)];
 
     protected virtual void Awake()
