@@ -74,6 +74,29 @@ MonoBehaviour:
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 11400000, guid: bb56e2872ff01a744adc8d30b01ecd77, type: 2}
     m_textTableFieldID: 7
+--- !u!114 &-6790303319165267982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a00f693c81283c4085385e484f71206, type: 3}
+  m_Name: GiveQuestToQuesterQuestAction
+  m_EditorClassIdentifier: 
+  m_questToGive: {fileID: 11400000, guid: c9c791ef2fba1e7418284a03e6d6aee3, type: 2}
+  m_questIDToGive:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 11400000, guid: d16f533adeb4c9f4a91c78bdcaa4fc3e, type: 2}
+    m_textTableFieldID: 1
+  m_questerID:
+    m_text: Player
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,8 +139,7 @@ MonoBehaviour:
   m_isAbandonable: 0
   m_rememberIfAbandoned: 0
   m_autostartConditionSet:
-    m_conditionList:
-    - {fileID: 6039854775209991893}
+    m_conditionList: []
     m_conditionCountMode: 0
     m_minConditionCount: 0
     m_numTrueConditions: 0
@@ -134,7 +156,7 @@ MonoBehaviour:
   m_cooldownSecondsRemaining: 0
   m_noRepeatIfSuccessful: 0
   m_saveAllIfWaitingToStart: 0
-  m_state: 0
+  m_state: 1
   m_stateInfoList:
   - m_actionList: []
     m_categorizedContentList:
@@ -150,7 +172,8 @@ MonoBehaviour:
     - m_contentList:
       - {fileID: 1902446562047349123}
       - {fileID: 6411558580705642127}
-  - m_actionList: []
+  - m_actionList:
+    - {fileID: -6790303319165267982}
     m_categorizedContentList:
     - m_contentList: []
     - m_contentList:
@@ -202,7 +225,7 @@ MonoBehaviour:
         m_textTable: {fileID: 0}
         m_textTableFieldID: 0
       m_parameter:
-        m_text: "Wooden\u0410xe"
+        m_text: WoodenAxe
         m_stringAsset: {fileID: 0}
         m_textTable: {fileID: 0}
         m_textTableFieldID: 0
@@ -300,8 +323,8 @@ MonoBehaviour:
     m_childIndexList: 02000000
     m_canvasRect:
       serializedVersion: 2
-      x: 200
-      y: 88
+      x: 199
+      y: 87
       width: 120
       height: 48
   - m_id:
@@ -390,24 +413,6 @@ MonoBehaviour:
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 11400000, guid: bb56e2872ff01a744adc8d30b01ecd77, type: 2}
     m_textTableFieldID: 5
---- !u!114 &6039854775209991893
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 732e99ba3b575dc4dad61a69b0417c96, type: 3}
-  m_Name: QuestStateQuestCondition
-  m_EditorClassIdentifier: 
-  m_requiredQuestID:
-    m_text: 
-    m_stringAsset: {fileID: 0}
-    m_textTable: {fileID: 11400000, guid: 1b8c7942b5767ca40aa7762a126372ef, type: 2}
-    m_textTableFieldID: 7
-  m_requiredState: 2
 --- !u!114 &6411558580705642127
 MonoBehaviour:
   m_ObjectHideFlags: 1

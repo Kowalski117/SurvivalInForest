@@ -11,7 +11,6 @@ public class SpawnStone: MonoBehaviour
     [SerializeField] private float _scaleTime;
     [SerializeField] private GameObject _remainder;
     [SerializeField] private BrokenStone _brokenStone;
-    [SerializeField] private string _id;
 
     private Resource _resource;
     private Vector3 _resurseLocaleScale;
@@ -50,7 +49,7 @@ public class SpawnStone: MonoBehaviour
 
     private void ResourceDeath()
     {
-        _questControl.SendToMessageSystem(MessageConstants.Broken + _id);
+        _questControl.SendToMessageSystem(MessageConstants.Broken + _resource.Name);
         _remainder.SetActive(true);
         Instantiate(_brokenStone, transform.position,quaternion.identity,this.transform);
         StartCoroutine(SpawnOverTime());

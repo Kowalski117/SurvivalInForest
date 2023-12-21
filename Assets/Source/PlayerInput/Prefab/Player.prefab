@@ -686,10 +686,6 @@ MonoBehaviour:
   m_addNewQuestsSinceSavedGame: 0
   m_questList:
   - {fileID: 11400000, guid: 5e7706287d87561489be48b0d477b3e3, type: 2}
-  - {fileID: 11400000, guid: fa788833a3a3ff34f965fa036f67dee3, type: 2}
-  - {fileID: 11400000, guid: c9c791ef2fba1e7418284a03e6d6aee3, type: 2}
-  - {fileID: 11400000, guid: 1eaaabd4c06229d40badc1e526ef532e, type: 2}
-  - {fileID: 11400000, guid: 2940eb4e8c47751488d4524d12c635f4, type: 2}
   m_deletedStaticQuests: []
   m_id:
     m_text: Player
@@ -1736,6 +1732,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6213831090444324332, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
+      propertyPath: buttonClickOutputEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6213831090444324332, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
+      propertyPath: buttonClickOutputEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6213831090444324332, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
+      propertyPath: buttonClickOutputEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3724557869029597301}
+    - target: {fileID: 6213831090444324332, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
+      propertyPath: buttonClickOutputEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6213831090444324332, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
+      propertyPath: buttonClickOutputEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShootBow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6213831090444324332, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
+      propertyPath: buttonClickOutputEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: StarterAssets.UICanvasControllerInput, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6213831090444324332, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
+      propertyPath: buttonClickOutputEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7283150024166745990, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -2182,7 +2206,7 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
---- !u!114 &6594547372422250934
+--- !u!114 &4012796826968872439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2225,7 +2249,7 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
---- !u!114 &4012796826968872439
+--- !u!114 &6594547372422250934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

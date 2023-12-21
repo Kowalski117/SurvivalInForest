@@ -5292,9 +5292,9 @@
             <e p="Mobs" t="Include">
               <e p="Deer" t="Include" />
               <e p="FleeFromDanger.cs" t="Include" />
+              <e p="Hare" t="Include" />
               <e p="Mob.cs" t="Include" />
               <e p="MobMovement.cs" t="Include" />
-              <e p="Rabbit" t="Include" />
             </e>
             <e p="Particle" t="Include" />
             <e p="PlayerStealthModeAndWithinViewRadius.cs" t="Include" />
@@ -5317,6 +5317,7 @@
           <e p="Audio" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="AudioHandler.cs" t="Include" />
               <e p="ButtonFx.cs" t="Include" />
               <e p="PlayerAudioHandler.cs" t="Include" />
               <e p="Resources" t="Include">
@@ -5744,6 +5745,7 @@
                     <e p="MobileButtonsHandler.cs" t="Include" />
                     <e p="UICanvasControllerInput.cs" t="Include" />
                   </e>
+                  <e p="SprintButton.cs" t="Include" />
                   <e p="Utilities" t="Include">
                     <e p="MobileDisableAutoSwitchControls.cs" t="Include" />
                   </e>
@@ -5865,6 +5867,12 @@
               <e p="StoreSlots" t="Include" />
             </e>
           </e>
+          <e p="Setting" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="AudioSetting.cs" t="Include" />
+              <e p="GeneralSettings.cs" t="Include" />
+            </e>
+          </e>
           <e p="Skybox" t="Include">
             <e p="Scripts" t="Include">
               <e p="SkyboxClouds.cs" t="Include" />
@@ -5967,6 +5975,9 @@
               </e>
             </e>
             <e p="Scripts" t="Include">
+              <e p="UI" t="Include">
+                <e p="NotifierPlayer.cs" t="Include" />
+              </e>
               <e p="YandexAds.cs" t="Include" />
               <e p="YandexInitialization.cs" t="Include" />
             </e>

@@ -8,7 +8,7 @@ public class InventoryItemData : ScriptableObject
 {
     [SerializeField] private int _id = -1;
     [SerializeField] private ItemType _type;
-    [SerializeField] private string _fieldTextTable;
+    [SerializeField] private string _name;
     [SerializeField] private TextTable _textTableDisplayName;
     [SerializeField] private TextTable _textTableDescription;
     [SerializeField] private string _displayName;
@@ -23,9 +23,10 @@ public class InventoryItemData : ScriptableObject
     [SerializeField] private TypeBehaviorInWater _typeBehaviorInWater = TypeBehaviorInWater.PopsUp;
 
     public int Id => _id;
+    public string Name => _name;
     public ItemType Type => _type;
-    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_fieldTextTable,Localization.language);
-    public string Description => _textTableDescription.GetFieldTextForLanguage(_fieldTextTable, Localization.language);
+    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_name,Localization.language);
+    public string Description => _textTableDescription.GetFieldTextForLanguage(_name, Localization.language);
     public Sprite Icon => _icon;
     public int MaxStackSize => _maxStackSize;
     public ItemPickUp ItemPrefab => _itemPrefab;

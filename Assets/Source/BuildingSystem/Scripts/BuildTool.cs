@@ -211,7 +211,8 @@ public class BuildTool : MonoBehaviour
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
         _isMovedBuild = false;
-        _questControl.SendToMessageSystem(MessageConstants.Build + _recipe.BuildingData.Id);
+        _questControl.SendToMessageSystem(MessageConstants.Build + _recipe.BuildingData.Name);
+        
         //_playerInputHandler.ToggleBuildPlayerInput(true);
 
         _loadingWindow.OnLoadingComplete -= OnLoadingComplete;

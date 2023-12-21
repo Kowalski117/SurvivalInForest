@@ -116,7 +116,7 @@ public class FishingRod : MonoBehaviour
         {
             _inventoryHolder.AddToInventory(inventoryItemData, _addAmount);
             _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
-            _questControl.SendToMessageSystem(MessageConstants.Ñaught + inventoryItemData.Id);
+            _questControl.SendToMessageSystem(MessageConstants.Ð¡aught + inventoryItemData.Name);
         }
     }
 

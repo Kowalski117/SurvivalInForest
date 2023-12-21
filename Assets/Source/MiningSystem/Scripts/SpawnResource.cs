@@ -9,7 +9,6 @@ public class SpawnResource : MonoBehaviour
     [SerializeField] private float _spawnTime;
     [SerializeField] private float _scaleTime;
     [SerializeField] private GameObject _remainder;
-    [SerializeField] private string _id;
 
     private Resource _resource;
     private Coroutine _coroutineSpawn;
@@ -58,7 +57,7 @@ public class SpawnResource : MonoBehaviour
     private void ResourceDeath()
     {
         _remainder.SetActive(true);
-        _questControl.SendToMessageSystem(MessageConstants.Broken + _id);
+        _questControl.SendToMessageSystem(MessageConstants.Broken + _resource.Name);
     }
 
     private void ResourceDisappeared()
