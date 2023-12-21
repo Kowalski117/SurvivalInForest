@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class YandexAds : MonoBehaviour
 {
-    //[SerializeField] private SoundSettings _soundSettings;
+    [SerializeField] private AudioHandler _audioHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
 
     public event UnityAction OnReceivedAward;
@@ -20,7 +20,7 @@ public class YandexAds : MonoBehaviour
     public void ShowRewardAd()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        VideoAd.Show(() => OnAdOpen(), ReceiveAward, () => OnAdOpen(), null);
+        VideoAd.Show(() => OnAdOpen(), ReceiveAward, () => OnAdClose(), null);
 #endif
     }
 
@@ -32,18 +32,21 @@ public class YandexAds : MonoBehaviour
     public void OnAdOpen()
     {
         Time.timeScale = 0;
-
+        _audioHandler.FadeIn();
         if (_playerInputHandler)
             _playerInputHandler.ToggleAllParametrs(false);
-        //_soundSettings.Mute();
+    }
+
+    public void OnAdClose()
+    {
+        Time.timeScale = 1;
+        _audioHandler.FadeOut();
+        if (_playerInputHandler)
+            _playerInputHandler.ToggleAllParametrs(true);
     }
 
     public void OnIterstitialAddClose(bool value)
     {
-        Time.timeScale = 1;
-
-        if(_playerInputHandler)
-            _playerInputHandler.ToggleAllParametrs(true);
-        //_soundSettings.Load();
+        OnAdClose();
     }
 }

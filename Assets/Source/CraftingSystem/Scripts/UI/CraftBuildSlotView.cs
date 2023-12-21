@@ -46,4 +46,9 @@ public class CraftBuildSlotView : CraftSlotView
             OnCreateRecipeButtonClick?.Invoke(_recipe);
         }
     }
+
+    protected override void UpdateLanguage()
+    {
+        CraftedName.text = _recipe.BuildingData.DisplayName;
+    }
 }

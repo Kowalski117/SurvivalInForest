@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class CutScene : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class CutScene : MonoBehaviour
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private float _fadeSpeed;
 
-    private int _indexNextScene = 2;
     private int _waitForFadeTime = 3;
 
     private void OnEnable()
@@ -37,7 +37,7 @@ public class CutScene : MonoBehaviour
         _canvasGroup.alpha = 1;
 
         yield return new WaitForSeconds(_waitForFadeTime);
-        _loadPanel.LoadScene(_indexNextScene);
+        _loadPanel.StartLoad(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private void PlayCutScene()

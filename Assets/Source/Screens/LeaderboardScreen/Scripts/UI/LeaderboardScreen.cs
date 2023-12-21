@@ -16,6 +16,7 @@ public class LeaderboardScreen : ScreenUI
             PlayerAccount.RequestPersonalProfileDataPermission();
             _leaderboard.Fill();
             OpenScreen();
+            //SaveGame.GetCloudSaveData();
         }
         else
         {

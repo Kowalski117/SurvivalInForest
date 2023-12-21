@@ -10,8 +10,6 @@ public class SettingScreen : ScreenUI
 
     private void Awake()
     {
-        CloseScreen();
-
         if(_isOnGeneral)
             _toggleGeneral.isOn = true;
         else if(_toggleAudio)
@@ -31,6 +29,8 @@ public class SettingScreen : ScreenUI
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
-        CloseScreen();
+        ToggleScreen();
+        SaveGame.SetCloudSaveData();
+        PlayerPrefs.Save();
     }
 }

@@ -49,8 +49,13 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void TogglePersonController(bool visible)
     {
-        _firstPersonController.ToggleCamera(visible);
+        ToggleCameraPersonController(visible);
         _firstPersonController.TogglePersonController(visible);
+    }
+
+    public void ToggleCameraPersonController(bool visible)
+    {
+        _firstPersonController.ToggleCamera(visible);
     }
 
     public void ToggleHotbarDisplay(bool visible)
@@ -85,7 +90,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void ToggleAllInput(bool visible)
     {
-        TogglePersonController(visible);
+        ToggleCameraPersonController(visible);
         ToggleInventoryInput(visible);
         ToggleInteractionInput(visible);
         ToggleBuildPlayerInput(visible);

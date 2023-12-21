@@ -16,6 +16,8 @@ public class PauseScreen : MenuScreen
     [SerializeField] private Button _saveButton;
     [SerializeField] private Button _exitMainMenuButton;
 
+    private int _indexMenuScene = 1;
+
     public event UnityAction OnContinueButton;
     public event UnityAction OnSaveButton;
 
@@ -67,7 +69,7 @@ public class PauseScreen : MenuScreen
 
     private void ExitMainMenuButtonClick()
     {
-        _loadPanel.StartLoad(0);
+        _loadPanel.StartLoad(_indexMenuScene);
     }
 
     protected override void ExitButtonClick()

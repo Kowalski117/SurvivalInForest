@@ -10,18 +10,8 @@ public class AudioHandler : MonoBehaviour
     [SerializeField] private AudioMixer _mixer;
     [SerializeField] private SettingScreen _settingScreen;
 
-    private const string _masterStr = "Master";
-    private const string _musicStr = "Music";
-    private const string _effectsStr = "Effects";
-    private const string _boolStr = "Bool";
     private const float _zeroVolume = -80f;
-    private const float _fadeSpeed = 60f;
-    private const float _defoultValue = 0.4f;
-
-    private Coroutine _musicCoroutine;
-    private Coroutine _effectsCoroutine;
-    private float _effectsValue;
-    private float _musicValue;
+    private const float _defoultValue = 0.8f;
 
     private bool _isMuteAllSound = false;
     private bool _isMuteMusic = false;
@@ -52,17 +42,21 @@ public class AudioHandler : MonoBehaviour
 
     private void Awake()
     {
-        Load();
+        StartCoroutine(Load());
     }
 
-    public void Load()
+    public IEnumerator Load()
     {
-        _currentValueMaster = PlayerPrefs.HasKey(_masterStr) ? PlayerPrefs.GetFloat(_masterStr) : 0;
-        _currentValueMusic = PlayerPrefs.HasKey(_musicStr) ? PlayerPrefs.GetFloat(_musicStr) : _defoultValue;
-        _currentValueEffects = PlayerPrefs.HasKey(_effectsStr) ? PlayerPrefs.GetFloat(_effectsStr) : _defoultValue;
-        _isMuteAllSound = (PlayerPrefs.GetFloat(_masterStr + _boolStr) == 1) ? true : false;
-        _isMuteMusic = (PlayerPrefs.GetFloat(_musicStr + _boolStr) == 1) ? true : false;
-        _isMuteEffects = (PlayerPrefs.GetFloat(_effectsStr + _boolStr) == 1) ? true : false;
+        _currentValueMaster = PlayerPrefs.HasKey(SettingConstants.MasterStr) ? PlayerPrefs.GetFloat(SettingConstants.MasterStr) : 1;
+        _currentValueMusic = PlayerPrefs.HasKey(SettingConstants.MusicStr) ? PlayerPrefs.GetFloat(SettingConstants.MusicStr) : _defoultValue;
+        _currentValueEffects = PlayerPrefs.HasKey(SettingConstants.EffectsStr) ? PlayerPrefs.GetFloat(SettingConstants.EffectsStr) : _defoultValue;
+        _isMuteAllSound = (PlayerPrefs.GetFloat(SettingConstants.MasterStr + SettingConstants.BoolStr) == 1) ? true : false;
+        _isMuteMusic = (PlayerPrefs.GetFloat(SettingConstants.MusicStr + SettingConstants.BoolStr) == 1) ? true : false;
+        yield return _isMuteEffects = (PlayerPrefs.GetFloat(SettingConstants.EffectsStr + SettingConstants.BoolStr) == 1) ? true : false;
+
+        SetAllSound(_currentValueMaster);
+        SetMusic(_currentValueMusic);
+        SetEffects(_currentValueEffects);
     }
 
     public void Save()
@@ -73,22 +67,22 @@ public class AudioHandler : MonoBehaviour
     public void OnOffAllSound()
     {
         _isMuteAllSound = !_isMuteAllSound;
-        _mixer.SetFloat(_masterStr, _isMuteAllSound ? _zeroVolume : GetValue(_currentValueMaster));
-        PlayerPrefs.SetFloat(_masterStr + _boolStr, _isMuteAllSound ? 1 : 0);
+        _mixer.SetFloat(SettingConstants.MasterStr, _isMuteAllSound ? _zeroVolume : GetValue(_currentValueMaster));
+        PlayerPrefs.SetFloat(SettingConstants.MasterStr + SettingConstants.BoolStr, _isMuteAllSound ? 1 : 0);
     }
 
     public void OnOffMusic()
     {
         _isMuteMusic = !_isMuteMusic;
-        _mixer.SetFloat(_musicStr, _isMuteMusic ? _zeroVolume : GetValue(_currentValueMusic));
-        PlayerPrefs.SetFloat(_musicStr + _boolStr, _isMuteMusic ? 1 : 0);
+        _mixer.SetFloat(SettingConstants.MusicStr, _isMuteMusic ? _zeroVolume : GetValue(_currentValueMusic));
+        PlayerPrefs.SetFloat(SettingConstants.MusicStr + SettingConstants.BoolStr, _isMuteMusic ? 1 : 0);
     }
 
     public void OnOffEffects()
     {
         _isMuteEffects = !_isMuteEffects;
-        _mixer.SetFloat(_effectsStr, _isMuteEffects ? _zeroVolume : GetValue(_currentValueEffects));
-        PlayerPrefs.SetFloat(_effectsStr + _boolStr, _isMuteEffects ? 1 : 0);
+        _mixer.SetFloat(SettingConstants.EffectsStr, _isMuteEffects ? _zeroVolume : GetValue(_currentValueEffects));
+        PlayerPrefs.SetFloat(SettingConstants.EffectsStr + SettingConstants.BoolStr, _isMuteEffects ? 1 : 0);
     }
 
     public void SetAllSound(float value)
@@ -96,11 +90,11 @@ public class AudioHandler : MonoBehaviour
         _currentValueMaster =  value;
 
         if(!_isMuteAllSound) 
-            _mixer.SetFloat(_masterStr, GetValue(value));
+            _mixer.SetFloat(SettingConstants.MasterStr, GetValue(value));
         else
-            _mixer.SetFloat(_masterStr,  _zeroVolume);
+            _mixer.SetFloat(SettingConstants.MasterStr,  _zeroVolume);
 
-        PlayerPrefs.SetFloat(_masterStr, _currentValueMaster);
+        PlayerPrefs.SetFloat(SettingConstants.MasterStr, value);
     }
 
     public void SetMusic(float value)
@@ -108,11 +102,11 @@ public class AudioHandler : MonoBehaviour
         _currentValueMusic =  value;
 
         if (!_isMuteMusic)
-            _mixer.SetFloat(_musicStr, GetValue(value));
+            _mixer.SetFloat(SettingConstants.MusicStr, GetValue(value));
         else
-            _mixer.SetFloat(_musicStr, _zeroVolume);
+            _mixer.SetFloat(SettingConstants.MusicStr, _zeroVolume);
 
-        PlayerPrefs.SetFloat(_musicStr, _currentValueMusic);
+        PlayerPrefs.SetFloat(SettingConstants.MusicStr, _currentValueMusic);
     }
 
     public void SetEffects(float value)
@@ -120,62 +114,21 @@ public class AudioHandler : MonoBehaviour
         _currentValueEffects = value;
 
         if (!_isMuteEffects)
-            _mixer.SetFloat(_effectsStr, GetValue(value));
+            _mixer.SetFloat(SettingConstants.EffectsStr, GetValue(value));
         else
-            _mixer.SetFloat(_effectsStr, _zeroVolume);
+            _mixer.SetFloat(SettingConstants.EffectsStr, _zeroVolume);
 
-        PlayerPrefs.SetFloat(_effectsStr, _currentValueEffects);
+        PlayerPrefs.SetFloat(SettingConstants.EffectsStr, _currentValueEffects);
     }
-
-    public void Mute()
-    {
-        _mixer.SetFloat(_masterStr, _zeroVolume);
-    }
-
-    //public void Load()
-    //{
-    //    _mixer.SetFloat(_masterStr, _isMuteAllSound ? _zeroVolume : 0);
-    //}
 
     public void FadeIn()
     {
-        //VolumeFade(_musicValue, _zeroVolume, _musicStr, _musicCoroutine);
-        //VolumeFade(_effectsValue, _zeroVolume, _effectsStr, _effectsCoroutine);
+        _mixer.SetFloat(SettingConstants.MasterStr, _zeroVolume);
     }
 
     public void FadeOut()
     {
-        //_mixer.SetFloat(_masterStr, _isMuteAllSound ? _zeroVolume : 0);
-        //VolumeFade(_zeroVolume, _musicValue, _musicStr, _musicCoroutine, _defoultValue);
-        //VolumeFade(_zeroVolume, _effectsValue, _effectsStr, _effectsCoroutine, _defoultValue);
-    }
-
-    private void VolumeFade(float startValue, float endValue, string audioType, Coroutine coroutine, float waitTime = 0f)
-    {
-        if (coroutine != null)
-        {
-            StopCoroutine(coroutine);
-            coroutine = StartCoroutine(Fade(startValue, endValue, waitTime, audioType));
-        }
-        else
-        {
-            coroutine = StartCoroutine(Fade(startValue, endValue, waitTime, audioType));
-        }
-    }
-
-    private IEnumerator Fade(float startValue, float endValue, float waitTime, string audioType)
-    {
-        _mixer.SetFloat(audioType, startValue);
-        yield return new WaitForSeconds(waitTime);
-
-        while (startValue != endValue)
-        {
-            startValue = Mathf.MoveTowards(startValue, endValue, Time.unscaledDeltaTime * _fadeSpeed);
-            _mixer.SetFloat(audioType, startValue);
-            yield return null;
-        }
-
-        yield break;
+        SetAllSound(_currentValueMaster);
     }
 
     private float GetValue(float value)

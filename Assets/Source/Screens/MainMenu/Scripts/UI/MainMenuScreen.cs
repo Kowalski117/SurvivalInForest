@@ -32,6 +32,6 @@ public class MainMenuScreen : MenuScreen
 
     public void StartButtonClick()
     {
-        _loadPanel.StartLoad(1);
+        _loadPanel.StartLoad(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

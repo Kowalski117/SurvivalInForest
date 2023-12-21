@@ -6,6 +6,7 @@ public class SaveLoadConstants
     public const string NextSceneIndex = "NextSceneIndex";
     public const string SceneIndex = "SceneIndex";
     public const string IsNewGame = "IsNewGame";
+    public const string IsCutscenePlayed = "IsCutscenePlayed";
 
     public const string ResourceRevivalTime = "ResourceRevivalTime";
     public const string GameTimeCounter = "GameTimeCounter";

@@ -95,15 +95,15 @@ public class AudioSetting : MonoBehaviour
 
     private void Load()
     {
-        ChangeValueAllSound(_audioHandler.CurrentVolumeMaster);
+        //ChangeValueAllSound(_audioHandler.CurrentVolumeMaster);
         _allSoundSlider.value = _audioHandler.CurrentVolumeMaster;
         ToggleButtons(_audioHandler.IsMuteAllSound, _onAllSoundButton, _offAllSoundButton);
 
-        ChangeValueMusic(_audioHandler.CurrentVolumeMusic);
+        //ChangeValueMusic(_audioHandler.CurrentVolumeMusic);
         _musicSlider.value = _audioHandler.CurrentVolumeMusic;
         ToggleButtons(_audioHandler.IsMuteMusic, _onMusicButton, _offMusicButton);
 
-        ChangeValueEffects(_audioHandler.CurrentVolumeEffects);
+        //ChangeValueEffects(_audioHandler.CurrentVolumeEffects);
         _effectSlider.value = _audioHandler.CurrentVolumeEffects;
         ToggleButtons(_audioHandler.IsMuteEffects, _onEffectButton, _offEffectButton);
     }
