@@ -4,7 +4,6 @@ public class EatEffectHandler : MonoBehaviour
 {
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private ColorRotation _colorRotation;
-    [SerializeField] private CameraRotation _cameraRotation;
 
     private float _duration = 5f;
 
@@ -21,9 +20,6 @@ public class EatEffectHandler : MonoBehaviour
     private void PlayEatEffect(FoodItemData foodItemData)
     {
         if(foodItemData.FoodTypeEffect == FoodTypeEffect.ColorRotation)
-        {
             _colorRotation.StartEffect(_duration);
-            _cameraRotation.StartEffect(_duration);
-        }
     }
 }

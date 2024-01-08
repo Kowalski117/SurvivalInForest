@@ -73,17 +73,20 @@ public class GeneralSettings : MonoBehaviour
 
     private void ChangeMovementOfTrees(bool value)
     {
-        _wind.UpdateWind(value);
+        if(_wind)
+            _wind.UpdateWind(value);
     }
 
     private void ChangeLowTextureWater(bool value)
     {
-        _water.ToggleLowMaterial(value);
+        if(_water)
+            _water.ToggleLowMaterial(value);
     }
 
     private void ChangeHightTextureWater(bool value)
     {
-        _water.ToggleHighMaterial(value);
+        if (_water)
+            _water.ToggleHighMaterial(value);
     }
 
     private void ChangeLanguage(int value)
@@ -94,6 +97,11 @@ public class GeneralSettings : MonoBehaviour
     private void AuthorizationButtonClick()
     {
         PlayerAccount.Authorize();
+
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+        if (PlayerAccount.IsAuthorized)
+            _authorizationButton.gameObject.SetActive(false);
+#endif
     }
 
     private void Save()
@@ -134,12 +142,12 @@ public class GeneralSettings : MonoBehaviour
         if (PlayerPrefs.HasKey(SettingConstants.Sensitivity))
             _lowTextureWater.isOn = PlayerPrefs.GetInt(SettingConstants.LowTextureWater) == 0 ? false : true;
         else
-            _lowTextureWater.isOn = true;
+            _lowTextureWater.isOn = false;
 
         if (PlayerPrefs.HasKey(SettingConstants.Sensitivity))       
             _hightTextureWater.isOn = PlayerPrefs.GetInt(SettingConstants.HightTextureWater) == 0 ? false : true;      
         else
-            _hightTextureWater.isOn = false;
+            _hightTextureWater.isOn = true;
 
         ChangeSensitivity(_sensitivitySlider.value);
         ChangeAutomaticCollection(_automaticCollectionOfItems.isOn);

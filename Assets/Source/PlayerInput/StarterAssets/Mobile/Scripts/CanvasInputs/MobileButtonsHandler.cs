@@ -18,10 +18,12 @@ public class MobileButtonsHandler : MonoBehaviour
     [SerializeField] private Button _interactedConstructionButton;
     [SerializeField] private Button _addFireButton;
     [SerializeField] private Button _toggleIntaractableButton;
-    [SerializeField] private Button _useItemButton;
+    [SerializeField] private Button _start—onversationButton;
     [SerializeField] private Button _rotateBuildButton;
     [SerializeField] private Button _destroyBuildButton;
     [SerializeField] private Button _putBuildButton;
+    [SerializeField] private Button _toggleBuildModeButton;
+    [SerializeField] private Button _removeBuildModeButton;
 
     private InventorySlotUI _currentSlot;
     private bool _isBuilding = false;
@@ -32,10 +34,11 @@ public class MobileButtonsHandler : MonoBehaviour
         _putBuildButton.gameObject.SetActive(false);
         _destroyBuildButton.gameObject.SetActive(false);
         _rotateBuildButton.gameObject.SetActive(false);
-        _useItemButton.gameObject.SetActive(false);
+        _start—onversationButton.gameObject.SetActive(false);
         _toggleIntaractableButton.gameObject.SetActive(false);
         _interactedConstructionButton.gameObject.SetActive(false);
         _addFireButton.gameObject.SetActive(false);
+        _removeBuildModeButton.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -44,11 +47,14 @@ public class MobileButtonsHandler : MonoBehaviour
         _buildTool.OnCreateBuild += EnableConstructionMode;
         _buildTool.OnCompletedBuild += TurnOffConstructionMode;
         _buildTool.OnDestroyBuild += TurnOffConstructionMode;
+        _buildTool.OnDeleteModeChanged += ToggleDestroyBuildingMode;
 
         _manualWorkbench.OnInteractionStarted += EnableIntractableButton;
         _manualWorkbench.OnInteractionFinished += TurnOffIntractableButton;
         _exchangeHandler.OnInteractionStarted += EnableIntractableButton;
+        _exchangeHandler.OnInteractionStarted += EnableIntractableNPSButton;
         _exchangeHandler.OnInteractionFinished += TurnOffIntractableButton;
+        _exchangeHandler.OnInteractionFinished += TurnOffIntractableNPSButton;
         _chestHandler.OnInteractionStarted += EnableIntractableButton;
         _chestHandler.OnInteractionFinished += TurnOffIntractableButton;
         _interactor.OnInteractionStarted += EnableIntractableConstructionButton;
@@ -61,11 +67,14 @@ public class MobileButtonsHandler : MonoBehaviour
         _buildTool.OnCreateBuild -= EnableConstructionMode;
         _buildTool.OnCompletedBuild -= TurnOffConstructionMode;
         _buildTool.OnDestroyBuild -= TurnOffConstructionMode;
+        _buildTool.OnDeleteModeChanged -= ToggleDestroyBuildingMode;
 
         _manualWorkbench.OnInteractionStarted -= EnableIntractableButton;
         _manualWorkbench.OnInteractionFinished -= TurnOffIntractableButton;
         _exchangeHandler.OnInteractionStarted -= EnableIntractableButton;
+        _exchangeHandler.OnInteractionStarted -= EnableIntractableNPSButton;
         _exchangeHandler.OnInteractionFinished -= TurnOffIntractableButton;
+        _exchangeHandler.OnInteractionFinished -= TurnOffIntractableNPSButton;
         _chestHandler.OnInteractionStarted -= EnableIntractableButton;
         _chestHandler.OnInteractionFinished -= TurnOffIntractableButton;
         _interactor.OnInteractionStarted -= EnableIntractableConstructionButton;
@@ -80,24 +89,19 @@ public class MobileButtonsHandler : MonoBehaviour
             return;
 
         _aimButton.gameObject.SetActive(false);
-        _useItemButton.gameObject.SetActive(false);
+        //_useItemButton.gameObject.SetActive(false);
         _addFireButton.gameObject.SetActive(false);
 
 
-        if (inventorySlotUI.AssignedInventorySlot.ItemData is FoodItemData foodItemData || inventorySlotUI.AssignedInventorySlot.ItemData is SeedItemData seedItemData)
-        {
-            _useItemButton.gameObject.SetActive(true);
+        //if (inventorySlotUI.AssignedInventorySlot.ItemData is FoodItemData foodItemData || inventorySlotUI.AssignedInventorySlot.ItemData is SeedItemData seedItemData)
+        //{
+        //    _useItemButton.gameObject.SetActive(true);
 
-        }
-        else if (inventorySlotUI.AssignedInventorySlot.ItemData is WeaponItemData weaponItemData && weaponItemData.WeaponType == WeaponType.RangedWeapon)
+        //}
+        if (inventorySlotUI.AssignedInventorySlot.ItemData is WeaponItemData weaponItemData && weaponItemData.WeaponType == WeaponType.RangedWeapon)
         {
             _aimButton.gameObject.SetActive(true);
         }
-        //else
-        //{
-        //    _useItemButton.gameObject.SetActive(false);
-        //    _aimButton.gameObject.SetActive(false);
-        //}
 
         ToggleAddFireButton(inventorySlotUI);
     }
@@ -118,7 +122,9 @@ public class MobileButtonsHandler : MonoBehaviour
             _stealthButton.gameObject.SetActive(false);
             _interactedConstructionButton.gameObject.SetActive(false);
             _toggleIntaractableButton.gameObject.SetActive(false);
-            _useItemButton.gameObject.SetActive(false);
+            _start—onversationButton.gameObject.SetActive(false);
+            _removeBuildModeButton.gameObject.SetActive(false);
+            _toggleBuildModeButton.gameObject.SetActive(false);
         }
     }
 
@@ -133,6 +139,7 @@ public class MobileButtonsHandler : MonoBehaviour
         _attackButton.gameObject.SetActive(true);
         _sprintButton.gameObject.SetActive(true);
         _stealthButton.gameObject.SetActive(true);
+        _toggleBuildModeButton.gameObject.SetActive(true);
 
         ToggleButtons(_currentSlot);
     }
@@ -151,6 +158,22 @@ public class MobileButtonsHandler : MonoBehaviour
             return;
 
         _toggleIntaractableButton.gameObject.SetActive(false);
+    }
+
+    private void EnableIntractableNPSButton()
+    {
+        if (_isBuilding)
+            return;
+
+        _start—onversationButton.gameObject.SetActive(true);
+    }
+
+    private void TurnOffIntractableNPSButton()
+    {
+        if (_isBuilding)
+            return;
+
+        _start—onversationButton.gameObject.SetActive(false);
     }
 
     private void EnableIntractableConstructionButton()
@@ -181,5 +204,32 @@ public class MobileButtonsHandler : MonoBehaviour
             _addFireButton.gameObject.SetActive(true);
         else
             _addFireButton.gameObject.SetActive(false);       
+    }
+
+    private void ToggleDestroyBuildingMode(bool isActive)
+    {
+        if (isActive)
+        {
+            _removeBuildModeButton.gameObject.SetActive(true);
+
+            _rotateBuildButton.gameObject.SetActive(false);
+            _destroyBuildButton.gameObject.SetActive(false);
+            _putBuildButton.gameObject.SetActive(false);
+            _attackButton.gameObject.SetActive(false);
+            _aimButton.gameObject.SetActive(false);
+            _sprintButton.gameObject.SetActive(false);
+            _stealthButton.gameObject.SetActive(false);
+            _interactedConstructionButton.gameObject.SetActive(false);
+            _toggleIntaractableButton.gameObject.SetActive(false);
+            _start—onversationButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            _removeBuildModeButton.gameObject.SetActive(false);
+            _attackButton.gameObject.SetActive(true);
+            _sprintButton.gameObject.SetActive(true);
+            _stealthButton.gameObject.SetActive(true);
+            ToggleButtons(_currentSlot);
+        }
     }
 }

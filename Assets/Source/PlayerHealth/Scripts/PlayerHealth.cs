@@ -26,6 +26,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public event UnityAction<float> OnHealthChanged;
     public event UnityAction OnDamageDone;
+    public event UnityAction OnEnemyDamageDone;
     public event UnityAction OnRestoringHealth;
     public event UnityAction OnDied;
     public event UnityAction OnRevived;
@@ -121,6 +122,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public void TakeDamage(float damage, float overTimeDamage)
     {
         LowerHealthDamage(damage);
+        OnEnemyDamageDone?.Invoke();
     }
 
     public void Die()
@@ -183,17 +185,16 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         _isRespawned = true;
         StartCoroutine(DisableRespawn());
-            
+
         if (ES3.KeyExists(SaveLoadConstants.LastSceneIndex))
         {
             int lastSceneIndex = ES3.Load<int>(SaveLoadConstants.LastSceneIndex);
             int nextSceneIndex = ES3.Load<int>(SaveLoadConstants.NextSceneIndex);
 
             if (ES3.KeyExists(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex) &&
-                _isTransitionLastPosition || lastSceneIndex == 0)
+                _isTransitionLastPosition || lastSceneIndex == 1)
             {
-                PlayerSaveData playerSaveData =
-                    ES3.Load<PlayerSaveData>(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex);
+                PlayerSaveData playerSaveData = ES3.Load<PlayerSaveData>(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex);
                 transform.position = playerSaveData.Position;
                 transform.rotation = playerSaveData.Rotation;
                 return;

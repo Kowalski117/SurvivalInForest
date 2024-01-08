@@ -5,7 +5,6 @@ public class FollowPath : MonoBehaviour
     [SerializeField] private MovementType _type = MovementType.Moving;
     [SerializeField] private MovementPath _path;
     [SerializeField] private float _speed = 1f;
-    [SerializeField] private float _speedRotate = 0.1f;
     [SerializeField] private float _maxDistance = 1f;
     [SerializeField] private Transform _lookAt;
     
@@ -49,8 +48,6 @@ public class FollowPath : MonoBehaviour
 
     private void RotateTowardsPoint()
     {
-        //var targetDirection = _targetPoint.position - transform.position;
-        //var newDirection = Vector3.RotateTowards(transform.forward, targetDirection, _speedRotate * Time.deltaTime, 0.0f);
         if (_lookAt != null)
             transform.LookAt(_lookAt.transform);
     }

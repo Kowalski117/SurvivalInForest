@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class ExchangerSlotView : MonoBehaviour
 {
-    [SerializeField] private ExchangedItemView[] _itemsToExchangeView;
-    [SerializeField] private ExchangedItemView[] _itemsToReceiveView;
+    [SerializeField] private ItemView[] _itemsToExchangeView;
+    [SerializeField] private ItemView[] _itemsToReceiveView;
     [SerializeField] private Button _exchangeButton;
     [SerializeField] private Button _plusButton;
     [SerializeField] private Button _minusButton;
@@ -82,7 +82,7 @@ public class ExchangerSlotView : MonoBehaviour
         }
     }
 
-    private void UpdateExchangedItems(ExchangedItemView[] itemViewArray, ExchangedItem[] itemArray)
+    private void UpdateExchangedItems(ItemView[] itemViewArray, ExchangedItem[] itemArray)
     {
         for (int i = 0; i < itemViewArray.Length; i++)
         {

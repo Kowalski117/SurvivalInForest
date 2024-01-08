@@ -16,13 +16,13 @@ public class ClothingSlot : MonoBehaviour
     private void OnEnable()
     {
         _inventorySlotUI.OnItemUpdate += UpdateCurrentSlot;
-        _playerHealth.OnDamageDone += TakeDamage;
+        _playerHealth.OnEnemyDamageDone += TakeDamage;
     }
 
     private void OnDisable()
     {
         _inventorySlotUI.OnItemUpdate -= UpdateCurrentSlot;
-        _playerHealth.OnDamageDone -= TakeDamage;
+        _playerHealth.OnEnemyDamageDone -= TakeDamage;
     }
 
     private void Update()

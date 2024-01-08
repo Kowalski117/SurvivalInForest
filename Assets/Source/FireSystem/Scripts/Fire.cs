@@ -177,6 +177,14 @@ public class Fire : MonoBehaviour
             EnableParticle();
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.GetComponent<PlayerHealth>())
+        {
+            Debug.Log("гори");
+        }
+    }
 }
 
 [System.Serializable]

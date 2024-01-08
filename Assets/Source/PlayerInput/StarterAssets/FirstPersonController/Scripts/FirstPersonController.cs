@@ -44,7 +44,7 @@ namespace StarterAssets
 
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-        public bool Grounded = true;
+        public bool _isGrounded = true;
         [Tooltip("Useful for rough ground")]
         public float GroundedOffset = -0.14f;
         [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
@@ -89,7 +89,7 @@ namespace StarterAssets
         private CharacterController _controller;
         [SerializeField] private StarterAssetsInputs _input;
         private GameObject _mainCamera;
-        private bool _isEnable = true;
+        private bool _isEnable = false;
         private bool _isEnableCamera = true;
         private bool _isInWater = false;
         private bool _isComing => _speed < SprintSpeed ? false : true;
@@ -97,7 +97,9 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         public float Speed => _speed;
+        public bool IsEnable => _isEnable;
         public bool IsComing => _isComing;
+        public bool IsGrounded => _isGrounded;
 
         private bool IsCurrentDeviceMouse
         {
@@ -145,7 +147,7 @@ namespace StarterAssets
         {
             if (_isEnable)
             {
-                if(!_isInWater)
+                if (!_isInWater)
                     Stealth();
 
                 Move();
@@ -180,7 +182,7 @@ namespace StarterAssets
         private void GroundedCheck()
         {
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
-            Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+            _isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
         }
 
         private void CameraRotation()
@@ -202,7 +204,7 @@ namespace StarterAssets
 
         private void JumpAndGravity()
         {
-            if (Grounded && _isEnable)
+            if (_isGrounded && _isEnable)
             {
                 _audioHandler.PlayLandingSound(_input.jump);
                 _fallTimeoutDelta = FallTimeout;
@@ -273,8 +275,6 @@ namespace StarterAssets
                 _audioHandler.PlayFootStepAudio(targetSpeed == SprintSpeed, _input.stealth);
             }
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-
-
         }
 
         private void Stealth()
@@ -311,7 +311,7 @@ namespace StarterAssets
             Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
             Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
-            if (Grounded) Gizmos.color = transparentGreen;
+            if (_isGrounded) Gizmos.color = transparentGreen;
             else Gizmos.color = transparentRed;
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider

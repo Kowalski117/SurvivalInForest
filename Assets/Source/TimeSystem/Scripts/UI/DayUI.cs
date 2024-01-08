@@ -18,6 +18,6 @@ public class DayUI : MonoBehaviour
 
     private void UpdateDay(int day)
     {
-        _currentDayText.text = $"Прожито {day.ToString()} дней.";
+        _currentDayText.text = day.ToString();
     }
 }

@@ -22,6 +22,12 @@ public class CutScene : MonoBehaviour
         _loadPanel.OnDeactivated -= PlayCutScene;
     }
 
+    public void Skip()
+    {
+        StartCoroutine();
+        _playableDirector.Stop();
+    }
+
     public void StartCoroutine()
     {
         StartCoroutine(FillAlpha());
@@ -43,5 +49,6 @@ public class CutScene : MonoBehaviour
     private void PlayCutScene()
     {
         _playableDirector.Play();
+        //Cursor.visible = false;
     }
 }

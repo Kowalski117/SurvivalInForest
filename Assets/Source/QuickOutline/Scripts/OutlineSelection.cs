@@ -4,7 +4,6 @@ public class OutlineSelection : Raycast
 {
     [SerializeField] private float _outlineWidth;
     [SerializeField] private Color _outlineColor;
-    [SerializeField] private OutlineObject.Mode _outlineMode = OutlineObject.Mode.OutlineVisible;
     [SerializeField] private LayerMask _outlineLayerMask;
     [SerializeField] private bool _isTrigger = true;
     private OutlineObject _previousOutline;

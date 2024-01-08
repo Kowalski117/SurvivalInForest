@@ -10,4 +10,6 @@ public static class PlayerAnimationConstants
     public static readonly int PickUp = Animator.StringToHash("PickUp");
     public static readonly int Build = Animator.StringToHash("Build");
     public static readonly int PullItem = Animator.StringToHash("PullItem");
+    public static readonly int ThrowFishingRod = Animator.StringToHash("ThrowFishingRod");
+    public static readonly int SwingFishingRod = Animator.StringToHash("SwingFishingRod");
 }

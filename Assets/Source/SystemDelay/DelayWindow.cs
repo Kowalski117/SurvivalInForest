@@ -52,6 +52,7 @@ public class DelayWindow : MonoBehaviour
         _playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleScreenPlayerInput(false);
         _playerInputHandler.ToggleAllInput(false);
+        _playerInputHandler.TogglePersonController(false);
 
         _loadingPanel.gameObject.SetActive(true);
 
@@ -85,6 +86,7 @@ public class DelayWindow : MonoBehaviour
         _loadingPanel.gameObject.SetActive(false);
         _playerInputHandler.ToggleAllInput(true);
         _playerInputHandler.ToggleScreenPlayerInput(true);
+        _playerInputHandler.TogglePersonController(true);
 
         _time = DateTime.MinValue;
 

@@ -8,7 +8,7 @@ public class YandexAds : MonoBehaviour
     [SerializeField] private AudioHandler _audioHandler;
     [SerializeField] private PlayerInputHandler _playerInputHandler;
 
-    public event UnityAction OnReceivedAward;
+    private bool _isCursorEnable = false;
 
     public void ShowInterstitial()
     {
@@ -17,24 +17,22 @@ public class YandexAds : MonoBehaviour
 #endif
     }
 
-    public void ShowRewardAd()
+    public void ShowRewardAd(UnityAction OnReceiveAward)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        VideoAd.Show(() => OnAdOpen(), ReceiveAward, () => OnAdClose(), null);
+        VideoAd.Show(() => OnAdOpen(), () => OnReceiveAward?.Invoke(), () => OnAdClose(), null);
 #endif
-    }
-
-    public void ReceiveAward()
-    {
-        OnReceivedAward?.Invoke();
     }
 
     public void OnAdOpen()
     {
-        Time.timeScale = 0;
         _audioHandler.FadeIn();
+
+        _isCursorEnable = !_playerInputHandler.IsCursorEnable;
+
         if (_playerInputHandler)
             _playerInputHandler.ToggleAllParametrs(false);
+        Time.timeScale = 0;
     }
 
     public void OnAdClose()
@@ -42,7 +40,14 @@ public class YandexAds : MonoBehaviour
         Time.timeScale = 1;
         _audioHandler.FadeOut();
         if (_playerInputHandler)
+        {
             _playerInputHandler.ToggleAllParametrs(true);
+
+            if (!_isCursorEnable)
+                _playerInputHandler.SetCursorVisible(false);
+            else
+                _playerInputHandler.SetCursorVisible(true);
+        }
     }
 
     public void OnIterstitialAddClose(bool value)

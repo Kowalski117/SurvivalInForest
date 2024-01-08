@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +7,7 @@ public class LocalizationHandler : MonoBehaviour
 {
     private string _currentLanguage;
 
-    public static event Action OnLanguageChanged;
+    public static event UnityAction OnLanguageChanged;
 
     private Dictionary<string, string> _language = new()
     {

@@ -26,11 +26,13 @@ public class LoadPanel : MonoBehaviour
     private const float _zeroVolume = -80f;
 
     private Coroutine _coroutine;
-    private Coroutine _coroutine1;
     private Coroutine _coroutineDeactivate;
     private int _randomIndex = 0;
+    private bool _isPlaying = false;
 
     public event UnityAction OnDeactivated;
+
+    public bool IsPlaying => _isPlaying;
 
     private void Start()
     {
@@ -57,7 +59,7 @@ public class LoadPanel : MonoBehaviour
 
     public void StartLoadLastSave()
     {
-        if (ES3.KeyExists(SaveLoadConstants.SceneIndex))
+        //if (ES3.KeyExists(SaveLoadConstants.SceneIndex))
         {
             int indexScene = ES3.Load<int>(SaveLoadConstants.SceneIndex);
             ES3.Save(SaveLoadConstants.StartLastSaveScene, true);
@@ -74,8 +76,7 @@ public class LoadPanel : MonoBehaviour
 
     public void Load(float alpha, UnityAction OnFadingDone, int indexScene)
     {
-        //if (alpha == 1)
-            _audioHandler.FadeIn();
+        _audioHandler.FadeIn();
 
         if (_coroutine != null)
         {
@@ -88,6 +89,7 @@ public class LoadPanel : MonoBehaviour
 
     private IEnumerator Fade(float alpha, UnityAction OnFadingDone, int indexScene)
     {
+        _isPlaying = true;
         SetSettingsScreen(indexScene);
         _canvasGroup.blocksRaycasts = true;
 
@@ -158,6 +160,7 @@ public class LoadPanel : MonoBehaviour
         }
         OnDeactivated?.Invoke();
         _audioHandler.FadeOut();
+        _isPlaying = false;
         _coroutineDeactivate = StartCoroutine(DeactivateCoroutine());
     }
 

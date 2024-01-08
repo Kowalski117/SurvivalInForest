@@ -15,6 +15,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private Transform _inventoryPanels;
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private Interactor _interactor;
+    [SerializeField] private LoadPanel _loadPanel;
 
     private bool _isCursorEnable;
 
@@ -29,6 +30,8 @@ public class PlayerInputHandler : MonoBehaviour
     public Transform InventoryPanels => _inventoryPanels;
     public PlayerHealth PlayerHealth => _playerHealth;
     public Interactor Interactor => _interactor;
+    public LoadPanel LoadPanel => _loadPanel;
+    public bool IsCursorEnable => _isCursorEnable;
 
     private void Start()
     {

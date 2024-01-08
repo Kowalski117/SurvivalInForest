@@ -12,8 +12,6 @@ public class InventoryPlayerInput : MonoBehaviour
     public event UnityAction<Crafting—ategory> OnCraftPlayerWindow;
     public event UnityAction OnToggleInventory;
 
-    public event UnityAction OnToggleIInteractable;
-
     private void Awake()
     {
         _playerInput = new PlayerInput();
@@ -23,13 +21,11 @@ public class InventoryPlayerInput : MonoBehaviour
     {
         _playerInput.Enable();
         _playerInput.Player.Inventory.performed += ctx => ToggleInventory();
-        _playerInput.Player.Interact.performed += ctx => ToggleIInteractable();
     }
 
     private void OnDisable()
     {
         _playerInput.Player.Inventory.performed -= ctx => ToggleInventory();
-        _playerInput.Player.Interact.performed -= ctx => ToggleIInteractable();
         _playerInput.Disable();
     }
 
@@ -38,10 +34,5 @@ public class InventoryPlayerInput : MonoBehaviour
         OnToggleInventory?.Invoke();
         SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
         OnCraftPlayerWindow?.Invoke(_manualWorkbench.Crafting—ategory);
-    }
-
-    public void ToggleIInteractable()
-    {
-        //OnToggleIInteractable?.Invoke();
     }
 }
