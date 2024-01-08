@@ -201,7 +201,11 @@ public class PlayerInteraction : Raycast
     {
         if (inventorySlot.Durability > 0)
         {
-            inventorySlot.LowerStrength(1);
+            if(inventorySlot.ItemData is ToolItemData toolItemData && toolItemData.ToolType == ToolType.Torch)
+                inventorySlot.LowerStrength(1 / 5);
+            else
+                inventorySlot.LowerStrength(1);
+
 
             if (inventorySlot.Durability <= 0)
             {
@@ -307,8 +311,11 @@ public class PlayerInteraction : Raycast
                 if(!(_currentResoure is Stone stone && stone.ResourseType == _currentTool.ResourseType || _currentTool.ResourseType == ResourseType.All ))
                     return;
 
-                _currentResoure.TakeDamage(damage, overTimeDamage);
-                UpdateDurabilityItem(_currentInventorySlot);
+                if (_currentResoure.Health > 0)
+                {
+                    _currentResoure.TakeDamage(damage, overTimeDamage);
+                    UpdateDurabilityItem(_currentInventorySlot);
+                }  
             }
             else if (_currentTool.ToolType == ToolType.Arm)
             {

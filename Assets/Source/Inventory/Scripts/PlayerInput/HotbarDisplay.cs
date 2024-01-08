@@ -19,10 +19,7 @@ public class HotbarDisplay : StaticInventoryDisplay
     private void Awake()
     {
         _playerInput = new PlayerInput();
-    }
 
-    private void Start()
-    {
         _currentIndex = 0;
         _maxIndexSize = Slots.Length - 1;
 

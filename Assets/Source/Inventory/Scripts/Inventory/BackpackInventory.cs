@@ -6,7 +6,6 @@ public class BackpackInventory : InventoryHolder
     [SerializeField] private ClothesSlotsHandler _clothesSlotsHandler;
     [SerializeField] private InventoryOperator _inventoryOperator;
 
-    private int _addAmount = 1;
     private bool _isEnable = false;
 
     public event UnityAction<InventorySystem, int> OnDinamicDisplayInventory;

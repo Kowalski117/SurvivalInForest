@@ -9,7 +9,6 @@ public class ItemPickUp : MonoBehaviour
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private ItemPickUpSaveData _itemSaveData;
     [SerializeField] private float _durability;
-    [SerializeField] private int _layerMask = 6;
 
     public event UnityAction DestroyItem;
     
