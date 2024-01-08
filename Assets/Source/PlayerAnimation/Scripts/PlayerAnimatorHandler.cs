@@ -69,6 +69,16 @@ public class PlayerAnimatorHandler : MonoBehaviour
         _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Build, true);
     }
 
+    public void ThrowFishingRod()
+    {
+        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.ThrowFishingRod);
+    }
+
+    public void SwingFishingRod()
+    {
+        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.SwingFishingRod);
+    }
+
     public void Hit(bool isActive)
     {
         if (isActive)
