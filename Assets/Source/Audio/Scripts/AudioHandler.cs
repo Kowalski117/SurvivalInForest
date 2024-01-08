@@ -16,6 +16,7 @@ public class AudioHandler : MonoBehaviour
     private bool _isMuteAllSound = false;
     private bool _isMuteMusic = false;
     private bool _isMuteEffects = false;
+    private bool _isMute = false;
 
     private float _currentValueMaster;
     private float _currentValueMusic;
@@ -54,7 +55,8 @@ public class AudioHandler : MonoBehaviour
         _isMuteMusic = (PlayerPrefs.GetFloat(SettingConstants.MusicStr + SettingConstants.BoolStr) == 1) ? true : false;
         yield return _isMuteEffects = (PlayerPrefs.GetFloat(SettingConstants.EffectsStr + SettingConstants.BoolStr) == 1) ? true : false;
 
-        SetAllSound(_currentValueMaster);
+        if (!_isMute) 
+            SetAllSound(_currentValueMaster);
         SetMusic(_currentValueMusic);
         SetEffects(_currentValueEffects);
     }
@@ -123,11 +125,13 @@ public class AudioHandler : MonoBehaviour
 
     public void FadeIn()
     {
+        _isMute = true;
         _mixer.SetFloat(SettingConstants.MasterStr, _zeroVolume);
     }
 
     public void FadeOut()
     {
+        _isMute = false;
         SetAllSound(_currentValueMaster);
     }
 

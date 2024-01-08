@@ -8,6 +8,7 @@ public class TouchingGround : MonoBehaviour
     [SerializeField] private Resource _resource;
 
     private AudioSource _audioSource;
+    private bool _isActive = true;
 
     private void Awake()
     {
@@ -27,14 +28,16 @@ public class TouchingGround : MonoBehaviour
     private void PlayDiedClip()
     {
         _audioSource.PlayOneShot(_dieAudioClips);
+        _isActive = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == _groundLayer)
+        if (other.gameObject.layer == _groundLayer && _isActive)
         {
             _audioSource.Stop();
             _audioSource.PlayOneShot(_groundClip);
+            _isActive = false;  
         }
     }
 }
