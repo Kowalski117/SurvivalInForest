@@ -1,5 +1,6 @@
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StaminaAttribute : MonoBehaviour
 {
@@ -38,7 +39,9 @@ public class StaminaAttribute : MonoBehaviour
             if(_currentValue > 0)
                 _currentValue -= _valueDeplerionRate * Time.deltaTime;
             else
+            {
                 _currentValue = 0;
+            }
 
             _currentDelayCounter = 0;
         }
