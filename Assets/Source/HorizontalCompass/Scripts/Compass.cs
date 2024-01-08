@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,8 @@ public class Compass : MonoBehaviour
     [SerializeField] private Image _markerPrefab;
     [SerializeField] private Transform _containerMarker;
     [SerializeField] private float _maxDistance = 50;
-    //[SerializeField] private QuestMaker _questMaker;
+    [SerializeField] private float _minScale = 0.5f;
+    [SerializeField] private QuestMaker[] _openQuestMakers;
 
     private List<QuestMaker> _questMakers = new List<QuestMaker>();
 
@@ -24,7 +26,10 @@ public class Compass : MonoBehaviour
 
     private void Start()
     {
-        //AddQuestMarket(_questMaker);
+        foreach (var maker in _openQuestMakers)
+        {
+            AddQuestMarket(maker);
+        }
     }
 
     private void Update()
@@ -33,23 +38,39 @@ public class Compass : MonoBehaviour
 
         foreach (var marker in _questMakers)
         {
-            marker.Image.rectTransform.anchoredPosition = GetPosOnCompass(marker);
+            if(marker != null)
+            {
+                marker.Image.rectTransform.anchoredPosition = GetPosOnCompass(marker);
 
-            float distance = Vector2.Distance(new Vector2(_playerTransform.position.x, _playerTransform.position.z), marker.Position);
-            float scale = 0f;
+                float distance = Vector2.Distance(new Vector2(_playerTransform.position.x, _playerTransform.position.z), marker.Position);
 
-            if(distance < _maxDistance)
-                scale = 1f - (distance / _maxDistance);
+                float scale = 0;
 
-            marker.Image.rectTransform.localScale = Vector3.one * scale;
+                if (distance < _maxDistance)
+                    scale = 1f - (distance / _maxDistance);
+
+                if (scale > _minScale)
+                    marker.Image.rectTransform.localScale = Vector3.one * scale;
+                 else
+                    marker.Image.rectTransform.localScale = Vector3.one * _minScale;
+            }
         }
     }
 
     public void AddQuestMarket(QuestMaker questMaker)
     {
         Image newMarker = Instantiate(_markerPrefab, _containerMarker);
-        questMaker.SetImage(newMarker);
         _questMakers.Add(questMaker);
+        questMaker.SetImage(newMarker);
+    }
+
+    public void RemoveQuestMarket(QuestMaker questMaker)
+    {
+        if (_questMakers.Contains(questMaker))
+        {
+            _questMakers.Remove(questMaker);
+            Destroy(questMaker.Image.gameObject);
+        }
     }
 
     public Vector2 GetPosOnCompass(QuestMaker questMaker)

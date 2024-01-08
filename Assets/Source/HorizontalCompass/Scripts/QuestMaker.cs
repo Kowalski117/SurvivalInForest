@@ -4,17 +4,11 @@ using UnityEngine.UI;
 public class QuestMaker : MonoBehaviour
 {
     [SerializeField] private Sprite _icon;
-    [SerializeField] private Image _image;
-    
-    private Vector2 _position;
+
+    private Image _image;
 
     public Image Image => _image;
-    public Vector2 Position => _position;
-
-    private void Awake()
-    {
-        _position = new Vector2(transform.position.x, transform.position.z);
-    }
+    public Vector2 Position => new Vector2(transform.position.x, transform.position.z);
 
     public void SetImage(Image image)
     {
