@@ -6,13 +6,13 @@ public class AuthorizationPanel : ScreenUI
 {
     [SerializeField] private Button _authorizationButton;
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
         _authorizationButton.onClick.AddListener(AuthorizationButtonClick);
     }
 
-    protected virtual void OnDisable()
+    protected override void OnDisable()
     {
         base.OnDisable();
         _authorizationButton.onClick.RemoveListener(AuthorizationButtonClick);

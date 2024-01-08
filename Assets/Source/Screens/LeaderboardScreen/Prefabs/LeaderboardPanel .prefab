@@ -193,7 +193,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.0052490234, y: -0.00036621094}
-  m_SizeDelta: {x: 20, y: 853.39}
+  m_SizeDelta: {x: 20, y: 788.81}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &3312204568917388413
 CanvasRenderer:
@@ -698,7 +698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.4162598, y: -10.370987}
+  m_AnchoredPosition: {x: -1.4162598, y: -10.370956}
   m_SizeDelta: {x: 33.1123, y: 38.1505}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5102992045753196615
@@ -895,6 +895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f22c13a06b240534386b13a7bbc18f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeHandler: {fileID: 0}
   _leaderboardView: {fileID: 7375923234218619287}
 --- !u!114 &7375923234218619287
 MonoBehaviour:
@@ -948,8 +949,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
-  m_SizeDelta: {x: 700, y: 483.1051}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 432.6754, y: 427.087}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1046679073282846584
 CanvasRenderer:
@@ -2039,7 +2040,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 700, y: 1085}
+  m_SizeDelta: {x: 700, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &832447786516706791
 CanvasRenderer:
@@ -3015,10 +3016,10 @@ RectTransform:
   m_Father: {fileID: 8327132197697495509}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000002861, y: 146}
-  m_SizeDelta: {x: 655.5, y: 136.5996}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 115}
+  m_SizeDelta: {x: -40, y: -301.2437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4756868523266175854
 CanvasRenderer:
@@ -3075,7 +3076,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 73.26
+  m_fontSize: 45.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

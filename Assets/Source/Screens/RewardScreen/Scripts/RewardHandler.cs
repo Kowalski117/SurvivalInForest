@@ -8,15 +8,9 @@ public class RewardHandler : MonoBehaviour
     [SerializeField] private RewardSlot[] _rewardSlots;
     [SerializeField] private DayRewardsData _dayRewardsData;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
-
-    [SerializeField] private TMP_Text _statusText;
+    [SerializeField] private Timer _timer;
 
     private DailyRewardsScreen _dailyRewardsScreen;
-
-    private string _defoultTime = "00:00:00";
-    private bool _isClaimReward;
-    private float _claimCooldown = 24f / 24 / 60 / 6 / 2;
-    private float _claimDeadline = 48f / 24 / 60 / 6 / 2;
 
     private Coroutine _claimCoroutine;
 
@@ -24,26 +18,6 @@ public class RewardHandler : MonoBehaviour
     {
         get => PlayerPrefs.GetInt(SaveLoadConstants.CurrentStreak, 0);
         set => PlayerPrefs.SetInt(SaveLoadConstants.CurrentStreak, value);
-    }
-
-    private DateTime? _lastClaimTime
-    {
-        get
-        {
-            string data = PlayerPrefs.GetString(SaveLoadConstants.LastClaimTime, null);
-
-            if (!string.IsNullOrEmpty(data))
-                return DateTime.Parse(data);
-
-            return null;
-        }
-        set
-        {
-            if (value != null)
-                PlayerPrefs.SetString(SaveLoadConstants.LastClaimTime, value.ToString());
-            else
-                PlayerPrefs.DeleteKey(SaveLoadConstants.LastClaimTime);
-        }
     }
 
     private void Awake()
@@ -72,7 +46,7 @@ public class RewardHandler : MonoBehaviour
 
     public void ClaimReward()
     {
-        if (!_isClaimReward)
+        if (!_timer.IsClaimReward)
             return;
 
         RewardSlot rewardSlot = _rewardSlots[_currentStreak];
@@ -80,7 +54,7 @@ public class RewardHandler : MonoBehaviour
         rewardSlot.TakeSlot();
         SlotsUpdate(_currentStreak + 1);
 
-        _lastClaimTime = DateTime.UtcNow;
+        _timer.SetLastClaimTime();
         _currentStreak = (_currentStreak + 1) % _dayRewardsData.DayRewards.Length;
 
         UpdateRewardsState();
@@ -139,38 +113,15 @@ public class RewardHandler : MonoBehaviour
 
     private void UpdateRewardsState()
     {
-        _isClaimReward = true;
-
-        if(_lastClaimTime.HasValue)
+        if (_timer.IsCheckState())
         {
-            var timeSpan = DateTime.UtcNow - _lastClaimTime.Value;
-
-            if(timeSpan.TotalHours > _claimDeadline)
-            {
-                _lastClaimTime = null;
-                ResetSlots();
-                _currentStreak = 0;
-                SlotsUpdate(_currentStreak);
-
-            }
-            else if(timeSpan.TotalHours < _claimCooldown)
-                _isClaimReward = false;
+            _timer.Clear();
+            ResetSlots();
+            _currentStreak = 0;
+            SlotsUpdate(_currentStreak);
         }
 
-        UpdateRewardsUI();
-    }
-
-    private void UpdateRewardsUI()
-    {
-        if (_isClaimReward)
-            _statusText.text = _defoultTime;
-        else
-        {
-            var nextClaimTime = _lastClaimTime.Value.AddHours(_claimCooldown);
-            var currentClaimCooldown = nextClaimTime - DateTime.UtcNow;
-
-            _statusText.text = $"{currentClaimCooldown.Hours:D2}:{currentClaimCooldown.Minutes:D2}:{currentClaimCooldown.Seconds:D2}";
-        }
+        _timer.UpdateRewardsUI();
     }
 
     private void SlotsUpdate(int index)

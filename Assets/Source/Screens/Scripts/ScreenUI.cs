@@ -72,6 +72,7 @@ public class ScreenUI : MonoBehaviour
             {
                 PlayerInputHandler.BuildTool.DeleteBuilding();
                 PlayerInputHandler.ToggleAllInput(false);
+                PlayerInputHandler.TogglePersonController(false);
                 //PlayerInputHandler.ToggleScreenPlayerInput(false);
 
                 if (_inventoryHandler && !_inventoryHandler.IsInventoryOpen)
@@ -86,6 +87,7 @@ public class ScreenUI : MonoBehaviour
             {
                 PlayerInputHandler.ToggleAllInput(true);
                 //PlayerInputHandler.ToggleScreenPlayerInput(true);
+                PlayerInputHandler.TogglePersonController(true);
 
                 if (_inventoryHandler && !_inventoryHandler.IsInventoryOpen)
                     PlayerInputHandler.SetCursorVisible(false);

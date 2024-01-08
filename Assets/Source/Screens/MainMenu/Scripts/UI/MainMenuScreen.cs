@@ -32,6 +32,7 @@ public class MainMenuScreen : MenuScreen
 
     public void StartButtonClick()
     {
+        SaveGame.Delete();
         _loadPanel.StartLoad(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
