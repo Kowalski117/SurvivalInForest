@@ -11,7 +11,6 @@ public class ChestInventory : InventoryHolder
     {
         _uniqueId = GetComponentInParent<UniqueID>();
         base.Awake();;
-        LoadInventory();
     }
 
     protected override void SaveInventory()
@@ -31,22 +30,17 @@ public class ChestInventory : InventoryHolder
         {
             if (_startingItems.Length > 0) 
             {
-                foreach (var slot in SetLootItem().Items)
+                ObjectItemsData objectItemsData = _startingItems[Random.Range(0, _startingItems.Length)];
+                LootItems lootItems = objectItemsData.LootRandomItems;
+
+                foreach (var inventoryData in lootItems.Items)
                 {
-                    for (int i = 0; i < slot.Items.Length; i++)
+                    for (var i = 0; i < inventoryData.Amount; i++)
                     {
-                        for(int j = 0; j < slot.Items[i].Amount; j++)
-                        {
-                            PrimaryInventorySystem.AddToInventory(slot.Items[i].ItemData, 1, slot.Items[i].ItemData.Durability);
-                        }
+                        PrimaryInventorySystem.AddToInventory(inventoryData.ItemData, 1, inventoryData.ItemData.Durability);
                     }
                 }
             }
         }
-    }
-
-    private ObjectItemsData SetLootItem()
-    {
-        return _startingItems[Random.Range(0, _startingItems.Length)];
     }
 }

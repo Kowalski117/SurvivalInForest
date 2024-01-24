@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8313410292725918337}
   - component: {fileID: 3594479784791964194}
   - component: {fileID: 1891305739808237012}
+  - component: {fileID: 2606421532930503702}
   m_Layer: 6
   m_Name: Seed_Cabbage
   m_TagString: Untagged
@@ -121,7 +122,6 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask: 6
 --- !u!114 &4314856175150437055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,3 +213,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &2606421532930503702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4315880275913174680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

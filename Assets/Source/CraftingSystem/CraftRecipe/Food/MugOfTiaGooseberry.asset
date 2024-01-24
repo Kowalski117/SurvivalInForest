@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49b19a8ee7d31d0428bcb38265521864, type: 3}
-  m_Name: Item_PieceOfCoal
+  m_Name: MugOfTiaGooseberry
   m_EditorClassIdentifier: 
+  _craftingType: 4
   _craftingIngridients:
-  - _itemRequired: {fileID: 11400000, guid: 9f7d85c1b102eda4f846af622a9b954b, type: 2}
+  - _itemRequired: {fileID: 11400000, guid: 7bba3e2b06b782b4eb42a4c2b353958d, type: 2}
     _amountRequured: 1
+  - _itemRequired: {fileID: 11400000, guid: 7a783dafdbfbad74e8d287b1c8dc2e55, type: 2}
+    _amountRequured: 5
   _craftingAmout: 1
-  _delayCraft: 3
-  _craftingTime: 1
-  _craftedItem: {fileID: 11400000, guid: 4ce93e8cb2599e042bc57331d2b4c62f, type: 2}
+  _delayCraft: 1
+  _craftingTime: 0.4
+  _craftedItem: {fileID: 11400000, guid: d36856b2aa0e1664eb0d43ad96321c75, type: 2}

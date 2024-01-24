@@ -16,6 +16,8 @@ public class HotbarDisplay : StaticInventoryDisplay
     public event UnityAction<InventorySlot> OnItemClicked;
     public event UnityAction<InventorySlotUI> OnItemSwitched;
 
+    public InventorySlotUI CurrentSlot => Slots[_currentIndex];
+
     private void Awake()
     {
         _playerInput = new PlayerInput();

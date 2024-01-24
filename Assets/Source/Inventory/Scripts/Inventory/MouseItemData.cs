@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +13,9 @@ public class MouseItemData : MonoBehaviour
 
     private string _invetoryTag = "Inventory";
     private bool _isUpdateSlot = false;
+    private float _delay = 0.05f;
+    private Coroutine _coroutine;
+    private CanvasGroup _canvasGroup;
 
     private InventorySlotUI _inventorySlotUI;
     private InventorySlotUI _previousSlot;
@@ -26,6 +30,7 @@ public class MouseItemData : MonoBehaviour
     private void Awake()
     {
         _inventorySlotUI = GetComponentInChildren<InventorySlotUI>();
+        _canvasGroup = GetComponent<CanvasGroup>();
         Toggle(false);
     }
 
@@ -61,6 +66,12 @@ public class MouseItemData : MonoBehaviour
         _currentItemData = inventorySlot.AssignedInventorySlot.ItemData;
     }
 
+    public void TurnOffPreviousSlot()
+    {
+        if(_previousSlot)
+            _previousSlot.TurnOffHighlight();
+    }
+
     public void UpdateMouseSlot()
     {
         _inventorySlotUI.UpdateUiSlot();
@@ -68,7 +79,12 @@ public class MouseItemData : MonoBehaviour
 
     public void Toggle(bool toggle)
     {
-        gameObject.SetActive(toggle);
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
+        _coroutine = StartCoroutine(SwitchActiveWithDelay(toggle));
+
+        TurnOffPreviousSlot();
     }
 
     public void ReturnCurrentSlot()
@@ -106,5 +122,12 @@ public class MouseItemData : MonoBehaviour
         }
 
         return false;
+    }
+
+    private IEnumerator SwitchActiveWithDelay(bool isActive)
+    {
+        yield return new WaitForSeconds(_delay);
+        _canvasGroup.alpha = isActive ? 1 : 0;
+        _canvasGroup.blocksRaycasts = isActive;
     }
 }

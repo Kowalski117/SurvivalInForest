@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ChestHandler : Raycast
 {
@@ -8,8 +9,10 @@ public class ChestHandler : Raycast
 
     private ChestInventory _chestInventory;
 
-    public event Action OnInteractionStarted;
-    public event Action OnInteractionFinished;
+    public event UnityAction OnInteractionStarted;
+    public event UnityAction OnInteractionFinished;
+
+    public ChestInventory ChestInventory => _chestInventory;
 
     private void Update()
     {

@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Inventory System/Item Data/Clothes", order = 51)]
@@ -30,3 +31,21 @@ public enum TypeOfClothingUse
     AmountOfTime,
     AmountOfDamage
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(ClothesItemData))]
+public class ClothesItemDataEditor : Editor
+{
+    public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height)
+    {
+        var data = (ClothesItemData)target;
+
+        if (data == null || data.Icon == null)
+            return null;
+
+        Texture2D texture = new Texture2D(width, height);
+        EditorUtility.CopySerialized(data.Icon.texture, texture);
+        return texture;
+    }
+}
+#endif

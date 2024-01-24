@@ -57,8 +57,7 @@ public enum ItemType
     ClothesOnTorso = 12,
     ClothesOnFeet = 13,
     ClothingShoes = 14,
-    Backpack = 15,
-
+    Backpack = 15
 }
 
 public enum TypeBehaviorInWater

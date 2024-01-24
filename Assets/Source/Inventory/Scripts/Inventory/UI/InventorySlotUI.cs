@@ -39,20 +39,19 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     {
         if (_assignedInventorySlot.ItemData != null && _assignedInventorySlot.ItemData.Type != _allowedItemTypes && _allowedItemTypes != ItemType.None && !_isMouseSlot)
         {
-            if (CanDropItem())
-                OnItemRemove?.Invoke(this);
+            CanDropItem();
         }
     }
 
-    private bool CanDropItem()
+    public void CanDropItem()
     {
         if (_allowedItemTypes == ItemType.None)
-            return false;
+            return;
 
         if(_assignedInventorySlot.ItemData.Type == _allowedItemTypes) 
-            return false;
+            return;
         else
-            return true;
+            OnItemRemove?.Invoke(this);
     }
 
     public void Init(InventorySlot slot)

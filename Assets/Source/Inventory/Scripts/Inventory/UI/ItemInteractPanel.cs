@@ -15,7 +15,7 @@ public class ItemInteractPanel : MonoBehaviour
     [SerializeField] private Button _discardButton;
     [SerializeField] private Button _exitButton;
 
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private SurvivalHandler _survivalHandler;
 

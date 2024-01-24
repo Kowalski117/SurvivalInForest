@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class CraftSlotView : MonoBehaviour
+public class CraftSlotView : MonoBehaviour
 {
     [SerializeField] protected Image CraftedIcon;
     [SerializeField] protected TMP_Text CraftedName;
@@ -41,6 +41,6 @@ public abstract class CraftSlotView : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    protected abstract void UpdateLanguage();
+    protected virtual void UpdateLanguage() { }
 }
 

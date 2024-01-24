@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3517826588275072298}
   - component: {fileID: 824421144969791224}
   - component: {fileID: -6411189353360892817}
+  - component: {fileID: 4220205757653681339}
   m_Layer: 6
   m_Name: Food_Cabbage
   m_TagString: Untagged
@@ -169,7 +170,6 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask: 6
 --- !u!114 &-6411189353360892817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,3 +213,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &4220205757653681339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8559125080292930831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

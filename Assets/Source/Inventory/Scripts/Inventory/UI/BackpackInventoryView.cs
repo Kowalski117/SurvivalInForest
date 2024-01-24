@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BackpackInventoryView : MonoBehaviour
 {
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private DynamicInventoryDisplay _miniBackpackDisplay;
     [SerializeField] private BackpackInventory _backpackInventory;
 

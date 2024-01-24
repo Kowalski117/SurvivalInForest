@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b19a8ee7d31d0428bcb38265521864, type: 3}
   m_Name: Arrow
   m_EditorClassIdentifier: 
+  _craftingType: 0
   _craftingIngridients:
   - _itemRequired: {fileID: 11400000, guid: 8a5afd7c21c669640a13a1729db169c4, type: 2}
     _amountRequured: 3
@@ -19,5 +20,5 @@ MonoBehaviour:
     _amountRequured: 1
   _craftingAmout: 1
   _delayCraft: 1
-  _craftingTime: 1
+  _craftingTime: 0.25
   _craftedItem: {fileID: 11400000, guid: da72d5f73d6756a439c80895b979ec01, type: 2}

@@ -7,7 +7,7 @@ public class PlayerInteraction : Raycast
     [SerializeField] private PlayerInventoryHolder _inventory;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private ToolItemData _armItemData;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private LayerMask _creatureLayer;
     [SerializeField] private PlayerAudioHandler _playerAudioHandler;
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
@@ -199,6 +199,9 @@ public class PlayerInteraction : Raycast
 
     public void UpdateDurabilityItem(InventorySlot inventorySlot)
     {
+        if (_hotbarDisplay.CurrentSlot.AssignedInventorySlot.ItemData is FoodItemData foodItemData)
+            return;
+
         if (inventorySlot.Durability > 0)
         {
             if(inventorySlot.ItemData is ToolItemData toolItemData && toolItemData.ToolType == ToolType.Torch)
