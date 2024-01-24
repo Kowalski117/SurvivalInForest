@@ -6,6 +6,7 @@ public class SaveItemHandler : SaveHandler
 {
     [SerializeField] private static List<InventoryItemData> _itemDataList;
 
+
     //private string _idsItems = "idsItems";
 
     //private ItemPickUp _currentItemPickUp;

@@ -22,11 +22,6 @@ public class GardenBed : MonoBehaviour
             _uniqueID = GetComponentInParent<UniqueID>();
     }
 
-    private void Start()
-    {
-        //Load();
-    }
-
     private void Update()
     {
         if (_isPlantGrows)

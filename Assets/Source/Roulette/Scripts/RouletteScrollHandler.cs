@@ -1,15 +1,20 @@
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RouletteScrollHandler : MonoBehaviour
 {
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
+    [SerializeField] private PlayerHandler _playerHandler;
     [SerializeField] private RouletteScreen _screen;
     [SerializeField] private RouletteSlot _slot;
     [SerializeField] private Timer _timer;
+    [SerializeField] private YandexAds _andexAds;
+    [SerializeField] private GameObject _revardImage;
+    [SerializeField] private GameObject _closeScreen;
 
     private ItemsSpawner _spawner;
     private Tween _tween;
@@ -20,25 +25,51 @@ public class RouletteScrollHandler : MonoBehaviour
     private float _defoultPosition = 0.50505f;
     private float _delay = 10f;
     private float _minDelay = 0.5f;
+    private bool _isFirstScroll = true;
 
     void Start()
     {
         _spawner = GetComponent<ItemsSpawner>();
+
+        if (_isFirstScroll)
+        {
+            _revardImage.SetActive(false);
+        }
     }
 
     private void OnEnable()
     {
         _screen.OnOpenScreen += StartCoroutine;
         _screen.OnCloseScreen += StopCoroutine;
+        SaveGame.OnSaveGame += Save;
+        SaveGame.OnSaveGame += Load;
     }
 
     private void OnDisable()
     {
         _screen.OnOpenScreen -= StartCoroutine;
         _screen.OnCloseScreen -= StopCoroutine;
+        SaveGame.OnSaveGame -= Save;
+        SaveGame.OnSaveGame -= Load;
     }
 
-    public void StartTwist()
+    public void TwistButtonClick()
+    {
+        if (!_timer.IsClaimReward)
+            return;
+
+        _playerHandler.ToggleScreenPlayerInput(false);
+
+        if (_isFirstScroll)
+        {
+            StartTwist();
+            _isFirstScroll = false;
+        }
+        else
+            _andexAds.ShowRewardAd(() => StartTwist());
+    }
+
+    private void StartTwist()
     {
         if (!_timer.IsClaimReward)
             return;
@@ -49,6 +80,7 @@ public class RouletteScrollHandler : MonoBehaviour
             _tween.Kill();
         }
 
+        _closeScreen.SetActive(false);
         _twistCoroutine = StartCoroutine(StartScroll());
     }
 
@@ -112,6 +144,25 @@ public class RouletteScrollHandler : MonoBehaviour
         if(_playerInventoryHolder.AddToInventory(_slot.InventorySlotUI.AssignedInventorySlot.ItemData, 1, _slot.InventorySlotUI.AssignedInventorySlot.ItemData.Durability))
         {
             _timer.SetLastClaimTime();
+        }
+
+        if(!_revardImage.activeInHierarchy)
+            _revardImage.SetActive(true);
+
+        _closeScreen.SetActive(true);
+        _playerHandler.ToggleScreenPlayerInput(true);
+    }
+
+    private void Save()
+    {
+        ES3.Save(SaveLoadConstants.IsFirstScroll, _isFirstScroll);
+    }
+
+    private void Load()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.IsFirstScroll))
+        {
+            _isFirstScroll = ES3.Load<bool>(SaveLoadConstants.IsFirstScroll);
         }
     }
 }

@@ -8,7 +8,7 @@ public class FishingRod : MonoBehaviour
     [SerializeField] private Float _float;
     [SerializeField] private FishingRodRenderer _renderer;
     [SerializeField] private PlayerInteraction _playerInteraction;
-    [SerializeField] private PlayerInputHandler _inputHandler;
+    [SerializeField] private PlayerHandler _inputHandler;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private PlayerAnimatorHandler _playerAnimatorHandler;

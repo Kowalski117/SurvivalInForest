@@ -17,9 +17,7 @@ public class OutlineSelection : Raycast
                 if (hitInfo.collider.TryGetComponent(out OutlineObject outline))
                 {
                     if (_previousOutline != null)
-                    {
                         _previousOutline.OutlineWidth = 0f;
-                    }
 
                     outline.OutlineWidth = _outlineWidth;
                     outline.OutlineColor = _outlineColor;
@@ -46,6 +44,11 @@ public class OutlineSelection : Raycast
             {
                 outline.OutlineWidth = _outlineWidth;
                 outline.OutlineColor = _outlineColor;
+            }
+
+            if (other.TryGetComponent(out Note note))
+            {
+                Debug.Log("gfdfsdfd");
             }
         }
     }

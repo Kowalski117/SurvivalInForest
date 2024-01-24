@@ -78,6 +78,11 @@ public class FollowPath : MonoBehaviour
     {
         _isActive = active;
     }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        _isActive = focus;
+    }
 }
 
 public enum MovementType

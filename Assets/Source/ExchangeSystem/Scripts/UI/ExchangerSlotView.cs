@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -73,12 +74,18 @@ public class ExchangerSlotView : MonoBehaviour
     {
         foreach (var itemToExchangeView in _itemsToExchangeView)
         {
-            itemToExchangeView.UpdateAmount(_amount);
+            foreach (var slot in _shopSlot.ItemsToExchange)
+            {
+                itemToExchangeView.UpdateAmount(slot.Amount * _amount);
+            }
         }
 
         foreach (var itemToReceiveView in _itemsToReceiveView)
         {
-            itemToReceiveView.UpdateAmount(_amount);
+            foreach (var slot in _shopSlot.ItemsToReceive)
+            {
+                itemToReceiveView.UpdateAmount(slot.Amount * _amount);
+            }
         }
     }
 

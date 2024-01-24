@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 791c55fd-3c79-4b9f-89b3-7c988dd96cad
+  _id: 1cc2241f-0e96-434b-8eae-3e5fed556478
   _isGenerateAwake: 1
 --- !u!1001 &3271155863249597400
 PrefabInstance:
@@ -193,19 +193,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1877781280503006, guid: 534f914d7e13786419d382a4362a38ac, type: 3}
   m_PrefabInstance: {fileID: 3271155863249597400}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &5704180111373377653
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3270687793518282502}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &8514938084498064554
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -246,6 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "_crafting\u0421ategory": {fileID: 11400000, guid: 41d95986d12172343a6581009f21b605, type: 2}
   _isEnabledInitially: 0
+  _isEnabled: 0
 --- !u!114 &6177464287046507907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +282,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2099210253411637275, guid: 17700725019dde94dab420395e3f604c, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099210253411637275, guid: 17700725019dde94dab420395e3f604c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2099210253411637277, guid: 17700725019dde94dab420395e3f604c, type: 3}

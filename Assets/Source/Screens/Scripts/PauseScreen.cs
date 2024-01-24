@@ -55,14 +55,21 @@ public class PauseScreen : MenuScreen
     {
         ToggleScreen();
 
-        if (!IsOpenPanel)
+        if (IsOpenPanel)
+        {
+            PlayerInputHandler.ToggleAllParametrs(false);
+        }
+        else
+        {
+            PlayerInputHandler.ToggleAllParametrs(true);
             CloseAllScreens();
+        }
     }
 
     private void ContinueButtonClick()
     {
         OnContinueButton?.Invoke();
-        ToggleScreen();
+        ToggleAllScreen();
     }
 
     private void SaveButtonClick()

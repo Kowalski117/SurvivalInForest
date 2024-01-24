@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BuildHandler : MonoBehaviour
 {
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private UIInventoryHandler _inventoryHandler;
     [SerializeField] private BuildTool _buildTool;
 

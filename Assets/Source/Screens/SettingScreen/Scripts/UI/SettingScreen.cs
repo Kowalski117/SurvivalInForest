@@ -49,12 +49,14 @@ public class SettingScreen : ScreenUI
 
     public override void ToggleScreen()
     {
-        base.ToggleScreen();
-
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         if (PlayerAccount.IsAuthorized)
             _authorizePanel.gameObject.SetActive(false);
+        else
+            _authorizePanel.gameObject.SetActive(true);
 #endif
+
+        base.ToggleScreen();
     }
 
     protected override void ExitButtonClick()

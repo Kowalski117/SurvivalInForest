@@ -10,7 +10,7 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private DelayWindow _loadingWindow;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private float _rotateSnapAngle = 45f;
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;

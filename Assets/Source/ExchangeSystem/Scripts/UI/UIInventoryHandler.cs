@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class UIInventoryHandler : MonoBehaviour
 {
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private DynamicInventoryDisplay _chestInventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;

@@ -5,7 +5,7 @@ public class Bow : MonoBehaviour
 {
     [SerializeField] private Transform _shootPoint;
     [SerializeField] private Arrow[] _arrows;
-    [SerializeField] private PlayerInputHandler _inputHandler;
+    [SerializeField] private PlayerHandler _inputHandler;
     [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] private PlayerAnimatorHandler _playerAnimatorHandler;
     [SerializeField] private Interactor  _interactor;

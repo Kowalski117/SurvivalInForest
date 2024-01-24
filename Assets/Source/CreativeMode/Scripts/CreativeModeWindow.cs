@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Xml;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class CreativeModeWindow : MonoBehaviour
 { 
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
-    [SerializeField] private PlayerInputHandler _inputHandler;
+    [SerializeField] private PlayerHandler _inputHandler;
     [SerializeField] private UIInventoryHandler _inventoryUI;
     [SerializeField] private List<InventoryItemData> _itemDataBase;
     [SerializeField] private ItemButton _itemButtonPrefab;
@@ -19,8 +17,13 @@ public class CreativeModeWindow : MonoBehaviour
     [SerializeField] private Transform _npcPoint;
     [SerializeField] private Transform _waterPoint;
 
+    [SerializeField] private Toggle _speedToggle;
+    [SerializeField] private float _maxSpeed;
+    [SerializeField] private Toggle _godModeToggle;
+
     private bool _isCreativeModeOpen = false;
     private float _delay = 0.25f;
+    private float _defoultSpeed;
     private PlayerInput _playerInput;
 
     public PlayerInventoryHolder PlayerInventoryHolder => _inventoryHolder;
@@ -28,6 +31,7 @@ public class CreativeModeWindow : MonoBehaviour
     private void Start()
     {
         CreateButtons();
+        _defoultSpeed = _inputHandler.FirstPersonController.SprintSpeed;
     }
 
     private void Awake()
@@ -39,12 +43,18 @@ public class CreativeModeWindow : MonoBehaviour
     {
         _playerInput.Enable();
         _playerInput.Player.CreativeMode.performed += ctx => ToggleWindow();
+
+        _speedToggle.onValueChanged.AddListener(ToggleSpeed);
+        _godModeToggle.onValueChanged.AddListener(ToggleGodMode);
     }
 
     private void OnDisable()
     {
         _playerInput.Player.CreativeMode.performed -= ctx => ToggleWindow();
         _playerInput.Disable();
+
+        _speedToggle.onValueChanged.RemoveListener(ToggleSpeed);
+        _godModeToggle.onValueChanged.RemoveListener(ToggleGodMode);
     }
 
     public void CreateButtons()
@@ -62,14 +72,12 @@ public class CreativeModeWindow : MonoBehaviour
 
         if (_isCreativeModeOpen)
         {
-            if(!_inventoryUI.IsInventoryOpen)
-                _inputHandler.SetCursorVisible(true);
+            _inputHandler.SetCursorVisible(true);
             _window.gameObject.SetActive(true);
         }
         else
         {
-            if (!_inventoryUI.IsInventoryOpen)
-                _inputHandler.SetCursorVisible(false);
+            _inputHandler.SetCursorVisible(false);
             _window.gameObject.SetActive(false);
         }
     }
@@ -122,5 +130,18 @@ public class CreativeModeWindow : MonoBehaviour
         _inputHandler.gameObject.transform.position = point.position;
         yield return new WaitForSeconds(_delay);
         _inputHandler.TogglePersonController(true);
+    }
+
+    private void ToggleSpeed(bool value)
+    {
+        if (value)
+            _inputHandler.FirstPersonController.SprintSpeed = _maxSpeed;
+        else
+            _inputHandler.FirstPersonController.SprintSpeed = _defoultSpeed;
+    }
+
+    private void ToggleGodMode(bool value)
+    {
+        _inputHandler.PlayerHealth.SetGodMode(value);
     }
 }

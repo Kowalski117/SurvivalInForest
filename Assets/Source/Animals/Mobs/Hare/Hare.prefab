@@ -311,7 +311,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.005679093
+  m_Radius: 0.0065
   m_Height: 0.011358187
   m_Direction: 1
   m_Center: {x: -0.0021477183, y: 0.00014773045, z: -0.00039231475}
@@ -383,6 +383,8 @@ GameObject:
   - component: {fileID: 4068232759512464486}
   - component: {fileID: 8914443898064383022}
   - component: {fileID: 802383032212110973}
+  - component: {fileID: 5595154843069478302}
+  - component: {fileID: 4426800482558646301}
   m_Layer: 8
   m_Name: Hare
   m_TagString: Untagged
@@ -733,6 +735,31 @@ MonoBehaviour:
   _agent: {fileID: 1321323317006421455}
   _behaviour: {fileID: 8460797693642337893}
   _setAnimationAnimals: {fileID: 6897795007257843317}
+--- !u!114 &5595154843069478302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438967882976369583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
+--- !u!114 &4426800482558646301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438967882976369583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541959e74b910984488c0b5866a2904a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2438973099241778913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,7 +1427,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.006798142
+  m_Radius: 0.0075
   m_Height: 0.013596284
   m_Direction: 1
   m_Center: {x: -0.00007831682, y: 0.00024281179, z: -0.0026620813}

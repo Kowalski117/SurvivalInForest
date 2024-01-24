@@ -44,17 +44,26 @@ public class EnableGameObject : MonoBehaviour
 }
 
 [System.Serializable]
-public struct Panel
+public class Panel
 {
     [SerializeField] private Transform _panel;
+    [SerializeField] private CanvasGroup _canvasGroup;
 
-    private bool _isActivePreviousScene;
+    private bool _isActivePreviousScene = true;
 
     public bool IsActivePreviousScene => _isActivePreviousScene;
 
     public void SetActive(bool isActive)
     {
-        _isActivePreviousScene = _panel.gameObject.activeInHierarchy;
-        _panel.gameObject.SetActive(isActive);
+        if (_panel != null)
+        {
+            _isActivePreviousScene = _panel.gameObject.activeInHierarchy;
+            _panel.gameObject.SetActive(isActive);
+        }
+        else if (_canvasGroup != null)
+        {
+            _isActivePreviousScene = _canvasGroup.alpha == 1 ? true : false;
+            _canvasGroup.alpha = isActive ? 1 : 0;
+        }
     }
 }

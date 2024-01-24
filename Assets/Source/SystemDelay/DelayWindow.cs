@@ -11,7 +11,7 @@ public class DelayWindow : MonoBehaviour
     [SerializeField] private Image _loadingBar;
     [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private SurvivalHandler _survivalHandler;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _timerText;
     [SerializeField] private TMP_Text _actionText;
@@ -49,10 +49,11 @@ public class DelayWindow : MonoBehaviour
         _audioSource.Play();
         _isLoading = true;
         _survivalHandler.TimeHandler.ToggleEnable(false);
-        _playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleScreenPlayerInput(false);
         _playerInputHandler.ToggleAllInput(false);
         _playerInputHandler.TogglePersonController(false);
+        //_playerInputHandler.SetCursorVisible(false);
+        _playerInputHandler.ToggleCamera(false);
 
         _loadingPanel.gameObject.SetActive(true);
 
@@ -84,9 +85,21 @@ public class DelayWindow : MonoBehaviour
         _survivalHandler.Thirst.LowerValueInFours(skipTime / _maximumDivisor);
         _survivalHandler.TimeHandler.ToggleEnable(true);
         _loadingPanel.gameObject.SetActive(false);
+
         _playerInputHandler.ToggleAllInput(true);
-        _playerInputHandler.ToggleScreenPlayerInput(true);
         _playerInputHandler.TogglePersonController(true);
+        _playerInputHandler.ToggleScreenPlayerInput(true);
+
+        if (actionType == ActionType.CraftItem)
+        {
+            _playerInputHandler.ToggleHotbarDisplay(false);
+            _playerInputHandler.ToggleInteractionInput(false);
+        }
+        else
+        {
+            _playerInputHandler.SetCursorVisible(false);
+            _playerInputHandler.ToggleCamera(true);
+        }
 
         _time = DateTime.MinValue;
 
