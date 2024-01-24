@@ -12,6 +12,7 @@ public class InteractionPlayerInput : MonoBehaviour
     public event UnityAction<bool> OnAttack;
     public event UnityAction OnUse;
     public event UnityAction OnAim;
+    public event UnityAction OnOpenNote;
 
     private void Awake()
     {
@@ -23,8 +24,8 @@ public class InteractionPlayerInput : MonoBehaviour
         _playerInput.Enable();
         _playerInput.Player.InteractionConstruction.performed += ctx => InteractedConstruction();
         _playerInput.Player.AddFire.performed += ctx => AddFire();
-        //_playerInput.Player.Hit.performed += ctx => Hit();
         _playerInput.Player.PickUp.performed += ctx => PickUp();
+        _playerInput.Player.OpenNote.performed += ctx => OpenNote();
         _playerInput.WeaponSystem.Attack.performed += ctx => Attack(_playerInput.WeaponSystem.Attack.IsPressed());
         _playerInput.WeaponSystem.Use.performed += ctx => Use();
         _playerInput.WeaponSystem.Aim.performed += ctx => Aim();
@@ -34,8 +35,8 @@ public class InteractionPlayerInput : MonoBehaviour
     {
         _playerInput.Player.InteractionConstruction.performed -= ctx => InteractedConstruction();
         _playerInput.Player.AddFire.performed -= ctx => AddFire();
-        //_playerInput.Player.Hit.performed -= ctx => Hit();
         _playerInput.Player.PickUp.performed -= ctx => PickUp();
+        _playerInput.Player.OpenNote.performed -= ctx => OpenNote();
         _playerInput.WeaponSystem.Attack.performed -= ctx => Attack(_playerInput.WeaponSystem.Attack.IsPressed());
         _playerInput.WeaponSystem.Use.performed -= ctx => Use();
         _playerInput.WeaponSystem.Aim.performed -= ctx => Aim();
@@ -52,6 +53,12 @@ public class InteractionPlayerInput : MonoBehaviour
     {
         if (_isEnable)
             OnAddedFire?.Invoke();
+    }
+
+    public void OpenNote()
+    {
+        if (_isEnable)
+            OnOpenNote?.Invoke();
     }
 
     private void PickUp()

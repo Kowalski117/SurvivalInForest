@@ -43,6 +43,10 @@ public class FallDamage : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            _dropTimer = 0; 
+        }
 
     }
 }

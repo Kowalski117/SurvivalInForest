@@ -1,8 +1,9 @@
 using StarterAssets;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerHandler : MonoBehaviour
 {
     [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
@@ -16,8 +17,14 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private Interactor _interactor;
     [SerializeField] private LoadPanel _loadPanel;
+    [SerializeField] private Compass _compass;
 
     private bool _isCursorEnable;
+    private bool _isCursorEnablePrevious;
+    private bool _isAllParametrsEnable;
+    private bool _isAllParametrsEnablePrevious;
+    private bool _isControllerActive;
+    private bool _isControllerActivePrevious;
 
     public FirstPersonController FirstPersonController => _firstPersonController;
     public HotbarDisplay HotbarDisplay => _hotbarDisplay;
@@ -31,6 +38,7 @@ public class PlayerInputHandler : MonoBehaviour
     public PlayerHealth PlayerHealth => _playerHealth;
     public Interactor Interactor => _interactor;
     public LoadPanel LoadPanel => _loadPanel;
+    public Compass Compass => _compass;
     public bool IsCursorEnable => _isCursorEnable;
 
     private void Start()
@@ -42,25 +50,35 @@ public class PlayerInputHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         ToggleAllParametrs(false);
+        ToggleAllInput(false);
+        TogglePersonController(false);
+        SetCursorVisible(true);
     }
 
     public void SetCursorVisible(bool visible)
     {
+        if (_isCursorEnablePrevious && !visible)
+        {
+            _isCursorEnablePrevious = false;
+            return;
+        }
+
+        _isCursorEnablePrevious = _isCursorEnable;
         _isCursorEnable = visible;
         ToggleCursor(_isCursorEnable);
     }
 
     public void TogglePersonController(bool visible)
     {
-        ToggleCameraPersonController(visible);
+        //if (_isControllerActivePrevious && !visible)
+        //{
+        //    _isControllerActivePrevious = false;
+        //    return;
+        //}
+        //_isControllerActivePrevious = _isControllerActive;
+        //_isControllerActive = visible;
         _firstPersonController.TogglePersonController(visible);
     }
-
-    public void ToggleCameraPersonController(bool visible)
-    {
-        _firstPersonController.ToggleCamera(visible);
-    }
-
     public void ToggleHotbarDisplay(bool visible)
     {
         _hotbarDisplay.ToggleHotbarDisplay(visible);
@@ -93,7 +111,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void ToggleAllInput(bool visible)
     {
-        ToggleCameraPersonController(visible);
         ToggleInventoryInput(visible);
         ToggleInteractionInput(visible);
         ToggleBuildPlayerInput(visible);
@@ -101,21 +118,33 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void ToggleAllParametrs(bool visible)
     {
-        SetCursorVisible(!visible);
-        TogglePersonController(visible);
+        _isAllParametrsEnable = visible;
         _survivalHandler.SetEnable(visible);
         _survivalHandler.TimeHandler.ToggleEnable(visible);
+    }
+
+    public void ToggleCamera(bool visible)
+    {
+        _firstPersonController.ToggleCamera(visible);
     }
 
     private void ToggleCursor(bool visible)
     {
         Cursor.visible = visible;
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
-        _firstPersonController.ToggleCamera(!visible);
+        ToggleCamera(!visible);
     }
 
-    private void OnApplicationFocus(bool hasFocus)
+    private void OnApplicationFocus(bool focus)
     {
-        ToggleCursor(hasFocus);
+        if(_isAllParametrsEnablePrevious && !focus)
+        {
+            _isAllParametrsEnablePrevious = false;
+            return;
+        }
+
+        _isAllParametrsEnablePrevious = _isAllParametrsEnable;
+        _isAllParametrsEnable = focus;
+        ToggleAllParametrs(focus);
     }
 }

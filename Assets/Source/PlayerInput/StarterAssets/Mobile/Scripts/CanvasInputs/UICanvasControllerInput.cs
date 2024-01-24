@@ -4,7 +4,7 @@ namespace StarterAssets
 {
     public class UICanvasControllerInput : MonoBehaviour
     {
-        [SerializeField] private PlayerInputHandler _playerInputHandler;
+        [SerializeField] private PlayerHandler _playerInputHandler;
         [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
         [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
         [SerializeField] private BuildTool _buildTool;

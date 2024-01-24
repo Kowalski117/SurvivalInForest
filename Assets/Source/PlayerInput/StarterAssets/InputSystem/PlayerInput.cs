@@ -134,6 +134,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenNote"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f360d50-5f02-4de7-b70c-5a3f1480ac02"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -415,7 +424,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3a7a7226-0286-4b8a-971a-c21733fc249a"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
@@ -437,11 +446,22 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""39ccaa0b-dd47-45c5-8b4c-b0360c36dcb1"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""AddFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e9a7bd7-d81c-47b6-a554-c35a876a7932"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenNote"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -964,6 +984,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_InteractionConstruction = m_Player.FindAction("InteractionConstruction", throwIfNotFound: true);
         m_Player_CreativeMode = m_Player.FindAction("CreativeMode", throwIfNotFound: true);
         m_Player_AddFire = m_Player.FindAction("AddFire", throwIfNotFound: true);
+        m_Player_OpenNote = m_Player.FindAction("OpenNote", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_Hotbar1 = m_Inventory.FindAction("Hotbar 1", throwIfNotFound: true);
@@ -1064,6 +1085,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_InteractionConstruction;
     private readonly InputAction m_Player_CreativeMode;
     private readonly InputAction m_Player_AddFire;
+    private readonly InputAction m_Player_OpenNote;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1080,6 +1102,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @InteractionConstruction => m_Wrapper.m_Player_InteractionConstruction;
         public InputAction @CreativeMode => m_Wrapper.m_Player_CreativeMode;
         public InputAction @AddFire => m_Wrapper.m_Player_AddFire;
+        public InputAction @OpenNote => m_Wrapper.m_Player_OpenNote;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1125,6 +1148,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @AddFire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddFire;
                 @AddFire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddFire;
                 @AddFire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddFire;
+                @OpenNote.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenNote;
+                @OpenNote.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenNote;
+                @OpenNote.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenNote;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1165,6 +1191,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @AddFire.started += instance.OnAddFire;
                 @AddFire.performed += instance.OnAddFire;
                 @AddFire.canceled += instance.OnAddFire;
+                @OpenNote.started += instance.OnOpenNote;
+                @OpenNote.performed += instance.OnOpenNote;
+                @OpenNote.canceled += instance.OnOpenNote;
             }
         }
     }
@@ -1487,6 +1516,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnInteractionConstruction(InputAction.CallbackContext context);
         void OnCreativeMode(InputAction.CallbackContext context);
         void OnAddFire(InputAction.CallbackContext context);
+        void OnOpenNote(InputAction.CallbackContext context);
     }
     public interface IInventoryActions
     {
