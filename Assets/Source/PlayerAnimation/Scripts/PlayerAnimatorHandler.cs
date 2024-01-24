@@ -37,8 +37,12 @@ public class PlayerAnimatorHandler : MonoBehaviour
     {
         if(_handAnimator != null)
         {
-            if (_starterAssets.move != Vector2.zero)
-                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, (_firstPersonController.Speed / 10));
+            if (_starterAssets.move != Vector2.zero) 
+            {
+                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed,(_firstPersonController.Speed / 
+                    _firstPersonController.SprintSpeed));
+
+            }
             else
                 _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, 0);
         }
