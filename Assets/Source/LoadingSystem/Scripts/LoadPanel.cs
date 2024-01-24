@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LoadPanel : MonoBehaviour
 {
     [SerializeField] private AudioHandler _audioHandler;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private LoadingScreenSettings _screenSettings;
     [SerializeField] private Image _imageHint;
     [SerializeField] private Image _loadBarImage;
@@ -150,6 +150,9 @@ public class LoadPanel : MonoBehaviour
         if (_playerInputHandler != null)
         {
             _playerInputHandler.ToggleAllParametrs(true);
+            _playerInputHandler.ToggleAllInput(true);
+            _playerInputHandler.TogglePersonController(true);
+            _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.PlayerHealth.SetActiveCollider(true);
         }
 
