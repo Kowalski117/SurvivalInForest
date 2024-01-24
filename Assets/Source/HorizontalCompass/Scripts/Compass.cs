@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Compass : MonoBehaviour
@@ -18,6 +18,8 @@ public class Compass : MonoBehaviour
     private float _compassUnit;
     private float _rotationNumber = 360;
     private int _repeatingPicture = 3;
+
+    public event UnityAction<QuestMaker> OnQuestMakerAdded;
 
     private void Awake()
     {
@@ -62,6 +64,7 @@ public class Compass : MonoBehaviour
         Image newMarker = Instantiate(_markerPrefab, _containerMarker);
         _questMakers.Add(questMaker);
         questMaker.SetImage(newMarker);
+        OnQuestMakerAdded?.Invoke(questMaker);
     }
 
     public void RemoveQuestMarket(QuestMaker questMaker)
