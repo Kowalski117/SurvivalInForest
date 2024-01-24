@@ -2,6 +2,7 @@ using System.Collections;
 using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using GameAnalyticsSDK;
 
 public class InitializationSDK : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class InitializationSDK : MonoBehaviour
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
     private void Awake()
     {
+        GameAnalytics.Initialize();
         YandexGamesSdk.CallbackLogging = true;
     }
 
@@ -36,15 +38,9 @@ public class InitializationSDK : MonoBehaviour
             _saveGame.GetCloudSaveData();
 
         if (ES3.KeyExists(SaveLoadConstants.IsCutscenePlayed) && ES3.Load<bool>(SaveLoadConstants.IsCutscenePlayed) == true)
-        {
-            Debug.Log("11");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
         else
-        {
-            Debug.Log("22");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
-        }
     }
 #endif
 }

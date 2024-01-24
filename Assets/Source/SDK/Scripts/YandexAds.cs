@@ -1,4 +1,5 @@
 using Agava.YandexGames;
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityRenderer;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
@@ -6,7 +7,7 @@ using UnityEngine.Events;
 public class YandexAds : MonoBehaviour
 {
     [SerializeField] private AudioHandler _audioHandler;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
 
     private bool _isCursorEnable = false;
 
@@ -28,10 +29,14 @@ public class YandexAds : MonoBehaviour
     {
         _audioHandler.FadeIn();
 
-        _isCursorEnable = !_playerInputHandler.IsCursorEnable;
-
+        _isCursorEnable = _playerInputHandler.IsCursorEnable;
+        Debug.Log(_isCursorEnable + "0");
         if (_playerInputHandler)
+        {
             _playerInputHandler.ToggleAllParametrs(false);
+            _playerInputHandler.TogglePersonController(false);
+            _playerInputHandler.SetCursorVisible(true);
+        }
         Time.timeScale = 0;
     }
 
@@ -42,11 +47,8 @@ public class YandexAds : MonoBehaviour
         if (_playerInputHandler)
         {
             _playerInputHandler.ToggleAllParametrs(true);
-
-            if (!_isCursorEnable)
-                _playerInputHandler.SetCursorVisible(false);
-            else
-                _playerInputHandler.SetCursorVisible(true);
+            _playerInputHandler.TogglePersonController(true);
+            _playerInputHandler.SetCursorVisible(false);
         }
     }
 
