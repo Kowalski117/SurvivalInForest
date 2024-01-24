@@ -35,8 +35,8 @@ public class TutorialHandler : Raycast
             {
                 _infoObject = null;
 
-                if(_infoScreen.IsOpenPanel)
-                    _infoScreen.ToggleScreen();
+                if (_infoScreen.IsOpenPanel)
+                    _infoScreen.OpenWindow();
             }
         }
     }
@@ -47,7 +47,7 @@ public class TutorialHandler : Raycast
         {
             foreach (var info in _infoObjects)
             {
-                if (infoObject.InfoObjectSO == info && !info.IsDone)
+                if (infoObject.InfoObjectSO == info && !info.IsDone && infoObject.IsActive)
                 {
                     _infoObject = infoObject;
                     _infoScreen.Init(info.Name, info.Description, info.Sprite);
