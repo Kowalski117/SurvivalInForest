@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,14 +7,31 @@ public class LocalizationHandler : MonoBehaviour
 {
     private string _currentLanguage;
 
-    public static event Action OnLanguageChanged;
-
     private Dictionary<string, string> _language = new()
     {
         { "ru", "Russian" },
         { "en", "English" },
         { "tr", "Turkish" },
     };
+
+    public event UnityAction OnLanguageChanged;
+
+    public int CurrentLanguageIndex
+    {
+        get
+        {
+            int index = 0;
+            foreach (var pair in _language)
+            {
+                if (pair.Key == _currentLanguage)
+                {
+                    return index;
+                }
+                index++;
+            }
+            return -1;
+        }
+    }
 
     public void SetLanguageString(string value)
     {
@@ -27,14 +42,14 @@ public class LocalizationHandler : MonoBehaviour
     public void SetLanguageIndex(int index)
     {
         if (_language.Count > index + 1)
-            SetLanguage(_language.Values.ElementAt(index));
+            SetLanguage(_language.Keys.ElementAt(index));
     }
 
     private void SetLanguage(string value)
     {
-        PixelCrushers.DialogueSystem.DialogueManager.SetLanguage(value);
         _currentLanguage = value;
         OnLanguageChanged?.Invoke();
         PlayerPrefs.SetString(ConstantsSDK.Language, _currentLanguage);
+        PixelCrushers.DialogueSystem.DialogueManager.SetLanguage(value);
     }
 }

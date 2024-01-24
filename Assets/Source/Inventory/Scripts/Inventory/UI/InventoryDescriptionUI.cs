@@ -94,14 +94,14 @@ public class InventoryDescriptionUI : MonoBehaviour
                 SetItemParameters(inventorySlot.ItemData);
             else if (inventorySlot.ItemData.Type == ItemType.Seed)
                 SetSeedParameters(inventorySlot.ItemData);
-            else if (inventorySlot.ItemData.Type == ItemType.Clothes)
-                SetClothesParameters(inventorySlot.ItemData);
             else if (inventorySlot.ItemData.Type == ItemType.Food)
                 SetFoodParameters(inventorySlot.ItemData);
             else if (inventorySlot.ItemData.Type == ItemType.Tool)
                 SetToolParameters(inventorySlot.ItemData);
             else if (inventorySlot.ItemData.Type == ItemType.Weapon)
                 SetWeaponParameters(inventorySlot.ItemData);
+            else if (inventorySlot.ItemData is ClothesItemData)
+                SetClothesParameters(inventorySlot.ItemData);
 
             if (inventorySlot.Durability > 1 && inventorySlot.ItemData.Type != ItemType.Food)
                 SetParametr(ParamertType.Endurance, GetInterest(_currentSlot.AssignedInventorySlot.Durability, inventorySlot.ItemData.Durability));

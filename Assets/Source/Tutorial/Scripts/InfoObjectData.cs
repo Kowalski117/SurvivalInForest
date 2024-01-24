@@ -4,6 +4,7 @@ using UnityEngine;
 public class InfoObjectData : ScriptableObject
 {
     [SerializeField] private string _name;
+    [TextArea(4, 4)]
     [SerializeField] private string _description;
     [SerializeField] private Sprite _sprite;
     [SerializeField] private bool _isDone;

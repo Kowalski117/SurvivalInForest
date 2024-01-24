@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b19a8ee7d31d0428bcb38265521864, type: 3}
+  m_Name: BackpackInventory
+  m_EditorClassIdentifier: 
+  _craftingType: 3
+  _craftingIngridients:
+  - _itemRequired: {fileID: 11400000, guid: 77dc0ed8827300a4897afd6c7296043b, type: 2}
+    _amountRequured: 6
+  _craftingAmout: 1
+  _delayCraft: 5
+  _craftingTime: 2
+  _craftedItem: {fileID: 11400000, guid: a668db3804378e24ea4ad34fc99334b6, type: 2}

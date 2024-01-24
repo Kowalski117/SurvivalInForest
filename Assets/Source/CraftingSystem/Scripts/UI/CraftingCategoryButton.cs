@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class CraftingCategoryButton : MonoBehaviour
 {
     [SerializeField] private CraftingHandler _craftingHandler;
-    [SerializeField] private ItemType _itemType;
+    [SerializeField] private CraftingType _itemType;
     [SerializeField] private Image _image;
     [SerializeField] private Image _frameImage;
 
@@ -12,7 +12,7 @@ public class CraftingCategoryButton : MonoBehaviour
     private Color _defoutColor = Color.white;
     private Color _selectColor = Color.black;
 
-    public ItemType ItemType => _itemType;
+    public CraftingType ItemType => _itemType;
 
     private void Awake()
     {

@@ -23,7 +23,7 @@ public class IngridientSlotView : MonoBehaviour
 
     public void UpdateAmount(PlayerInventoryHolder playerInventory)
     {
-        _itemCount.text = $"{playerInventory.InventorySystem.GetItemCount(_data)} / {_amount}";
+        _itemCount.text = $"{playerInventory.InventorySystem.GetItemCount(_data)}/{_amount}";
 
         if (playerInventory.InventorySystem.GetItemCount(_data) < _amount)
             _itemCount.color = _negativeColor;

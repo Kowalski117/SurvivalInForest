@@ -1,8 +1,6 @@
 using System;
 using UnityEngine.Events;
-using UnityEngine;
 using PixelCrushers.QuestMachine;
-using PixelCrushers.DialogueSystem;
 
 public class CraftItemSlotView : CraftSlotView
 {

@@ -20,5 +20,6 @@ public class InfoScreen : ScreenUI
     {
         base.ExitButtonClick();
         ToggleScreen();
+        PlayerInputHandler.ToggleScreenPlayerInput(true);
     }
 }

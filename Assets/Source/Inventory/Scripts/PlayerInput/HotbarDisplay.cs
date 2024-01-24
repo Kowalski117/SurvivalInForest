@@ -16,13 +16,12 @@ public class HotbarDisplay : StaticInventoryDisplay
     public event UnityAction<InventorySlot> OnItemClicked;
     public event UnityAction<InventorySlotUI> OnItemSwitched;
 
+    public InventorySlotUI CurrentSlot => Slots[_currentIndex];
+
     private void Awake()
     {
         _playerInput = new PlayerInput();
-    }
 
-    private void Start()
-    {
         _currentIndex = 0;
         _maxIndexSize = Slots.Length - 1;
 

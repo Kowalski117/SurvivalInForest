@@ -4,6 +4,9 @@ using IL3DN;
 
 public class PlayerAudioHandler : MonoBehaviour
 {
+    [SerializeField] private AudioSource _audioSourceForSteps;
+    [SerializeField] private AudioSource _audioSourceAllClips;
+
     [SerializeField] private AudioClip[] _footstepSounds = default;
     [SerializeField] private AudioClip _jumpSound = default;
     [SerializeField] private AudioClip _landSound = default;
@@ -14,8 +17,9 @@ public class PlayerAudioHandler : MonoBehaviour
     [SerializeField] private AudioClip[] _hitInAirClips;
     [SerializeField] private AudioClip _pickUpClip;
 
+    [SerializeField] private AudioClip[] _damageClips;
+
     private PlayerHealth _playerHealth;
-    private AudioSource _audioSource;
     private AudioClip[] _footStepsOverride;
     private AudioClip _jumpSoundOverride;
     private AudioClip _landSoundOverride;
@@ -25,25 +29,28 @@ public class PlayerAudioHandler : MonoBehaviour
     private Coroutine _coroutine;
     private float _longDelay = 0.5f;
     private float _shortDelay = 0.25f;
+    private float _damageClipDelay = 3f;
     private bool _isEnable;
+    private bool _isDamageSoundPlaying = false;
 
     public AudioClip[] HitInAirClips => _hitInAirClips;
     public AudioClip PickUpClip => _pickUpClip;
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
         _playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void OnEnable()
     {
         _playerHealth.OnDied += TurnOffSpecialSurface;
+        _playerHealth.OnDamageDone += PlayDamageClip;
     }
 
     private void OnDisable()
     {
         _playerHealth.OnDied -= TurnOffSpecialSurface;
+        _playerHealth.OnDamageDone -= PlayDamageClip;
     }
 
     public void SetEnable(bool enable)
@@ -53,34 +60,45 @@ public class PlayerAudioHandler : MonoBehaviour
 
     public void PlayOneShot(AudioClip audioClip)
     {
-        _audioSource.PlayOneShot(audioClip);
+        _audioSourceAllClips.PlayOneShot(audioClip);
     }
 
     public void PlayHitInAirClip()
     {
-        _audioSource.PlayOneShot(_hitInAirClips[Random.Range(0, _hitInAirClips.Length)]);
+        PlayOneShot(_hitInAirClips[Random.Range(0, _hitInAirClips.Length)]);
+    }
+
+    public void PlayDamageClip()
+    {
+        if (!_isDamageSoundPlaying && _isEnable)
+        {
+            _isDamageSoundPlaying = true;
+            PlayOneShot(_damageClips[Random.Range(0, _damageClips.Length)]);
+            StartCoroutine(WaitForDamageSoundToFinish());
+        }
     }
 
     public void PlayItemPickUpClip()
     {
-        _audioSource.PlayOneShot(_pickUpClip);
+        PlayOneShot(_pickUpClip);
     }
 
     public void PlayEatingSound(float eatValue, float drinkValue)
     {
-        if(eatValue > 0 || drinkValue > 0 && _isEnable)
+        drinkValue /= 2.5f;
+        if (eatValue > 0 || drinkValue > 0 && _isEnable)
         {
             if (eatValue >= drinkValue)
             {
                 int n = Random.Range(0, _eatingSounds.Length);
-                _audioSource.clip = _eatingSounds[n];
+                _audioSourceForSteps.clip = _eatingSounds[n];
             }
             else if (drinkValue > eatValue)
             {
                 int n = Random.Range(0, _drinkingSounds.Length);
-                _audioSource.clip = _drinkingSounds[n];
+                _audioSourceForSteps.clip = _drinkingSounds[n];
             }
-            _audioSource.PlayOneShot(_audioSource.clip);
+            _audioSourceForSteps.PlayOneShot(_audioSourceForSteps.clip);
             _isJumping = true;
             StartCoroutine(_longDelay);
         }
@@ -92,13 +110,13 @@ public class PlayerAudioHandler : MonoBehaviour
         {
             if (_isInSpecialSurface)
             {
-                _audioSource.clip = _landSoundOverride;
+                _audioSourceForSteps.clip = _landSoundOverride;
             }
             else
             {
-                _audioSource.clip = _landSound;
+                _audioSourceForSteps.clip = _landSound;
             }
-            _audioSource.Play();
+            _audioSourceForSteps.Play();
             _isJumping = false;
         }
     }
@@ -109,13 +127,13 @@ public class PlayerAudioHandler : MonoBehaviour
         {
             if (_isInSpecialSurface)
             {
-                _audioSource.clip = _jumpSoundOverride;
+                _audioSourceForSteps.clip = _jumpSoundOverride;
             }
             else
             {
-                _audioSource.clip = _jumpSound;
+                _audioSourceForSteps.clip = _jumpSound;
             }
-            _audioSource.Play();
+            _audioSourceForSteps.Play();
             _isFootstepPlaying = true;
             StartCoroutine(_longDelay);
             _isJumping = true;
@@ -136,22 +154,22 @@ public class PlayerAudioHandler : MonoBehaviour
             if (!_isInSpecialSurface)
             {
                 int n = Random.Range(1, _footstepSounds.Length);
-                _audioSource.clip = _footstepSounds[n];
-                _audioSource.PlayOneShot(_audioSource.clip);
+                _audioSourceForSteps.clip = _footstepSounds[n];
+                _audioSourceForSteps.PlayOneShot(_audioSourceForSteps.clip);
                 _footstepSounds[n] = _footstepSounds[0];
-                _footstepSounds[0] = _audioSource.clip;
+                _footstepSounds[0] = _audioSourceForSteps.clip;
             }
             else
             {
                 int n = Random.Range(1, _footStepsOverride.Length);
+
                 if (n >= _footStepsOverride.Length)
-                {
                     n = 0;
-                }
-                _audioSource.clip = _footStepsOverride[n];
-                _audioSource.PlayOneShot(_audioSource.clip);
+
+                _audioSourceForSteps.clip = _footStepsOverride[n];
+                _audioSourceForSteps.PlayOneShot(_audioSourceForSteps.clip);
                 _footStepsOverride[n] = _footStepsOverride[0];
-                _footStepsOverride[0] = _audioSource.clip;
+                _footStepsOverride[0] = _audioSourceForSteps.clip;
             }
         }
     }
@@ -173,6 +191,13 @@ public class PlayerAudioHandler : MonoBehaviour
 
         _isFootstepPlaying = false;
         _isJumping = false;
+    }
+
+    private IEnumerator WaitForDamageSoundToFinish()
+    {
+        yield return new WaitForSeconds(_damageClipDelay);
+
+        _isDamageSoundPlaying = false;
     }
 
     private void TurnOffSpecialSurface()

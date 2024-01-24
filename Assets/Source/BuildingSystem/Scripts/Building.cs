@@ -119,7 +119,7 @@ public class Building : MonoBehaviour
     {
         if (!_isPlace)
         {
-            if (!other.GetComponent<SpawnPointAnimals>() && !other.GetComponent<PointOffComponentsAnimal>() && !other.GetComponent<IL3DN_ChangeWalkingSound>() && !other.GetComponent<FoundationConnection>())
+            if (!other.GetComponent<SpawnPointAnimals>() && !other.GetComponent<PointOffComponentsAnimal>() && !other.GetComponent<IL3DN_ChangeWalkingSound>() && !other.GetComponent<FoundationConnection>() && !other.GetComponent<AudioTrigger>())
                 _isOverlapping = true;
         }
     }

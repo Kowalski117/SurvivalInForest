@@ -3,9 +3,10 @@ using UnityEngine.Events;
 
 public class PlayerInventoryHolder : InventoryHolder
 {
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private BackpackInventory _backpackInventory;
     [SerializeField] private ClothesInventory _clothesInventory;
+    [SerializeField] private ChestHandler _chestHandler;
      
     private InventoryItemData _currentItemData;
 
@@ -41,7 +42,7 @@ public class PlayerInventoryHolder : InventoryHolder
     {
         _currentItemData = slot.ItemData;
 
-        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(slot, amount)  ||_clothesInventory.InventorySystem.RemoveItemsInventory(slot, amount))
+        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(slot, amount) || _clothesInventory.InventorySystem.RemoveItemsInventory(slot, amount) || _chestHandler.ChestInventory != null && _chestHandler.ChestInventory.InventorySystem.RemoveItemsInventory(slot, amount))
         {
             OnItemDataChanged?.Invoke(_currentItemData, -amount);
             OnUpdateItemSlot?.Invoke();

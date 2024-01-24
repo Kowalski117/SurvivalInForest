@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 4647069315272540443}
   - component: {fileID: 4647069315272540436}
   - component: {fileID: 2876595439672073854}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4647069315961989381}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,6 +197,10 @@ PrefabInstance:
     - target: {fileID: 1745047581263230, guid: 99df8cbc76c20554aa2f00a6bc7f05d1, type: 3}
       propertyPath: m_Name
       value: Wall wooden window
+      objectReference: {fileID: 0}
+    - target: {fileID: 1745047581263230, guid: 99df8cbc76c20554aa2f00a6bc7f05d1, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1745047581263230, guid: 99df8cbc76c20554aa2f00a6bc7f05d1, type: 3}
       propertyPath: m_StaticEditorFlags

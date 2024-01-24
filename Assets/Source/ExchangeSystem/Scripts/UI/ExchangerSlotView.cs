@@ -1,10 +1,11 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ExchangerSlotView : MonoBehaviour
 {
-    [SerializeField] private ExchangedItemView[] _itemsToExchangeView;
-    [SerializeField] private ExchangedItemView[] _itemsToReceiveView;
+    [SerializeField] private ItemView[] _itemsToExchangeView;
+    [SerializeField] private ItemView[] _itemsToReceiveView;
     [SerializeField] private Button _exchangeButton;
     [SerializeField] private Button _plusButton;
     [SerializeField] private Button _minusButton;
@@ -73,16 +74,22 @@ public class ExchangerSlotView : MonoBehaviour
     {
         foreach (var itemToExchangeView in _itemsToExchangeView)
         {
-            itemToExchangeView.UpdateAmount(_amount);
+            foreach (var slot in _shopSlot.ItemsToExchange)
+            {
+                itemToExchangeView.UpdateAmount(slot.Amount * _amount);
+            }
         }
 
         foreach (var itemToReceiveView in _itemsToReceiveView)
         {
-            itemToReceiveView.UpdateAmount(_amount);
+            foreach (var slot in _shopSlot.ItemsToReceive)
+            {
+                itemToReceiveView.UpdateAmount(slot.Amount * _amount);
+            }
         }
     }
 
-    private void UpdateExchangedItems(ExchangedItemView[] itemViewArray, ExchangedItem[] itemArray)
+    private void UpdateExchangedItems(ItemView[] itemViewArray, ExchangedItem[] itemArray)
     {
         for (int i = 0; i < itemViewArray.Length; i++)
         {

@@ -1,19 +1,24 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Bow : MonoBehaviour
 {
     [SerializeField] private Transform _shootPoint;
     [SerializeField] private Arrow[] _arrows;
-    [SerializeField] private PlayerInputHandler _inputHandler;
+    [SerializeField] private PlayerHandler _inputHandler;
     [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] private PlayerAnimatorHandler _playerAnimatorHandler;
     [SerializeField] private Interactor  _interactor;
+    [SerializeField] private float _arrowSpeed = 10f;
 
     private WeaponItemData _currentWeapon;
     private bool _isShoot = false;
     private bool _isEnable = false;
     private bool _isAim = false;
-    [SerializeField] private float _arrowSpeed = 10f;
+
+    public event UnityAction OnInitialized;
+    public event UnityAction OnCleared;
+    public event UnityAction OnShooting;
 
     private void Start()
     {
@@ -87,6 +92,7 @@ public class Bow : MonoBehaviour
                         arrow.gameObject.SetActive(true);
                         _playerAnimatorHandler.Hit(true);
                         arrow.Shoot(_arrowSpeed);
+                        OnShooting?.Invoke();
                         break;
                     }
                 }
@@ -120,12 +126,14 @@ public class Bow : MonoBehaviour
         {
             _currentWeapon = itemData;
             _isEnable = true;
+            OnInitialized?.Invoke();
         }
         else
         {
             _currentWeapon = null;
             _isAim = false;
             _isEnable = false;
+            OnCleared?.Invoke();
         }
     }
 }

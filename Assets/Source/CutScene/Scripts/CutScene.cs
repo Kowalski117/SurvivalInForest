@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,10 @@ public class CutScene : MonoBehaviour
 
     private int _waitForFadeTime = 3;
 
+    public event UnityAction OnStart;
+    public event UnityAction OnScip;
+    public event UnityAction OnFinish;
+
     private void OnEnable()
     {
         _loadPanel.OnDeactivated += PlayCutScene;
@@ -20,6 +25,19 @@ public class CutScene : MonoBehaviour
     private void OnDisable()
     {
         _loadPanel.OnDeactivated -= PlayCutScene;
+    }
+
+    public void Skip()
+    {
+        StartCoroutine();
+        _playableDirector.Stop();
+        OnScip?.Invoke();
+    }
+
+    public void Finish()
+    {
+        StartCoroutine();
+        OnFinish?.Invoke();
     }
 
     public void StartCoroutine()
@@ -43,5 +61,14 @@ public class CutScene : MonoBehaviour
     private void PlayCutScene()
     {
         _playableDirector.Play();
+        OnStart?.Invoke();
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+            _playableDirector.Resume();
+        else
+            _playableDirector.Pause();  
     }
 }

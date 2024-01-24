@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6947639542480555630}
   - component: {fileID: 6947639542480555617}
   - component: {fileID: 8925988597702784759}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6947639543251789424}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,6 +259,10 @@ PrefabInstance:
     - target: {fileID: 1480446025487848, guid: 982e2b233255dae4daf5642f07ff5695, type: 3}
       propertyPath: m_Name
       value: 'Stone wall '
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480446025487848, guid: 982e2b233255dae4daf5642f07ff5695, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1480446025487848, guid: 982e2b233255dae4daf5642f07ff5695, type: 3}
       propertyPath: m_StaticEditorFlags

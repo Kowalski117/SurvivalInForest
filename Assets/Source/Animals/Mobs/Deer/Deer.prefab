@@ -588,6 +588,8 @@ GameObject:
   - component: {fileID: -8894024530144944974}
   - component: {fileID: 8302660217463573604}
   - component: {fileID: 3124370751182258854}
+  - component: {fileID: 3031038299936583441}
+  - component: {fileID: 3637283941639567996}
   m_Layer: 8
   m_Name: Deer
   m_TagString: Untagged
@@ -726,8 +728,8 @@ MonoBehaviour:
         byteData: 
         byteDataArray: 
       Version: 1.7.2
-  gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
+  gizmoViewMode: 0
+  showBehaviorDesignerGizmo: 0
 --- !u!82 &3741143313788975860
 AudioSource:
   m_ObjectHideFlags: 0
@@ -949,6 +951,31 @@ MonoBehaviour:
   _agent: {fileID: 1608057179}
   _behaviour: {fileID: 9029019881409889758}
   _setAnimationAnimals: {fileID: 3950810857950402767}
+--- !u!114 &3031038299936583441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025137566998704627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
+--- !u!114 &3637283941639567996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025137566998704627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541959e74b910984488c0b5866a2904a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2213129154094815899
 GameObject:
   m_ObjectHideFlags: 0

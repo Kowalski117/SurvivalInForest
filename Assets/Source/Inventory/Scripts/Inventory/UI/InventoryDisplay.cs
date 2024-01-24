@@ -41,7 +41,7 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     public void SlotClicked(InventorySlotUI clickedUISlot)
     {
-        if (MouseInventoryItem.CurrentItemData != null &&
+        if (MouseInventoryItem.CurrentItemData != null && MouseInventoryItem.CurrentItemData &&
         (clickedUISlot.AllowedItemTypes == MouseInventoryItem.CurrentItemData.Type ||
          clickedUISlot.AllowedItemTypes == ItemType.None))
         {
@@ -141,8 +141,8 @@ public abstract class InventoryDisplay : MonoBehaviour
 
     private void CreateDraggedItem(InventorySlotUI inventorySlotUI)
     {
-        MouseInventoryItem.Toggle(true);
         bool isShiftPressed = Keyboard.current.leftShiftKey.isPressed;
+        MouseInventoryItem.Toggle(true);
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData != null && MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData == null)
         {

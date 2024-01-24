@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class UIInventoryHandler : MonoBehaviour
 {
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private DynamicInventoryDisplay _chestInventoryPanel;
     [SerializeField] private DynamicInventoryDisplay _playerBackpackPanel;
@@ -11,6 +11,7 @@ public class UIInventoryHandler : MonoBehaviour
     [SerializeField] private ClothesInventory _clothesInventory;
     [SerializeField] private DynamicInventoryDisplay _playerClothesPanel;
     [SerializeField] private MouseItemData _mouseItemData;
+    [SerializeField] private BuildTool _buildTool;
 
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
@@ -69,7 +70,8 @@ public class UIInventoryHandler : MonoBehaviour
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
             _playerInputHandler.ToggleHotbarDisplay(false);
             _playerInputHandler.ToggleInteractionInput(false);
-
+            _buildTool.DeleteBuilding();
+            _buildTool.SetDeleteModeEnabled(false);
             _playerClothesPanel.RefreshDynamicInventory(_clothesInventory.InventorySystem, 0);
         }
         else

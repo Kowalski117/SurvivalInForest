@@ -5,6 +5,7 @@ public class DeathScreen : MonoBehaviour
 {
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
+    [SerializeField] private YandexAds _andexAds;
 
     [SerializeField] private Transform _screen;
     [SerializeField] private Button _rebirthButton;
@@ -53,6 +54,6 @@ public class DeathScreen : MonoBehaviour
 
     private void RebirthButtonForAdvertisingClick()
     {
-        _playerHealth.Reborn();
+        _andexAds.ShowRewardAd(() => _playerHealth.Reborn());
     }
 }

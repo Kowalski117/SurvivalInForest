@@ -37,5 +37,6 @@ public class TransitionBetweenScenesWindow : ScreenUI
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
+        //ToggleScreen();
     }
 }

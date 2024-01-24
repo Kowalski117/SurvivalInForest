@@ -4,7 +4,6 @@ public class OutlineSelection : Raycast
 {
     [SerializeField] private float _outlineWidth;
     [SerializeField] private Color _outlineColor;
-    [SerializeField] private OutlineObject.Mode _outlineMode = OutlineObject.Mode.OutlineVisible;
     [SerializeField] private LayerMask _outlineLayerMask;
     [SerializeField] private bool _isTrigger = true;
     private OutlineObject _previousOutline;
@@ -18,9 +17,7 @@ public class OutlineSelection : Raycast
                 if (hitInfo.collider.TryGetComponent(out OutlineObject outline))
                 {
                     if (_previousOutline != null)
-                    {
                         _previousOutline.OutlineWidth = 0f;
-                    }
 
                     outline.OutlineWidth = _outlineWidth;
                     outline.OutlineColor = _outlineColor;
@@ -47,6 +44,11 @@ public class OutlineSelection : Raycast
             {
                 outline.OutlineWidth = _outlineWidth;
                 outline.OutlineColor = _outlineColor;
+            }
+
+            if (other.TryGetComponent(out Note note))
+            {
+                Debug.Log("gfdfsdfd");
             }
         }
     }

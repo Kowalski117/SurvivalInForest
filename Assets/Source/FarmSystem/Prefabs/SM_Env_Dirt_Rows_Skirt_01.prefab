@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4108611240910313515}
   - component: {fileID: 4116512529430088567}
   - component: {fileID: 4149595054358135795}
+  - component: {fileID: 6592192043015339630}
   m_Layer: 0
   m_Name: SM_Env_Dirt_Rows_Skirt_01
   m_TagString: Untagged
@@ -118,6 +119,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 0b97703979089cd40a1151f2be3067e2, type: 3}
+--- !u!114 &6592192043015339630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140142741558877873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: 69063a14ae5f5a94bb173dfac3b3de8b, type: 2}
 --- !u!1001 &4139392160378286098
 PrefabInstance:
   m_ObjectHideFlags: 0

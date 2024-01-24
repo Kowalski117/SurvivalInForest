@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6945304306109469294}
   - component: {fileID: 6945304306109469293}
   - component: {fileID: -1228558984858752267}
+  - component: {fileID: -5204756039697564718}
   m_Layer: 6
   m_Name: Clothing_Backpack1
   m_TagString: Untagged
@@ -130,7 +131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104e8bc82b0e0b45b841a9aa6ba6c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: a668db3804378e24ea4ad34fc99334b6, type: 2}
   _itemSaveData:
     _id: 0
@@ -138,7 +138,6 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask: 6
 --- !u!114 &6945304306109469294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,3 +213,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &-5204756039697564718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3455501497934981788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenNote",
+                    "type": "Button",
+                    "id": "1f360d50-5f02-4de7-b70c-5a3f1480ac02",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -393,7 +402,7 @@
                 {
                     "name": "",
                     "id": "3a7a7226-0286-4b8a-971a-c21733fc249a",
-                    "path": "<Keyboard>/f",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
@@ -415,11 +424,22 @@
                 {
                     "name": "",
                     "id": "39ccaa0b-dd47-45c5-8b4c-b0360c36dcb1",
-                    "path": "<Keyboard>/f",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "AddFire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e9a7bd7-d81c-47b6-a554-c35a876a7932",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenNote",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -731,7 +751,7 @@
                 {
                     "name": "",
                     "id": "892cfc30-7c43-4939-b5f1-50b4edbcd76a",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

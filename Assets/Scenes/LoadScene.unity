@@ -289,7 +289,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9d4d6ee11a3dc98429fd3eb9ae8c4d15, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2f6fb458aebd9ab47a7c60c25b57308a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -344,6 +344,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioHandler: {fileID: 0}
   _playerInputHandler: {fileID: 0}
+  _inventoryHandler: {fileID: 0}
+  _pauseScreen: {fileID: 0}
 --- !u!114 &1137448359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +472,7 @@ MonoBehaviour:
   _isAutoSave: 0
   _autoSaveDelay: 0
   _notificationTime: 10
+  _isSurvivalScene: 0
 --- !u!1 &1405171950
 GameObject:
   m_ObjectHideFlags: 0

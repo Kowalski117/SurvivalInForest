@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1554484228380171234}
   - component: {fileID: 3735061404995666606}
   - component: {fileID: -7548042982175087198}
+  - component: {fileID: 7994355481669435866}
   m_Layer: 6
   m_Name: Seed_Watermelon
   m_TagString: Untagged
@@ -115,7 +116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104e8bc82b0e0b45b841a9aa6ba6c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 345240914ac6bb943856850a5506779d, type: 2}
   _itemSaveData:
     _id: 0
@@ -123,7 +123,6 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask: 6
 --- !u!114 &506341622568507152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +164,7 @@ Rigidbody:
   m_GameObject: {fileID: 504404681215052223}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 3
+  m_Drag: 5
   m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -215,3 +214,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &7994355481669435866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504404681215052223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

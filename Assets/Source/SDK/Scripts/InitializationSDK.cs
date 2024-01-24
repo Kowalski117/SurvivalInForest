@@ -1,9 +1,8 @@
 using System.Collections;
-using Agava.VKGames;
 using Agava.YandexGames;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using GameAnalyticsSDK;
 
 public class InitializationSDK : MonoBehaviour
 {
@@ -14,22 +13,15 @@ public class InitializationSDK : MonoBehaviour
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
     private void Awake()
     {
+        GameAnalytics.Initialize();
         YandexGamesSdk.CallbackLogging = true;
     }
 
     private IEnumerator Start()
     {
         yield return YandexGamesSdk.Initialize(OnInitialized);
-        yield return new WaitForSeconds(0.5f);
     }
 #endif
-
-    //#if  VK_GAMES && UNITY_WEBGL && !UNITY_EDITOR
-    //    private IEnumerator Start()
-    //    {
-    //        yield return VKGamesSdk.Initialize(onSuccessCallback: () => Debug.Log($"Initialized: {VKGamesSdk.Initialized}"));
-    //    }
-    //#endif
 
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
     private void OnInitialized()
@@ -39,8 +31,8 @@ public class InitializationSDK : MonoBehaviour
         else
             _localization.SetLanguageString(YandexGamesSdk.Environment.i18n.lang);
 
-        if (_yandexAds != null)
-            _yandexAds.ShowInterstitial();
+        //if (_yandexAds != null)
+        //    _yandexAds.ShowInterstitial();
 
         if (PlayerAccount.IsAuthorized)
             _saveGame.GetCloudSaveData();
@@ -49,27 +41,6 @@ public class InitializationSDK : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         else
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
-
-        //if (ES3.KeyExists(SaveLoadConstants.IsNewGame) && ES3.Load<bool>(SaveLoadConstants.IsNewGame) == true)
-        //else
     }
 #endif
-
-    //#if VK_GAMES && UNITY_WEBGL && !UNITY_EDITOR
-    //    private void OnInitialized()
-    //    {
-    //        if (PlayerPrefs.HasKey(ConstantsSDK.Language))
-    //            _localization.SetLanguageString(PlayerPrefs.GetString(ConstantsSDK.Language));
-    //        else
-    //            _localization.SetLanguageString(YandexGamesSdk.Environment.i18n.lang);
-
-    //        if (_yandexAds != null)
-    //            _yandexAds.ShowInterstitial();
-
-    //        if (PlayerAccount.IsAuthorized)
-    //            SaveGame.GetCloudSaveData();
-
-    //        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    //    }
-    //#endif
 }

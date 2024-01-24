@@ -14,7 +14,7 @@ public class ViewInventoryNotifier : MonoBehaviour
     public void Init(InventoryItemData itemData, int amount)
     {
         _icon.sprite = itemData.Icon;
-        _nameText.text = itemData.DisplayName;
+        //_nameText.text = itemData.DisplayName;
 
         if(amount > 0)
         {

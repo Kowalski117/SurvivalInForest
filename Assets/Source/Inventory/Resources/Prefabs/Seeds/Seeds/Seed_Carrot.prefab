@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5567381381112738243}
   - component: {fileID: 7429341402920397849}
   - component: {fileID: 4950413980783308107}
+  - component: {fileID: -4996833259783814370}
   m_Layer: 6
   m_Name: Seed_Carrot
   m_TagString: Untagged
@@ -116,7 +117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104e8bc82b0e0b45b841a9aa6ba6c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 2584cdc79f6991c47883ad24df8c8c98, type: 2}
   _itemSaveData:
     _id: 0
@@ -124,7 +124,6 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask: 6
 --- !u!114 &5573693263574330453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +165,7 @@ Rigidbody:
   m_GameObject: {fileID: 5575360968064833312}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 3
+  m_Drag: 5
   m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -216,3 +215,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &-4996833259783814370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5575360968064833312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

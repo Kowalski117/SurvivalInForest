@@ -25,4 +25,9 @@ public class SaveLoadConstants
     public const string Hunger = "Hunger";
     public const string Thirst = "Thirst";
     public const string Sleep = "Sleep";
+
+    public const string IsFirstScroll = "IsFirstScroll";
+
+    public const string IdMakers = "IdMakers";
+    public const string IsAddMaker = "IsAddMaker";
 }

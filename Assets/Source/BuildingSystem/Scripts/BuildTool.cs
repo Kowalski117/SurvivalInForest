@@ -1,4 +1,3 @@
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityRenderer;
 using PixelCrushers.QuestMachine;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +10,7 @@ public class BuildTool : MonoBehaviour
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private DelayWindow _loadingWindow;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private float _rotateSnapAngle = 45f;
     [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
@@ -36,11 +35,11 @@ public class BuildTool : MonoBehaviour
 
     private float _radiusSpawn = 2f;
     private float _spawnPointUp = 0.5f;
-    private int _coutIndex = 2;
 
     public event UnityAction OnCreateBuild;
     public event UnityAction OnCompletedBuild;
     public event UnityAction OnDestroyBuild;
+    public event UnityAction<bool> OnDeleteModeChanged;
 
     public bool IsMoveBuild => _isMovedBuild;
 
@@ -57,7 +56,7 @@ public class BuildTool : MonoBehaviour
         _playerInputHandler.BuildPlayerInput.OnPutBuilding += PutBuilding;
         _playerInputHandler.BuildPlayerInput.OnRotateBuilding += RotateBuilding;
         _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding += DeleteMobeBuilding;
-        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += DeleteBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += DeleteBuildingMode;
 
         _playerHealth.OnRevived += DeleteBuilding;
     }
@@ -69,7 +68,7 @@ public class BuildTool : MonoBehaviour
         _playerInputHandler.BuildPlayerInput.OnPutBuilding -= PutBuilding;
         _playerInputHandler.BuildPlayerInput.OnRotateBuilding -= RotateBuilding;
         _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding -= DeleteMobeBuilding;
-        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= DeleteBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= DeleteBuildingMode;
 
         _playerHealth.OnRevived -= DeleteBuilding;
     }
@@ -90,6 +89,7 @@ public class BuildTool : MonoBehaviour
     public void SetDeleteModeEnabled(bool deleteMode)
     {
         _deleteModeEnabled = deleteMode;
+        OnDeleteModeChanged?.Invoke(_deleteModeEnabled);
     }
 
     public void DeleteObjectPreview()
@@ -133,15 +133,18 @@ public class BuildTool : MonoBehaviour
         {
             _targetBuilding.FlagForDelete(_buildingMatNegative);
         }
+    }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+    private void DeleteBuildingMode()
+    {
+        if (_deleteModeEnabled && _targetBuilding)
         {
             foreach (var item in _targetBuilding.BuildingRecipe.CraftingIngridients)
             {
-                SpawnItem(item.ItemRequired.ItemPrefab, _radiusSpawn, _spawnPointUp, item.AmountRequured / _coutIndex);
+                SpawnItem(item.ItemRequired.ItemPrefab, _radiusSpawn, _spawnPointUp, item.AmountRequured);
             }
+            Destroy(_targetBuilding.gameObject);
             _targetBuilding = null;
-            Destroy(hitInfo.collider.gameObject);
         }
     }
 
@@ -222,7 +225,7 @@ public class BuildTool : MonoBehaviour
     {
         if (_spawnBuilding != null)
         {
-            _spawnBuilding.transform.Rotate(0, _rotateSnapAngle, 0);
+            _spawnBuilding.transform.Rotate(0,_rotateSnapAngle, 0);
             _lastRotation = _spawnBuilding.transform.rotation;
         }
     }
@@ -230,8 +233,8 @@ public class BuildTool : MonoBehaviour
     private void DeleteMobeBuilding()
     {
         OnCompletedBuild?.Invoke();
-        DeleteObjectPreview();
-        _deleteModeEnabled = !_deleteModeEnabled;
+        DeleteObjectPreview(); 
+        SetDeleteModeEnabled(!_deleteModeEnabled);
         _isMovedBuild = false;
     }
 

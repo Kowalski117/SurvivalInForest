@@ -37,6 +37,12 @@ public class Float : MonoBehaviour
         _initialRotation = transform.localRotation;
     }
 
+    private void Update()
+    {
+        if(_splashingFishParticle.gameObject.activeInHierarchy)
+            _splashingFishParticle.gameObject.transform.localPosition = new Vector3(transform.localPosition.x, _splashingFishParticle.gameObject.transform.position.y , transform.localPosition.z);
+    }
+
     public void StartFishing(float velocity, Vector2 randomTime, InventoryItemData extraction)
     {
         transform.parent = null;
@@ -59,12 +65,12 @@ public class Float : MonoBehaviour
 
         _waterParticle.Stop();
         _splashingFishParticle.Stop();
-        _waterParticle.gameObject.SetActive(false);
-        _startInWaterParticle.gameObject.SetActive(false);
-        _splashingFishParticle.gameObject.SetActive(false);
         SetPositionParticle(_startInWaterParticle, transform, transform.position);
         SetPositionParticle(_waterParticle, transform, transform.position);
         SetPositionParticle(_splashingFishParticle, transform, transform.position);
+        _waterParticle.gameObject.SetActive(false);
+        _startInWaterParticle.gameObject.SetActive(false);
+        _splashingFishParticle.gameObject.SetActive(false);
 
         ClearTween();
         if (transform.position != _initialPosition)
@@ -112,13 +118,13 @@ public class Float : MonoBehaviour
         _waterParticle.gameObject.SetActive(true);
         _waterParticle.Play();
         SetPositionParticle(_waterParticle, null, _positionInWater);
+        SetPositionParticle(_splashingFishParticle, null, _positionInWater);
         _isFishOnHook = false;
 
         yield return new WaitForSeconds(GetRandomNumber(_randomTime.x, _randomTime.y));
 
         _waterParticle.Stop();
         _splashingFishParticle.gameObject.SetActive(true);
-        SetPositionParticle(_splashingFishParticle, null, _positionInWater);
         _splashingFishParticle.Play();
 
         ClearTween();
@@ -160,6 +166,6 @@ public class Float : MonoBehaviour
     private void SetPositionParticle(ParticleSystem particleSystem, Transform parent, Vector3 position)
     {
         particleSystem.gameObject.transform.parent = parent;
-        particleSystem.gameObject.transform.position = position;
+        particleSystem.gameObject.transform.position = new Vector3(position.x, position.y + 0.15f, position.z);
     }
 }

@@ -7,12 +7,26 @@ public class Leaderboard : MonoBehaviour
     private const string AnonymousName = "Anonymous";
     private const string LeaderboardName = "LeaderboardName";
 
+    [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private LeaderboardView _leaderboardView;
 
     private readonly List<LeaderboardPlayer> _leaderboardPlayers = new();
 
+    private void OnEnable()
+    {
+        if(_timeHandler)
+            _timeHandler.OnDayUpdate += SetPlayer;
+    }
+
+    private void OnDisable()
+    {
+        if (_timeHandler)
+            _timeHandler.OnDayUpdate -= SetPlayer;
+    }
+
     public void SetPlayer(int score)
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
         if (PlayerAccount.IsAuthorized == false)
             return;
 
@@ -20,6 +34,7 @@ public class Leaderboard : MonoBehaviour
         {
             Agava.YandexGames.Leaderboard.SetScore(LeaderboardName, score);
         });
+#endif
     }
 
     public void Fill()

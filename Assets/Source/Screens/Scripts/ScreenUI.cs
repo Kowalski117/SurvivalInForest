@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ScreenUI : MonoBehaviour
 {
-    [SerializeField] protected PlayerInputHandler PlayerInputHandler;
+    [SerializeField] protected PlayerHandler PlayerInputHandler;
     [SerializeField] private UIInventoryHandler _inventoryHandler;
     [SerializeField] private CanvasGroup _panel;
     [SerializeField] private Button _exitButton;
@@ -48,6 +48,12 @@ public class ScreenUI : MonoBehaviour
         _panel.alpha = Mathf.Lerp(0, 1, 1);
     }
 
+    public void OpenWindow()
+    {
+        ToggleScreen();
+        PlayerInputHandler.ToggleScreenPlayerInput(false);
+    }
+
     public void CloseScreen()
     {
         IsOpenScreen = false;
@@ -72,10 +78,10 @@ public class ScreenUI : MonoBehaviour
             {
                 PlayerInputHandler.BuildTool.DeleteBuilding();
                 PlayerInputHandler.ToggleAllInput(false);
+                PlayerInputHandler.TogglePersonController(false);
                 //PlayerInputHandler.ToggleScreenPlayerInput(false);
 
-                if (_inventoryHandler && !_inventoryHandler.IsInventoryOpen)
-                    PlayerInputHandler.SetCursorVisible(true);
+                PlayerInputHandler.SetCursorVisible(true);
             }
         }
         else
@@ -86,12 +92,8 @@ public class ScreenUI : MonoBehaviour
             {
                 PlayerInputHandler.ToggleAllInput(true);
                 //PlayerInputHandler.ToggleScreenPlayerInput(true);
-
-                if (_inventoryHandler && !_inventoryHandler.IsInventoryOpen)
-                    PlayerInputHandler.SetCursorVisible(false);
-                else if (_inventoryHandler && _inventoryHandler.IsInventoryOpen)
-                    PlayerInputHandler.ToggleCameraPersonController(false);
-
+                PlayerInputHandler.TogglePersonController(true);
+                PlayerInputHandler.SetCursorVisible(false);
             }
         }
     }

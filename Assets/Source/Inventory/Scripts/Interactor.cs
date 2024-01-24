@@ -9,7 +9,7 @@ public class Interactor : Raycast
     [SerializeField] private LayerMask _interactionConstructionLayer;
 
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private SaveItemHandler _saveItemHandler;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
@@ -35,6 +35,8 @@ public class Interactor : Raycast
     private SleepPointSaveData _sleepPointSaveData;
     private SleepingPlace _currentSleepingPlace;
     private Fire _currentFire;
+    private GardenBed _currentGardenBed;
+    private Note _note;
 
     private int _addAmount = 1;
 
@@ -46,6 +48,8 @@ public class Interactor : Raycast
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
     public SleepPointSaveData SleepPointSaveData => _sleepPointSaveData;
     public Fire CurrentFire => _currentFire;
+    public GardenBed CurrentGardenBed => _currentGardenBed;
+    public Note Note => _note;
 
     protected override void Awake()
     {
@@ -70,6 +74,7 @@ public class Interactor : Raycast
         _playerInputHandler.InteractionPlayerInput.OnPickUp += PickUpItem;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction += InteractableConstruction;
         _playerInputHandler.InteractionPlayerInput.OnAddedFire += AddFire;
+        _playerInputHandler.InteractionPlayerInput.OnOpenNote += OpenNote;
 
         _hotbarDisplay.OnItemClicked += PlantSeed;
 
@@ -82,6 +87,7 @@ public class Interactor : Raycast
         _playerInputHandler.InteractionPlayerInput.OnPickUp -= PickUpItem;
         _playerInputHandler.InteractionPlayerInput.OnInteractedConstruction -= InteractableConstruction;
         _playerInputHandler.InteractionPlayerInput.OnAddedFire -= AddFire;
+        _playerInputHandler.InteractionPlayerInput.OnOpenNote -= OpenNote;
 
         _hotbarDisplay.OnItemClicked -= PlantSeed;
 
@@ -160,19 +166,33 @@ public class Interactor : Raycast
                         OnInteractionStarted?.Invoke();
                 }
             }
+            else if (hit.collider.TryGetComponent(out GardenBed gardenBed))
+            {
+                if (!_currentGardenBed)
+                {
+                    _currentGardenBed = gardenBed;
+                    OnInteractionStarted?.Invoke();
+                }
+            }
+            else if(hit.collider.TryGetComponent(out Note note))
+            {
+                if (!_note)
+                {
+                    _note = note;
+                    OnInteractionStarted?.Invoke();
+                }
+            }
         }
         else
         {
             ResetLookTimer();
 
-            if (_currentSleepingPlace)
+            if (_currentSleepingPlace || _currentFire || _currentGardenBed || _note)
             {
                 _currentSleepingPlace = null;
-                OnInteractionFinished?.Invoke();
-            }
-            else if (_currentFire)
-            {
                 _currentFire = null;
+                _currentGardenBed = null;
+                _note = null;
                 OnInteractionFinished?.Invoke();
             }
         }
@@ -231,7 +251,7 @@ public class Interactor : Raycast
     {
         if (_currentSleepingPlace)
         {
-            _sleepPanel.ToggleScreen();
+            _sleepPanel.OpenWindow();
             _sleepPointSaveData = new SleepPointSaveData(_playerTransform.position, _playerTransform.rotation);
         }
     }
@@ -260,16 +280,14 @@ public class Interactor : Raycast
 
     private void PlantSeed(InventorySlot slot)
     {
-        if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hitInfo))
-        {
-            if (hitInfo.collider.TryGetComponent(out GardenBed gardenBed))
-            {
-                if (gardenBed.StartGrowingSeed(slot.ItemData))
-                {
-                    _playerInventoryHolder.RemoveInventory(slot, _addAmount);
-                }
-            }
-        }
+        if (_currentGardenBed && _currentGardenBed.StartGrowingSeed(slot.ItemData))
+            _playerInventoryHolder.RemoveInventory(slot, _addAmount);
+    }
+
+    private void OpenNote()
+    {
+        if(_note)
+            _note.Init();
     }
 
     private void Save()

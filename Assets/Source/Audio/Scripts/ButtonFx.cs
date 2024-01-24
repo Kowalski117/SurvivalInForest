@@ -5,6 +5,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ButtonFx : MonoBehaviour, IPointerDownHandler
 {
+    [SerializeField] private AudioClip _clickClip;
+
     private AudioSource _audioSource;
     private Button _button;
 
@@ -17,6 +19,9 @@ public class ButtonFx : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         if (_button.interactable)
+        {
+            _audioSource.clip = _clickClip;
             _audioSource.Play();
+        }
     }
 }

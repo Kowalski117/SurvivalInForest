@@ -61,6 +61,8 @@ public class SleepPanel : ScreenUI
 
     protected override void ExitButtonClick()
     {
+        base.ExitButtonClick();
         ToggleScreen();
+        PlayerInputHandler.ToggleScreenPlayerInput(true);
     }
 }

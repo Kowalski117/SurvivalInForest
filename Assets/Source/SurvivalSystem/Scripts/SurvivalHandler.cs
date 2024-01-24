@@ -54,12 +54,15 @@ public class SurvivalHandler : MonoBehaviour
 
     private void Update()
     {
+        if (_health.IsGodMode)
+            return;
+
         _stamina.DecreaseStaminaValue();
 
-        if(_health.HealthPercent > 0 && _isEnable)
+        if (_health.HealthPercent > 0 && _isEnable)
             HandleTimeUpdate();
 
-        if(_hunger.ValuePercent <= 0 || _thirst.ValuePercent <= 0 || _sleep.ValuePercent <= 0)
+        if (_hunger.ValuePercent <= 0 || _thirst.ValuePercent <= 0 || _sleep.ValuePercent <= 0)
         {
             _lookTimer += Time.deltaTime;
 
@@ -130,6 +133,9 @@ public class SurvivalHandler : MonoBehaviour
 
     private void HandleTimeUpdate()
     {
+        if (_health.IsGodMode)
+            return;
+
         _hunger.LowerValue(_timeHandler.TimeMultiplier * Time.deltaTime);
         _thirst.LowerValue(_timeHandler.TimeMultiplier * Time.deltaTime);
         _sleep.LowerValue(_timeHandler.TimeMultiplier * Time.deltaTime);
@@ -137,6 +143,9 @@ public class SurvivalHandler : MonoBehaviour
 
     private void Reborn()
     {
+        if (_health.IsGodMode)
+            return;
+
         _hunger.SetValue(_hunger.MaxValueInSeconds * _maximumDivisor / _percent);
         _thirst.SetValue(_thirst.MaxValueInSeconds * _maximumDivisor / _percent);
         _sleep.SetValue(_sleep.MaxValueInSeconds * _maximumDivisor / _percent);

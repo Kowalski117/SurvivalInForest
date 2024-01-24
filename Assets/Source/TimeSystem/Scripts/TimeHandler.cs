@@ -1,4 +1,3 @@
-using BehaviorDesigner.Runtime.Tasks.Unity.Math;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -41,6 +40,7 @@ public class TimeHandler : MonoBehaviour
 
     public DateTime StartTime => _currentTime.Date + TimeSpan.FromHours(_startHour);
     public float TimeMultiplier => _timeMultiplier;
+    public float CurrentHurts => _currentTime.Hour;
 
 
     private void Start()

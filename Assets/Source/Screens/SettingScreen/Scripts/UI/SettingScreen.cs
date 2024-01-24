@@ -1,19 +1,40 @@
+using Agava.YandexGames;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SettingScreen : ScreenUI
 {
-    [SerializeField] private bool _isOnGeneral;
-    [SerializeField] private Toggle _toggleGeneral;
-    [SerializeField] private bool _isOnAudio;
-    [SerializeField] private Toggle _toggleAudio;
+    [SerializeField] private bool _isOpenMainMenu;
+    [SerializeField] private Transform[] _panelsOpenMainMenu;
+    [SerializeField] private Transform[] _panelsGame;
+    [SerializeField] private Transform _authorizePanel;
 
     private void Awake()
     {
-        if(_isOnGeneral)
-            _toggleGeneral.isOn = true;
-        else if(_toggleAudio)
-            _toggleAudio.isOn = true;
+        if (_isOpenMainMenu)
+        {
+            for (int i = 0; i < _panelsOpenMainMenu.Length; i++)
+            {
+                _panelsOpenMainMenu[i].gameObject.SetActive(true);
+            }
+
+            for (int i = 0; i < _panelsGame.Length; i++)
+            {
+                _panelsGame[i].gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _panelsGame.Length; i++)
+            {
+                _panelsGame[i].gameObject.SetActive(true);
+            }
+
+            for (int i = 0; i < _panelsOpenMainMenu.Length; i++)
+            {
+                _panelsOpenMainMenu[i].gameObject.SetActive(false);
+            }
+        }
+           
     }
 
     protected override void OnEnable()
@@ -26,11 +47,22 @@ public class SettingScreen : ScreenUI
         base.OnDisable();
     }
 
+    public override void ToggleScreen()
+    {
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+        if (PlayerAccount.IsAuthorized)
+            _authorizePanel.gameObject.SetActive(false);
+        else
+            _authorizePanel.gameObject.SetActive(true);
+#endif
+
+        base.ToggleScreen();
+    }
+
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
         ToggleScreen();
-        SaveGame.SetCloudSaveData();
         PlayerPrefs.Save();
     }
 }

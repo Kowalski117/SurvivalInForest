@@ -4,9 +4,10 @@ namespace StarterAssets
 {
     public class UICanvasControllerInput : MonoBehaviour
     {
-        [SerializeField] private PlayerInputHandler _playerInputHandler;
+        [SerializeField] private PlayerHandler _playerInputHandler;
         [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
         [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
+        [SerializeField] private BuildTool _buildTool;
 
         public void VirtualMoveInput(Vector2 virtualMoveDirection)
         {
@@ -55,8 +56,19 @@ namespace StarterAssets
 
         public void DestroyBuild()
         {
+            _buildTool.DeleteBuilding();
+        }
+
+        public void RemoveBuildingMode()
+        {
+            _playerInputHandler.BuildPlayerInput.DeleteModeBuilding();
+        }
+        
+        public void DeleteBuildingMode()
+        {
             _playerInputHandler.BuildPlayerInput.DeleteBuilding();
         }
+
 
         public void PutBuild()
         {

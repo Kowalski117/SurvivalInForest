@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerHealth : SurvivalAttribute, IDamagable
 {
     [SerializeField] private Interactor _interactor;
-    [SerializeField] private PlayerInputHandler _playerInputHandler;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private ProtectionValue _protectionValue;
     [SerializeField] private float _recoveryRate = 0.1f;
@@ -21,11 +21,13 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     private bool _canRestoreHealth = true;
     private bool _isDied = false;
     private bool _isRespawned = false;
+    private bool _isGodMode = false;
     private Tween _positionTween;
     private Tween _rotateTween;
 
     public event UnityAction<float> OnHealthChanged;
     public event UnityAction OnDamageDone;
+    public event UnityAction OnEnemyDamageDone;
     public event UnityAction OnRestoringHealth;
     public event UnityAction OnDied;
     public event UnityAction OnRevived;
@@ -35,6 +37,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public float HealthPercent => CurrentValue / MaxValue;
     public float MaxHealth => MaxValue;
     public ProtectionValue ProtectionValue => _protectionValue;
+    public bool IsGodMode => _isGodMode;
 
     private void Start()
     {
@@ -56,6 +59,9 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void LowerHealth(float value)
     {
+        if(_isGodMode)
+            return;
+
         if (CurrentValue > 0)
         {
             if (value >= 0)
@@ -121,6 +127,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public void TakeDamage(float damage, float overTimeDamage)
     {
         LowerHealthDamage(damage);
+        OnEnemyDamageDone?.Invoke();
     }
 
     public void Die()
@@ -171,6 +178,11 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         _characterController.enabled = isActive;
     }
 
+    public void SetGodMode(bool isActive)
+    {
+        _isGodMode = isActive;
+    }
+
     private void Save()
     {
         PlayerSaveData playerSaveData = new PlayerSaveData(transform.position, transform.rotation);
@@ -183,17 +195,16 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     {
         _isRespawned = true;
         StartCoroutine(DisableRespawn());
-            
+
         if (ES3.KeyExists(SaveLoadConstants.LastSceneIndex))
         {
             int lastSceneIndex = ES3.Load<int>(SaveLoadConstants.LastSceneIndex);
             int nextSceneIndex = ES3.Load<int>(SaveLoadConstants.NextSceneIndex);
 
             if (ES3.KeyExists(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex) &&
-                _isTransitionLastPosition || lastSceneIndex == 0)
+                _isTransitionLastPosition || lastSceneIndex == 1)
             {
-                PlayerSaveData playerSaveData =
-                    ES3.Load<PlayerSaveData>(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex);
+                PlayerSaveData playerSaveData = ES3.Load<PlayerSaveData>(SaveLoadConstants.PlayerSaveData + SceneManager.GetActiveScene().buildIndex);
                 transform.position = playerSaveData.Position;
                 transform.rotation = playerSaveData.Rotation;
                 return;

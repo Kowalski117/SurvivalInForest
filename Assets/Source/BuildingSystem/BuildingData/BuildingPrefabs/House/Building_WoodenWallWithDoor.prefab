@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3844491113982704067}
   - component: {fileID: 3882033243232366891}
   - component: {fileID: 980164879630761425}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Collider (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4436235463107118883}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 4436235463829073725}
   - component: {fileID: 4436235463829073714}
   - component: {fileID: 436255775753973382}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 6579022482578853222}
   - component: {fileID: 636524424652472293}
   - component: {fileID: 5667982306628686766}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Collider (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,12 +320,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1436005688102752, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436005688102752, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1679699229884052, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
       propertyPath: m_Name
       value: Wall wooden door
+      objectReference: {fileID: 0}
+    - target: {fileID: 1679699229884052, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1679699229884052, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -374,6 +382,22 @@ PrefabInstance:
     - target: {fileID: 4044725222694914, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 766905435136652780, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727463724417137137, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1752819749475024506, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6985707833279085379, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 64760414050213192, guid: 9afe4ce6176b07740889165a608fb8f7, type: 3}

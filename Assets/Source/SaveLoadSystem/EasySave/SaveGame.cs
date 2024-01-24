@@ -1,9 +1,7 @@
 using Agava.YandexGames;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityPlayerPrefs;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class SaveGame : MonoBehaviour
 {
@@ -11,9 +9,11 @@ public class SaveGame : MonoBehaviour
     [SerializeField] private bool _isAutoSave;
     [SerializeField] private float _autoSaveDelay;
     [SerializeField] private int _notificationTime = 10;
+    [SerializeField] private bool _isSurvivalScene = true;
 
     private float _timer = 0;
     private float _delay = 0.2f;
+    private Coroutine _saveCoroutine;
 
     public event Action<int> OnNotifyPlayer;
     public event Action OnCloseNotifierPlayer;
@@ -22,7 +22,8 @@ public class SaveGame : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(StartLoad());
+        if(_isSurvivalScene)
+            StartCoroutine(StartLoad());
     }
 
     private void Update()
@@ -49,7 +50,14 @@ public class SaveGame : MonoBehaviour
     public void Save()
     {
         OnSaveGame?.Invoke();
-        SetCloudSaveData();
+
+        if(_saveCoroutine != null)
+        {
+            StopCoroutine(_saveCoroutine);
+            _saveCoroutine = null;
+        }
+
+        _saveCoroutine = StartCoroutine(SetCloudSaveData());
     }
 
     public static void Load()
@@ -58,7 +66,7 @@ public class SaveGame : MonoBehaviour
         ES3.Save(SaveLoadConstants.TransitionScene, false);
     }
 
-    public void Delete()
+    public static void Delete()
     {
         ES3.DeleteFile();
         PlayerPrefs.DeleteAll();
@@ -67,17 +75,21 @@ public class SaveGame : MonoBehaviour
     public void GetCloudSaveData()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        if (PlayerAccount.IsAuthorized)
-            PlayerAccount.GetCloudSaveData(OnSuccessLoad, OnErrorLoad);
+        //if (PlayerAccount.IsAuthorized)
+        //    PlayerAccount.GetCloudSaveData(OnSuccessLoad, OnErrorLoad);
 #endif
     }
 
-    public static void SetCloudSaveData()
+    public IEnumerator SetCloudSaveData()
     {
+        yield return new WaitForSeconds(10f);
+
 #if UNITY_WEBGL && !UNITY_EDITOR
         if (!PlayerAccount.IsAuthorized)
-            return;
+            yield return null;
+
         string str = ES3.LoadRawString("SaveFile.es3");
+        Debug.Log(str);
         PlayerAccount.SetCloudSaveData(str);
 #endif
     }
@@ -90,10 +102,13 @@ public class SaveGame : MonoBehaviour
 
     private void OnSuccessLoad(string json)
     {
+        Debug.Log("1");
         if (!string.IsNullOrWhiteSpace(json))
         {
+            Debug.Log("2");
             if (json != ES3.LoadRawString("SaveFile.es3"))
             {
+                Debug.Log("3");
                 ES3.DeleteFile();
                 ES3.AppendRaw(json, "SaveFile.es3");
                 Load();

@@ -37,8 +37,12 @@ public class PlayerAnimatorHandler : MonoBehaviour
     {
         if(_handAnimator != null)
         {
-            if (_starterAssets.move != Vector2.zero)
-                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, (_firstPersonController.Speed / 10));
+            if (_starterAssets.move != Vector2.zero) 
+            {
+                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed,(_firstPersonController.Speed / 
+                    _firstPersonController.SprintSpeed));
+
+            }
             else
                 _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, 0);
         }
@@ -67,6 +71,16 @@ public class PlayerAnimatorHandler : MonoBehaviour
     {
         TurnOffAnimations();
         _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Build, true);
+    }
+
+    public void ThrowFishingRod()
+    {
+        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.ThrowFishingRod);
+    }
+
+    public void SwingFishingRod()
+    {
+        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.SwingFishingRod);
     }
 
     public void Hit(bool isActive)

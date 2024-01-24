@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3517826588275072298}
   - component: {fileID: 824421144969791224}
   - component: {fileID: -6411189353360892817}
+  - component: {fileID: 4220205757653681339}
   m_Layer: 6
   m_Name: Food_Cabbage
   m_TagString: Untagged
@@ -129,8 +130,8 @@ Rigidbody:
   m_GameObject: {fileID: 8559125080292930831}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 5
+  m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -162,7 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104e8bc82b0e0b45b841a9aa6ba6c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: d0a4f86fcc6d01f4c8d7b29e3006710d, type: 2}
   _itemSaveData:
     _id: 0
@@ -170,7 +170,6 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask: 6
 --- !u!114 &-6411189353360892817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,3 +213,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &4220205757653681339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8559125080292930831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

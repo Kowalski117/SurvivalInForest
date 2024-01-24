@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8771174149473534633}
   - component: {fileID: 8115556384564427703}
   - component: {fileID: 3694188447290377415}
+  - component: {fileID: -7631822545176769995}
   m_Layer: 6
   m_Name: Food_FriedMeat
   m_TagString: Untagged
@@ -114,7 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5104e8bc82b0e0b45b841a9aa6ba6c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questControl: {fileID: 0}
   _itemData: {fileID: 11400000, guid: 870d43484799f984bb55126bca4fead3, type: 2}
   _itemSaveData:
     _id: 0
@@ -122,7 +122,6 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0, w: 0}
     _durability: 0
   _durability: 0
-  _layerMask: 6
 --- !u!114 &5293012462688511927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +163,7 @@ Rigidbody:
   m_GameObject: {fileID: 3842817931469211535}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 3
+  m_Drag: 5
   m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -214,3 +213,15 @@ MonoBehaviour:
     onConditionMet:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &-7631822545176769995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3842817931469211535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbc86129b889cf4394054b65ce72cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
