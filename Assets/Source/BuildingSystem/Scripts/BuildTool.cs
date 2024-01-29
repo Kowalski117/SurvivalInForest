@@ -36,9 +36,9 @@ public class BuildTool : MonoBehaviour
     private float _radiusSpawn = 2f;
     private float _spawnPointUp = 0.5f;
 
-    public event UnityAction OnCreateBuild;
-    public event UnityAction OnCompletedBuild;
-    public event UnityAction OnDestroyBuild;
+    public event UnityAction OnCreateBuilding;
+    public event UnityAction OnCompletedBuilding;
+    public event UnityAction OnDestroyBuilding;
     public event UnityAction<bool> OnDeleteModeChanged;
 
     public bool IsMoveBuild => _isMovedBuild;
@@ -100,7 +100,7 @@ public class BuildTool : MonoBehaviour
             Destroy(_spawnBuilding.gameObject);
             _spawnBuilding = null;
             _isMovedBuild = false;
-            OnDestroyBuild?.Invoke();
+            OnDestroyBuilding?.Invoke();
         }
     }
 
@@ -206,7 +206,7 @@ public class BuildTool : MonoBehaviour
 
     private void OnLoadingComplete()
     {
-        OnCompletedBuild?.Invoke();
+        OnCompletedBuilding?.Invoke();
         CraftingItem(_recipe);
         _spawnBuilding.PlaceBuilding();
         _baseHandler.AddId(_spawnBuilding.UniqueID);
@@ -232,7 +232,6 @@ public class BuildTool : MonoBehaviour
 
     private void DeleteMobeBuilding()
     {
-        OnCompletedBuild?.Invoke();
         DeleteObjectPreview(); 
         SetDeleteModeEnabled(!_deleteModeEnabled);
         _isMovedBuild = false;
@@ -268,7 +267,7 @@ public class BuildTool : MonoBehaviour
         _spawnBuilding = Instantiate(_recipe.BuildingData.Prefab, _containerBuildings);
         _spawnBuilding.Init(_recipe);
         _spawnBuilding.transform.rotation = _lastRotation;
-        OnCreateBuild?.Invoke();
+        OnCreateBuilding?.Invoke();
         _playerAnimation.Build();
         _selectionCollider.enabled = false;
         _isMovedBuild = true;

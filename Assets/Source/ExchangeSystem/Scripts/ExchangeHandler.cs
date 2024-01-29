@@ -11,6 +11,7 @@ public class ExchangeHandler : Raycast
     [SerializeField] private Transform _containerForSlot;
     [SerializeField] private ExchangerItemList _exchangerItemList;
     [SerializeField] private ExchangerSlotView[] _exchangerSlots;
+    [SerializeField] private TradingRating _tradingRating;
     [SerializeField] private TMP_Text _nameText;
 
     private bool _isShopOpen = false;
@@ -96,7 +97,7 @@ public class ExchangeHandler : Raycast
 
                 if (exchangerSlot != null)
                 {
-                    exchangerSlot.Init(exchangerItem, _inventoryHolder);
+                    exchangerSlot.Init(exchangerItem, _inventoryHolder, _tradingRating);
                     exchangerSlot.gameObject.SetActive(true);
                 }
             }

@@ -1,7 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class RouletteScrollHandler : MonoBehaviour
@@ -26,6 +26,8 @@ public class RouletteScrollHandler : MonoBehaviour
     private float _delay = 10f;
     private float _minDelay = 0.5f;
     private bool _isFirstScroll = true;
+
+    public event UnityAction OnScroll;
 
     void Start()
     {
@@ -151,6 +153,7 @@ public class RouletteScrollHandler : MonoBehaviour
 
         _closeScreen.SetActive(true);
         _playerHandler.ToggleScreenPlayerInput(true);
+        OnScroll?.Invoke();
     }
 
     private void Save()

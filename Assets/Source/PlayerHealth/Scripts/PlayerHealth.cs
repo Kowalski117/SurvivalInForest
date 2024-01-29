@@ -132,8 +132,10 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void Die()
     {
-        OnDied?.Invoke();
         _isDied = true;
+
+        OnDied?.Invoke();
+
         _rotateTween = _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
         _positionTween = _cameraRoot.DOLocalMoveY(0.5f, 1f);
         CurrentValue = 0;
@@ -142,6 +144,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         SetActiveCollider(false);
         _playerInputHandler.ToggleAllInput(false);
         _playerInputHandler.SetCursorVisible(true);
+
         OnHealthChanged?.Invoke(HealthPercent);
     }
 

@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class Interactor : Raycast
@@ -40,9 +40,10 @@ public class Interactor : Raycast
 
     private int _addAmount = 1;
 
-    public event Action<float, string> OnTimeUpdate;
-    public event Action OnInteractionStarted;
-    public event Action OnInteractionFinished;
+    public event UnityAction<float, string> OnTimeUpdate;
+    public event UnityAction OnInteractionStarted;
+    public event UnityAction OnInteractionFinished;
+    public event UnityAction OnSeedPlanted;
 
     public float LookTimerPracent => _lookTimer / _liftingDelay;
     public PlayerInventoryHolder PlayerInventoryHolder => _playerInventoryHolder;
@@ -281,7 +282,10 @@ public class Interactor : Raycast
     private void PlantSeed(InventorySlot slot)
     {
         if (_currentGardenBed && _currentGardenBed.StartGrowingSeed(slot.ItemData))
+        {
             _playerInventoryHolder.RemoveInventory(slot, _addAmount);
+            OnSeedPlanted?.Invoke();
+        }
     }
 
     private void OpenNote()

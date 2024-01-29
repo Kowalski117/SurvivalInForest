@@ -11,17 +11,17 @@ public class BuildHandler : MonoBehaviour
     private void OnEnable()
     {
         _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += EnableWindows;
-        _buildTool.OnCreateBuild += TurnOffWindows;
-        _buildTool.OnCompletedBuild += EnableWindows;
-        _buildTool.OnDestroyBuild += UnplugWindow;
+        _buildTool.OnCreateBuilding += TurnOffWindows;
+        _buildTool.OnCompletedBuilding += EnableWindows;
+        _buildTool.OnDestroyBuilding += UnplugWindow;
     }
 
     private void OnDisable()
     {
         _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= EnableWindows;
-        _buildTool.OnCreateBuild -= TurnOffWindows;
-        _buildTool.OnCompletedBuild -= EnableWindows;
-        _buildTool.OnDestroyBuild -= UnplugWindow;
+        _buildTool.OnCreateBuilding -= TurnOffWindows;
+        _buildTool.OnCompletedBuilding -= EnableWindows;
+        _buildTool.OnDestroyBuilding -= UnplugWindow;
     }
 
     private void TurnOffWindows()

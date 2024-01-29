@@ -1,4 +1,5 @@
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +10,12 @@ public class ExchangerSlotView : MonoBehaviour
     [SerializeField] private Button _exchangeButton;
     [SerializeField] private Button _plusButton;
     [SerializeField] private Button _minusButton;
+    [SerializeField] private TMP_Text _ratingText;
+    [SerializeField] private GameObject _ratingPanel;
 
     private ExchangerInventoryItem _shopSlot;
     private PlayerInventoryHolder _inventoryHolder;
+    private TradingRating _rating;
     private int _amount = 1;
     private int _index = 1;
 
@@ -29,14 +33,16 @@ public class ExchangerSlotView : MonoBehaviour
         _minusButton.onClick.RemoveListener(RemoveAmount);
     }
 
-    public void Init(ExchangerInventoryItem shopSlot, PlayerInventoryHolder inventoryHolder)
+    public void Init(ExchangerInventoryItem shopSlot, PlayerInventoryHolder inventoryHolder, TradingRating tradingRating)
     {
         _shopSlot = shopSlot;
         _inventoryHolder = inventoryHolder;
+        _rating = tradingRating;
 
         UpdateExchangedItems(_itemsToExchangeView, shopSlot.ItemsToExchange);
         UpdateExchangedItems(_itemsToReceiveView, shopSlot.ItemsToReceive);
         UpdateAmount();
+        UpdateRating();
     }
 
     private void OnExchangeButtonClicked()
@@ -103,6 +109,20 @@ public class ExchangerSlotView : MonoBehaviour
                 itemViewArray[i].gameObject.SetActive(true);
                 itemViewArray[i].Clear();
             }
+        }
+    }
+
+    private void UpdateRating()
+    {
+        _ratingText.text = _shopSlot.Rating.ToString();
+
+        if(_shopSlot.Rating > _rating.CurrentRating)
+        {
+            _ratingPanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            _ratingPanel.gameObject.SetActive(false);
         }
     }
 }

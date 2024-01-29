@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class CatSceneAnalytics : MonoBehaviour
+public class CatSceneAnalytics : Analytics
 {
     private CutScene _cutScene;
-    private Analytics _analytics;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         _cutScene = GetComponent<CutScene>();
-        _analytics = GetComponent<Analytics>();
     }
 
     private void OnEnable()
@@ -27,16 +27,16 @@ public class CatSceneAnalytics : MonoBehaviour
 
     private void StartCatScene() 
     {
-        _analytics.OnStart("StartCutScene");
+        GameAnalytics.OnStart(GameAnalyticsConstants.StartCutScene);
     }
 
     private void ScipCatScene()
     {
-        _analytics.OnFail("ScipCutScene");
+        GameAnalytics.OnFail(GameAnalyticsConstants.ScipCutScene);
     }
 
     private void FinishCatScene()
     {
-        _analytics.OnComplete("FinishCutScene");
+        GameAnalytics.OnComplete(GameAnalyticsConstants.FinishCutScene);
     }
 }

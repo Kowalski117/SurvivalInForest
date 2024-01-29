@@ -30,9 +30,9 @@ public class ButtonsInputHandler : MonoBehaviour
     private void OnEnable()
     {
         HotbarDisplay.OnItemSwitched += ToggleButtons;
-        BuildTool.OnCreateBuild += EnableConstructionMode;
-        BuildTool.OnCompletedBuild += TurnOffConstructionMode;
-        BuildTool.OnDestroyBuild += TurnOffConstructionMode;
+        BuildTool.OnCreateBuilding += EnableConstructionMode;
+        BuildTool.OnCompletedBuilding += TurnOffConstructionMode;
+        BuildTool.OnDestroyBuilding += TurnOffConstructionMode;
         BuildTool.OnDeleteModeChanged += ToggleDestroyBuildingMode;
 
         ManualWorkbench.OnInteractionStarted += EnableIntractableButton;
@@ -50,9 +50,9 @@ public class ButtonsInputHandler : MonoBehaviour
     private void OnDisable()
     {
         HotbarDisplay.OnItemSwitched -= ToggleButtons;
-        BuildTool.OnCreateBuild -= EnableConstructionMode;
-        BuildTool.OnCompletedBuild -= TurnOffConstructionMode;
-        BuildTool.OnDestroyBuild -= TurnOffConstructionMode;
+        BuildTool.OnCreateBuilding -= EnableConstructionMode;
+        BuildTool.OnCompletedBuilding -= TurnOffConstructionMode;
+        BuildTool.OnDestroyBuilding -= TurnOffConstructionMode;
         BuildTool.OnDeleteModeChanged -= ToggleDestroyBuildingMode;
 
         ManualWorkbench.OnInteractionStarted -= EnableIntractableButton;

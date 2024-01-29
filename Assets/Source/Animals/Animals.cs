@@ -36,6 +36,7 @@ public abstract class Animals : MonoBehaviour, IDamagable
     public float Health => _healh;
     public float MaxHealth => _maxHealth;
     public bool IsDead => _isDead;
+    public string Name => _name;
     
     private void Start()
     {

@@ -28,6 +28,7 @@ public class CraftingHandler : MonoBehaviour
     private bool _isCraftPlayerOpen = false;
 
     public event UnityAction OnUpdateSlotInventory;
+    public event UnityAction OnItemCrafted;
 
     public Transform CraftingWindow => _craftingWindow;
     public CraftingÑategory CurrentCraftingÑategory => _currentCategory;
@@ -41,8 +42,9 @@ public class CraftingHandler : MonoBehaviour
     private void OnEnable()
     {
         _inventoryPlayerInput.OnCraftPlayerWindow += DisplayCraftPlayerWindow;
-        _buildTool.OnCompletedBuild += UpdateSlot;
+        _buildTool.OnCompletedBuilding += UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate += UpdateSlot;
+        CraftItemSlot.OnCraftSlotUpdate += CraftItem;
         CrafBuildSlot.OnCraftSlotUpdate += UpdateSlot;
 
         _inventoryHolder.OnUpdateItemSlot += UpdateSlot;
@@ -51,8 +53,9 @@ public class CraftingHandler : MonoBehaviour
     private void OnDisable()
     {
         _inventoryPlayerInput.OnCraftPlayerWindow -= DisplayCraftPlayerWindow;
-        _buildTool.OnCompletedBuild -= UpdateSlot;
+        _buildTool.OnCompletedBuilding -= UpdateSlot;
         CraftItemSlot.OnCraftSlotUpdate -= UpdateSlot;
+        CraftItemSlot.OnCraftSlotUpdate -= CraftItem;
         CrafBuildSlot.OnCraftSlotUpdate -= UpdateSlot;
         
         _inventoryHolder.OnUpdateItemSlot -= UpdateSlot;
@@ -180,5 +183,10 @@ public class CraftingHandler : MonoBehaviour
         {
             _craftingWindow.gameObject.SetActive(false);
         }
+    }
+
+    private void CraftItem()
+    {
+        OnItemCrafted?.Invoke();
     }
 }

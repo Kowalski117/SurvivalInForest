@@ -1,3 +1,4 @@
+using Agava.YandexGames;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public class StoreHandler : MonoBehaviour
     {
         foreach (var slot in _storeSlots)
         {
-            slot.OnPayButton += PaySlot;
+            slot.OnPayButton += TrySellProduct;
         }
     }
 
@@ -27,7 +28,7 @@ public class StoreHandler : MonoBehaviour
     {
         foreach (var slot in _storeSlots)
         {
-            slot.OnPayButton -= PaySlot;
+            slot.OnPayButton -= TrySellProduct;
         }
     }
 
@@ -47,5 +48,16 @@ public class StoreHandler : MonoBehaviour
         {
             _inventoryHolder.AddToInventory(product.ItemData, product.Amount);
         }
+    }
+
+    private void TrySellProduct(StoreSlotData data)
+    {
+        //Billing.PurchaseProduct(data.Id, (purchaseProduct) =>
+        //{
+        //    foreach (var product in data.Products)
+        //    {
+        //        _inventoryHolder.AddToInventory(product.ItemData, product.Amount);
+        //    }
+        //});
     }
 }

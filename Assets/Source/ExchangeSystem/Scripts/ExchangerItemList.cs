@@ -14,9 +14,11 @@ public class ExchangerItemList : ScriptableObject
 [System.Serializable]
 public struct ExchangerInventoryItem
 {
+    [SerializeField, Range(1, 3)] private int _rating;
     [SerializeField] private ExchangedItem[] _itemsToExchange;
     [SerializeField] private ExchangedItem[] _itemsToReceive;
 
+    public int Rating => _rating;
     public ExchangedItem[] ItemsToExchange => _itemsToExchange;
     public ExchangedItem[] ItemsToReceive => _itemsToReceive;
 }

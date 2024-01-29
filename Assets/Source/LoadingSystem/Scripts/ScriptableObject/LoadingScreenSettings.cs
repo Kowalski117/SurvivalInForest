@@ -17,8 +17,10 @@ public class LoadingScreenSettings : ScriptableObject
 public struct SceneParameters
 {
     [SerializeField] private int _sceneIndex;
+    [SerializeField] private string _sceneString;
     [SerializeField] private string _sceneName;
 
     public int SceneIndex => _sceneIndex;
+    public string SceneString => _sceneString;
     public string SceneName => _sceneName;
 }

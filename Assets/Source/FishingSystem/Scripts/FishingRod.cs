@@ -1,6 +1,7 @@
 using PixelCrushers.QuestMachine;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using static PixelCrushers.QuestMachine.Demo.DemoInventory;
 
 public class FishingRod : MonoBehaviour
@@ -26,6 +27,8 @@ public class FishingRod : MonoBehaviour
     private int _addAmount = 1;
     private Coroutine _throwCoroutine;
     private Coroutine _turnOffRendererCoroutine;
+
+    public event UnityAction OnFishCaughted;
 
     private void Awake()
     {
@@ -149,6 +152,7 @@ public class FishingRod : MonoBehaviour
             _inventoryHolder.AddToInventory(inventoryItemData, _addAmount);
             _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
             _questControl.SendToMessageSystem(MessageConstants.Сaught + inventoryItemData.Name);
+            OnFishCaughted?.Invoke();
         }
     }
 
