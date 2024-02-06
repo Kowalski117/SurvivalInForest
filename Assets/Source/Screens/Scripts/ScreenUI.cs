@@ -79,6 +79,7 @@ public class ScreenUI : MonoBehaviour
                 PlayerInputHandler.BuildTool.DeleteBuilding();
                 PlayerInputHandler.ToggleAllInput(false);
                 PlayerInputHandler.TogglePersonController(false);
+                PlayerInputHandler.SetActiveCollider(false);
                 //PlayerInputHandler.ToggleScreenPlayerInput(false);
 
                 PlayerInputHandler.SetCursorVisible(true);
@@ -93,6 +94,7 @@ public class ScreenUI : MonoBehaviour
                 PlayerInputHandler.ToggleAllInput(true);
                 //PlayerInputHandler.ToggleScreenPlayerInput(true);
                 PlayerInputHandler.TogglePersonController(true);
+                PlayerInputHandler.SetActiveCollider(true);
                 PlayerInputHandler.SetCursorVisible(false);
             }
         }

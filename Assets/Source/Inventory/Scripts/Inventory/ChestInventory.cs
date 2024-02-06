@@ -4,13 +4,29 @@ using UnityEngine;
 public class ChestInventory : InventoryHolder
 {
     [SerializeField] private ObjectItemsData[] _startingItems;
+    [SerializeField] private ChestType chestType = ChestType.SurvivalChest;
 
     private UniqueID _uniqueId;
+
+    public ChestType ChestType => chestType;
 
     protected override void Awake()
     {
         _uniqueId = GetComponentInParent<UniqueID>();
         base.Awake();;
+    }
+
+    public void AddInventoryItem(InventoryItemData itemData, int amount)
+    {
+        PrimaryInventorySystem.AddToInventory(itemData, amount, itemData.Durability);
+    }
+
+    public void RemoveAllItems()
+    {
+        foreach (InventorySlot slot in PrimaryInventorySystem.GetAllFilledSlots())
+        {
+            PrimaryInventorySystem.RemoveItemsInventory(slot.ItemData, slot.Size);
+        }
     }
 
     protected override void SaveInventory()
@@ -37,7 +53,7 @@ public class ChestInventory : InventoryHolder
                 {
                     for (var i = 0; i < inventoryData.Amount; i++)
                     {
-                        PrimaryInventorySystem.AddToInventory(inventoryData.ItemData, 1, inventoryData.ItemData.Durability);
+                        AddInventoryItem(inventoryData.ItemData, 1);
                     }
                 }
             }

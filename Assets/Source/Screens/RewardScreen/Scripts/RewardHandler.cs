@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RewardHandler : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class RewardHandler : MonoBehaviour
     private DailyRewardsScreen _dailyRewardsScreen;
 
     private Coroutine _claimCoroutine;
+
+    public event UnityAction<Dictionary<InventoryItemData, int>> OnBonusShown;
 
     private int _currentStreak
     {
@@ -50,7 +53,7 @@ public class RewardHandler : MonoBehaviour
             return;
 
         RewardSlot rewardSlot = _rewardSlots[_currentStreak];
-        _playerInventoryHolder.AddToInventory(rewardSlot.Slot.AssignedInventorySlot.ItemData, rewardSlot.Slot.AssignedInventorySlot.Size, rewardSlot.Slot.AssignedInventorySlot.Durability);
+        AddItem(rewardSlot);
         rewardSlot.TakeSlot();
         SlotsUpdate(_currentStreak + 1);
 
@@ -67,6 +70,14 @@ public class RewardHandler : MonoBehaviour
             StopCoroutine(_claimCoroutine);
             _claimCoroutine = null;
         }
+    }
+
+    private void AddItem(RewardSlot rewardSlot)
+    {
+        Dictionary<InventoryItemData, int> items = new Dictionary<InventoryItemData, int>();
+        items.Add(rewardSlot.Slot.AssignedInventorySlot.ItemData, rewardSlot.Slot.AssignedInventorySlot.Size);
+
+        OnBonusShown?.Invoke(items);
     }
 
     private void StartCoroutine()

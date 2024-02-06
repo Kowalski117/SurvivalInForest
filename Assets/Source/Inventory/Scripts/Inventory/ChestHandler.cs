@@ -7,10 +7,13 @@ public class ChestHandler : Raycast
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private UIInventoryHandler _inventoryHandler;
 
+    private ChestType _currentChestType;
     private ChestInventory _chestInventory;
+    private bool _isRay = false;
 
     public event UnityAction OnInteractionStarted;
     public event UnityAction OnInteractionFinished;
+    public event UnityAction<ChestType> OnChestTypeChanged;
 
     public ChestInventory ChestInventory => _chestInventory;
 
@@ -20,21 +23,33 @@ public class ChestHandler : Raycast
         {
             if (hitInfo.collider.TryGetComponent(out ChestInventory chestInventory))
             {
-                _chestInventory = chestInventory;
-                if (_inventoryHandler && !_inventoryHandler.IsChestOpen)
+                if(chestInventory != _chestInventory)
                 {
-                    _inventoryHandler.DisplayChestInventory(_chestInventory, 0);
-                    OnInteractionStarted?.Invoke(); 
+                    _isRay = true;
+                    OpenChest(chestInventory);
                 }
             }
         }
-        else
+        else if(_isRay) 
         {
+            _isRay = false;
             CloseChest();
         }
     }
 
-    private void CloseChest()
+    public void OpenChest(ChestInventory chestInventory)
+    {
+        if (chestInventory && _inventoryHandler && !_inventoryHandler.IsChestOpen)
+        {
+            _chestInventory = chestInventory;
+            _currentChestType = _chestInventory.ChestType;
+            _inventoryHandler.DisplayChestInventory(chestInventory, 0);
+            OnChestTypeChanged?.Invoke(_currentChestType);
+            OnInteractionStarted?.Invoke();
+        }
+    }
+
+    public void CloseChest()
     {
         if (_chestInventory != null && _inventoryHandler.IsChestOpen)
         {
@@ -43,4 +58,10 @@ public class ChestHandler : Raycast
             OnInteractionFinished?.Invoke();
         }
     }
+}
+
+public enum ChestType
+{
+    SurvivalChest,
+    BonusChest
 }

@@ -1,38 +1,52 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DynamicInventoryDisplay : InventoryDisplay
 {
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private Transform _parentTransform;
 
-    public CanvasGroup CanvasGroup => _canvasGroup;
+    public event UnityAction<int> OnDisplayRefreshed;
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        if (inventorySystem != null)
-            inventorySystem.OnInventorySlotChanged += UpdateSlot;
+        if (_inventorySystem != null)
+            _inventorySystem.OnInventorySlotChanged += UpdateSlot;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        if (inventorySystem != null)
-            inventorySystem.OnInventorySlotChanged -= UpdateSlot;
+        if (_inventorySystem != null)
+            _inventorySystem.OnInventorySlotChanged -= UpdateSlot;
+    }
+
+    public void Open()
+    {
+        _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
+    }
+
+    public void Close()
+    {
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
     }
 
     public void RefreshDynamicInventory(InventorySystem inventoryToSystem, int offSet)
     {
         ClearSlots();
-        inventorySystem = inventoryToSystem;
+        _inventorySystem = inventoryToSystem;
 
-        if (inventorySystem != null)
-            inventorySystem.OnInventorySlotChanged += UpdateSlot;
+        if (_inventorySystem != null)
+            _inventorySystem.OnInventorySlotChanged += UpdateSlot;
 
+        OnDisplayRefreshed?.Invoke(_inventorySystem.InventorySize);
         AssingSlot(inventoryToSystem, offSet);
     }
 
