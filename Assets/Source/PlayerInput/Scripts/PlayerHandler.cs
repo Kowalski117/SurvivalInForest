@@ -1,11 +1,11 @@
 using StarterAssets;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerHandler : MonoBehaviour
 {
     [SerializeField] private FirstPersonController _firstPersonController;
+    [SerializeField] private CharacterController _characterController;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private InteractionPlayerInput _interactionPlayerInput;
@@ -55,6 +55,11 @@ public class PlayerHandler : MonoBehaviour
         SetCursorVisible(true);
     }
 
+    public void SetActiveCollider(bool isActive)
+    {
+        _characterController.enabled = isActive;
+    }
+
     public void SetCursorVisible(bool visible)
     {
         if (_isCursorEnablePrevious && !visible)
@@ -65,19 +70,19 @@ public class PlayerHandler : MonoBehaviour
 
         _isCursorEnablePrevious = _isCursorEnable;
         _isCursorEnable = visible;
-        ToggleCursor(_isCursorEnable);
+        ToggleCursor(visible);
     }
 
     public void TogglePersonController(bool visible)
     {
-        //if (_isControllerActivePrevious && !visible)
-        //{
-        //    _isControllerActivePrevious = false;
-        //    return;
-        //}
-        //_isControllerActivePrevious = _isControllerActive;
-        //_isControllerActive = visible;
-        _firstPersonController.TogglePersonController(visible);
+        if (_isControllerActivePrevious && !visible)
+        {
+            _isControllerActivePrevious = false;
+            return;
+        }
+        _isControllerActivePrevious = _isControllerActive;
+        _isControllerActive = visible;
+        _firstPersonController.TogglePersonController(_isControllerActive);
     }
     public void ToggleHotbarDisplay(bool visible)
     {

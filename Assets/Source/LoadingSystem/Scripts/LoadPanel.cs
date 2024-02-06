@@ -120,7 +120,7 @@ public class LoadPanel : MonoBehaviour
             _resumeButton.gameObject.SetActive(false);
 
             if (_playerInputHandler != null)
-                _playerInputHandler.PlayerHealth.SetActiveCollider(false);
+                _playerInputHandler.SetActiveCollider(false);
 
             ES3.Save(SaveLoadConstants.LastSceneIndex, SceneManager.GetActiveScene().buildIndex);
             ES3.Save(SaveLoadConstants.NextSceneIndex, indexScene);
@@ -153,7 +153,7 @@ public class LoadPanel : MonoBehaviour
             _playerInputHandler.ToggleAllInput(true);
             _playerInputHandler.TogglePersonController(true);
             _playerInputHandler.SetCursorVisible(false);
-            _playerInputHandler.PlayerHealth.SetActiveCollider(true);
+            _playerInputHandler.SetActiveCollider(true);
         }
 
         if (_coroutineDeactivate != null)

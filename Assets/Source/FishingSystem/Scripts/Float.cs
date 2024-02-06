@@ -22,7 +22,7 @@ public class Float : MonoBehaviour
 
     private Vector3 _calmWaterOffset = new Vector3(0, -0.15f, 0);
     private Vector2 _fishOnHookOffset = new Vector2(0.4f, 1f);
-    private float _timeBeforeFishEscapes = 3f;
+    private float _timeBeforeFishEscapes = 0.6f;
     private float _animationDuration = 2f;
     private float _returnDelay = 1f;
     private int _numberOfRepetitions = -1;

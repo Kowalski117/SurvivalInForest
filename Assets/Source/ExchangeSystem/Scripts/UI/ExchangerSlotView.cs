@@ -1,19 +1,30 @@
-using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using static PixelCrushers.QuestMachine.Demo.DemoInventory;
 
 public class ExchangerSlotView : MonoBehaviour
 {
     [SerializeField] private ItemView[] _itemsToExchangeView;
-    [SerializeField] private ItemView[] _itemsToReceiveView;
+    [SerializeField] private ItemView _itemToReceiveView;
     [SerializeField] private Button _exchangeButton;
     [SerializeField] private Button _plusButton;
     [SerializeField] private Button _minusButton;
+    [SerializeField] private TMP_Text _ratingText;
+    [SerializeField] private GameObject _ratingPanel;
 
-    private ExchangerInventoryItem _shopSlot;
+    private ExchangerItemData _itemSlot;
+    private ItemsToExchange _currentItemToExchange;
+    private ExchangedItem _currentItemToReceive;
     private PlayerInventoryHolder _inventoryHolder;
+    private TradingRating _rating;
     private int _amount = 1;
     private int _index = 1;
+
+    public event UnityAction OnExchanged;
+
+    public bool IsEmpty { get; private set; } = true;
 
     private void OnEnable()
     {
@@ -29,32 +40,42 @@ public class ExchangerSlotView : MonoBehaviour
         _minusButton.onClick.RemoveListener(RemoveAmount);
     }
 
-    public void Init(ExchangerInventoryItem shopSlot, PlayerInventoryHolder inventoryHolder)
+    public void Init(ExchangerItemData shopSlot, PlayerInventoryHolder inventoryHolder, TradingRating tradingRating)
     {
-        _shopSlot = shopSlot;
+        _itemSlot = shopSlot;
         _inventoryHolder = inventoryHolder;
+        _rating = tradingRating;
+        IsEmpty = false;
+        InitItemsToExchange(_itemSlot);
+        UpdateSlot();
+    }
 
-        UpdateExchangedItems(_itemsToExchangeView, shopSlot.ItemsToExchange);
-        UpdateExchangedItems(_itemsToReceiveView, shopSlot.ItemsToReceive);
+    public void UpdateSlot()
+    {
+        UpdateExchangedItems();
         UpdateAmount();
+        UpdateRating();
     }
 
     private void OnExchangeButtonClicked()
     {
-        foreach (var itemToExchange in _shopSlot.ItemsToExchange)
+        foreach (var itemToExchange in _currentItemToExchange.Items)
         {
             if (_inventoryHolder.RemoveInventory(itemToExchange.ItemData, itemToExchange.Amount * _amount))
             {
-                foreach (var itemToReceive in _shopSlot.ItemsToReceive)
-                {
-                    _inventoryHolder.AddToInventory(itemToReceive.ItemData, itemToReceive.Amount * _amount, itemToReceive.ItemData.Durability);
-                }
-
+                _inventoryHolder.AddToInventory(_currentItemToReceive.ItemData, _currentItemToReceive.Amount * _amount, _currentItemToReceive.ItemData.Durability);
                 _amount = _index;
                 UpdateAmount();
+                OnExchanged?.Invoke();
                 break;
             }
         }
+    }
+
+    private void InitItemsToExchange(ExchangerItemData item)
+    {
+        _currentItemToExchange = item.ItemsToExchange[Random.Range(0, item.ItemsToExchange.Length)];
+        _currentItemToReceive = item.ItemsToReceive[Random.Range(0, item.ItemsToReceive.Length)];
     }
 
     private void AddAmount()
@@ -67,42 +88,45 @@ public class ExchangerSlotView : MonoBehaviour
     {
         if (_amount > _index)
             _amount--;
+
         UpdateAmount();
     }
 
     private void UpdateAmount()
     {
-        foreach (var itemToExchangeView in _itemsToExchangeView)
+        for (int i = 0; i < _itemsToExchangeView.Length; i++)
         {
-            foreach (var slot in _shopSlot.ItemsToExchange)
-            {
-                itemToExchangeView.UpdateAmount(slot.Amount * _amount);
-            }
+            if (i < _currentItemToExchange.Items.Length)
+                _itemsToExchangeView[i].UpdateAmount(_inventoryHolder, _currentItemToExchange.Items[i].Amount * _amount);
         }
 
-        foreach (var itemToReceiveView in _itemsToReceiveView)
-        {
-            foreach (var slot in _shopSlot.ItemsToReceive)
-            {
-                itemToReceiveView.UpdateAmount(slot.Amount * _amount);
-            }
-        }
+        _itemToReceiveView.UpdateAmount(_inventoryHolder, _currentItemToReceive.Amount * _amount);
     }
 
-    private void UpdateExchangedItems(ItemView[] itemViewArray, ExchangedItem[] itemArray)
+    private void UpdateExchangedItems()
     {
-        for (int i = 0; i < itemViewArray.Length; i++)
+        for (int i = 0; i < _itemsToExchangeView.Length; i++)
         {
-            if (i < itemArray.Length)
-            {
-                itemViewArray[i].gameObject.SetActive(true);
-                itemViewArray[i].Init(itemArray[i]);
-            }
-            else
-            {
-                itemViewArray[i].gameObject.SetActive(true);
-                itemViewArray[i].Clear();
-            }
+            _itemsToExchangeView[i].gameObject.SetActive(true);
+
+            if(i < _currentItemToExchange.Items.Length)
+                _itemsToExchangeView[i].Init(_currentItemToExchange.Items[i], _inventoryHolder);
+        }
+
+        _itemToReceiveView.Init(_currentItemToReceive, _inventoryHolder);
+    }
+
+    private void UpdateRating()
+    {
+        _ratingText.text = _itemSlot.Rating.ToString();
+
+        if(_itemSlot.Rating > _rating.CurrentRating)
+        {
+            _ratingPanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            _ratingPanel.gameObject.SetActive(false);
         }
     }
 }

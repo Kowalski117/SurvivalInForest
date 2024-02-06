@@ -2,6 +2,7 @@ using Agava.YandexGames;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SaveGame : MonoBehaviour
 {
@@ -15,10 +16,13 @@ public class SaveGame : MonoBehaviour
     private float _delay = 0.2f;
     private Coroutine _saveCoroutine;
 
-    public event Action<int> OnNotifyPlayer;
-    public event Action OnCloseNotifierPlayer;
-    public static event Action OnSaveGame;
-    public static event Action OnLoadData;
+    public event UnityAction<int> OnNotifyPlayer;
+    public event UnityAction OnCloseNotifierPlayer;
+    public event UnityAction OnAutoSaved;
+
+    public static event UnityAction OnSaveGame;
+    public static event UnityAction OnLoadData;
+
 
     private void Start()
     {
@@ -38,9 +42,10 @@ public class SaveGame : MonoBehaviour
                 OnCloseNotifierPlayer?.Invoke();
                 _yandexAds.ShowInterstitial();
                 Save();
+                OnAutoSaved?.Invoke();
             }
 
-            if(_timer >= _autoSaveDelay - _notificationTime)
+            if (_timer >= _autoSaveDelay - _notificationTime)
             {
                 OnNotifyPlayer?.Invoke(_notificationTime);
             }
@@ -51,7 +56,7 @@ public class SaveGame : MonoBehaviour
     {
         OnSaveGame?.Invoke();
 
-        if(_saveCoroutine != null)
+        if (_saveCoroutine != null)
         {
             StopCoroutine(_saveCoroutine);
             _saveCoroutine = null;

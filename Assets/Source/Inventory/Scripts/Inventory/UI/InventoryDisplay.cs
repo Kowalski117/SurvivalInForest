@@ -11,16 +11,17 @@ public abstract class InventoryDisplay : MonoBehaviour
     [SerializeField] protected InventoryOperator InventoryOperator;
     [SerializeField] protected InventorySlotUI[] Slots;
     [SerializeField] private CraftingHandler _craftingHandler;
+    [SerializeField] private bool _isCanAddItem = true;
 
     private string _invetoryTag = "Inventory";
 
     private InventorySlotUI _currentSlot;
-    protected InventorySystem inventorySystem;
+    protected InventorySystem _inventorySystem;
     protected Dictionary<InventorySlotUI, InventorySlot> slotDictionary;
 
     public event UnityAction<InventorySlotUI> OnSlotSelected;
 
-    public InventorySystem InventorySystem => inventorySystem;
+    public InventorySystem InventorySystem => _inventorySystem;
     public InventorySlotUI[] SlotsUI => Slots;
     public Dictionary<InventorySlotUI, InventorySlot> SlotDictionary => slotDictionary;
 
@@ -39,11 +40,16 @@ public abstract class InventoryDisplay : MonoBehaviour
             _craftingHandler.OnUpdateSlotInventory -= UpdateSlots;
     }
 
+    public void SetAddItem(bool isAdd)
+    {
+        _isCanAddItem = isAdd;
+    }
+
     public void SlotClicked(InventorySlotUI clickedUISlot)
     {
         if (MouseInventoryItem.CurrentItemData != null && MouseInventoryItem.CurrentItemData &&
         (clickedUISlot.AllowedItemTypes == MouseInventoryItem.CurrentItemData.Type ||
-         clickedUISlot.AllowedItemTypes == ItemType.None))
+         clickedUISlot.AllowedItemTypes == ItemType.None) && _isCanAddItem)
         {
             if (clickedUISlot.AssignedInventorySlot.ItemData == null && MouseInventoryItem.InventorySlotUI.AssignedInventorySlot.ItemData != null)
             {

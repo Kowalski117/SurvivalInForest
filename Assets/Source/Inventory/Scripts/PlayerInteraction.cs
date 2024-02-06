@@ -1,4 +1,5 @@
 using StarterAssets;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -34,12 +35,23 @@ public class PlayerInteraction : Raycast
     private ParticleSystem _selectionParticle;
     private AudioClip _selectionAudioClip;
 
+    private string[] _animalsName = { "Deer", "Hare", "Bear", "Wolf" };
+
     public event UnityAction<InventoryItemData> OnUpdateItemData;
     public event UnityAction<WeaponItemData> OnUpdateWeaponItemData;
     public event UnityAction<ToolItemData> OnUpdateToolItemData;
     public event UnityAction<float> OnValueChanged;
     public event UnityAction<float, float> OnEnableBarValue;
     public event UnityAction OnTurnOffBarValue;
+
+    public event UnityAction OnTreeBroken;
+    public event UnityAction OnStoneBroken;
+    public event UnityAction OnTreasureBroken;
+
+    public event UnityAction OnBearKilled;
+    public event UnityAction OnWolfKilled;
+    public event UnityAction OnDeerKilled;
+    public event UnityAction OnHareKilled;
 
     public InventorySlot CurrentInventorySlot => _currentInventorySlot;
 
@@ -280,6 +292,7 @@ public class PlayerInteraction : Raycast
             if (animals.Health <= 0)
             {
                 OnValueChanged?.Invoke(animals.Health);
+                IdentifyKilledAnimal(animals);
                 animals = null;
             }
 
@@ -307,7 +320,7 @@ public class PlayerInteraction : Raycast
 
     private void TakeDamageResoure(float damage, float overTimeDamage)
     {
-        if (_currentResoure != null)
+        if (_currentResoure != null && _currentResoure.Health > 0)
         {
             if (_currentResoure.ExtractionType == _currentTool.ToolType)
             {
@@ -329,7 +342,8 @@ public class PlayerInteraction : Raycast
 
             if (_currentResoure.Health <= 0)
             {
-                OnValueChanged?.Invoke(_currentResoure.Health);
+                IdentifyBrokenResource(_currentResoure);
+                 OnValueChanged?.Invoke(_currentResoure.Health);
                 _currentResoure = null;
             }
         }
@@ -345,5 +359,28 @@ public class PlayerInteraction : Raycast
 
         if(_shakeEffect)
             _shakeEffect.StartShake();
+    }
+
+    private void IdentifyBrokenResource(Resource resource)
+    {
+        if (resource is Tree tree)
+            OnTreeBroken?.Invoke();
+        else if (resource is Stone stone)
+            OnStoneBroken?.Invoke();
+        else if (resource is Treasure treasure)
+            OnTreasureBroken?.Invoke();
+    }
+
+    private void IdentifyKilledAnimal(Animals animals)
+    {
+        if (animals.Name == _animalsName[0])
+            OnDeerKilled?.Invoke();
+        else if (animals.Name == _animalsName[1])
+            OnHareKilled?.Invoke();
+        else if (animals.Name == _animalsName[2])
+            OnBearKilled?.Invoke();
+        else if (animals.Name == _animalsName[3]) 
+            OnWolfKilled?.Invoke();
+
     }
 }

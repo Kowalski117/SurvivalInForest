@@ -7,8 +7,6 @@ public class RouletteScreen : ScreenUI
 
     private RouletteScrollHandler _scrollHandler;
 
-    public Transform TwistButtonPoint => _twistButton.transform;
-
     private void Awake()
     {
         _scrollHandler = GetComponent<RouletteScrollHandler>();

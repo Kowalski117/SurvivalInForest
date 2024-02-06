@@ -137,7 +137,6 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         if (_empty)
             return;
         OnItemBeginDrag?.Invoke(this);
-
     }
 
     public void OnEndDrag(PointerEventData eventData)

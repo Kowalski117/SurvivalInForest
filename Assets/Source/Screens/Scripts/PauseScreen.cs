@@ -9,11 +9,14 @@ public class PauseScreen : MenuScreen
     [SerializeField] private ShopScreen _shopScreen;
     [SerializeField] private DailyRewardsScreen _dailyRewardsScreen;
     [SerializeField] private RouletteScreen _rouletteScreen;
+    [SerializeField] private UIInventoryHandler _inventoryHandler;
+    [SerializeField] private BonusesHandler _bonusHandler;
 
     [SerializeField] private Button _pauseButton;
     [SerializeField] private Button _shopButton;
     [SerializeField] private Button _dailyRewardsButton;
     [SerializeField] private Button _rouletteButton;
+    [SerializeField] private Button _chestBonusButton;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _saveButton;
     [SerializeField] private Button _exitMainMenuButton;
@@ -29,6 +32,7 @@ public class PauseScreen : MenuScreen
         _shopButton.onClick.AddListener(ToggleShopScreen);
         _dailyRewardsButton.onClick.AddListener(ToggleDailyRewardsScreen);
         _rouletteButton.onClick.AddListener(ToggleRouletteScreen);
+        _chestBonusButton.onClick.AddListener(OpenChestBonusClick);
         _continueButton.onClick.AddListener(ContinueButtonClick);
         _saveButton.onClick.AddListener(SaveButtonClick);
         _exitMainMenuButton.onClick.AddListener(ExitMainMenuButtonClick);
@@ -43,6 +47,7 @@ public class PauseScreen : MenuScreen
         _shopButton.onClick.RemoveListener(ToggleShopScreen);
         _dailyRewardsButton.onClick.RemoveListener(ToggleDailyRewardsScreen);
         _rouletteButton.onClick.RemoveListener(ToggleRouletteScreen);
+        _chestBonusButton.onClick.RemoveListener(OpenChestBonusClick);
         _continueButton.onClick.RemoveListener(ContinueButtonClick);
         _saveButton.onClick.RemoveListener(SaveButtonClick);
         _exitMainMenuButton.onClick.RemoveListener(ExitMainMenuButtonClick);
@@ -51,17 +56,25 @@ public class PauseScreen : MenuScreen
         PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleAllScreen;
     }
 
-    private void ToggleAllScreen()
+    public void ToggleAllScreen()
     {
         ToggleScreen();
 
         if (IsOpenPanel)
         {
+            if (_inventoryHandler.IsInventoryOpen)
+            {
+                PlayerInputHandler.InventoryPlayerInput.ToggleInventory();
+                PlayerInputHandler.ToggleAllInput(false);
+            }
+
             PlayerInputHandler.ToggleAllParametrs(false);
+            PlayerInputHandler.SetActiveCollider(false);
         }
         else
         {
             PlayerInputHandler.ToggleAllParametrs(true);
+            PlayerInputHandler.SetActiveCollider(true);
             CloseAllScreens();
         }
     }
@@ -111,11 +124,17 @@ public class PauseScreen : MenuScreen
         
         _dailyRewardsScreen.ToggleScreen();
     }
+
     private void ToggleRouletteScreen()
     {
         if (!_rouletteScreen.IsOpenPanel)
             CloseAllScreens();
 
         _rouletteScreen.ToggleScreen();
+    }
+
+    private void OpenChestBonusClick()
+    {
+        _bonusHandler.OpenChest();
     }
 }

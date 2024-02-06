@@ -23,7 +23,7 @@ MonoBehaviour:
   _maxStackSize: 1
   _itemPrefab: {fileID: 6548712334960805262, guid: 32fb5adeba185f34fb248ac8ce15bb51, type: 3}
   _gorenjeTime: 0
-  _durability: 10
+  _durability: 15
   _colorDurability: {r: 1, g: 0, b: 0, a: 1}
   _typeBehaviorInWater: 2
   _toolType: 3
@@ -32,17 +32,31 @@ MonoBehaviour:
   _damageLiving: 0
   _speed: 1.5
   _muzzleSound: {fileID: 0}
-  _randomTime: {x: 10, y: 30}
+  _randomTime: {x: 7, y: 25}
   _extractions:
+  - _inventoryItemData: {fileID: 11400000, guid: 3a8842ff27a52634084d7623c69c89be, type: 2}
+    _chance: 0.042
+  - _inventoryItemData: {fileID: 11400000, guid: cc663e98aa7670a4fa26266c078b8957, type: 2}
+    _chance: 0.042
+  - _inventoryItemData: {fileID: 11400000, guid: 77dc0ed8827300a4897afd6c7296043b, type: 2}
+    _chance: 0.042
+  - _inventoryItemData: {fileID: 11400000, guid: 8a5afd7c21c669640a13a1729db169c4, type: 2}
+    _chance: 0.048
+  - _inventoryItemData: {fileID: 11400000, guid: da72d5f73d6756a439c80895b979ec01, type: 2}
+    _chance: 0.042
+  - _inventoryItemData: {fileID: 11400000, guid: d326aa6e0f549bf4b885c22bfcc0b793, type: 2}
+    _chance: 0.042
+  - _inventoryItemData: {fileID: 11400000, guid: 068f7565f075f774aaaf7e3b9a2a168b, type: 2}
+    _chance: 0.042
   - _inventoryItemData: {fileID: 11400000, guid: 403e38b4cafd1424d8b88e7b535dbb9b, type: 2}
-    _chance: 0.225
-  - _inventoryItemData: {fileID: 11400000, guid: e0e314fe9332c774c832c21bf26e699b, type: 2}
-    _chance: 0.2
-  - _inventoryItemData: {fileID: 11400000, guid: 26365cc70b21b1549ace9a5a4e3fb4da, type: 2}
-    _chance: 0.2
-  - _inventoryItemData: {fileID: 11400000, guid: 6ab92c85218376041bd90d10d8ac350d, type: 2}
     _chance: 0.15
+  - _inventoryItemData: {fileID: 11400000, guid: 551321ab1a123f242bbac763b7d778df, type: 2}
+    _chance: 0.125
+  - _inventoryItemData: {fileID: 11400000, guid: e0e314fe9332c774c832c21bf26e699b, type: 2}
+    _chance: 0.12
+  - _inventoryItemData: {fileID: 11400000, guid: 26365cc70b21b1549ace9a5a4e3fb4da, type: 2}
+    _chance: 0.08
+  - _inventoryItemData: {fileID: 11400000, guid: 6ab92c85218376041bd90d10d8ac350d, type: 2}
+    _chance: 0.075
   - _inventoryItemData: {fileID: 11400000, guid: 737712de3576be6439bc7595dfbf7c59, type: 2}
     _chance: 0.05
-  - _inventoryItemData: {fileID: 11400000, guid: 551321ab1a123f242bbac763b7d778df, type: 2}
-    _chance: 0.175

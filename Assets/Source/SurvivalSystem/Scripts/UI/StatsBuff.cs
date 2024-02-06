@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class StatsBuff : MonoBehaviour
@@ -13,6 +14,9 @@ public class StatsBuff : MonoBehaviour
     private bool _isActive = true;
     private float _delay = 300f;
     private Coroutine _coroutine;
+
+    public event UnityAction OnUseBuff;
+
 
     private void OnEnable()
     {
@@ -54,8 +58,8 @@ public class StatsBuff : MonoBehaviour
         _survivalHandler.Thirst.ReplenishValue(_survivalHandler.Thirst.MaxValueInHours / 2);
         _survivalHandler.Sleep.ReplenishValue(_survivalHandler.Sleep.MaxValueInHours / 2);
         _survivalHandler.PlayerHealth.ReplenishHealth(_survivalHandler.PlayerHealth.MaxHealth / 2);
-
         _coroutine = StartCoroutine(WaitForSeconds());
+        OnUseBuff?.Invoke();
     }
 
     private IEnumerator WaitForSeconds()

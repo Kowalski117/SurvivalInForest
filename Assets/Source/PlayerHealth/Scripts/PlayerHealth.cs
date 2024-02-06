@@ -8,7 +8,6 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 {
     [SerializeField] private Interactor _interactor;
     [SerializeField] private PlayerHandler _playerInputHandler;
-    [SerializeField] private CharacterController _characterController;
     [SerializeField] private ProtectionValue _protectionValue;
     [SerializeField] private float _recoveryRate = 0.1f;
     [SerializeField] private float _recoveryDelay = 3f;
@@ -42,7 +41,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     private void Start()
     {
         CurrentValue = MaxValue;
-        SetActiveCollider(false);
+        _playerInputHandler.SetActiveCollider(false);
     }
 
     private void OnEnable()
@@ -132,16 +131,19 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void Die()
     {
-        OnDied?.Invoke();
         _isDied = true;
+
+        OnDied?.Invoke();
+
         _rotateTween = _cameraRoot.DOLocalRotate(new Vector3(_cameraRoot.localRotation.x, _cameraRoot.localRotation.y, 90), 1f);
         _positionTween = _cameraRoot.DOLocalMoveY(0.5f, 1f);
         CurrentValue = 0;
         _playerInputHandler.FirstPersonController.enabled = false;
         _playerInputHandler.ToggleInventoryPanels(false);
-        SetActiveCollider(false);
+        _playerInputHandler.SetActiveCollider(false);
         _playerInputHandler.ToggleAllInput(false);
         _playerInputHandler.SetCursorVisible(true);
+
         OnHealthChanged?.Invoke(HealthPercent);
     }
 
@@ -162,7 +164,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
         _playerInputHandler.ToggleAllInput(true);
         _playerInputHandler.FirstPersonController.enabled = true;
         _playerInputHandler.ToggleInventoryPanels(true);
-        SetActiveCollider(true);
+        _playerInputHandler.SetActiveCollider(true);
         SetValue(MaxValue * 30 / 100);
 
         OnHealthChanged?.Invoke(HealthPercent);
@@ -171,11 +173,6 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
     public void SetCanRestoreHealth(bool value)
     {
         _canRestoreHealth = value;
-    }
-
-    public void SetActiveCollider(bool isActive)
-    {
-        _characterController.enabled = isActive;
     }
 
     public void SetGodMode(bool isActive)
