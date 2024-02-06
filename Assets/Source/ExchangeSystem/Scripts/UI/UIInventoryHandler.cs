@@ -28,7 +28,7 @@ public class UIInventoryHandler : MonoBehaviour
 
     private void Start()
     {
-        _playerBackpackPanel.CanvasGroup.alpha = 0;
+        _playerBackpackPanel.Close();
     }
 
     private void OnEnable()
@@ -64,8 +64,7 @@ public class UIInventoryHandler : MonoBehaviour
 
         if (_isInventoryOpen)
         {
-            _playerBackpackPanel.CanvasGroup.alpha = 1;
-            _playerBackpackPanel.CanvasGroup.blocksRaycasts = true;
+            _playerBackpackPanel.Open();
             _playerInputHandler.SetCursorVisible(true);
             _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
             _playerInputHandler.ToggleHotbarDisplay(false);
@@ -77,11 +76,10 @@ public class UIInventoryHandler : MonoBehaviour
         else
         {
             OnInventoryClosed?.Invoke();
+            _playerBackpackPanel.Close();
             _mouseItemData.ReturnCurrentSlot();
             _playerBackpackPanel.ResetSelection();
             _playerHotbarInventory.ResetSelection();
-            _playerBackpackPanel.CanvasGroup.alpha = 0;
-            _playerBackpackPanel.CanvasGroup.blocksRaycasts = false;
             _playerInputHandler.SetCursorVisible(false);
             _playerInputHandler.ToggleInteractionInput(true);
             _playerInputHandler.ToggleHotbarDisplay(true);

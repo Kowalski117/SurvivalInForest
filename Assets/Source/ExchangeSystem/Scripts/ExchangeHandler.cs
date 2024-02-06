@@ -1,6 +1,6 @@
-using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ExchangeHandler : Raycast
 {
@@ -12,27 +12,44 @@ public class ExchangeHandler : Raycast
     [SerializeField] private ExchangerItemList _exchangerItemList;
     [SerializeField] private ExchangerSlotView[] _exchangerSlots;
     [SerializeField] private TradingRating _tradingRating;
+    [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private TMP_Text _nameText;
 
     private bool _isShopOpen = false;
     private ExchangeKeeper _exchangeKeeper;
 
-    public event Action OnInteractionStarted;
-    public event Action OnInteractionFinished;
+    public event UnityAction OnInteractionStarted;
+    public event UnityAction OnInteractionFinished;
+    public event UnityAction OnExchangedItem;
 
     private void Start()
     {
         _panel.gameObject.SetActive(false);
+        InitSlots();
     }
 
     private void OnEnable()
     {
         _inventoryHandler.OnInventoryClosed += CloseWindow;
+
+        foreach (var slotView in _exchangerSlots)
+        {
+            slotView.OnExchanged += ExchangeEvent;
+        }
+
+        _timeHandler.OnDayUpdate += SwapSlots;
     }
 
     private void OnDisable()
     {
         _inventoryHandler.OnInventoryClosed -= CloseWindow;
+
+        foreach (var slotView in _exchangerSlots)
+        {
+            slotView.OnExchanged -= ExchangeEvent;
+        }
+
+        _timeHandler.OnDayUpdate -= SwapSlots;
     }
 
     private void Update()
@@ -45,7 +62,7 @@ public class ExchangeHandler : Raycast
                 if (_exchangeKeeper && !_isShopOpen)
                 {
                     _panel.gameObject.SetActive(true);
-                    CreateSlots();
+                    UpdateSlots();
                     _isShopOpen = true;
                     OnInteractionStarted?.Invoke();
                 }
@@ -67,7 +84,7 @@ public class ExchangeHandler : Raycast
         }
     }
 
-    private void CreateSlots()
+    private void InitSlots()
     {
         _nameText.text = _exchangerItemList.Name;
 
@@ -76,31 +93,22 @@ public class ExchangeHandler : Raycast
             child.gameObject.SetActive(false);
         }
 
-        var itemsHeld = _inventoryHolder.InventorySystem.GetAllItemsHeld();
-
-        foreach (var exchangerItem in _exchangerItemList.Items)
+        for (int i = 0; i < _exchangerItemList.Items.Count; i++)
         {
-            bool canExchange = true;
-
-            foreach (var itemToExchange in exchangerItem.ItemsToExchange)
+            if (i < _exchangerSlots.Length)
             {
-                if (!itemsHeld.TryGetValue(itemToExchange.ItemData, out int amountHeld) || amountHeld < itemToExchange.Amount)
-                {
-                    canExchange = false;
-                    break;
-                }
+                _exchangerSlots[i].gameObject.SetActive(true);
+                _exchangerSlots[i].Init(_exchangerItemList.Items[i], _inventoryHolder, _tradingRating);
             }
+        }
+    }
 
-            if (canExchange)
-            {
-                ExchangerSlotView exchangerSlot = Array.Find(_exchangerSlots, slot => !slot.gameObject.activeSelf);
-
-                if (exchangerSlot != null)
-                {
-                    exchangerSlot.Init(exchangerItem, _inventoryHolder, _tradingRating);
-                    exchangerSlot.gameObject.SetActive(true);
-                }
-            }
+    private void UpdateSlots()
+    {
+        foreach (var slot in _exchangerSlots)
+        {
+            if(!slot.IsEmpty)
+                slot.UpdateSlot();
         }
     }
 
@@ -108,6 +116,16 @@ public class ExchangeHandler : Raycast
     {
         _panel.gameObject.SetActive(false);
         _isShopOpen = false;
+    }
+
+    private void ExchangeEvent()
+    {
+        OnExchangedItem?.Invoke();
+    }
+
+    private void SwapSlots(int day)
+    {
+        InitSlots();
     }
 }
 

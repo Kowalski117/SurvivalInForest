@@ -234,8 +234,7 @@ MonoBehaviour:
   _itemsToExchangeView:
   - {fileID: 417472472164635749}
   - {fileID: 2822170561656381828}
-  _itemsToReceiveView:
-  - {fileID: 5781426281834305245}
+  _itemToReceiveView: {fileID: 5781426281834305245}
   _exchangeButton: {fileID: 2828770850469605139}
   _plusButton: {fileID: 1339887480608623052}
   _minusButton: {fileID: 641650067330192572}
@@ -2298,6 +2297,22 @@ PrefabInstance:
     - target: {fileID: 1679477908639292427, guid: 252e3b3c06dae344293ff9bc4dbf3ca5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419164429130974888, guid: 252e3b3c06dae344293ff9bc4dbf3ca5, type: 3}
+      propertyPath: _isReceiveSlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419164429130974888, guid: 252e3b3c06dae344293ff9bc4dbf3ca5, type: 3}
+      propertyPath: _negativeColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419164429130974888, guid: 252e3b3c06dae344293ff9bc4dbf3ca5, type: 3}
+      propertyPath: _negativeColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419164429130974888, guid: 252e3b3c06dae344293ff9bc4dbf3ca5, type: 3}
+      propertyPath: _negativeColor.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 252e3b3c06dae344293ff9bc4dbf3ca5, type: 3}
