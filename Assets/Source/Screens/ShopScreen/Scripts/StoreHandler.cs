@@ -1,19 +1,23 @@
 using Agava.YandexGames;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StoreHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private StoreSlot _prefabSlot;
     [SerializeField] private StoreSlotData[] _storeSlotsData;
+    [SerializeField] private List<StoreSlot> _storeSlots = new List<StoreSlot>();
     [SerializeField] private Transform _containerSlots;
+    [SerializeField] private YandexAds _yandexAds;
 
-    private List<StoreSlot> _storeSlots = new List<StoreSlot>();
+    public event UnityAction<Dictionary<InventoryItemData, int>> OnBonusShown;
+    public event UnityAction OnProductBuyed;
 
     private void Awake()
     {
-        CreateSlots();
+        InitSlots();
     }
 
     private void OnEnable()
@@ -32,32 +36,39 @@ public class StoreHandler : MonoBehaviour
         }
     }
 
-    public void CreateSlots()
+    public void InitSlots()
     {
-        foreach (var slot in _storeSlotsData)
+        for (int i = 0; i < _storeSlots.Count; i++)
         {
-            StoreSlot storeSlot = Instantiate(_prefabSlot, _containerSlots);
-            _storeSlots.Add(storeSlot);
-            storeSlot.Init(slot);
+            _storeSlots[i].Init(_storeSlotsData[i]);
         }
     }
 
-    private void PaySlot(StoreSlotData data)
+    private void TrySellProduct(StoreSlot slot)
     {
-        foreach(var product in data.Products)
+        if (slot.StoreSlotData.IsOpenAds)
         {
-            _inventoryHolder.AddToInventory(product.ItemData, product.Amount);
+            _yandexAds.ShowRewardAd(() => AddItem(slot.StoreSlotData));
+        }
+        else
+        {
+            Billing.PurchaseProduct(slot.StoreSlotData.Id, (purchaseProduct) =>
+            {
+                OnProductBuyed?.Invoke();
+                AddItem(slot.StoreSlotData);
+            });
         }
     }
 
-    private void TrySellProduct(StoreSlotData data)
+    private void AddItem(StoreSlotData data)
     {
-        //Billing.PurchaseProduct(data.Id, (purchaseProduct) =>
-        //{
-        //    foreach (var product in data.Products)
-        //    {
-        //        _inventoryHolder.AddToInventory(product.ItemData, product.Amount);
-        //    }
-        //});
+        Dictionary<InventoryItemData, int> products = new Dictionary<InventoryItemData, int>();
+
+        foreach (var product in data.Products)
+        {
+            products.Add(product.ItemData, product.Amount);
+        }
+
+        OnBonusShown?.Invoke(products);
     }
 }

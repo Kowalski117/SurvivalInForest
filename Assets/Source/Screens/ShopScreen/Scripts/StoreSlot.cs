@@ -14,24 +14,14 @@ public class StoreSlot : MonoBehaviour
     [SerializeField] private Button _payButton;
     [SerializeField] private TMP_Text _priceText;
     [SerializeField] private ProductSlotView[] _slots;
+    [SerializeField] private GameObject _adsPoint;
+    [SerializeField] private GameObject _janPoint;
 
     private StoreSlotData _slotData;
-    private CatalogProduct _product;
 
-    public event UnityAction<StoreSlotData> OnPayButton;
+    public event UnityAction<StoreSlot> OnPayButton;
 
     public StoreSlotData StoreSlotData => _slotData;
-
-    //public CatalogProduct Product
-    //{
-    //    set
-    //    {
-    //        _product = value;
-    //        _priceText.text = _product.priceValue.ToString();
-    //        if (Uri.IsWellFormedUriString(value.imageURI, UriKind.Absolute))
-    //            StartCoroutine(DownloadAndSetProductImage(value.imageURI));
-    //    }
-    //}
 
     private void OnEnable()
     {
@@ -50,7 +40,19 @@ public class StoreSlot : MonoBehaviour
         _titleText.text = _slotData.Title;
         _descriptionText.text = _slotData.Description;
         _image.sprite = _slotData.Sprite;
+        _priceText.text = _slotData.Price.ToString();
         CreateProducts(_slotData);
+
+        if (_slotData.IsOpenAds)
+        {
+            _adsPoint.gameObject.SetActive(true);
+            _janPoint.gameObject.SetActive(false);
+        }
+        else
+        {
+            _adsPoint.gameObject.SetActive(false);
+            _janPoint.gameObject.SetActive(true);
+        }
     }
 
     public void CreateProducts(StoreSlotData storeSlot)
@@ -78,6 +80,6 @@ public class StoreSlot : MonoBehaviour
 
     public void PayButtonClick()
     {
-        OnPayButton?.Invoke(_slotData);
+        OnPayButton?.Invoke(this);
     }
 }

@@ -8,6 +8,7 @@ public class StoreSlotData : ScriptableObject
     [SerializeField] private string _description;
     [SerializeField] private Sprite _sprite;
     [SerializeField] private int _price;
+    [SerializeField] private bool _isOpenAds;
     [SerializeField] private Product[] _products;
 
     public string Id => _id;
@@ -15,6 +16,7 @@ public class StoreSlotData : ScriptableObject
     public string Description => _description;
     public Sprite Sprite => _sprite;
     public int Price => _price;
+    public bool IsOpenAds => _isOpenAds;
     public Product[] Products => _products;
 }
 
