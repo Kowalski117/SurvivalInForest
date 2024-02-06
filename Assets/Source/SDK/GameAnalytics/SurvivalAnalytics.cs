@@ -9,6 +9,8 @@ public class SurvivalAnalytics : Analytics
     [SerializeField] private FishingRod _fishingRod;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private CraftingHandler _craftingHandler;
+    [SerializeField] private ExchangeHandler _exchangeHandler;
+    [SerializeField] private SleepPanel _sleepPanel;
     [SerializeField] private SaveGame _saveGame;
 
     private void OnEnable()
@@ -27,12 +29,14 @@ public class SurvivalAnalytics : Analytics
 
         _buildTool.OnCompletedBuilding += PutBuilding;
         _craftingHandler.OnItemCrafted += CraftItem;
+        _exchangeHandler.OnExchangedItem += ExchangeItem;
+        _sleepPanel.OnPlayerSleeped += SleepPlayer;
 
         _timeHandler.OnDayUpdate += UpdateDay;
         _fishingRod.OnFishCaughted += CatchFish;
         _interactor.OnSeedPlanted += PlantSeed;
 
-        //_saveGame.OnAutoSaved += SaveAuto;
+        _saveGame.OnAutoSaved += SaveAuto;
     }
 
     private void OnDisable()
@@ -51,12 +55,14 @@ public class SurvivalAnalytics : Analytics
 
         _buildTool.OnCompletedBuilding -= PutBuilding;
         _craftingHandler.OnItemCrafted -= CraftItem;
+        _exchangeHandler.OnExchangedItem -= ExchangeItem;
+        _sleepPanel.OnPlayerSleeped -= SleepPlayer;
 
         _timeHandler.OnDayUpdate -= UpdateDay;
         _fishingRod.OnFishCaughted -= CatchFish;
         _interactor.OnSeedPlanted -= PlantSeed;
 
-        //_saveGame.OnAutoSaved -= SaveAuto;
+        _saveGame.OnAutoSaved -= SaveAuto;
     }
 
     private void DiePlayer()
@@ -127,6 +133,16 @@ public class SurvivalAnalytics : Analytics
     private void CraftItem()
     {
         GameAnalytics.OnComplete(GameAnalyticsConstants.CraftItem);
+    }
+
+    private void ExchangeItem()
+    {
+        GameAnalytics.OnComplete(GameAnalyticsConstants.ExchangeItem);
+    }
+
+    private void SleepPlayer()
+    {
+        GameAnalytics.OnComplete(GameAnalyticsConstants.SleepPlayer);
     }
 
     private void SaveAuto()

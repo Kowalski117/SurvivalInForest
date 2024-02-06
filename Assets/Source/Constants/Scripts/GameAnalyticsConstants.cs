@@ -14,6 +14,7 @@ public class GameAnalyticsConstants : MonoBehaviour
 
     public const string ScrollRoulette = "ScrollRoulette";
     public const string UseBuff = "UseBuff";
+    public const string BuyProduct = "BuyProduct";
 
     public const string DiePlayer = "DiePlayer";
     public const string RevivePlayer = "RevivePlayer";
@@ -29,6 +30,8 @@ public class GameAnalyticsConstants : MonoBehaviour
 
     public const string PutBuilding = "PutBuilding";
     public const string CraftItem = "CraftItem";
+    public const string ExchangeItem = "ExchangeItem";
+    public const string SleepPlayer = "SleepPlayer";
 
     public const string DayCount = "DayCount: ";
 
