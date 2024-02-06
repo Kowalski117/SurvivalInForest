@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ public class RouletteScrollHandler : MonoBehaviour
     private bool _isFirstScroll = true;
 
     public event UnityAction OnScroll;
+    public event UnityAction<Dictionary<InventoryItemData, int>> OnBonusShown;
 
     void Start()
     {
@@ -143,17 +145,23 @@ public class RouletteScrollHandler : MonoBehaviour
 
         yield return new WaitForSeconds(_minDelay);
 
-        if(_playerInventoryHolder.AddToInventory(_slot.InventorySlotUI.AssignedInventorySlot.ItemData, 1, _slot.InventorySlotUI.AssignedInventorySlot.ItemData.Durability))
-        {
-            _timer.SetLastClaimTime();
-        }
+        AddItem();
+        _timer.SetLastClaimTime();
 
-        if(!_revardImage.activeInHierarchy)
+        if (!_revardImage.activeInHierarchy)
             _revardImage.SetActive(true);
 
         _closeScreen.SetActive(true);
         _playerHandler.ToggleScreenPlayerInput(true);
         OnScroll?.Invoke();
+    }
+
+    private void AddItem()
+    {
+        Dictionary<InventoryItemData, int> items = new Dictionary<InventoryItemData, int>();
+        items.Add(_slot.InventorySlotUI.AssignedInventorySlot.ItemData, _slot.InventorySlotUI.AssignedInventorySlot.Size);
+
+        OnBonusShown?.Invoke(items);
     }
 
     private void Save()

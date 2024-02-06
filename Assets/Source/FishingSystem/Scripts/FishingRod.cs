@@ -2,7 +2,6 @@ using PixelCrushers.QuestMachine;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using static PixelCrushers.QuestMachine.Demo.DemoInventory;
 
 public class FishingRod : MonoBehaviour
 {

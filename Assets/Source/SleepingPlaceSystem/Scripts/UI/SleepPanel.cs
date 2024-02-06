@@ -1,6 +1,8 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 public class SleepPanel : ScreenUI
@@ -15,8 +17,9 @@ public class SleepPanel : ScreenUI
     private DateTime _sleepTime;
     private float _maximumDivisor = 3;
 
-    public static Action<bool> OnStoppedTime;
-    public static Action<float> OnSubtractTime;
+    public static event UnityAction<bool> OnStoppedTime;
+    public static event UnityAction<float> OnSubtractTime;
+    public event UnityAction OnPlayerSleeped;
 
     protected override void OnEnable()
     {
@@ -53,6 +56,7 @@ public class SleepPanel : ScreenUI
         _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
         _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
 
+        OnPlayerSleeped?.Invoke();
         OnStoppedTime?.Invoke(true);
         _survivalHandler.TimeHandler.ToggleEnable(true);
         _saveGame.Save();

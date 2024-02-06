@@ -19,7 +19,7 @@ public class MusicHandler : MonoBehaviour
         do
         {
             randomIndex = Random.Range(0, _musicClips.Length);
-        } while (randomIndex == _previousTrackIndex);
+        } while (randomIndex == _previousTrackIndex && _musicClips.Length > 1);
 
         _audioSource.clip = _musicClips[randomIndex];
         _audioSource.Play();

@@ -18,7 +18,7 @@ public class SaveGame : MonoBehaviour
 
     public event UnityAction<int> OnNotifyPlayer;
     public event UnityAction OnCloseNotifierPlayer;
-    //public event UnityAction OnAutoSaved;
+    public event UnityAction OnAutoSaved;
 
     public static event UnityAction OnSaveGame;
     public static event UnityAction OnLoadData;
@@ -32,37 +32,37 @@ public class SaveGame : MonoBehaviour
 
     private void Update()
     {
-        //if (_isAutoSave)
-        //{
-        //    _timer += Time.deltaTime;
+        if (_isAutoSave)
+        {
+            _timer += Time.deltaTime;
 
-        //    if (_timer >= _autoSaveDelay)
-        //    {
-        //        _timer = 0;
-        //        OnCloseNotifierPlayer?.Invoke();
-        //        _yandexAds.ShowInterstitial();
-        //        Save();
-        //        //OnAutoSaved?.Invoke();
-        //    }
+            if (_timer >= _autoSaveDelay)
+            {
+                _timer = 0;
+                OnCloseNotifierPlayer?.Invoke();
+                _yandexAds.ShowInterstitial();
+                Save();
+                OnAutoSaved?.Invoke();
+            }
 
-        //    if(_timer >= _autoSaveDelay - _notificationTime)
-        //    {
-        //        OnNotifyPlayer?.Invoke(_notificationTime);
-        //    }
-        //}
+            if (_timer >= _autoSaveDelay - _notificationTime)
+            {
+                OnNotifyPlayer?.Invoke(_notificationTime);
+            }
+        }
     }
 
     public void Save()
     {
         OnSaveGame?.Invoke();
 
-        //if(_saveCoroutine != null)
-        //{
-        //    StopCoroutine(_saveCoroutine);
-        //    _saveCoroutine = null;
-        //}
+        if (_saveCoroutine != null)
+        {
+            StopCoroutine(_saveCoroutine);
+            _saveCoroutine = null;
+        }
 
-        //_saveCoroutine = StartCoroutine(SetCloudSaveData());
+        _saveCoroutine = StartCoroutine(SetCloudSaveData());
     }
 
     public static void Load()
