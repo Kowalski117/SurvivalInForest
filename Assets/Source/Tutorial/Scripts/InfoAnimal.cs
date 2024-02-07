@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(InfoObject))]  
 public class InfoAnimal : MonoBehaviour
 {
     private Animals _animals;
-    private InfoObject _infoObject;
+    private InfoObject[] _infoObjects;
 
     private void Awake()
     {
         _animals = GetComponent<Animals>();
-        _infoObject = GetComponent<InfoObject>();
-        _infoObject.SetActive(false);
+        _infoObjects = GetComponentsInChildren<InfoObject>();
+
+        for (int i = 0; i < _infoObjects.Length; i++)
+        {
+            _infoObjects[i].SetActive(false);
+        }
     }
 
     private void OnEnable()
@@ -27,6 +28,9 @@ public class InfoAnimal : MonoBehaviour
 
     private void EnableInfoObject()
     {
-        _infoObject.SetActive(true);
+        for (int i = 0; i < _infoObjects.Length; i++)
+        {
+            _infoObjects[i].SetActive(true);
+        }
     }
 }

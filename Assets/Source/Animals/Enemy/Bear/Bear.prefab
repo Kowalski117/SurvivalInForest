@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 8136276669847925931}
   - component: {fileID: 5562905167441621571}
   - component: {fileID: 5285328058097791044}
+  - component: {fileID: 6566179069708984783}
   m_Layer: 8
   m_Name: Knee_R
   m_TagString: Untagged
@@ -188,6 +189,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6566179069708984783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309223429493763570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &310494438770606981
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +277,7 @@ GameObject:
   - component: {fileID: 3048892195984650442}
   - component: {fileID: 820101816284790398}
   - component: {fileID: 1100344174546722253}
+  - component: {fileID: 8170670028830416904}
   m_Layer: 8
   m_Name: Tail0_M
   m_TagString: Untagged
@@ -316,6 +331,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8170670028830416904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409182736277594114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &430911188808748641
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +419,7 @@ GameObject:
   - component: {fileID: 7707112778452075128}
   - component: {fileID: 3663492970734252182}
   - component: {fileID: 1501197636032155869}
+  - component: {fileID: 6496386419489323449}
   m_Layer: 8
   m_Name: Elbow_R
   m_TagString: Untagged
@@ -444,6 +473,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6496386419489323449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758710722530002371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &788486177985055017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,6 +1148,7 @@ GameObject:
   - component: {fileID: 7863176324943642844}
   - component: {fileID: 7260665854445092162}
   - component: {fileID: 8999538288234815383}
+  - component: {fileID: 2353772666428593627}
   m_Layer: 8
   m_Name: Head_M
   m_TagString: Untagged
@@ -1168,6 +1211,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2353772666428593627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3659606646544180523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &3673896159673725486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,7 +1769,6 @@ GameObject:
   - component: {fileID: 1216886111331905424}
   - component: {fileID: 581378204662578194}
   - component: {fileID: 7283345082452097666}
-  - component: {fileID: 7946270758774389120}
   - component: {fileID: 1915747330016113695}
   m_Layer: 8
   m_Name: Bear
@@ -2103,19 +2158,6 @@ MonoBehaviour:
   _agent: {fileID: 1377059864}
   _behaviour: {fileID: 1310134555670586107}
   _setAnimationAnimals: {fileID: 8802752881232221576}
---- !u!114 &7946270758774389120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5315341837002527602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!114 &1915747330016113695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2425,6 +2467,7 @@ GameObject:
   - component: {fileID: 1120232416622263363}
   - component: {fileID: 8204538084149367222}
   - component: {fileID: 5221365099301009066}
+  - component: {fileID: 1887994331071346586}
   m_Layer: 8
   m_Name: Chest_M
   m_TagString: Untagged
@@ -2480,6 +2523,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1887994331071346586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6697461530159271821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &6747862738392119279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2555,6 +2611,7 @@ GameObject:
   - component: {fileID: 3896518392697249932}
   - component: {fileID: 1706570026591358899}
   - component: {fileID: 6711068994653795561}
+  - component: {fileID: 2839831651799186234}
   m_Layer: 8
   m_Name: Elbow_L
   m_TagString: Untagged
@@ -2608,6 +2665,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2839831651799186234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7840140295201405310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &8232505759938453947
 GameObject:
   m_ObjectHideFlags: 0
@@ -2779,6 +2849,7 @@ GameObject:
   - component: {fileID: 1227010685743726839}
   - component: {fileID: 6053383841415190512}
   - component: {fileID: 4564019670374493111}
+  - component: {fileID: 5118773797766305821}
   m_Layer: 8
   m_Name: Knee_L
   m_TagString: Untagged
@@ -2832,6 +2903,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5118773797766305821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9093746980614291389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &9105686381254924703
 GameObject:
   m_ObjectHideFlags: 0

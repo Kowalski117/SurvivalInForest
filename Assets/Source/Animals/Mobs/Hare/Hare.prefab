@@ -277,6 +277,7 @@ GameObject:
   - component: {fileID: 2435383274983309197}
   - component: {fileID: 3730942946577873962}
   - component: {fileID: 8645260768514771248}
+  - component: {fileID: 4255722237976521549}
   m_Layer: 8
   m_Name: head
   m_TagString: Untagged
@@ -331,6 +332,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &4255722237976521549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438901395639408311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &2438967798923541881
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,7 +397,6 @@ GameObject:
   - component: {fileID: 4068232759512464486}
   - component: {fileID: 8914443898064383022}
   - component: {fileID: 802383032212110973}
-  - component: {fileID: 5595154843069478302}
   - component: {fileID: 4426800482558646301}
   m_Layer: 8
   m_Name: Hare
@@ -735,19 +748,6 @@ MonoBehaviour:
   _agent: {fileID: 1321323317006421455}
   _behaviour: {fileID: 8460797693642337893}
   _setAnimationAnimals: {fileID: 6897795007257843317}
---- !u!114 &5595154843069478302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2438967882976369583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!114 &4426800482558646301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1394,6 +1394,7 @@ GameObject:
   - component: {fileID: 2435538511567291799}
   - component: {fileID: 594337936679052957}
   - component: {fileID: 3780207954611373991}
+  - component: {fileID: 8117636638315215983}
   m_Layer: 8
   m_Name: spine2
   m_TagString: Untagged
@@ -1447,6 +1448,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &8117636638315215983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2440534863797325059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8716a3d3db299749a9e52023c3ca742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infoObjectSO: {fileID: 11400000, guid: a6e3f942ba127be488c1ba64184bc7fa, type: 2}
 --- !u!1 &2440579893736866155
 GameObject:
   m_ObjectHideFlags: 0
