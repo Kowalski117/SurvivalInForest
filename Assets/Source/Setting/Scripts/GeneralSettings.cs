@@ -103,7 +103,9 @@ public class GeneralSettings : MonoBehaviour
 
     private void AuthorizationButtonClick()
     {
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         PlayerAccount.Authorize();
+#endif
     }
 
     private void Save()

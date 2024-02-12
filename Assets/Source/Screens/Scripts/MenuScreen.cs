@@ -8,6 +8,17 @@ public class MenuScreen : ScreenUI
     [SerializeField] private Button _settingButton;
     [SerializeField] private Button _leaderboardButton;
 
+    protected override void Awake()
+    {
+        base.Awake();
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+        _leaderboardButton.gameObject.SetActive(true);
+#endif
+#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+        _leaderboardButton.gameObject.SetActive(false);
+#endif
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable();

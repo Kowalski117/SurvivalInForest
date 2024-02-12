@@ -6,6 +6,8 @@ public class FallDamage : MonoBehaviour
     private FirstPersonController _firstPersonController;
     private SurvivalHandler _survivalHandler;
 
+    private int _waterLayer = 4;
+    private bool _isLandedWater;
     private float _dropTimer;
     private float _minDropTimer = 1f;
     private float _maxDropTimer = 3f;
@@ -28,7 +30,7 @@ public class FallDamage : MonoBehaviour
             }
             else
             {
-                if (_dropTimer > 0)
+                if (_dropTimer > 0 && !_isLandedWater)
                 {
                     if (_minDropTimer < _dropTimer && _dropTimer < _maxDropTimer)
                     {
@@ -38,16 +40,25 @@ public class FallDamage : MonoBehaviour
                     }
                     else if(_dropTimer > _maxDropTimer)
                         _survivalHandler.PlayerHealth.LowerHealth(_maxDamage);
-
-                    _dropTimer = 0;
                 }
+
+                _dropTimer = 0;
+                _isLandedWater = false;
             }
         }
         else
         {
-            _dropTimer = 0; 
+            if(_dropTimer > 0)
+                _dropTimer = 0; 
         }
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == _waterLayer)
+            _isLandedWater = true;
+        else
+            _isLandedWater = false;
     }
 }
 

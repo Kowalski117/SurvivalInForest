@@ -8,6 +8,7 @@ public class LeaderboardScreen : ScreenUI
 
     private void Authorization()
     {
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         if (!YandexGamesSdk.IsInitialized)
             return;
 
@@ -22,6 +23,7 @@ public class LeaderboardScreen : ScreenUI
         {
             _authorizationPanel.OpenScreen();
         }
+#endif
     }
 
     public override void ToggleScreen()

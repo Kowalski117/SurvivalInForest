@@ -82,7 +82,7 @@ public class PlayerHealth : SurvivalAttribute, IDamagable
 
     public void LowerHealthDamage(float value)
     {
-        LowerHealth(value - _protectionValue.Protection);
+        LowerHealth(value * _protectionValue.GetProtectionPercent());
     }
 
     public void RestoringHealth()

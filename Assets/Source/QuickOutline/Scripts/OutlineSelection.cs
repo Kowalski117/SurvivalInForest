@@ -45,11 +45,6 @@ public class OutlineSelection : Raycast
                 outline.OutlineWidth = _outlineWidth;
                 outline.OutlineColor = _outlineColor;
             }
-
-            if (other.TryGetComponent(out Note note))
-            {
-                Debug.Log("gfdfsdfd");
-            }
         }
     }
 

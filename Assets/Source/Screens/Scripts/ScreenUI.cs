@@ -17,7 +17,7 @@ public class ScreenUI : MonoBehaviour
 
     public bool IsOpenPanel => IsOpenScreen;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         CloseScreen();
     }

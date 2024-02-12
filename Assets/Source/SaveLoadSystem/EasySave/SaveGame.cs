@@ -23,7 +23,6 @@ public class SaveGame : MonoBehaviour
     public static event UnityAction OnSaveGame;
     public static event UnityAction OnLoadData;
 
-
     private void Start()
     {
         if(_isSurvivalScene)
@@ -79,7 +78,7 @@ public class SaveGame : MonoBehaviour
 
     public void GetCloudSaveData()
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         //if (PlayerAccount.IsAuthorized)
         //    PlayerAccount.GetCloudSaveData(OnSuccessLoad, OnErrorLoad);
 #endif
@@ -89,7 +88,7 @@ public class SaveGame : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         if (!PlayerAccount.IsAuthorized)
             yield return null;
 

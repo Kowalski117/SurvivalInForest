@@ -52,11 +52,13 @@ public class StoreHandler : MonoBehaviour
         }
         else
         {
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
             Billing.PurchaseProduct(slot.StoreSlotData.Id, (purchaseProduct) =>
             {
                 OnProductBuyed?.Invoke();
                 AddItem(slot.StoreSlotData);
             });
+#endif
         }
     }
 
