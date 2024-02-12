@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class CatSceneAnalytics : Analytics
 {
     private CutScene _cutScene;

@@ -8,6 +8,8 @@ public class TransitionHandlerBetweenScenes : MonoBehaviour
     [SerializeField] private LoadPanel _loadPanel;
     [SerializeField] private int _transitionSceneIndex;
 
+    private bool _isActive = true;
+
     private void OnEnable()
     {
         _transitionWindow.OnExitButton += ExitScreen;
@@ -35,10 +37,19 @@ public class TransitionHandlerBetweenScenes : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out PlayerHealth playerHealth))
+        if (other.TryGetComponent(out PlayerHealth playerHealth) && _isActive)
         {
             _transitionWindow.ToggleScreen();
             _transitionWindow.SetNameScene(_loadPanel.GetNameSettingsScreen(_transitionSceneIndex));
+            _isActive = false;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerHealth playerHealth))
+        {
+            _isActive = true;
         }
     }
 }

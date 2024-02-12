@@ -38,7 +38,7 @@ MonoBehaviour:
   - id: 1
     fields:
     - title: Name
-      value: Player
+      value: "\u0418\u0433\u0440\u043E\u043A"
       type: 0
       typeString: CustomFieldType_Text
     - title: Pictures
@@ -56,7 +56,23 @@ MonoBehaviour:
     - title: Guid
       value: 38a4b714-78e1-4900-922d-adb37f52dfda
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
+    - title: Display Name
+      value: "\u0418\u0433\u0440\u043E\u043A"
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Display Name ru
+      value: 
+      type: 4
+      typeString: CustomFieldType_Localization
+    - title: Display Name en
+      value: 
+      type: 4
+      typeString: CustomFieldType_Localization
+    - title: Display Name tr
+      value: 
+      type: 4
+      typeString: CustomFieldType_Localization
     portrait: {fileID: 2800000, guid: 82de6fe096b6e9e42bbd0c6ae5ffdc1f, type: 3}
     spritePortrait: {fileID: 21300000, guid: 82de6fe096b6e9e42bbd0c6ae5ffdc1f, type: 3}
     alternatePortraits: []
@@ -64,7 +80,7 @@ MonoBehaviour:
   - id: 2
     fields:
     - title: Name
-      value: NPC
+      value: "\u0416\u0438\u0442\u0435\u043B\u044C"
       type: 0
       typeString: CustomFieldType_Text
     - title: Pictures
@@ -83,6 +99,22 @@ MonoBehaviour:
       value: 41ba0be9-5ccc-48a8-b95d-c89af2b3f8bb
       type: 0
       typeString: CustomFieldType_Text
+    - title: Display Name
+      value: "\u0416\u0438\u0442\u0435\u043B\u044C"
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Display Name ru
+      value: "\u0416\u0438\u0442\u0435\u043B\u044C"
+      type: 4
+      typeString: CustomFieldType_Localization
+    - title: Display Name tr
+      value: Oturan
+      type: 4
+      typeString: CustomFieldType_Localization
+    - title: Display Name en
+      value: Inhabitant
+      type: 4
+      typeString: CustomFieldType_Localization
     portrait: {fileID: 2800000, guid: 0dc3cb24472312b4bbe22e50041d6c7b, type: 3}
     spritePortrait: {fileID: 21300000, guid: deeae33315027e045bf104c3f198179d, type: 3}
     alternatePortraits: []
@@ -118,19 +150,6 @@ MonoBehaviour:
       value: False
       type: 2
       typeString: CustomFieldType_Boolean
-    - title: Description ru
-      value: "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044F \u0441\u043E\u0431\u0440\u0430\u0442\u044C
-        \u044F\u0433\u043E\u0434\u044B"
-      type: 4
-      typeString: CustomFieldType_Localization
-    - title: Description en
-      value: "\u0415\u043D"
-      type: 4
-      typeString: CustomFieldType_Localization
-    - title: Description tr
-      value: "\u0422\u0440"
-      type: 4
-      typeString: CustomFieldType_Localization
     - title: Trackable
       value: True
       type: 2
@@ -140,45 +159,9 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     - title: Entry Count
-      value: 1
+      value: 0
       type: 1
       typeString: CustomFieldType_Number
-    - title: Entry 1 State
-      value: active
-      type: 0
-      typeString: CustomFieldType_QuestState
-    - title: Entry 1
-      value: 
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Entry 1 ru
-      value: "\u0412\u043E\u0442 \u0441\u0442\u043E\u043B\u044C\u043A\u043E"
-      type: 4
-      typeString: CustomFieldType_Localization
-    - title: Entry 1 en
-      value: engld
-      type: 4
-      typeString: CustomFieldType_Localization
-    - title: Entry 1 tr
-      value: turr
-      type: 4
-      typeString: CustomFieldType_Localization
-    - title: Display Name
-      value: 
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Display Name ru
-      value: "\u041F\u043E\u0434\u043D\u044F\u0442\u044C"
-      type: 4
-      typeString: CustomFieldType_Localization
-    - title: Display Name en
-      value: Pick
-      type: 4
-      typeString: CustomFieldType_Localization
-    - title: Display Name tr
-      value: trrr
-      type: 4
-      typeString: CustomFieldType_Localization
   locations: []
   variables:
   - id: 1
@@ -387,7 +370,7 @@ MonoBehaviour:
         destinationDialogueID: 3
         isConnector: 0
         priority: 2
-      conditionsString: CurrentQuestState("PickBerry") == "unassigned"
+      conditionsString: CurrentQuestState("BerryPicking") == "unassigned"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -395,7 +378,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 80
-        y: 134
+        y: 131.05884
         width: 160
         height: 30
     - id: 2
@@ -2439,7 +2422,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 704
-        y: 2822
+        y: 2820.3606
         width: 160
         height: 30
     - id: 34
@@ -2891,7 +2874,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "\u0422\u0435\u0431\u0435 \u043D\u0443\u0436\u043D\u043E \u0432\u043E\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0442\u044C
+        value: "\u0422\u0435\u0431\u0435 \u043D\u0443\u0436\u043D\u043E \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0442\u044C
           \u0441\u0438\u043B\u044B, \u0441\u043E\u0431\u0435\u0440\u0438 \u044F\u0433\u043E\u0434\u044B
           \u0438 \u043F\u0440\u0438\u043D\u0435\u0441\u0438 \u0438\u0445 \u043C\u043D\u0435."
         type: 0
@@ -2901,15 +2884,18 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0422\u0435\u0431\u0435 \u043D\u0443\u0436\u043D\u043E \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0442\u044C
+          \u0441\u0438\u043B\u044B, \u0441\u043E\u0431\u0435\u0440\u0438 \u044F\u0433\u043E\u0434\u044B
+          \u0438 \u043F\u0440\u0438\u043D\u0435\u0441\u0438 \u0438\u0445 \u043C\u043D\u0435."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: You need to recuperate, pick some berries and bring them to me.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "G\xFCc\xFCn\xFC yeniden kazanman, biraz meyve toplay\u0131p bana
+          getirmen gerekiyor."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -2938,7 +2924,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 704
-        y: 2990
+        y: 2988.3606
         width: 160
         height: 30
     - id: 41
@@ -2973,15 +2959,16 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u042F \u043F\u043E\u0434\u0441\u043A\u0430\u0436\u0443 \u043C\u043E\u0436\u043D\u043E
+          \u0438\u0445 \u0435\u0441\u0442\u044C \u0438\u043B\u0438 \u043D\u0435\u0442."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: I'll tell you whether you can eat them or not.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "Bunlar\u0131 yiyip yiyemeyece\u011Finizi size s\xF6yleyece\u011Fim."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3036,7 +3023,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "\u0425\u043E\u0440\u043E\u0448\u043E"
+        value: "\u0425\u043E\u0440\u043E\u0448\u043E."
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3044,21 +3031,21 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0425\u043E\u0440\u043E\u0448\u043E."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: Fine.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "\u0130yi."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
         value: 11d3b658-d72d-4da6-9782-8e294a2a77ce
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       conversationID: 1
       isRoot: 0
       isGroup: 0
@@ -3068,17 +3055,17 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 'SetQuestState("PickBerry", "active");
+      userScript: 'GiveQuest("NPC","BerryPicking");
 
-        ShowAlert("New
-        Quest: PickBerry")'
+        SetQuestState("TalkResident",
+        "success")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 704
-        y: 3158
+        x: 701.9591
+        y: 3160.3257
         width: 160
         height: 30
     - id: 43
@@ -3112,15 +3099,15 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0422\u044B \u0441\u043E\u0431\u0440\u0430\u043B \u044F\u0433\u043E\u0434\u044B?"
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: Have you picked the berries?
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "\xC7ilekleri toplad\u0131n\u0131z m\u0131?"
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3147,7 +3134,7 @@ MonoBehaviour:
         destinationDialogueID: 45
         isConnector: 0
         priority: 2
-      conditionsString: CurrentQuestState("PickBerry") == "active"
+      conditionsString: CurrentQuestState("BerryPicking") == "active"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -3181,7 +3168,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "\u0415\u0449\u0435 \u043D\u0435\u0442"
+        value: "\u0415\u0449\u0435 \u043D\u0435\u0442."
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3189,15 +3176,15 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0415\u0449\u0435 \u043D\u0435\u0442."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: Not yet.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "Hen\xFCz de\u011Fil."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3212,7 +3199,7 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: GetQuestNodeState("PickBerry", "PickBerrys")  == "active"
+      conditionsString: GetQuestNodeState("BerryPicking", "Pick")  == "active"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -3246,7 +3233,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "\u0414\u0430 \u0434\u0435\u0440\u0436\u0438"
+        value: "\u0414\u0430, \u0434\u0435\u0440\u0436\u0438."
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3254,15 +3241,15 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0414\u0430, \u0434\u0435\u0440\u0436\u0438."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: Yes, here you go.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "Evet s\u0131ra sende."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3283,7 +3270,7 @@ MonoBehaviour:
         destinationDialogueID: 46
         isConnector: 0
         priority: 2
-      conditionsString: GetQuestNodeState("PickBerry", "Return")  == "active"
+      conditionsString: GetQuestNodeState("BerryPicking", "Return")  == "active"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -3291,7 +3278,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 496.30786
-        y: 218
+        y: 219.09888
         width: 160
         height: 30
     - id: 46
@@ -3317,8 +3304,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "\u0414\u0430 \u044D\u0442\u043E \u0441\u044A\u0435\u0434\u043E\u0431\u044B\u043D\u0435
-          \u044F\u0433\u043E\u0434\u044B. \u041F\u043E \u043D\u0430\u0447\u0430\u043B\u0443
+        value: "\u0414\u0430 \u044D\u0442\u043E \u0441\u044A\u0435\u0434\u043E\u0431\u043D\u044B\u0435
+          \u044F\u0433\u043E\u0434\u044B. \u041F\u043E\u043D\u0430\u0447\u0430\u043B\u0443
           \u043C\u043E\u0436\u0435\u0448\u044C \u043F\u0438\u0442\u0430\u0442\u044C\u0441\u044F
           \u0438\u043C\u0438."
         type: 0
@@ -3328,15 +3315,19 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0414\u0430 \u044D\u0442\u043E \u0441\u044A\u0435\u0434\u043E\u0431\u043D\u044B\u0435
+          \u044F\u0433\u043E\u0434\u044B. \u041F\u043E\u043D\u0430\u0447\u0430\u043B\u0443
+          \u043C\u043E\u0436\u0435\u0448\u044C \u043F\u0438\u0442\u0430\u0442\u044C\u0441\u044F
+          \u0438\u043C\u0438."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: Yes, these are edible berries. At first you can eat them.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "Evet bunlar yenilebilir meyveler. \u0130lk ba\u015Fta onlar\u0131
+          yiyebilirsiniz."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3401,15 +3392,17 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0415\u0441\u0442\u044C \u0435\u0449\u0435 \u044F\u0431\u043B\u043E\u043A\u0438,
+          \u043C\u043E\u0436\u0435\u0448\u044C \u0441\u043E\u0431\u0438\u0440\u0430\u0442\u044C
+          \u0438\u0445."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: There are still apples, you can pick them.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "Hala elmalar var, onlar\u0131 toplayabilirsin."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3476,15 +3469,21 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0414\u043B\u044F \u0443\u0442\u043E\u043B\u0435\u043D\u0438\u044F
+          \u0436\u0430\u0436\u0434\u044B \u043C\u043E\u0436\u0435\u0448\u044C \u0435\u0441\u0442\u044C
+          \u0444\u0440\u0443\u043A\u0442\u044B, \u044F\u0433\u043E\u0434\u044B \u0438
+          \u043D\u0430\u0431\u0438\u0440\u0430\u0442\u044C \u0432\u043E\u0434\u0443
+          \u0441 \u043A\u043E\u043B\u043E\u0434\u0446\u0430."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: To quench your thirst, you can eat fruits, berries and draw water
+          from the well.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: "Susuzlu\u011Funuzu gidermek i\xE7in meyve, \xE7ilek yiyebilir ve
+          kuyudan su \xE7ekebilirsiniz."
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3500,7 +3499,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: SetQuestState("PickBerry", "success")
+      userScript: SetQuestState("BerryPicking", "success")
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3533,7 +3532,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "\u0412\u043E\u0442 \u0438 \u0432\u0441\u0435"
+        value: "\u0412\u043E\u0442 \u0438 \u0432\u0441\u0435."
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3541,15 +3540,15 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: ru
-        value: 
+        value: "\u0412\u043E\u0442 \u0438 \u0432\u0441\u0435."
         type: 4
         typeString: CustomFieldType_Localization
       - title: en
-        value: 
+        value: That's all.
         type: 4
         typeString: CustomFieldType_Localization
       - title: tr
-        value: 
+        value: Bu kadar.
         type: 4
         typeString: CustomFieldType_Localization
       - title: Guid
@@ -3564,7 +3563,7 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: CurrentQuestState("PickBerry") == "success"
+      conditionsString: CurrentQuestState("BerryPicking") == "success"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -3576,8 +3575,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 465.51584, y: 3005.8171}
-    canvasZoom: 0.6999998
+    canvasScrollPosition: {x: 5.882324, y: 0}
+    canvasZoom: 0.33999997
   syncInfo:
     syncActors: 0
     syncItems: 0

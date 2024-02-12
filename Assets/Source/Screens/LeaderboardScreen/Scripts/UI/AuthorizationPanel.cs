@@ -20,8 +20,9 @@ public class AuthorizationPanel : ScreenUI
 
     private void AuthorizationButtonClick()
     {
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         PlayerAccount.Authorize();
-
+#endif
         CloseScreen();
     }
 

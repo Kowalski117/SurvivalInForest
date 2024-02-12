@@ -26,6 +26,18 @@ public class PauseScreen : MenuScreen
     public event UnityAction OnContinueButton;
     public event UnityAction OnSaveButton;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+        _shopButton.gameObject.SetActive(true);
+#endif
+#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+        _shopButton.gameObject.SetActive(false);
+#endif
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable();

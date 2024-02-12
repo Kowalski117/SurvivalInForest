@@ -1,7 +1,6 @@
 using Agava.YandexGames;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityRenderer;
+//using CrazyGames;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.Events;
 
 public class YandexAds : MonoBehaviour
@@ -9,28 +8,30 @@ public class YandexAds : MonoBehaviour
     [SerializeField] private AudioHandler _audioHandler;
     [SerializeField] private PlayerHandler _playerInputHandler;
 
-    private bool _isCursorEnable = false;
-
     public void ShowInterstitial()
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         InterstitialAd.Show(OnAdOpen, OnIterstitialAddClose);
 #endif
+//#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+//        CrazyAds.Instance.beginAdBreak();
+//#endif
     }
 
     public void ShowRewardAd(UnityAction OnReceiveAward)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         VideoAd.Show(() => OnAdOpen(), () => OnReceiveAward?.Invoke(), () => OnAdClose(), null);
 #endif
+//#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+//        CrazyAds.Instance.beginAdBreakRewarded(() => OnReceiveAward?.Invoke());
+//#endif
     }
 
     public void OnAdOpen()
     {
         _audioHandler.FadeIn();
 
-        _isCursorEnable = _playerInputHandler.IsCursorEnable;
-        Debug.Log(_isCursorEnable + "0");
         if (_playerInputHandler)
         {
             _playerInputHandler.ToggleAllParametrs(false);
