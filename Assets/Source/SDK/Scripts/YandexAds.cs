@@ -1,5 +1,5 @@
 using Agava.YandexGames;
-using CrazyGames;
+//using CrazyGames;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,9 +13,9 @@ public class YandexAds : MonoBehaviour
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         InterstitialAd.Show(OnAdOpen, OnIterstitialAddClose);
 #endif
-#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
-        CrazyAds.Instance.beginAdBreak();
-#endif
+//#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+//        CrazyAds.Instance.beginAdBreak();
+//#endif
     }
 
     public void ShowRewardAd(UnityAction OnReceiveAward)
@@ -23,9 +23,9 @@ public class YandexAds : MonoBehaviour
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         VideoAd.Show(() => OnAdOpen(), () => OnReceiveAward?.Invoke(), () => OnAdClose(), null);
 #endif
-#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
-        CrazyAds.Instance.beginAdBreakRewarded(() => OnReceiveAward?.Invoke());
-#endif
+//#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+//        CrazyAds.Instance.beginAdBreakRewarded(() => OnReceiveAward?.Invoke());
+//#endif
     }
 
     public void OnAdOpen()

@@ -3,7 +3,7 @@ using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GameAnalyticsSDK;
-using CrazyGames;
+//using CrazyGames;
 
 public class InitializationSDK : MonoBehaviour
 {
@@ -16,9 +16,9 @@ public class InitializationSDK : MonoBehaviour
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         YandexGamesSdk.CallbackLogging = true;
 #endif
-#if UNITY_WEBGL && !UNITY_EDITOR
-        InitAnalytics();
-#endif
+//#if UNITY_WEBGL && !UNITY_EDITOR
+//        InitAnalytics();
+//#endif
     }
 
     private IEnumerator Start()
@@ -27,10 +27,10 @@ public class InitializationSDK : MonoBehaviour
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         yield return YandexGamesSdk.Initialize(OnInitializedYG);
 #endif
-#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
-        yield return CrazySDK.Instance.IsInitialized;
-        OnInitializedCG();
-#endif
+//#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+//        yield return CrazySDK.Instance.IsInitialized;
+//        OnInitializedCG();
+//#endif
     }
 
     private void OnInitializedYG()
