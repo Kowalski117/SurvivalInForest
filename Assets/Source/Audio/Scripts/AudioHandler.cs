@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
-using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Playables;
-using UnityEngine.Rendering;
 
 public class AudioHandler : MonoBehaviour
 {
