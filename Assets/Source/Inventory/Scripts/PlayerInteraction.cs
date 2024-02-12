@@ -211,16 +211,15 @@ public class PlayerInteraction : Raycast
 
     public void UpdateDurabilityItem(InventorySlot inventorySlot)
     {
-        if (_hotbarDisplay.CurrentSlot.AssignedInventorySlot.ItemData is FoodItemData foodItemData)
+        if (_hotbarDisplay.CurrentSlot.AssignedInventorySlot.ItemData is FoodItemData foodItemData && inventorySlot == _hotbarDisplay.CurrentSlot.AssignedInventorySlot)
             return;
 
         if (inventorySlot.Durability > 0)
         {
-            if(inventorySlot.ItemData is ToolItemData toolItemData && toolItemData.ToolType == ToolType.Torch)
+            if (inventorySlot.ItemData is ToolItemData toolItemData && toolItemData.ToolType == ToolType.Torch)
                 inventorySlot.LowerStrength(1 / 5);
             else
                 inventorySlot.LowerStrength(1);
-
 
             if (inventorySlot.Durability <= 0)
             {
