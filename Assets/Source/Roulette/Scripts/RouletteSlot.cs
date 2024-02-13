@@ -9,9 +9,9 @@ public class RouletteSlot : MonoBehaviour
         InventorySlotUI = GetComponentInChildren<InventorySlotUI>();
     }
 
-    public void Init(InventoryItemData inventoryItemData)
+    public void Init(InventoryItem inventoryItemData)
     {
-        InventorySlotUI.AssignedInventorySlot.AssignItem(inventoryItemData, 1, inventoryItemData.Durability);
+        InventorySlotUI.AssignedInventorySlot.AssignItem(inventoryItemData.ItemData, inventoryItemData.Amount, inventoryItemData.ItemData.Durability);
         InventorySlotUI.UpdateUiSlot();
     }
 

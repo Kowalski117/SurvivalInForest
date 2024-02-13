@@ -15,7 +15,8 @@ public class RouletteScrollHandler : MonoBehaviour
     [SerializeField] private Timer _timer;
     [SerializeField] private YandexAds _andexAds;
     [SerializeField] private GameObject _revardImage;
-    [SerializeField] private GameObject _closeScreen;
+    [SerializeField] private Button _closeScreen;
+    [SerializeField] private Button _buttonScroll;
 
     private ItemsSpawner _spawner;
     private Tween _tween;
@@ -84,7 +85,9 @@ public class RouletteScrollHandler : MonoBehaviour
             _tween.Kill();
         }
 
-        _closeScreen.SetActive(false);
+        _closeScreen.enabled = false;
+        _buttonScroll.enabled = false;
+
         _twistCoroutine = StartCoroutine(StartScroll());
     }
 
@@ -151,7 +154,9 @@ public class RouletteScrollHandler : MonoBehaviour
         if (!_revardImage.activeInHierarchy)
             _revardImage.SetActive(true);
 
-        _closeScreen.SetActive(true);
+        _closeScreen.enabled = true;
+        _buttonScroll.enabled = true;
+
         _playerHandler.ToggleScreenPlayerInput(true);
         OnScroll?.Invoke();
     }
