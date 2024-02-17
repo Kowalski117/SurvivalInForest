@@ -59,12 +59,14 @@ public class GeneralSettings : MonoBehaviour
 
     private void ChangeSensitivity(float value)
     {
-        _playerInputHandler.FirstPersonController.UpdateRotationSpeed(value);
+        if(_playerInputHandler)
+            _playerInputHandler.FirstPersonController.UpdateRotationSpeed(value);
     }
 
     private void ChangeAutomaticCollection(bool value)
     {
-        _playerInputHandler.Interactor.UpdateIsKeyPickUp(value);
+        if (_playerInputHandler)
+            _playerInputHandler.Interactor.UpdateIsKeyPickUp(value);
     }
 
     private void ChangeActiveTipsInput(bool value)

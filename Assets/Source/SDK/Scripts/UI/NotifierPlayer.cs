@@ -5,13 +5,13 @@ public class NotifierPlayer : MonoBehaviour
 {
     [SerializeField] SaveGame _saveGame;
     [SerializeField] private TMP_Text _textTimer;
-    [SerializeField] private Transform _panel;
+    [SerializeField] private AnimationUI _animationUI;
 
     private float _timer;
 
     private void Awake()
     {
-        _panel.gameObject.SetActive(false);
+        _animationUI.CloseAnimation();
     }
 
     private void OnEnable()
@@ -37,16 +37,17 @@ public class NotifierPlayer : MonoBehaviour
 
     private void UpdateTimer(int time)
     {
-        if (!_panel.gameObject.activeInHierarchy)
+        if (!_animationUI.IsOpen)
         {
-            _panel.gameObject.SetActive(true);
+            _animationUI.SetActivePanel(true);
+            _animationUI.OpenAnimation();
             _timer = time;
         }
     }
 
     private void CloseTimer()
     {
-        if (_panel.gameObject.activeInHierarchy)
-            _panel.gameObject.SetActive(false);
+        if (_animationUI.IsOpen)
+            _animationUI.CloseAnimation();
     }
 }

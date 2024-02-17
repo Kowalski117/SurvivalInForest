@@ -15490,6 +15490,8 @@ GameObject:
   - component: {fileID: 6081383169742709960}
   - component: {fileID: 9118074335009250101}
   - component: {fileID: 5173032995350395865}
+  - component: {fileID: 279466769}
+  - component: {fileID: 279466770}
   m_Layer: 5
   m_Name: SettingPanel
   m_TagString: Untagged
@@ -15541,8 +15543,9 @@ MonoBehaviour:
   PlayerInputHandler: {fileID: 0}
   _inventoryHandler: {fileID: 0}
   _panel: {fileID: 6511080264347485730}
+  _animationUI: {fileID: 279466769}
   _exitButton: {fileID: 7370603071489179650}
-  _isOpenMainMenu: 1
+  _isOpenMainMenu: 0
   _panelsOpenMainMenu:
   - {fileID: 627479200510423374}
   - {fileID: 2251733253921403967}
@@ -15632,6 +15635,57 @@ MonoBehaviour:
   - {fileID: 1962283500423893270}
   _mobillePanels:
   - {fileID: 156860925822721004}
+--- !u!114 &279466769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511080264347485735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e8b10283b2d024094a96abe82c160a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Panel: {fileID: 6970781722459210577}
+  DurationAnim: 0.3
+  _delayGroup: 0.3
+  CanvasGroup: {fileID: 6511080264347485730}
+  Children: []
+  IsStartingInOrder: 0
+  IsUseDelayGroup: 1
+  _scaleMin: {x: 0, y: 0, z: 0}
+  _scaleMax: {x: 1, y: 1, z: 1}
+--- !u!114 &279466770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511080264347485735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &6549190379178432201
 GameObject:
   m_ObjectHideFlags: 0

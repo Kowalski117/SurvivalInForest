@@ -2,7 +2,6 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 public class SleepPanel : ScreenUI
@@ -56,6 +55,7 @@ public class SleepPanel : ScreenUI
         _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
         _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
 
+        PlayerInputHandler.SetActiveCollider(true);
         OnPlayerSleeped?.Invoke();
         OnStoppedTime?.Invoke(true);
         _survivalHandler.TimeHandler.ToggleEnable(true);

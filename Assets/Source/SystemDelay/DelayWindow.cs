@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class DelayWindow : MonoBehaviour
 {
-    [SerializeField] private Transform _loadingPanel;
+    [SerializeField] private AnimationUI _animationUI;
     [SerializeField] private Image _loadingBar;
     [SerializeField] private TimeHandler _timeHandler;
     [SerializeField] private SurvivalHandler _survivalHandler;
@@ -28,6 +28,7 @@ public class DelayWindow : MonoBehaviour
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
+        _animationUI.CloseAnimation();
     }
 
     public void ShowLoadingWindow(float delay, float skipTime, string name, ActionType actionType)
@@ -55,7 +56,7 @@ public class DelayWindow : MonoBehaviour
         //_playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleCamera(false);
 
-        _loadingPanel.gameObject.SetActive(true);
+        _animationUI.OpenAnimation();
 
         _time = _time + TimeSpan.FromHours(skipTime);
 
@@ -84,7 +85,7 @@ public class DelayWindow : MonoBehaviour
         _survivalHandler.Hunger.LowerValueInFours(skipTime / _maximumDivisor);
         _survivalHandler.Thirst.LowerValueInFours(skipTime / _maximumDivisor);
         _survivalHandler.TimeHandler.ToggleEnable(true);
-        _loadingPanel.gameObject.SetActive(false);
+        _animationUI.CloseAnimation();
 
         _playerInputHandler.ToggleAllInput(true);
         _playerInputHandler.TogglePersonController(true);

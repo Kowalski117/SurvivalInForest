@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class Timer : MonoBehaviour
 
     private UniqueID _uniqueId;
     private string _defoultTime = "00:00:00";
+    private bool _isPlaying = false;
+    
+    public event UnityAction OnTimerExpired;
+
     public bool IsClaimReward { get; private set; }
 
     public DateTime? LastClaimTime
@@ -40,7 +45,14 @@ public class Timer : MonoBehaviour
     public void UpdateRewardsUI()
     {
         if (IsClaimReward)
+        {
             _statusText.text = _defoultTime;
+
+            if(_isPlaying)
+                OnTimerExpired?.Invoke();
+
+            _isPlaying = false;
+        }
         else
         {
             if (LastClaimTime.HasValue)
@@ -49,6 +61,8 @@ public class Timer : MonoBehaviour
                 var currentClaimCooldown = nextClaimTime - DateTime.UtcNow;
 
                 _statusText.text = $"{currentClaimCooldown.Hours:D2}:{currentClaimCooldown.Minutes:D2}:{currentClaimCooldown.Seconds:D2}";
+
+                _isPlaying = true;
             }
         }
     }

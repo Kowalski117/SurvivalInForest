@@ -80,11 +80,13 @@ public class PauseScreen : MenuScreen
                 PlayerInputHandler.ToggleAllInput(false);
             }
 
+            PlayerInputHandler.ToggleHotbarDisplay(false);
             PlayerInputHandler.ToggleAllParametrs(false);
             PlayerInputHandler.SetActiveCollider(false);
         }
         else
         {
+            PlayerInputHandler.ToggleHotbarDisplay(true);
             PlayerInputHandler.ToggleAllParametrs(true);
             PlayerInputHandler.SetActiveCollider(true);
             CloseAllScreens();

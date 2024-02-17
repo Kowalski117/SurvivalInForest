@@ -7,6 +7,7 @@ public class StatsBuff : MonoBehaviour
 {
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private Button _buffButton;
+    [SerializeField] private AnimationUI _animationUI;
     [SerializeField] private YandexAds _andexAds;
 
     private float _minPercent = 0.3f;
@@ -17,6 +18,10 @@ public class StatsBuff : MonoBehaviour
 
     public event UnityAction OnUseBuff;
 
+    private void Awake()
+    {
+        _animationUI.CloseAnimation();
+    }
 
     private void OnEnable()
     {
@@ -34,13 +39,16 @@ public class StatsBuff : MonoBehaviour
         {
             if (_survivalHandler.Hunger.ValuePercent < _minPercent || _survivalHandler.Thirst.ValuePercent < _minPercent || _survivalHandler.Sleep.ValuePercent < _minPercent)
             {
-                if (!_buffButton.gameObject.activeInHierarchy)
-                    _buffButton.gameObject.SetActive(true);
+                if (!_animationUI.IsOpen)
+                {
+                    _animationUI.SetActivePanel(true);
+                    _animationUI.OpenAnimation();
+                }
             }
-            else if (_survivalHandler.Hunger.ValuePercent < _maxPercent && _survivalHandler.Thirst.ValuePercent < _maxPercent && _survivalHandler.Sleep.ValuePercent < _maxPercent)
+            else if (_survivalHandler.Hunger.ValuePercent > _maxPercent && _survivalHandler.Thirst.ValuePercent > _maxPercent && _survivalHandler.Sleep.ValuePercent > _maxPercent)
             {
-                if (_buffButton.gameObject.activeInHierarchy)
-                    _buffButton.gameObject.SetActive(false);
+                if (_animationUI.IsOpen)
+                    _animationUI.CloseAnimation();
             }
         }
     }
@@ -64,7 +72,8 @@ public class StatsBuff : MonoBehaviour
 
     private IEnumerator WaitForSeconds()
     {
-        _buffButton.gameObject.SetActive(false);
+        _animationUI.CloseAnimation();
+
         _isActive = false;
 
         yield return new WaitForSeconds(_delay);
