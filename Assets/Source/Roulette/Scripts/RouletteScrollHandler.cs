@@ -14,9 +14,10 @@ public class RouletteScrollHandler : MonoBehaviour
     [SerializeField] private RouletteSlot _slot;
     [SerializeField] private Timer _timer;
     [SerializeField] private YandexAds _andexAds;
-    [SerializeField] private GameObject _revardImage;
+    [SerializeField] private ScreenAnimation _revardImage;
     [SerializeField] private Button _closeScreen;
     [SerializeField] private Button _buttonScroll;
+    [SerializeField] private Transform _container;
 
     private ItemsSpawner _spawner;
     private Tween _tween;
@@ -28,24 +29,30 @@ public class RouletteScrollHandler : MonoBehaviour
     private float _delay = 10f;
     private float _minDelay = 0.5f;
     private bool _isFirstScroll = true;
+    private bool _isScroll = false;
 
     public event UnityAction OnScroll;
     public event UnityAction<Dictionary<InventoryItemData, int>> OnBonusShown;
 
-    void Start()
+    private void Awake()
     {
         _spawner = GetComponent<ItemsSpawner>();
 
+        Load();
+
         if (_isFirstScroll)
-        {
-            _revardImage.SetActive(false);
-        }
+            _revardImage.Close();
+        else
+            _revardImage.Open();
     }
 
     private void OnEnable()
     {
         _screen.OnOpenScreen += StartCoroutine;
         _screen.OnCloseScreen += StopCoroutine;
+
+        _timer.OnTimerExpired += ExpireTimer;
+
         SaveGame.OnSaveGame += Save;
         SaveGame.OnSaveGame += Load;
     }
@@ -54,6 +61,9 @@ public class RouletteScrollHandler : MonoBehaviour
     {
         _screen.OnOpenScreen -= StartCoroutine;
         _screen.OnCloseScreen -= StopCoroutine;
+
+        _timer.OnTimerExpired -= ExpireTimer;
+
         SaveGame.OnSaveGame -= Save;
         SaveGame.OnSaveGame -= Load;
     }
@@ -62,8 +72,6 @@ public class RouletteScrollHandler : MonoBehaviour
     {
         if (!_timer.IsClaimReward)
             return;
-
-        _playerHandler.ToggleScreenPlayerInput(false);
 
         if (_isFirstScroll)
         {
@@ -115,6 +123,9 @@ public class RouletteScrollHandler : MonoBehaviour
         }
 
         _claimCoroutine = StartCoroutine(RewardsStateUpdate());
+
+        if(!_isScroll)
+            _container.localPosition = Vector2.zero;
     }
 
     private IEnumerator RewardsStateUpdate()
@@ -125,6 +136,12 @@ public class RouletteScrollHandler : MonoBehaviour
         StartCoroutine();
     }
 
+    private void ExpireTimer()
+    {
+        _revardImage.Open();
+        _buttonScroll.enabled = true;
+    }
+
     private void UpdateRewardsState()
     {
         _timer.IsCheckState();
@@ -133,6 +150,8 @@ public class RouletteScrollHandler : MonoBehaviour
 
     private IEnumerator StartScroll()
     {
+        _playerHandler.ToggleScreenPlayerInput(false);
+        _isScroll = true;
         _spawner.SpawnItems();
         yield return _scrollRect.normalizedPosition = Vector2.zero;
 
@@ -151,14 +170,12 @@ public class RouletteScrollHandler : MonoBehaviour
         AddItem();
         _timer.SetLastClaimTime();
 
-        if (!_revardImage.activeInHierarchy)
-            _revardImage.SetActive(true);
-
         _closeScreen.enabled = true;
-        _buttonScroll.enabled = true;
 
         _playerHandler.ToggleScreenPlayerInput(true);
         OnScroll?.Invoke();
+        _isScroll = false;
+        _revardImage.Close();
     }
 
     private void AddItem()
