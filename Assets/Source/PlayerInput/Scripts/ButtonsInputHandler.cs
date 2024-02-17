@@ -9,22 +9,18 @@ public class ButtonsInputHandler : MonoBehaviour
     [SerializeField] protected ChestHandler ChestHandler;
     [SerializeField] protected Interactor Interactor;
 
-    [SerializeField] private Transform _interactedConstructionButton;
-    [SerializeField] private Transform _addFireButton;
-    [SerializeField] private Transform _toggleIntaractableButton;
-    [SerializeField] private Transform _start—onversationButton;
-    [SerializeField] private Transform _useItemButton;
+    [SerializeField] private AnimationUI _interactedConstructionButton;
+    [SerializeField] private AnimationUI _addFireButton;
+    [SerializeField] private AnimationUI _toggleIntaractableButton;
+    [SerializeField] private AnimationUI _start—onversationButton;
+    [SerializeField] private AnimationUI _useItemButton;
 
     protected InventorySlotUI CurrentSlot;
     protected bool IsBuilding = false;
 
     protected virtual void Awake()
     {
-        _start—onversationButton.gameObject.SetActive(false);
-        _toggleIntaractableButton.gameObject.SetActive(false);
-        _interactedConstructionButton.gameObject.SetActive(false);
-        _addFireButton.gameObject.SetActive(false);
-        _useItemButton.gameObject.SetActive(false);
+        ClearAll();
     }
 
     private void OnEnable()
@@ -67,6 +63,15 @@ public class ButtonsInputHandler : MonoBehaviour
         Interactor.OnInteractionFinished -= TurnOffIntractableConstructionButton;
     }
 
+    protected virtual void ClearAll()
+    {
+        _start—onversationButton.CloseAnimation();
+        _toggleIntaractableButton.CloseAnimation();
+        _interactedConstructionButton.CloseAnimation();
+        _addFireButton.CloseAnimation();
+        _useItemButton.CloseAnimation();
+    }
+
     protected virtual void ToggleButtons(InventorySlotUI inventorySlotUI)
     {
         CurrentSlot = inventorySlotUI;
@@ -84,11 +89,11 @@ public class ButtonsInputHandler : MonoBehaviour
 
         if (IsBuilding)
         {
-            _interactedConstructionButton.gameObject.SetActive(false);
-            _toggleIntaractableButton.gameObject.SetActive(false);
-            _start—onversationButton.gameObject.SetActive(false);
-            _addFireButton.gameObject.SetActive(false);
-            _useItemButton.gameObject.SetActive(false);
+            _interactedConstructionButton.CloseAnimation();
+            _toggleIntaractableButton.CloseAnimation();
+            _start—onversationButton.CloseAnimation();
+            _addFireButton.CloseAnimation();
+            _useItemButton.CloseAnimation();
         }
     }
 
@@ -103,7 +108,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _toggleIntaractableButton.gameObject.SetActive(true);
+        _toggleIntaractableButton.OpenAnimation();
     }
 
     private void TurnOffIntractableButton()
@@ -111,7 +116,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _toggleIntaractableButton.gameObject.SetActive(false);
+        _toggleIntaractableButton.CloseAnimation();
     }
 
     private void EnableIntractableNPSButton()
@@ -119,7 +124,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _start—onversationButton.gameObject.SetActive(true);
+        _start—onversationButton.OpenAnimation();
     }
 
     private void TurnOffIntractableNPSButton()
@@ -127,7 +132,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _start—onversationButton.gameObject.SetActive(false);
+        _start—onversationButton.CloseAnimation();
     }
 
     private void EnableIntractableConstructionButton()
@@ -136,7 +141,7 @@ public class ButtonsInputHandler : MonoBehaviour
             return;
 
         if (Interactor.CurrentFire == null && Interactor.CurrentGardenBed == null)
-            _interactedConstructionButton.gameObject.SetActive(true);
+            _interactedConstructionButton.OpenAnimation();
 
         ToggleAddFireButton(CurrentSlot);
         ToggleUseItemButton(CurrentSlot);
@@ -147,9 +152,9 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _interactedConstructionButton.gameObject.SetActive(false);
-        _addFireButton.gameObject.SetActive(false);
-        _useItemButton.gameObject.SetActive(false);
+        _interactedConstructionButton.CloseAnimation();
+        _addFireButton.CloseAnimation();
+        _useItemButton.CloseAnimation();
     }
 
     private void ToggleUseItemButton(InventorySlotUI inventorySlotUI)
@@ -158,9 +163,9 @@ public class ButtonsInputHandler : MonoBehaviour
             return;
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData is SeedItemData seedItemData)
-            _useItemButton.gameObject.SetActive(true);
+            _useItemButton.OpenAnimation();
         else
-            _useItemButton.gameObject.SetActive(false);
+            _useItemButton.CloseAnimation();
     }
 
     private void ToggleAddFireButton(InventorySlotUI inventorySlotUI)
@@ -169,18 +174,18 @@ public class ButtonsInputHandler : MonoBehaviour
             return;
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData && inventorySlotUI.AssignedInventorySlot.ItemData.GorenjeTime > 0)
-            _addFireButton.gameObject.SetActive(true);
+            _addFireButton.OpenAnimation();
         else
-            _addFireButton.gameObject.SetActive(false);
+            _addFireButton.CloseAnimation();
     }
 
     protected virtual void ToggleDestroyBuildingMode(bool isActive)
     {
         if (isActive)
         {
-            _interactedConstructionButton.gameObject.SetActive(false);
-            _toggleIntaractableButton.gameObject.SetActive(false);
-            _start—onversationButton.gameObject.SetActive(false);
+            _interactedConstructionButton.CloseAnimation();
+            _toggleIntaractableButton.CloseAnimation();
+            _start—onversationButton.CloseAnimation();
         }
         else
         {

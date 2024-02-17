@@ -13,7 +13,7 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private UIScreenPlayerInput _screenPlayerInput;
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private BuildTool _buildTool;
-    [SerializeField] private Transform _inventoryPanels;
+    [SerializeField] private ScreenAnimation _inventoryPanels;
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private Interactor _interactor;
     [SerializeField] private LoadPanel _loadPanel;
@@ -34,7 +34,6 @@ public class PlayerHandler : MonoBehaviour
     public UIScreenPlayerInput ScreenPlayerInput => _screenPlayerInput;
     public SurvivalHandler SurvivalHandler => _survivalHandler;
     public BuildTool BuildTool => _buildTool;
-    public Transform InventoryPanels => _inventoryPanels;
     public PlayerHealth PlayerHealth => _playerHealth;
     public Interactor Interactor => _interactor;
     public LoadPanel LoadPanel => _loadPanel;
@@ -111,7 +110,10 @@ public class PlayerHandler : MonoBehaviour
 
     public void ToggleInventoryPanels(bool visible)
     {
-         _inventoryPanels.gameObject.SetActive(visible);
+         if(visible)
+            _inventoryPanels.Open();
+         else
+            _inventoryPanels.Close();
     }
 
     public void ToggleAllInput(bool visible)
