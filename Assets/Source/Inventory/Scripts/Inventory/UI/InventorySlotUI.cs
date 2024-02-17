@@ -32,7 +32,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     {
         CleanSlot();
         TurnOffHighlight();
-        _iconImage.preserveAspect = true;
+        _iconImage.preserveAspect = false;
     }
 
     private void Update()
@@ -74,6 +74,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
             _iconImage.sprite = _assignedInventorySlot.ItemData.Icon;
             _iconImage.color = Color.white;
             _empty = false;
+            _iconImage.preserveAspect = false;
         }
         else
         {

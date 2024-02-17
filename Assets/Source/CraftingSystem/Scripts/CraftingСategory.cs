@@ -8,7 +8,7 @@ public class CraftingÑategory : ScriptableObject
     [SerializeField] private CraftingType _defoultType;
     [SerializeField] private List<CraftRecipe> _recipes;
 
-    public string NameÑategory => _nameÑategory;
-    public CraftingType DefoultType => _defoultType;
+    public string NameCategory => _nameÑategory;
+    public CraftingType DefaultType => _defoultType;
     public List<CraftRecipe> Recipes => _recipes;
 }

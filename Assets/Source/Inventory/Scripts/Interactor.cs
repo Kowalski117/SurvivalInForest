@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -6,6 +8,7 @@ public class Interactor : Raycast
 {
     [SerializeField] private LayerMask _interactionInventoryLayer;
     [SerializeField] private LayerMask _interactionItemLayer;
+    [SerializeField] private int _interactionItemLayerIndex;
     [SerializeField] private LayerMask _interactionConstructionLayer;
 
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
@@ -37,6 +40,9 @@ public class Interactor : Raycast
     private Fire _currentFire;
     private GardenBed _currentGardenBed;
     private Note _note;
+    private WaitForSeconds _waitForSeconds;
+    private Coroutine _coroutine;
+    private List<ItemPickUp> _itemsPickUp = new List<ItemPickUp>();
 
     private int _addAmount = 1;
 
@@ -100,6 +106,38 @@ public class Interactor : Raycast
     {
         HandleLookTimer();
         HandleInventoryFull();
+
+        //if (_itemsPickUp.Count > 0)
+        //{
+        //    if (_isStartingPick && !_isInventoryFull)
+        //    {
+        //        _lookTimer += Time.deltaTime;
+
+        //        OnTimeUpdate?.Invoke(LookTimerPracent, "");
+        //        Debug.Log(_lookTimer);
+        //        if (_lookTimer >= _liftingDelay && !_isIconFilled)
+        //        {
+        //            Debug.Log("4");
+        //            _isIconFilled = true;
+
+        //            _currentItemPickUp = _itemsPickUp[0];
+        //            _itemsPickUp.Remove(_currentItemPickUp);
+
+        //            if (!_isKeyPickUp)
+        //            {
+        //                _playerAnimation.PickUp();
+        //                PickUpAninationEvent();
+        //            }
+        //        }
+        //        else
+        //            _isIconFilled = false;
+        //    }
+        //    else
+        //    {
+        //        ResetLookTimer();
+        //        Debug.Log("6");
+        //    }
+        //}
     }
 
     public void UpdateIsKeyPickUp(bool isKeyPickUp)
@@ -109,7 +147,7 @@ public class Interactor : Raycast
 
     private void HandleLookTimer()
     {
-        if (IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo))
+        if (IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo) || _itemsPickUp.Count > 0)
         {
             if (_isStartingPick && !_isInventoryFull)
             {
@@ -121,14 +159,19 @@ public class Interactor : Raycast
                 {
                     _isIconFilled = true;
 
-                    if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp) && itemPickUp.enabled)
+                    if (_itemsPickUp.Count > 0)
                     {
-                        _currentItemPickUp = itemPickUp;
+                        _currentItemPickUp = _itemsPickUp[0];
+                        _itemsPickUp.Remove(_currentItemPickUp);
                     }
-                    else if (hitInfo.collider.TryGetComponent(out ObjectPickUp objectPickUp))
+                    else if (hitInfo.collider != null)
                     {
-                        _currentObjectPickUp = objectPickUp;
+                        if (hitInfo.collider.TryGetComponent(out ItemPickUp itemPickUp))
+                            _currentItemPickUp = itemPickUp;
+                        else if (hitInfo.collider.TryGetComponent(out ObjectPickUp objectPickUp))
+                            _currentObjectPickUp = objectPickUp;
                     }
+                    
 
                     if (!_isKeyPickUp)
                     {
@@ -137,14 +180,10 @@ public class Interactor : Raycast
                     }
                 }
                 else
-                {
                     _isIconFilled = false;
-                }
             }
             else
-            {
                 ResetLookTimer();
-            }
         }
         else if (IsRayHittingSomething(_interactionConstructionLayer, out RaycastHit hit))
         {
@@ -163,7 +202,7 @@ public class Interactor : Raycast
                 {
                     _currentFire = fire;
 
-                    if(_currentFire.IsFire)
+                    if (_currentFire.IsFire)
                         OnInteractionStarted?.Invoke();
                 }
             }
@@ -175,7 +214,7 @@ public class Interactor : Raycast
                     OnInteractionStarted?.Invoke();
                 }
             }
-            else if(hit.collider.TryGetComponent(out Note note))
+            else if (hit.collider.TryGetComponent(out Note note))
             {
                 if (!_note)
                 {
@@ -209,43 +248,19 @@ public class Interactor : Raycast
 
     private void ResetLookTimer()
     {
-        _lookTimer = 0;
-        OnTimeUpdate?.Invoke(0f, "");
-        _isIconFilled = false;
-        _isInventoryFull = false;
+        if(_lookTimer >= _liftingDelay || _itemsPickUp.Count == 0)
+        {
+            _lookTimer = 0;
+            OnTimeUpdate?.Invoke(0f, "");
+            _isIconFilled = false;
+            _isInventoryFull = false;
+        }
     }
 
     public void PickUpAninationEvent()
     {
-        _isIconFilled = false;
-        _isStartingPick = true;
-
-        if (_currentItemPickUp != null)
-        {
-            if (!_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, _addAmount, _currentItemPickUp.Durability))
-            {
-                _inventoryOperator.StartCreateItems(_currentItemPickUp.ItemData, _currentItemPickUp.ItemData.Durability, _addAmount);
-                _isInventoryFull = true;
-            }
-            _currentItemPickUp.PickUp();
-            _currentItemPickUp = null;
-        }
-        else if (_currentObjectPickUp != null)
-        {
-            foreach (var inventoryData in _currentObjectPickUp.ObjectItemsData.LootRandomItems.Items)
-            {
-                for (var i = 0; i < inventoryData.Amount; i++)
-                {
-                    if (!_playerInventoryHolder.AddToInventory(inventoryData.ItemData, _addAmount, inventoryData.ItemData.Durability))
-                    {
-                        _inventoryOperator.StartCreateItems(inventoryData.ItemData, inventoryData.ItemData.Durability, _addAmount);
-                    }
-                }
-            }
-            _currentObjectPickUp.PicUp();
-            _currentObjectPickUp = null;
-        }
-        _audioSource.PlayOneShot(_playerAudioHandler.PickUpClip);
+        if(_coroutine == null)
+            _coroutine = StartCoroutine(AddItemInventory());
     }
 
     private void InteractableConstruction()
@@ -279,6 +294,42 @@ public class Interactor : Raycast
         }
     }
 
+    private IEnumerator AddItemInventory()
+    {
+        _isIconFilled = false;
+        _isStartingPick = true;
+
+        if (_currentItemPickUp != null)
+        {
+            if (!_playerInventoryHolder.AddToInventory(_currentItemPickUp.ItemData, _addAmount, _currentItemPickUp.Durability))
+            {
+                _inventoryOperator.StartCreateItems(_currentItemPickUp.ItemData, _currentItemPickUp.ItemData.Durability, _addAmount);
+                _isInventoryFull = true;
+            }
+            _currentItemPickUp.PickUp();
+            _currentItemPickUp = null;
+        }
+        else if (_currentObjectPickUp != null)
+        {
+            foreach (var inventoryData in _currentObjectPickUp.ObjectItemsData.LootRandomItems.Items)
+            {
+                for (var i = 0; i < inventoryData.Amount; i++)
+                {
+                    if (!_playerInventoryHolder.AddToInventory(inventoryData.ItemData, _addAmount, inventoryData.ItemData.Durability))
+                    {
+                        _inventoryOperator.StartCreateItems(inventoryData.ItemData, inventoryData.ItemData.Durability, _addAmount);
+                    }
+                }
+            }
+            _currentObjectPickUp.PicUp();
+            _currentObjectPickUp = null;
+        }
+        _audioSource.PlayOneShot(_playerAudioHandler.PickUpClip);
+
+        yield return _waitForSeconds = new WaitForSeconds(0.5f);
+        _coroutine = null;
+    }
+
     private void PlantSeed(InventorySlot slot)
     {
         if (_currentGardenBed && _currentGardenBed.StartGrowingSeed(slot.ItemData))
@@ -292,6 +343,33 @@ public class Interactor : Raycast
     {
         if(_note)
             _note.Init();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out ItemPickUp itemPickUp) && itemPickUp.enabled)
+        {
+            if (!_itemsPickUp.Contains(itemPickUp))
+                _itemsPickUp.Add(itemPickUp);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out ItemPickUp itemPickUp))
+        {
+            if (_itemsPickUp.Contains(itemPickUp))
+                _itemsPickUp.Remove(itemPickUp);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == _interactionItemLayerIndex)
+        {
+            
+           
+        }
     }
 
     private void Save()

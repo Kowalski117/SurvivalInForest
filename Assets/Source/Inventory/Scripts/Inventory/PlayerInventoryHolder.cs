@@ -28,7 +28,7 @@ public class PlayerInventoryHolder : InventoryHolder
 
     public bool RemoveInventory(InventoryItemData data, int amount)
     {
-        if(PrimaryInventorySystem.RemoveItemsInventory(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(data, amount) || _clothesInventory.InventorySystem.RemoveItemsInventory(data, amount))
+        if (PrimaryInventorySystem.RemoveItemsInventory(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(data, amount) || _clothesInventory.InventorySystem.RemoveItemsInventory(data, amount))
         {
             OnItemDataChanged?.Invoke(data, -amount);
             OnUpdateItemSlot?.Invoke();

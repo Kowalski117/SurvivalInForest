@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ValueBar : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ValueBar : MonoBehaviour
     [SerializeField] private Image _bar;
     [SerializeField] private Image _ground;
     [SerializeField] private TMP_Text _valueText;
+    [SerializeField] private AnimationUI _animationUI;
 
     private float _maxValue;
     private float _currenValue;
@@ -35,13 +37,13 @@ public class ValueBar : MonoBehaviour
 
     public void UpdateBar(float value)
     {
-        _valueText.text = value.ToString();
+        if(value >= 0)
+            _valueText.text = value.ToString();
 
         _bar.fillAmount = value / _maxValue;
 
         if(_bar.fillAmount <= 0)
         {
-            _bar.fillAmount = 0;
             TurnOffBar();
         }
     }
@@ -52,7 +54,7 @@ public class ValueBar : MonoBehaviour
         {
             _maxValue = maxValue;
             _currenValue = currentCalue;
-            _ground.gameObject.SetActive(true);
+            _animationUI.OpenAnimation();
 
             UpdateBar(_currenValue);
         }
@@ -60,9 +62,6 @@ public class ValueBar : MonoBehaviour
 
     public void TurnOffBar()
     {
-        _maxValue = 0;
-        _ground.gameObject.SetActive(false);
-
-        UpdateBar(_maxValue);
+        _animationUI.CloseAnimation();
     }
 }
