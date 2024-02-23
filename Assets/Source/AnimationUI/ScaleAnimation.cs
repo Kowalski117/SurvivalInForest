@@ -20,8 +20,8 @@ public class ScaleAnimation : AnimationUI
         ClearTween();
         SetCanvasGroup(true);
 
-        Panel.transform.localScale = _scaleMin;
-        Tween = Panel.transform.DOScale(_scaleMax, DurationAnim);
+        Panel.localScale = _scaleMin;
+        Tween = Panel.DOScale(_scaleMax, DurationAnim);
 
         if (IsStartingInOrder)
             yield return Delay = new WaitForSeconds(DurationAnim);
@@ -38,8 +38,8 @@ public class ScaleAnimation : AnimationUI
 
         ClearTween();
 
-        Panel.transform.localScale = _scaleMax;
-        Tween = Panel.transform.DOScale(_scaleMin, DurationAnim);
+        Panel.localScale = _scaleMax;
+        Tween = Panel.DOScale(_scaleMin, DurationAnim);
 
         if(!IsUseDelayGroup)
             yield return Delay = new WaitForSeconds(DurationAnim);

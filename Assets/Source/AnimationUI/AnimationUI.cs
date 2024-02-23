@@ -4,13 +4,13 @@ using UnityEngine;
 
 public abstract class AnimationUI : MonoBehaviour
 {
-    [SerializeField] protected Transform Panel;
+    [SerializeField] protected RectTransform Panel;
     [SerializeField] protected float DurationAnim = 0.3f;
-    [SerializeField] private float _delayGroup = 0.3f;
     [SerializeField] protected CanvasGroup CanvasGroup;
     [SerializeField] protected AnimationUI[] Children;
     [SerializeField] protected bool IsStartingInOrder = false;
     [SerializeField] protected bool IsUseDelayGroup = false;
+    [SerializeField] private float _delayGroup = 0.3f;
     [SerializeField] private bool _isObjectDisactiveEnd = false;
 
     protected Tween Tween;
@@ -23,7 +23,6 @@ public abstract class AnimationUI : MonoBehaviour
     private bool _isOpen = true;
 
     public bool IsOpen => _isOpen;
-    public Transform PanelTransform => Panel;
 
     public void OpenAnimation()
     {

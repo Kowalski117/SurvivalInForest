@@ -24,13 +24,13 @@ public class PositionAnimation : AnimationUI
 
         if (_defoultY)
         {
-            Panel.transform.localPosition = new Vector3(_positonStart.x, Panel.transform.localPosition.y, _positonStart.z);
-            Tween = Panel.transform.DOLocalMove(new Vector3(_positonFinish.x, Panel.transform.localPosition.y, _positonFinish.z), DurationAnim);
+            Panel.anchoredPosition = new Vector3(_positonStart.x, Panel.transform.localPosition.y, _positonStart.z);
+            Tween = Panel.DOAnchorPos(new Vector3(_positonFinish.x, Panel.transform.localPosition.y, _positonFinish.z), DurationAnim);
         }
         else
         {
-            Panel.transform.localPosition = _positonStart;
-            Tween = Panel.transform.DOLocalMove(_positonFinish, DurationAnim);
+            Panel.anchoredPosition = _positonStart;
+            Tween = Panel.DOAnchorPos(_positonFinish, DurationAnim);
         }
 
         if (IsStartingInOrder)
@@ -50,13 +50,13 @@ public class PositionAnimation : AnimationUI
 
         if (_defoultY)
         {
-            Panel.transform.localPosition = new Vector3(_positonFinish.x, Panel.transform.localPosition.y, _positonFinish.z);
-            Tween = Panel.transform.DOLocalMove(new Vector3(_positonStart.x, Panel.transform.localPosition.y, _positonStart.z), DurationAnim);
+            Panel.anchoredPosition = new Vector3(_positonFinish.x, Panel.transform.localPosition.y, _positonFinish.z);
+            Tween = Panel.DOAnchorPos(new Vector3(_positonStart.x, Panel.transform.localPosition.y, _positonStart.z), DurationAnim);
         }
         else
         {
-            Panel.transform.localPosition = _positonFinish;
-            Tween = Panel.transform.DOLocalMove(_positonStart, DurationAnim);
+            Panel.anchoredPosition = _positonFinish;
+            Tween = Panel.DOAnchorPos(_positonStart, DurationAnim);
         }
 
         yield return Delay = new WaitForSeconds(DurationAnim);
