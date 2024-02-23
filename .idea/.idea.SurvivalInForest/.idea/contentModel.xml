@@ -2522,6 +2522,9 @@
           </e>
           <e p="Demigiant" t="Include">
             <e p="DOTween" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Imgs" t="Include" />
+              </e>
               <e p="Modules" t="Include">
                 <e p="DOTweenModuleAudio.cs" t="Include" />
                 <e p="DOTweenModuleEPOOutline.cs" t="Include" />
@@ -5467,6 +5470,13 @@
             <e p="TurnOffAllAnimations.cs" t="Include" />
             <e p="ViewGizmos.cs" t="Include" />
           </e>
+          <e p="AnimationUI" t="Include">
+            <e p="AnimationUI.cs" t="Include" />
+            <e p="ButtonAnimation.cs" t="Include" />
+            <e p="PositionAnimation.cs" t="Include" />
+            <e p="ScaleAnimation.cs" t="Include" />
+            <e p="ScreenAnimation.cs" t="Include" />
+          </e>
           <e p="Audio" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
@@ -5655,6 +5665,7 @@
               <e p="TradingRating.cs" t="Include" />
               <e p="UI" t="Include">
                 <e p="ExchangerSlotView.cs" t="Include" />
+                <e p="ExchangeWindow.cs" t="Include" />
                 <e p="ItemView.cs" t="Include" />
                 <e p="TradingRatingView.cs" t="Include" />
                 <e p="UIInventoryHandler.cs" t="Include" />
@@ -5915,6 +5926,9 @@
                 <e p="InventoryPlayerInput.cs" t="Include" />
                 <e p="UIScreenPlayerInput.cs" t="Include" />
               </e>
+              <e p="UI" t="Include">
+                <e p="ButtonSprint.cs" t="Include" />
+              </e>
             </e>
             <e p="StarterAssets" t="Include">
               <e p="Environment" t="Include">
@@ -6007,7 +6021,9 @@
           </e>
           <e p="RaycastTarget.cs" t="Include" />
           <e p="Roulette" t="Include">
+            <e p="Prefab" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="ItemsRoulette.cs" t="Include" />
               <e p="ItemsSpawner.cs" t="Include" />
               <e p="RouletteScrollHandler.cs" t="Include" />
               <e p="RouletteSlot.cs" t="Include" />
@@ -6044,6 +6060,9 @@
             <e p="NoteScreen" t="Include">
               <e p="NoteScreen.cs" t="Include" />
             </e>
+            <e p="QuestJournalScreen" t="Include">
+              <e p="QuestJournalScreen.cs" t="Include" />
+            </e>
             <e p="RewardScreen" t="Include">
               <e p="DayRewardsData" t="Include" />
               <e p="Prefabs" t="Include" />
@@ -6058,6 +6077,7 @@
               </e>
             </e>
             <e p="RouletteScreen" t="Include">
+              <e p="Items" t="Include" />
               <e p="Scripts" t="Include">
                 <e p="RouletteScreen.cs" t="Include" />
               </e>
@@ -6170,7 +6190,8 @@
           <e p="TimeSystem" t="Include">
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
-              <e p="TimeHandler.cs" t="Include" />
+              <e p="LightSource.cs" t="Include" />
+              <e p="MainClock.cs" t="Include" />
               <e p="UI" t="Include">
                 <e p="ClockUI.cs" t="Include" />
                 <e p="DayUI.cs" t="Include" />

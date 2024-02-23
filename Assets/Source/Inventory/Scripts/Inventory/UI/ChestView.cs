@@ -1,3 +1,5 @@
+using PixelCrushers.DialogueSystem;
+using PixelCrushers.Wrappers;
 using TMPro;
 using UnityEngine;
 
@@ -6,10 +8,11 @@ public class ChestView : MonoBehaviour
     [SerializeField] private ChestHandler _handler;
 
     [SerializeField] private TMP_Text _labelText;
-
-    private const string _bonusChestLabel = "Бонусный сундук";
-    private const string _survivalChestLabel = "Cундук";
-
+    [SerializeField] private TextTable _textTable;
+    
+    private const string _bonusChestNameTextTable = "BonusРЎhest";
+    private const string _survivalChesNameTextTable = "Chest";
+   
     private void OnEnable()
     {
         _handler.OnChestTypeChanged += ChangeChestType;
@@ -23,8 +26,8 @@ public class ChestView : MonoBehaviour
     private void ChangeChestType(ChestType type)
     {
         if (type == ChestType.BonusChest)
-            _labelText.text = _bonusChestLabel;
+            _labelText.text = _textTable.GetFieldTextForLanguage(_bonusChestNameTextTable,Localization.language);
         else if(type == ChestType.SurvivalChest)
-            _labelText.text = _survivalChestLabel;
+            _labelText.text =  _textTable.GetFieldTextForLanguage(_survivalChesNameTextTable,Localization.language);
     }
 }

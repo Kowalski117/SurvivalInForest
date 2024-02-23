@@ -1,3 +1,5 @@
+using PixelCrushers.DialogueSystem;
+using PixelCrushers.Wrappers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,13 +9,14 @@ public class RewardSlotView : MonoBehaviour
     [SerializeField] private TMP_Text _dayText;
     [SerializeField] private Color _usedSlotColor;
     [SerializeField] private Image _frameImage;
+    [SerializeField] private TextTable _textTable;
 
-    private string _day = "Δενό ";
+    private const string _day = "Day";
     private Color _defoultColor;
 
     public void UpdateSlot(int day, Color color)
     {
-        _dayText.text = _day + day.ToString();
+        _dayText.text = _textTable.GetFieldTextForLanguage(_day, Localization.language) +" "+ day.ToString();
         _frameImage.color = color;
         _defoultColor = _frameImage.color;
     }

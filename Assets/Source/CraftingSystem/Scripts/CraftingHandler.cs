@@ -11,7 +11,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private DelayWindow _loadingWindow;
-    [SerializeField] private Crafting補tegory[] _crafting補tegories;
+    [SerializeField] private Crafting小ategory[] _crafting小ategories;
     [SerializeField] private Transform _containerForSlots;
     [SerializeField] private Transform _craftingWindow;
     [SerializeField] private TMP_Text _nameCategory;
@@ -24,14 +24,14 @@ public class CraftingHandler : MonoBehaviour
     private List<CraftSlotView> _craftSlots = new List<CraftSlotView>();
 
     private QuestControl _questControl;
-    private Crafting補tegory _currentCategory;
+    private Crafting小ategory _currentCategory;
     private bool _isCraftPlayerOpen = false;
 
     public event UnityAction OnUpdateSlotInventory;
     public event UnityAction OnItemCrafted;
 
     public Transform CraftingWindow => _craftingWindow;
-    public Crafting補tegory CurrentCrafting補tegory => _currentCategory;
+    public Crafting小ategory CurrentCrafting小ategory => _currentCategory;
 
     private void Awake()
     {
@@ -63,7 +63,7 @@ public class CraftingHandler : MonoBehaviour
 
     private void Start()
     {
-        foreach (var craftingCategory in _crafting補tegories)
+        foreach (var craftingCategory in _crafting小ategories)
         {
             CreateCraftSlots(craftingCategory);
         }
@@ -73,10 +73,10 @@ public class CraftingHandler : MonoBehaviour
             button.ToggleButton(false);
         }
 
-        DisplayCraftWindow(_manualWorkbench.Crafting補tegory);
+        DisplayCraftWindow(_manualWorkbench.Crafting小ategory);
     }
 
-    private void CreateCraftSlots(Crafting補tegory craftingCategory)
+    private void CreateCraftSlots(Crafting小ategory craftingCategory)
     {
         foreach(var recipe in craftingCategory.Recipes)
         {
@@ -132,7 +132,7 @@ public class CraftingHandler : MonoBehaviour
         }
     }
 
-    public void DisplayCraftWindow(Crafting補tegory craftingCategory)
+    public void DisplayCraftWindow(Crafting小ategory craftingCategory)
     {
         _nameCategory.text = craftingCategory.NameCategory;
         _currentCategory = craftingCategory;
@@ -183,7 +183,7 @@ public class CraftingHandler : MonoBehaviour
         SwitchCraftingCategory(craftingCategory.DefaultType);
     }
 
-    private void DisplayCraftPlayerWindow(Crafting補tegory craftingCategory)
+    private void DisplayCraftPlayerWindow(Crafting小ategory craftingCategory)
     {
         _isCraftPlayerOpen = !_isCraftPlayerOpen;
 

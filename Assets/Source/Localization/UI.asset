@@ -18,7 +18,7 @@ MonoBehaviour:
   - en
   - ru
   m_languageValues: 00000000060000000500000004000000
-  m_fieldKeys: 1b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000400000004100000042000000430000004400000045000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f000000500000005100000052000000530000005400000055000000560000005700000058000000590000005a0000005b0000005c0000005d0000005e0000005f000000600000006100000062000000630000006400000065000000660000006700000068000000690000006a0000006b0000006c0000006d0000006e0000006f00000070000000
+  m_fieldKeys: 1b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003a0000003b0000003c0000003d0000003e0000003f000000400000004100000042000000430000004400000045000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f000000500000005100000052000000530000005400000055000000560000005700000058000000590000005a0000005b0000005c0000005d0000005e0000005f000000610000006200000065000000660000006700000068000000690000006a0000006b0000006c000000710000006e0000006f0000007000000072000000730000007400000075000000760000007700000078000000790000007a0000007b0000007c000000600000007d0000007e0000007f00000063000000640000006d000000
   m_fieldValues:
   - m_fieldName: Inventory
     m_keys: 04000000050000000600000000000000
@@ -190,54 +190,12 @@ MonoBehaviour:
     - 'Time left until the next reward:'
     - "Bir sonraki \xF6d\xFCle kalan s\xFCre:"
     - 
-  - m_fieldName: Day1
+  - m_fieldName: Day
     m_keys: 04000000050000000600000000000000
     m_values:
-    - "\u0414\u0435\u043D\u044C 1"
-    - Day 1
-    - "1. G\xFCn"
-    - 
-  - m_fieldName: Day2
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0414\u0435\u043D\u044C 2"
-    - Day 2
-    - "2. G\xFCn"
-    - 
-  - m_fieldName: Day3
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0414\u0435\u043D\u044C 3"
-    - Day 3
-    - "3. G\xFCn"
-    - 
-  - m_fieldName: Day4
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0414\u0435\u043D\u044C 4"
-    - Day 4
-    - "4. G\xFCn"
-    - 
-  - m_fieldName: Day5
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0414\u0435\u043D\u044C 5"
-    - Day 5
-    - "5. G\xFCn"
-    - 
-  - m_fieldName: Day6
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0414\u0435\u043D\u044C 6"
-    - Day 6
-    - "6. G\xFCn"
-    - 
-  - m_fieldName: Day7
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0414\u0435\u043D\u044C 7"
-    - Day 7
-    - "7. G\xFCn"
+    - "\u0414\u0435\u043D\u044C "
+    - 'Day '
+    - "G\xFCn"
     - 
   - m_fieldName: Take!
     m_keys: 04000000050000000600000000000000
@@ -510,13 +468,6 @@ MonoBehaviour:
     - Chest
     - Kutu
     - 
-  - m_fieldName: MainMenu
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0413\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E"
-    - Main menu
-    - "Ana men\xFC"
-    - 
   - m_fieldName: ContinueGame
     m_keys: 04000000050000000600000000000000
     m_values:
@@ -530,20 +481,6 @@ MonoBehaviour:
     - "\u041D\u043E\u0432\u0430\u044F \u0438\u0433\u0440\u0430"
     - New game
     - Yeni bir oyun
-    - 
-  - m_fieldName: MysteriousForest
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0422\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439 \u043B\u0435\u0441"
-    - Mysterious forest
-    - Gizemli orman
-    - 
-  - m_fieldName: Mine
-    m_keys: 04000000050000000600000000000000
-    m_values:
-    - "\u0428\u0430\u0445\u0442\u0430"
-    - Mine
-    - Bana ait
     - 
   - m_fieldName: ChangeLocation
     m_keys: 04000000050000000600000000000000
@@ -603,12 +540,12 @@ MonoBehaviour:
     - Building removal mode
     - "Bina kald\u0131rma modu"
     - 
-  - m_fieldName: Trader
+  - m_fieldName: Trade
     m_keys: 04000000050000000600000000000000
     m_values:
-    - "\u0422\u043E\u0440\u0433\u043E\u0432\u0435\u0446"
-    - Trader
-    - "Sat\u0131c\u0131"
+    - "\u0422\u043E\u0440\u0433\u043E\u0432\u043B\u044F"
+    - Trade
+    - Ticaret
     - 
   - m_fieldName: YourRating
     m_keys: 04000000050000000600000000000000
@@ -631,5 +568,137 @@ MonoBehaviour:
     - Bonus chest
     - "Bonus sand\u0131\u011F\u0131"
     - 
+  - m_fieldName: RMB
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u041A\u041C"
+    - RMB
+    - "Sa\u011F t\u0131k"
+    - 
+  - m_fieldName: E
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0423"
+    - E
+    - "\u011E"
+    - 
+  - m_fieldName: Sleeping
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u043F\u0438\u043C"
+    - Sleeping
+    - Uyuyoruz
+    - 
+  - m_fieldName: Unfortunately
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A \u0441\u043E\u0436\u0430\u043B\u0435\u043D\u0438\u044E, \u044D\u0442\u0438
+      \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B \u043D\u0435\u043B\u044C\u0437\u044F
+      \u0441\u043B\u043E\u043C\u0430\u0442\u044C \u043F\u0440\u043E\u0441\u0442\u043E
+      \u0442\u0430\u043A - \u0434\u043B\u044F \u044D\u0442\u043E\u0433\u043E \u043D\u0443\u0436\u043D\u0430
+      \u043A\u0438\u0440\u043A\u0430. "
+    - Unfortunately, these materials cannot be easily broken - you need a pickaxe
+      for this.
+    - "Ne yaz\u0131k ki bu malzemeler kolayca k\u0131r\u0131lamaz; bunun i\xE7in
+      bir kazmaya ihtiyac\u0131n\u0131z vard\u0131r."
+    - 
+  - m_fieldName: Tasks
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0417\u0430\u0434\u0430\u043D\u0438\u044F"
+    - Quests
+    - "G\xF6revler"
+    - 
+  - m_fieldName: 'Description:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435:"
+    - 'Description:'
+    - "Tan\u0131m:"
+    - 
+  - m_fieldName: 'Quests:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A\u0432\u0435\u0441\u0442\u044B:"
+    - 'Quests:'
+    - "G\xF6revler:"
+    - 
+  - m_fieldName: On
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u043A\u043B"
+    - On
+    - On
+    - 
+  - m_fieldName: Off
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u044B\u043A\u043B"
+    - Off
+    - Off
+    - 
+  - m_fieldName: LogIn?
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u043E\u0432\u0430\u0442\u044C\u0441\u044F?"
+    - Log in?
+    - "Giri\u015F yapmak?"
+    - 
+  - m_fieldName: Skip...
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0440\u043E\u043F\u0443\u0441\u0442\u0438\u0442\u044C..."
+    - Skip...
+    - Atlamak...
+    - 
+  - m_fieldName: MainMenu
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0413\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E"
+    - Main menu
+    - "Ana men\xFC"
+    - 
+  - m_fieldName: Forest
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0422\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439 \u043B\u0435\u0441"
+    - Mysterious forest
+    - Gizemli orman
+    - 
+  - m_fieldName: Cave
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0428\u0430\u0445\u0442\u0430"
+    - Mine
+    - Bana ait
+    - 
+  - m_fieldName: CatScene
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u043E\u0435\u0437\u0434\u043A\u0430"
+    - Drive
+    - "S\xFCrmek"
+    - 
+  - m_fieldName: MysteriousForest
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0422\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439 \u043B\u0435\u0441"
+    - Mysterious forest
+    - Gizemli orman
+    - 
+  - m_fieldName: Mine
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0428\u0430\u0445\u0442\u0430"
+    - Mine
+    - Bana ait
+    - 
+  - m_fieldName: Trader
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0422\u043E\u0440\u0433\u043E\u0432\u0435\u0446"
+    - Trader
+    - "Sat\u0131c\u0131"
+    - 
   m_nextLanguageID: 7
-  m_nextFieldID: 113
+  m_nextFieldID: 128

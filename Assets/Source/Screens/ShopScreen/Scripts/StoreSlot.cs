@@ -34,7 +34,7 @@ public class StoreSlot : MonoBehaviour
     {
         _slotData = storeSlot;
 
-        _titleText.text = _slotData.Title;
+        _titleText.text = _slotData.Name;
         _descriptionText.text = _slotData.Description;
         _image.sprite = _slotData.Sprite;
         _priceText.text = _slotData.Price.ToString();

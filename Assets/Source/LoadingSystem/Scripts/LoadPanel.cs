@@ -195,8 +195,7 @@ public class LoadPanel : MonoBehaviour
 
         _randomIndex = Random.Range(0, _screenSettings.HintSprites.Length);
         _imageHint.sprite = _screenSettings.HintSprites[_randomIndex];
-
-        _randomIndex = Random.Range(0, _screenSettings.HintTexts.Length);
-        _textHint.text = _screenSettings.HintTexts[_randomIndex];
+        
+        _textHint.text = _screenSettings.HintText;
     }
 }
