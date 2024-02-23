@@ -3,7 +3,12 @@ using UnityEngine;
 public class BuildingRemoveModeView : MonoBehaviour
 {
     [SerializeField] private BuildTool _tool;
-    [SerializeField] private Transform _panel;
+    [SerializeField] private AnimationUI _animationUI;
+
+    private void Awake()
+    {
+        _animationUI.CloseAnimation();
+    }
 
     private void OnEnable()
     {
@@ -18,8 +23,8 @@ public class BuildingRemoveModeView : MonoBehaviour
     private void TogglePanel(bool toggle)
     {
         if(toggle)
-            _panel.gameObject.SetActive(true);
+            _animationUI.OpenAnimation();
         else
-             _panel.gameObject.SetActive(false);
+            _animationUI.CloseAnimation();
     }
 }

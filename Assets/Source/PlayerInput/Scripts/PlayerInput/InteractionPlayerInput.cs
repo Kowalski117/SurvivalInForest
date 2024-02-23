@@ -14,6 +14,7 @@ public class InteractionPlayerInput : MonoBehaviour
     public event UnityAction OnAim;
     public event UnityAction OnOpenNote;
 
+
     private void Awake()
     {
         _playerInput = new PlayerInput();

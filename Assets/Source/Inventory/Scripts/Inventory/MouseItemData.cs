@@ -22,6 +22,7 @@ public class MouseItemData : MonoBehaviour
     private InventoryItemData _currentItemData;
 
     public event UnityAction OnUpdatedSlots;
+    public event UnityAction<InventoryItemData, int> OnItemDataChanged;
 
     public InventorySlotUI InventorySlotUI => _inventorySlotUI;
     public InventorySlotUI CurrentSlot => _previousSlot;
@@ -98,6 +99,7 @@ public class MouseItemData : MonoBehaviour
             }
             else
             {
+                OnItemDataChanged?.Invoke(_inventorySlotUI.AssignedInventorySlot.ItemData, -_inventorySlotUI.AssignedInventorySlot.Size);
                 _inventoryOperator.RemoveItems(_inventorySlotUI);
             }
 

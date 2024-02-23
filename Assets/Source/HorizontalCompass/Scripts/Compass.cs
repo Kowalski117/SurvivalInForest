@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Compass : MonoBehaviour
 {
-    private const float _delay = 0.03f;
+    private const float _delay = 0.02f;
 
     [SerializeField] private RawImage _compassImage;
     [SerializeField] private Transform _playerTransform;

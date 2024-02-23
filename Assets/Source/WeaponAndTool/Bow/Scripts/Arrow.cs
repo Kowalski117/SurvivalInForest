@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Arrow : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class Arrow : MonoBehaviour
     private Rigidbody _rigidbody;
     private bool _isFlying = false;
 
-    public event UnityAction<Arrow, Transform, Animals> OnEnteredCollider;
+    public event Action<Arrow, Transform, Animals> OnEnteredCollider;
 
     public bool IsFlying => _isFlying;
 

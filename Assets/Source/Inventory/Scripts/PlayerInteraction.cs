@@ -13,7 +13,7 @@ public class PlayerInteraction : Raycast
     [SerializeField] private PlayerAudioHandler _playerAudioHandler;
     [SerializeField] private PlayerAnimatorHandler _playerAnimation;
     [SerializeField] private StarterAssetsInputs _starterAssetsInputs;
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private LayerMask _usingLayer;
     [SerializeField] private ShakeEffect _shakeEffect;
 

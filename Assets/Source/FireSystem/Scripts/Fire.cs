@@ -18,7 +18,7 @@ public class Fire : MonoBehaviour
     private Building _building;
     private DateTime _currentTime;
     private DateTime _maxTimer;
-    private TimeHandler _timeHandler;
+    private MainClock _timeHandler;
     private bool _isFire = false;
     private bool _isEnable = true;
     private UniqueID _uniqueId;
@@ -32,7 +32,7 @@ public class Fire : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _uniqueId = GetComponentInParent<UniqueID>();
-        _timeHandler = FindObjectOfType<TimeHandler>();
+        _timeHandler = FindObjectOfType<MainClock>();
         _building = GetComponentInParent<Building>();
         _fireParticle.gameObject.SetActive(false);
         _maxTimer = _maxTimer + TimeSpan.FromHours(_maxHours);

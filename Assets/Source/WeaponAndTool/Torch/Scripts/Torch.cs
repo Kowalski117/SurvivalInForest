@@ -29,9 +29,7 @@ public class Torch : MonoBehaviour
     private void Update()
     {
         if (_isEnable && _currentTool != null)
-        {
             _playerInteraction.UpdateDurabilityWithGameTime(_playerInteraction.CurrentInventorySlot);
-        }
     }
 
     private void Init(ToolItemData itemData)

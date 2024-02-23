@@ -7,8 +7,11 @@ public class DynamicInventoryDisplay : InventoryDisplay
 {
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private Transform _parentTransform;
+    [SerializeField] private AnimationUI _animationUI;
 
     public event UnityAction<int> OnDisplayRefreshed;
+
+    public AnimationUI AnimationUI => _animationUI;
 
     protected override void OnEnable()
     {
@@ -28,14 +31,16 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     public void Open()
     {
-        _canvasGroup.alpha = 1;
-        _canvasGroup.blocksRaycasts = true;
+        //_canvasGroup.alpha = 1;
+        //_canvasGroup.blocksRaycasts = true;
+        _animationUI.OpenAnimation();
     }
 
     public void Close()
     {
-        _canvasGroup.alpha = 0;
-        _canvasGroup.blocksRaycasts = false;
+        //_canvasGroup.alpha = 0;
+        //_canvasGroup.blocksRaycasts = false;
+        _animationUI.CloseAnimation();
     }
 
     public void RefreshDynamicInventory(InventorySystem inventoryToSystem, int offSet)

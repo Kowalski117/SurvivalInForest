@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
@@ -13,9 +13,9 @@ public class CutScene : MonoBehaviour
 
     private int _waitForFadeTime = 3;
 
-    public event UnityAction OnStart;
-    public event UnityAction OnScip;
-    public event UnityAction OnFinish;
+    public event Action OnStart;
+    public event Action OnScip;
+    public event Action OnFinish;
 
     private void OnEnable()
     {

@@ -13,6 +13,14 @@ public class MusicHandler : MonoBehaviour
             PlayRandomTrack();
     }
 
+    private void Update()
+    {
+        if (!_audioSource.isPlaying)
+        {
+            PlayRandomTrack();
+        }
+    }
+
     private void PlayRandomTrack()
     {
         int randomIndex;
@@ -24,13 +32,5 @@ public class MusicHandler : MonoBehaviour
         _audioSource.clip = _musicClips[randomIndex];
         _audioSource.Play();
         _previousTrackIndex = randomIndex;
-    }
-
-    private void Update()
-    {
-        if (!_audioSource.isPlaying)
-        {
-            PlayRandomTrack();
-        }
     }
 }

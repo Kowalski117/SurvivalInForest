@@ -2,36 +2,37 @@ using UnityEngine;
 
 public class MobileButtonsHandler : ButtonsInputHandler
 {
-    [SerializeField] private Transform _attackButton;
-    [SerializeField] private Transform _aimButton;
-    [SerializeField] private Transform _sprintButton;
-    [SerializeField] private Transform _stealthButton;
-    [SerializeField] private Transform _toggleInventoryButton;
-    [SerializeField] private Transform _rotateBuildButton;
-    [SerializeField] private Transform _destroyBuildButton;
-    [SerializeField] private Transform _putBuildButton;
-    [SerializeField] private Transform _toggleBuildModeButton;
-    [SerializeField] private Transform _removeBuildModeButton;
+    [SerializeField] private AnimationUI _attackButton;
+    [SerializeField] private AnimationUI _aimButton;
+    [SerializeField] private AnimationUI _sprintButton;
+    [SerializeField] private AnimationUI _stealthButton;
+    [SerializeField] private AnimationUI _toggleInventoryButton;
+    [SerializeField] private AnimationUI _toggleQuestJournalButton;
+    [SerializeField] private AnimationUI _rotateBuildButton;
+    [SerializeField] private AnimationUI _destroyBuildButton;
+    [SerializeField] private AnimationUI _putBuildButton;
+    [SerializeField] private AnimationUI _toggleBuildModeButton;
+    [SerializeField] private AnimationUI _removeBuildModeButton;
 
-    protected override void Awake()
+    protected override void ClearAll()
     {
-        base.Awake();
+        base.ClearAll();
 
-        _aimButton.gameObject.SetActive(false);
-        _putBuildButton.gameObject.SetActive(false);
-        _destroyBuildButton.gameObject.SetActive(false);
-        _rotateBuildButton.gameObject.SetActive(false);
-        _removeBuildModeButton.gameObject.SetActive(false);
+        _aimButton.CloseAnimation();
+        _putBuildButton.CloseAnimation();
+        _destroyBuildButton.CloseAnimation();
+        _rotateBuildButton.CloseAnimation();
+        _removeBuildModeButton.CloseAnimation();
     }
 
     protected override void ToggleButtons(InventorySlotUI inventorySlotUI)
     {
         base.ToggleButtons(inventorySlotUI);
 
-        _aimButton.gameObject.SetActive(false);
+        _aimButton.CloseAnimation();
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData is WeaponItemData weaponItemData && weaponItemData.WeaponType == WeaponType.RangedWeapon)
-            _aimButton.gameObject.SetActive(true);
+            _aimButton.OpenAnimation();
     }
 
     protected override void EnableConstructionMode()
@@ -40,16 +41,17 @@ public class MobileButtonsHandler : ButtonsInputHandler
 
         if (IsBuilding)
         {
-            _rotateBuildButton.gameObject.SetActive(true);
-            _destroyBuildButton.gameObject.SetActive(true);
-            _putBuildButton.gameObject.SetActive(true);
+            _rotateBuildButton.OpenAnimation();
+            _destroyBuildButton.OpenAnimation();
+            _putBuildButton.OpenAnimation();
 
-            _attackButton.gameObject.SetActive(false);
-            _aimButton.gameObject.SetActive(false);
-            _sprintButton.gameObject.SetActive(false);
-            _stealthButton.gameObject.SetActive(false);
-            _removeBuildModeButton.gameObject.SetActive(false);
-            _toggleBuildModeButton.gameObject.SetActive(false);
+            _attackButton.CloseAnimation();
+            _aimButton.CloseAnimation();
+            _sprintButton.CloseAnimation();
+            _stealthButton.CloseAnimation();
+            _removeBuildModeButton.CloseAnimation();
+            _toggleBuildModeButton.CloseAnimation();
+            _toggleQuestJournalButton.CloseAnimation();
         }
     }
 
@@ -57,14 +59,15 @@ public class MobileButtonsHandler : ButtonsInputHandler
     {
         base.TurnOffConstructionMode();
 
-        _rotateBuildButton.gameObject.SetActive(false);
-        _destroyBuildButton.gameObject.SetActive(false);
-        _putBuildButton.gameObject.SetActive(false);
+        _rotateBuildButton.CloseAnimation();
+        _destroyBuildButton.CloseAnimation();
+        _putBuildButton.CloseAnimation();
 
-        _attackButton.gameObject.SetActive(true);
-        _sprintButton.gameObject.SetActive(true);
-        _stealthButton.gameObject.SetActive(true);
-        _toggleBuildModeButton.gameObject.SetActive(true);
+        _attackButton.OpenAnimation();
+        _sprintButton.OpenAnimation();
+        _stealthButton.OpenAnimation();
+        _toggleBuildModeButton.OpenAnimation();
+        _toggleQuestJournalButton.OpenAnimation();
     }
 
     protected override void ToggleDestroyBuildingMode(bool isActive)
@@ -73,22 +76,24 @@ public class MobileButtonsHandler : ButtonsInputHandler
 
         if (isActive)
         {
-            _removeBuildModeButton.gameObject.SetActive(true);
+            _removeBuildModeButton.OpenAnimation();
 
-            _rotateBuildButton.gameObject.SetActive(false);
-            _destroyBuildButton.gameObject.SetActive(false);
-            _putBuildButton.gameObject.SetActive(false);
-            _attackButton.gameObject.SetActive(false);
-            _aimButton.gameObject.SetActive(false);
-            _sprintButton.gameObject.SetActive(false);
-            _stealthButton.gameObject.SetActive(false);
+            _rotateBuildButton.CloseAnimation();
+            _destroyBuildButton.CloseAnimation();
+            _putBuildButton.CloseAnimation();
+            _attackButton.CloseAnimation();
+            _aimButton.CloseAnimation();
+            _sprintButton.CloseAnimation();
+            _stealthButton.CloseAnimation();
+            _toggleQuestJournalButton.CloseAnimation();
         }
         else
         {
-            _removeBuildModeButton.gameObject.SetActive(false);
-            _attackButton.gameObject.SetActive(true);
-            _sprintButton.gameObject.SetActive(true);
-            _stealthButton.gameObject.SetActive(true);
+            _removeBuildModeButton.CloseAnimation();
+            _attackButton.OpenAnimation();
+            _sprintButton.OpenAnimation();
+            _stealthButton.OpenAnimation();
+            _toggleQuestJournalButton.OpenAnimation();
         }
     }
 }

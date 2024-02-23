@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioTriggerHandler : MonoBehaviour
 {
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private AudioClip[] _dayClips;
     [SerializeField] private AudioClip[] _nightClips;
 

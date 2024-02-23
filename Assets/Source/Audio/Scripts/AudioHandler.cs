@@ -4,11 +4,11 @@ using UnityEngine.Audio;
 
 public class AudioHandler : MonoBehaviour
 {
-    [SerializeField] private AudioMixer _mixer;
-    [SerializeField] private SettingScreen _settingScreen;
-
     private const float _zeroVolume = -80f;
     private const float _defoultValue = 0.8f;
+
+    [SerializeField] private AudioMixer _mixer;
+    [SerializeField] private SettingScreen _settingScreen;
 
     private bool _isMuteAllSound = false;
     private bool _isMuteMusic = false;
@@ -145,15 +145,12 @@ public class AudioHandler : MonoBehaviour
             _isMutePrevious = false;
             return;
         }
+
         _isMutePrevious = _isMute; 
 
         if (focus)
-        {
             FadeOut();
-        }
         else
-        {
             FadeIn();
-        }
     }
 }

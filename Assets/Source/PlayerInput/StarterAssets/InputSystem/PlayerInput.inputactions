@@ -859,6 +859,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleQuestJournal",
+                    "type": "Button",
+                    "id": "e4e76a15-2a9a-46e9-9b65-cda610eb8195",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -892,6 +901,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleDailyRewardsScreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "de37f56d-dab3-40ef-aa84-bafe0818b568",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleQuestJournal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

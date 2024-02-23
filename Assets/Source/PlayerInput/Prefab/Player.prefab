@@ -143,7 +143,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 344372049}
   _musicClips:
-  - {fileID: 8300000, guid: ce4df9f421187f94e97f9c1a5930a4dc, type: 3}
+  - {fileID: 8300000, guid: b5b499525c5d9da46be3595ccba1d63a, type: 3}
+  - {fileID: 8300000, guid: c18ec052481b1a744bf7ed54e50c3c7d, type: 3}
 --- !u!1 &648139530
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,7 +588,7 @@ MonoBehaviour:
   GroundedRadius: 0.4
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 16774619
+    m_Bits: 150992347
   CinemachineCameraTarget: {fileID: 6871336246660088185}
   TopClamp: 89
   BottomClamp: -89
@@ -742,6 +743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firstPersonController: {fileID: 1273947896634751013}
+  _characterController: {fileID: 1273947896634751016}
   _hotbarDisplay: {fileID: 7366031901037708963}
   _inventoryPlayerInput: {fileID: 6542501150185943619}
   _interactionPlayerInput: {fileID: 7366031901143214858}
@@ -808,7 +810,6 @@ MonoBehaviour:
   ValueDeplerionRate: 1
   _interactor: {fileID: 3186781297329404505}
   _playerInputHandler: {fileID: 7366031901037708980}
-  _characterController: {fileID: 1273947896634751016}
   _protectionValue: {fileID: 1994782497}
   _recoveryRate: 0.1
   _recoveryDelay: 15
@@ -834,7 +835,7 @@ MonoBehaviour:
   _playerInputHandler: {fileID: 7366031901037708980}
   _backpackInventory: {fileID: 857606973}
   _clothesInventory: {fileID: 1426262923}
-  _chestHandler: {fileID: 0}
+  _chestHandler: {fileID: 3186781297632483268}
 --- !u!114 &7366031901037708963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -858,6 +859,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _craftingHandler: {fileID: 0}
+  _isCanAddItem: 1
   _inventoryHolder: {fileID: 7366031901037708989}
   _survivalHandler: {fileID: 7366031901143214866}
   _playerInventoryHolder: {fileID: 7366031901037708989}
@@ -946,18 +948,6 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 7366031901037708980}
           m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-          m_MethodName: ToggleInventoryPanels
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 7366031901037708980}
-          m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
           m_MethodName: SetCursorVisible
           m_Mode: 6
           m_Arguments:
@@ -992,9 +982,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
+        - m_Target: {fileID: 7366031901037708980}
+          m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+          m_MethodName: ToggleScreenPlayerInput
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 7366031901037708980}
+          m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+          m_MethodName: SetActiveCollider
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1005,21 +1007,9 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
         - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+          m_TargetAssemblyTypeName: ScreenAnimation, Assembly-CSharp
+          m_MethodName: Close
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1057,18 +1047,6 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 7366031901037708980}
           m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-          m_MethodName: ToggleInventoryPanels
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 7366031901037708980}
-          m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
           m_MethodName: SetCursorVisible
           m_Mode: 6
           m_Arguments:
@@ -1078,18 +1056,6 @@ MonoBehaviour:
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 7926768088693520543}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
           m_CallState: 2
         - m_Target: {fileID: 7366031901037708980}
           m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
@@ -1104,8 +1070,32 @@ MonoBehaviour:
             m_BoolArgument: 1
           m_CallState: 2
         - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
+          m_TargetAssemblyTypeName: PlatformHandler, Assembly-CSharp
+          m_MethodName: ToggleMobileHUD
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 7366031901037708980}
+          m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+          m_MethodName: ToggleScreenPlayerInput
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 7366031901037708980}
+          m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+          m_MethodName: SetActiveCollider
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1116,21 +1106,9 @@ MonoBehaviour:
             m_BoolArgument: 1
           m_CallState: 2
         - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+          m_TargetAssemblyTypeName: ScreenAnimation, Assembly-CSharp
+          m_MethodName: Open
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1218,7 +1196,7 @@ MonoBehaviour:
   textStyle: 1
   textStyleColor: {r: 0, g: 0, b: 0, a: 1}
   defaultUseMessage: (spacebar to interact)
-  useKey: 102
+  useKey: 324
   useButton: 
   enableTouch: 0
   touchArea:
@@ -1805,23 +1783,23 @@ PrefabInstance:
     m_TransformParent: {fileID: 3234123303666968164}
     m_Modifications:
     - target: {fileID: 1704202316, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
-      propertyPath: _buildTool
+      propertyPath: BuildTool
       value: 
       objectReference: {fileID: 1695832848634842397}
     - target: {fileID: 1704202316, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
-      propertyPath: _interactor
+      propertyPath: Interactor
       value: 
       objectReference: {fileID: 3186781297329404505}
     - target: {fileID: 1704202316, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
-      propertyPath: _chestHandler
+      propertyPath: ChestHandler
       value: 
       objectReference: {fileID: 3186781297632483268}
     - target: {fileID: 1704202316, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
-      propertyPath: _hotbarDisplay
+      propertyPath: HotbarDisplay
       value: 
       objectReference: {fileID: 7366031901037708963}
     - target: {fileID: 1704202316, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
-      propertyPath: _manualWorkbench
+      propertyPath: ManualWorkbench
       value: 
       objectReference: {fileID: 7366031901037708973}
     - target: {fileID: 2854614339647494548, guid: 7484ce6f8ca3d81408c606b5ae8b9ff3, type: 3}
@@ -1991,6 +1969,14 @@ PrefabInstance:
       propertyPath: _playerAudioHandler
       value: 
       objectReference: {fileID: 97351052}
+    - target: {fileID: 1302763259, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1302763261, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
+      propertyPath: _outlineLayerMask.m_Bits
+      value: 9280
+      objectReference: {fileID: 0}
     - target: {fileID: 1375753423, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: _playerInventoryHolder
       value: 
@@ -2031,6 +2017,14 @@ PrefabInstance:
       propertyPath: _playerInputHandler
       value: 
       objectReference: {fileID: 7366031901037708980}
+    - target: {fileID: 4301349176029983706, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
+      propertyPath: _buildModeLayerMask.m_Bits
+      value: 34078848
+      objectReference: {fileID: 0}
+    - target: {fileID: 4301349176029983706, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
+      propertyPath: _furnitureModeLayerMask.m_Bits
+      value: 524416
+      objectReference: {fileID: 0}
     - target: {fileID: 4625029432313825289, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: _inputHandler
       value: 

@@ -23,7 +23,8 @@ public class UIInventoryHandler : MonoBehaviour
 
     private void Awake()
     {
-        _chestInventoryPanel.gameObject.SetActive(false);
+        _chestInventoryPanel.AnimationUI.SetActive(false);
+        _chestInventoryPanel.Close();
     }
 
     private void Start()
@@ -49,12 +50,17 @@ public class UIInventoryHandler : MonoBehaviour
 
         if (_isChestOpen)
         {
-            _chestInventoryPanel.gameObject.SetActive(true);
+            _chestInventoryPanel.AnimationUI.SetActive(true);
+
+            if(_isInventoryOpen)
+                _chestInventoryPanel.Open();
+
             _chestInventoryPanel.RefreshDynamicInventory(chestInventory.InventorySystem, offset);
         }
         else
         {
-            _chestInventoryPanel.gameObject.SetActive(false);
+            _chestInventoryPanel.Close();
+            _chestInventoryPanel.AnimationUI.SetActive(false);
         }
     }
 

@@ -12,4 +12,6 @@ public class SettingConstants : MonoBehaviour
     public const string MovementOfTrees = "MovementOfTrees";
     public const string LowTextureWater = "LowTextureWater";
     public const string HightTextureWater = "HightTextureWater";
+    public const string LiftingAreaLarger = "LiftingAreaLarger";
+    public const string LiftingAreaReduce = "LiftingAreaReduce";
 }

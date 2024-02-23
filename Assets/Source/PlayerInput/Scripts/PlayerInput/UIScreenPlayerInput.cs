@@ -8,6 +8,7 @@ public class UIScreenPlayerInput : MonoBehaviour
     public event UnityAction OnTogglePauseScreen;
     public event UnityAction OnToggleShopScreen;
     public event UnityAction OnToggleDailyRewardsScreen;
+    public event UnityAction OnToggleQuestJournal;
 
     private void Awake()
     {
@@ -20,6 +21,7 @@ public class UIScreenPlayerInput : MonoBehaviour
         _playerInput.UIScreen.TogglePauseScreen.performed += ctx => TogglePauseScreen();
         _playerInput.UIScreen.ToggleShopScreen.performed += ctx => ToggleShopScreen();
         _playerInput.UIScreen.ToggleDailyRewardsScreen.performed += ctx => ToggleDailyRewardsScreen();
+        _playerInput.UIScreen.ToggleQuestJournal.performed += ctx => ToggleQuestJournal();
     }
 
     private void OnDisable()
@@ -27,6 +29,7 @@ public class UIScreenPlayerInput : MonoBehaviour
         _playerInput.UIScreen.TogglePauseScreen.performed -= ctx => TogglePauseScreen();
         _playerInput.UIScreen.ToggleShopScreen.performed -= ctx => ToggleShopScreen();
         _playerInput.UIScreen.ToggleDailyRewardsScreen.performed -= ctx => ToggleDailyRewardsScreen();
+        _playerInput.UIScreen.ToggleDailyRewardsScreen.performed -= ctx => ToggleQuestJournal();
         _playerInput.Disable();
     }
 
@@ -43,5 +46,10 @@ public class UIScreenPlayerInput : MonoBehaviour
     public void ToggleDailyRewardsScreen()
     {
         OnToggleDailyRewardsScreen?.Invoke();
+    }
+
+    public void ToggleQuestJournal()
+    {
+        OnToggleQuestJournal?.Invoke();
     }
 }

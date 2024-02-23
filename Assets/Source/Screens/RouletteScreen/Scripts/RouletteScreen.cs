@@ -7,8 +7,9 @@ public class RouletteScreen : ScreenUI
 
     private RouletteScrollHandler _scrollHandler;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _scrollHandler = GetComponent<RouletteScrollHandler>();
     }
 

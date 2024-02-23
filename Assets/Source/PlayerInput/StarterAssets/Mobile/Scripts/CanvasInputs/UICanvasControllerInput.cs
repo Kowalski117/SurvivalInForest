@@ -89,5 +89,10 @@ namespace StarterAssets
         {
             _playerInputHandler.InteractionPlayerInput.Use();
         }
+
+        public void ToggleQuestJournal()
+        {
+            _playerInputHandler.ScreenPlayerInput.ToggleQuestJournal();
+        }
     }
 }

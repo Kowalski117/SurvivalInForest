@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 459046169118371592}
   - component: {fileID: 5258332840657910945}
   - component: {fileID: 2765628875969815204}
+  - component: {fileID: 6689409806280434617}
   m_Layer: 5
   m_Name: PayButton
   m_TagString: Untagged
@@ -315,6 +316,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6689409806280434617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260249908515691375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38bd26f710b4ba744b0656a2a50c0a1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minScale: {x: 0.7, y: 0.7, z: 0.7}
+  _delay: 0.1
 --- !u!1 &1724353898932867334
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,7 +960,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.3
+  m_fontSize: 31.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2101,6 +2116,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5987126626682974007, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
 --- !u!224 &3342433087450801034 stripped
@@ -2334,6 +2353,10 @@ PrefabInstance:
     - target: {fileID: 4577462289553656942, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987126626682974007, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
+      propertyPath: m_fontSize
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
@@ -2569,6 +2592,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5987126626682974007, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
 --- !u!224 &85307820624472408 stripped
@@ -2686,6 +2713,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5987126626682974007, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
 --- !u!114 &1561638527895177166 stripped
@@ -2802,6 +2833,10 @@ PrefabInstance:
     - target: {fileID: 4577462289553656942, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5987126626682974007, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}
+      propertyPath: m_fontSize
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0328ee176c1c934bb085c86e1158b74, type: 3}

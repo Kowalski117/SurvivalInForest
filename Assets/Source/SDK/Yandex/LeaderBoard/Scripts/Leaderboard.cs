@@ -7,7 +7,7 @@ public class Leaderboard : MonoBehaviour
     private const string AnonymousName = "Anonymous";
     private const string LeaderboardName = "LeaderboardName";
 
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private LeaderboardView _leaderboardView;
 
     private int _maxDay;

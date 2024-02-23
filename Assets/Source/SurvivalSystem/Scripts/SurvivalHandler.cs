@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class SurvivalHandler : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class SurvivalHandler : MonoBehaviour
     [SerializeField] private SurvivalAttribute _thirst;
     [SerializeField] private StaminaAttribute _stamina;
     [SerializeField] private SurvivalAttribute _sleep;
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private PlayerAudioHandler _playerAudioHandler;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private float _healthDamage = 5f;
@@ -25,14 +25,14 @@ public class SurvivalHandler : MonoBehaviour
     private float _maximumDivisor = 30;
     private int _percent = 100;
 
+    public event Action<FoodItemData> OnEatFoodEffect;
+
     public PlayerHealth PlayerHealth => _health;
     public SurvivalAttribute Hunger => _hunger;
     public SurvivalAttribute Thirst => _thirst;
     public StaminaAttribute Stamina => _stamina;
     public SurvivalAttribute Sleep => _sleep;
-    public TimeHandler TimeHandler => _timeHandler;
-
-    public event UnityAction<FoodItemData> OnEatFoodEffect;
+    public MainClock TimeHandler => _timeHandler;
 
     private void OnEnable()
     {
@@ -98,9 +98,7 @@ public class SurvivalHandler : MonoBehaviour
             _health.ReplenishHealth(foodItemData.AmountHealth);
                 
             if(foodItemData.FoodTypeEffect != FoodTypeEffect.None)
-            {
                 OnEatFoodEffect?.Invoke(foodItemData);
-            }
 
             if (slot.Durability > 0)
             {

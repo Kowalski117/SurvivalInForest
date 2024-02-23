@@ -16,13 +16,13 @@ public class InfoObjectData : ScriptableObject
 
     public void Init()
     {
-        _isDone = PlayerPrefs.GetInt("IsDone_" + _name, 0) == 1;
-        PlayerPrefs.SetInt("IsDone_" + _name, _isDone ? 1 : 0);
+        _isDone = PlayerPrefs.GetInt(SaveLoadConstants.IsDone + _name, 0) == 1;
+        PlayerPrefs.SetInt(SaveLoadConstants.IsDone + _name, _isDone ? 1 : 0);
     }
 
     public void SetIsDone(bool isDone)
     {
         _isDone = isDone;
-        PlayerPrefs.SetInt("IsDone_" + _name, isDone ? 1 : 0);
+        PlayerPrefs.SetInt(SaveLoadConstants.IsDone + _name, isDone ? 1 : 0);
     }
 }

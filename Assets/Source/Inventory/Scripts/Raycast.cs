@@ -16,7 +16,7 @@ public class Raycast : MonoBehaviour
     {
         var ray = new Ray(RayOrigin.position, CameraMain.transform.forward * RayDistance);
         Debug.DrawRay(ray.origin, ray.direction * RayDistance, Color.red);
-        if(layerMask != 0)
+        if (layerMask != 0)
             return Physics.Raycast(ray, out hitInfo, RayDistance, layerMask);
         else
             return Physics.Raycast(ray, out hitInfo, RayDistance);

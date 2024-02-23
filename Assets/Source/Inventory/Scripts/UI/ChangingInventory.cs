@@ -5,62 +5,86 @@ using System.Collections;
 public class ChangingInventory : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
-    [SerializeField] private ViewInventoryNotifier[] _views;
+    [SerializeField] private MouseItemData _mouseItemData;
+    [SerializeField] private List<ViewInventoryNotifier> _views = new List<ViewInventoryNotifier>();
     [SerializeField] private float _notificationDuration = 2f;
+    [SerializeField] private float _delay;
 
     private Queue<NotificationData> _notificationQueue = new Queue<NotificationData>();
+    private List<ViewInventoryNotifier> _usedViews = new List<ViewInventoryNotifier>();
+
+    private Coroutine _coroutine;
+
+    private void Awake()
+    {
+        foreach (var view in _views)
+        {
+            view.gameObject.SetActive(true);
+            view.Close();
+            view.gameObject.SetActive(false);
+        }
+    }
 
     private void OnEnable()
     {
         _inventoryHolder.OnItemDataChanged += ShowNotification;
+        _mouseItemData.OnItemDataChanged += ShowNotification;
     }
 
     private void OnDisable()
     {
         _inventoryHolder.OnItemDataChanged -= ShowNotification;
+        _mouseItemData.OnItemDataChanged -= ShowNotification;
     }
 
-    private void ShowNotification(InventoryItemData itemData, int amount)
+    private void Update()
     {
-        if(itemData != null)
+        if(_notificationQueue.Count > 0)
         {
-            var notificationData = new NotificationData(itemData, amount);
-
-            _notificationQueue.Enqueue(notificationData);
-
-            ProcessNotificationQueue();
-        }
-    }
-
-    private void ProcessNotificationQueue()
-    {
-        StartCoroutine(ShowNotificationsCoroutine());
-    }
-
-    private IEnumerator ShowNotificationsCoroutine()
-    {
-        foreach (var view in _views)
-        {
-            if (!view.gameObject.activeInHierarchy && _notificationQueue.Count > 0)
+            if (_views.Count <= 0)
             {
-                var notificationData = _notificationQueue.Dequeue();
-                view.gameObject.SetActive(true);
-                view.Init(notificationData.ItemData, notificationData.Amount);
-                yield return new WaitForSeconds(_notificationDuration);
-                view.gameObject.SetActive(false);
+                foreach (var view in _usedViews)
+                {
+                    _views.Add(view);
+                }
+
+                _usedViews.Clear();
+            }
+
+            foreach (var view in _views)
+            {
+                if (!view.gameObject.activeInHierarchy)
+                {
+                    NotificationData notificationData = _notificationQueue.Dequeue();
+                    view.gameObject.SetActive(true);
+                    view.Init(notificationData.ItemData, notificationData.Amount);
+                    view.Open();
+                    _usedViews.Add(view);
+                    _views.Remove(view);
+                    break;
+                }
             }
         }
     }
 
-    private struct NotificationData
+    private void ShowNotification(InventoryItemData itemData, int amount)
     {
-        public InventoryItemData ItemData;
-        public int Amount;
-
-        public NotificationData(InventoryItemData itemData, int amount)
+        if (itemData != null)
         {
-            ItemData = itemData;
-            Amount = amount;
+            var notificationData = new NotificationData(itemData, amount);
+            _notificationQueue.Enqueue(notificationData);
         }
+    }
+}
+
+public struct NotificationData
+{
+    public InventoryItemData ItemData;
+    public int Amount;
+
+    public NotificationData(InventoryItemData itemData, int amount)
+    {
+        ItemData = itemData;
+        Amount = amount;
     }
 }

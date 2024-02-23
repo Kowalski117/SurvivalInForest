@@ -8,7 +8,7 @@ public class SettingScreen : ScreenUI
     [SerializeField] private Transform[] _panelsGame;
     [SerializeField] private Transform _authorizePanel;
 
-    private void Awake()
+    protected override void Awake()
     {
         if (_isOpenMainMenu)
         {
@@ -35,6 +35,7 @@ public class SettingScreen : ScreenUI
             }
         }
            
+        base.Awake();
     }
 
     protected override void OnEnable()

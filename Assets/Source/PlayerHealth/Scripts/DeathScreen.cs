@@ -7,6 +7,7 @@ public class DeathScreen : MonoBehaviour
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private YandexAds _andexAds;
 
+    [SerializeField] private AnimationUI _animationUI;
     [SerializeField] private Transform _screen;
     [SerializeField] private Button _rebirthButton;
     [SerializeField] private Button _rebirthButtonForAdvertising;
@@ -14,6 +15,11 @@ public class DeathScreen : MonoBehaviour
     private bool _isDeathScreenOpen;
     private int _divisible = 3;
     private int _multiplier = 2;
+
+    private void Awake()
+    {
+        _animationUI.CloseAnimation();
+    }
 
     private void OnEnable()
     {
@@ -38,9 +44,9 @@ public class DeathScreen : MonoBehaviour
         _isDeathScreenOpen = !_isDeathScreenOpen;
 
         if (_isDeathScreenOpen)
-            _screen.gameObject.SetActive(true);
+            _animationUI.OpenAnimation();
         else
-            _screen.gameObject.SetActive(false);
+            _animationUI.CloseAnimation();
     }
 
     private void RebirthButtonClick()

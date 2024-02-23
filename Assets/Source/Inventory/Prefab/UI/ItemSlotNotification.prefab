@@ -88,6 +88,8 @@ GameObject:
   - component: {fileID: 5704382679908700012}
   - component: {fileID: 5704382679908700013}
   - component: {fileID: 5704382679908700018}
+  - component: {fileID: 6417384624093098170}
+  - component: {fileID: 2162924046762850604}
   m_Layer: 5
   m_Name: ItemSlotNotification
   m_TagString: Untagged
@@ -173,6 +175,40 @@ MonoBehaviour:
   _amountText: {fileID: 5704382680008835512}
   _addItemColor: {r: 0, g: 0.5019608, b: 0, a: 1}
   _removeItemColor: {r: 0.5019608, g: 0.07450981, b: 0, a: 1}
+  _animationUI: {fileID: 6417384624093098170}
+--- !u!114 &6417384624093098170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704382679908700016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e8b10283b2d024094a96abe82c160a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Panel: {fileID: 5704382679908700019}
+  DurationAnim: 0.3
+  _delayGroup: 0.3
+  CanvasGroup: {fileID: 2162924046762850604}
+  Children: []
+  IsStartingInOrder: 0
+  IsUseDelayGroup: 0
+  _scaleMin: {x: 0, y: 0, z: 0}
+  _scaleMax: {x: 1, y: 1, z: 1}
+--- !u!225 &2162924046762850604
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704382679908700016}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5704382680008835518
 GameObject:
   m_ObjectHideFlags: 0

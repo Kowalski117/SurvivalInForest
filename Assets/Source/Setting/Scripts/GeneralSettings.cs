@@ -11,6 +11,8 @@ public class GeneralSettings : MonoBehaviour
     [SerializeField] private Toggle _movementOfTrees;
     [SerializeField] private Toggle _lowTextureWater;
     [SerializeField] private Toggle _hightTextureWater;
+    [SerializeField] private Toggle _liftingAreaLarger;
+    [SerializeField] private Toggle _liftingAreaReduce;
     [SerializeField] private Toggle _tipsInput;
     [SerializeField] private TMP_Dropdown _language;
     [SerializeField] private Button _authorizationButton;
@@ -39,6 +41,8 @@ public class GeneralSettings : MonoBehaviour
         _automaticCollectionOfItems.onValueChanged.AddListener(ChangeAutomaticCollection);
         _movementOfTrees.onValueChanged.AddListener(ChangeMovementOfTrees);
         _lowTextureWater.onValueChanged.AddListener(ChangeLowTextureWater);
+        _liftingAreaLarger.onValueChanged.AddListener(ChangeLiftingAreaLarger);
+        _liftingAreaReduce.onValueChanged.AddListener(ChangeLiftingAreaReduce);
         _hightTextureWater.onValueChanged.AddListener(ChangeHightTextureWater);
         _language.onValueChanged.AddListener(ChangeLanguage);
         _authorizationButton.onClick.AddListener(AuthorizationButtonClick);
@@ -52,6 +56,8 @@ public class GeneralSettings : MonoBehaviour
         _automaticCollectionOfItems.onValueChanged.RemoveListener(ChangeAutomaticCollection);
         _movementOfTrees.onValueChanged.RemoveListener(ChangeMovementOfTrees);
         _lowTextureWater.onValueChanged.RemoveListener(ChangeLowTextureWater);
+        _liftingAreaLarger.onValueChanged.AddListener(ChangeLiftingAreaLarger);
+        _liftingAreaReduce.onValueChanged.AddListener(ChangeLiftingAreaReduce);
         _hightTextureWater.onValueChanged.RemoveListener(ChangeHightTextureWater);
         _language.onValueChanged.RemoveListener(ChangeLanguage);
         _authorizationButton.onClick.RemoveListener(AuthorizationButtonClick);
@@ -59,12 +65,26 @@ public class GeneralSettings : MonoBehaviour
 
     private void ChangeSensitivity(float value)
     {
-        _playerInputHandler.FirstPersonController.UpdateRotationSpeed(value);
+        if(_playerInputHandler)
+            _playerInputHandler.FirstPersonController.UpdateRotationSpeed(value);
     }
 
     private void ChangeAutomaticCollection(bool value)
     {
-        _playerInputHandler.Interactor.UpdateIsKeyPickUp(value);
+        if (_playerInputHandler)
+            _playerInputHandler.Interactor.UpdateIsKeyPickUp(value);
+    }
+
+    private void ChangeLiftingAreaLarger(bool value)
+    {
+        if (_playerInputHandler)
+            _playerInputHandler.Interactor.SetLiftingArea(false);
+    }
+
+    private void ChangeLiftingAreaReduce(bool value)
+    {
+        if (_playerInputHandler)
+            _playerInputHandler.Interactor.SetLiftingArea(true);
     }
 
     private void ChangeActiveTipsInput(bool value)
@@ -116,6 +136,8 @@ public class GeneralSettings : MonoBehaviour
         PlayerPrefs.SetInt(SettingConstants.MovementOfTrees, _movementOfTrees.isOn ? 1 : 0);
         PlayerPrefs.SetInt(SettingConstants.LowTextureWater, _lowTextureWater.isOn ? 1 : 0);
         PlayerPrefs.SetInt(SettingConstants.HightTextureWater, _hightTextureWater.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(SettingConstants.LiftingAreaLarger, _liftingAreaLarger.isOn ? 1 : 0);
+        PlayerPrefs.SetInt(SettingConstants.LiftingAreaReduce, _liftingAreaReduce.isOn ? 1 : 0);
     }
 
     private void Load()
@@ -155,6 +177,26 @@ public class GeneralSettings : MonoBehaviour
             _hightTextureWater.isOn = PlayerPrefs.GetInt(SettingConstants.HightTextureWater) == 0 ? false : true;      
         else
             _hightTextureWater.isOn = true;
+
+        if (PlayerPrefs.HasKey(SettingConstants.LiftingAreaLarger))
+            _liftingAreaLarger.isOn = PlayerPrefs.GetInt(SettingConstants.LiftingAreaLarger) == 0 ? false : true;
+        else
+        {
+            if (Application.isMobilePlatform)
+                _liftingAreaLarger.isOn = false;
+            else
+                _liftingAreaLarger.isOn = true;
+        }
+
+        if (PlayerPrefs.HasKey(SettingConstants.LiftingAreaReduce))
+            _liftingAreaReduce.isOn = PlayerPrefs.GetInt(SettingConstants.LiftingAreaReduce) == 0 ? false : true;
+        else
+        {
+            if (Application.isMobilePlatform)
+                _liftingAreaReduce.isOn = true;
+            else
+                _liftingAreaReduce.isOn = false;
+        }
 
         ChangeSensitivity(_sensitivitySlider.value);
         ChangeActiveTipsInput(_tipsInput.isOn);
