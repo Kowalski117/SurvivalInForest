@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9839ff07fc3994aa17c3c6b5ecfd28, type: 3}
+  m_Name: 10MakeClothes
+  m_EditorClassIdentifier: 
+  m_languageKeys:
+  - Default
+  - ru
+  - en
+  - tr
+  m_languageValues: 00000000010000000200000003000000
+  m_fieldKeys: 010000000200000003000000040000000b0000000c0000000d0000000e00000006000000070000000a000000
+  m_fieldValues:
+  - m_fieldName: id
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - MakeClothes
+    - MakeClothes
+    - MakeClothes
+    - 
+  - m_fieldName: title
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041E\u0434\u0435\u0436\u0434\u0430"
+    - Cloth
+    - "Kuma\u015F"
+    - 
+  - m_fieldName: group
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0413\u043B\u0430\u0432\u043D\u044B\u0435 \u0437\u0430\u0434\u0430\u043D\u0438\u044F"
+    - The main tasks
+    - "Ana g\xF6revler"
+    - 
+  - m_fieldName: journalActive
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041E\u0434\u0435\u0436\u0434\u0430 \u0434\u0430\u0435\u0442 \u0437\u0430\u0449\u0438\u0442\u0443.
+      \u0421\u0434\u0435\u043B\u0430\u0442\u044C \u0442\u043A\u0430\u043D\u0435\u0432\u0443\u044E
+      \u043E\u0434\u0435\u0436\u0434\u0443"
+    - Clothes provide protection. Make cloth clothes
+    - "Giysiler koruma sa\u011Flar. Kuma\u015F k\u0131yafetler yap\u0131n"
+    - 
+  - m_fieldName: journalActive1
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0428\u0430\u043F\u043A\u0430 \u0438\u0437 \u0442\u043A\u0430\u043D\u0438:
+      {#FabricHat}/{>#FabricHat}"
+    - Fabric hat:{#FabricHat}/{>#FabricHat}
+    - "Kuma\u015F \u015Fapka:{#FabricHat}/{>#FabricHat}"
+    - 
+  - m_fieldName: journalActive2
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041A\u0443\u0440\u0442\u043A\u0430 \u0438\u0437 \u0442\u043A\u0430\u043D\u0438:{#FabricJacket}/{>#FabricJacket}"
+    - Fabric jacket:{#FabricJacket}/{>#FabricJacket}
+    - "Kuma\u015F ceket:{#FabricJacket}/{>#FabricJacket}"
+    - 
+  - m_fieldName: journalActive3
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0428\u0442\u0430\u043D\u044B \u0438\u0437 \u0442\u043A\u0430\u043D\u0438:{#FabricPants}/{>#FabricPants}"
+    - Fabric pants:{#FabricPants}/{>#FabricPants}
+    - "Kuma\u015F pantolon:{#FabricPants}/{>#FabricPants}"
+    - 
+  - m_fieldName: journalActive4
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041E\u0431\u0443\u0432\u044C \u0438\u0437 \u0442\u043A\u0430\u043D\u0438:{#FabricShoes}/{>#FabricShoes}"
+    - Fabric shoes:{#FabricShoes}/{>#FabricShoes}
+    - "Kuma\u015F ayakkab\u0131lar:{#FabricShoes}/{>#FabricShoes}"
+    - 
+  - m_fieldName: journalSuccess
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041E\u0434\u0435\u0436\u0434\u0430 \u0441\u0434\u0435\u043B\u0430\u043D\u0430.
+      \u0421\u0442\u043E\u0438\u0442 \u043E\u0434\u0435\u0442\u044C \u0435\u0435"
+    - The clothes are done. It's worth wearing it
+    - "K\u0131yafetler tamamland\u0131. Onu giymeye de\u011Fer"
+    - 
+  - m_fieldName: HUDActive
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0421\u0434\u0435\u043B\u0430\u0442\u044C \u0442\u043A\u0430\u043D\u0435\u0432\u0443\u044E
+      \u043E\u0434\u0435\u0436\u0434\u0443"
+    - Make fabric clothing
+    - "Kuma\u015F k\u0131yafetler yap\u0131n"
+    - 
+  - m_fieldName: HUDCraftClothesActive
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0421\u043E\u0437\u0434\u0430\u0439 (\u0448\u0430\u043F\u043A\u0443, \u043A\u0443\u0440\u0442\u043A\u0443,
+      \u0448\u0442\u0430\u043D\u044B, \u043E\u0431\u0443\u0432\u044C)"
+    - Create (hat, jacket, pants, shoes)
+    - "Olu\u015Ftur (\u015Fapka, ceket, pantolon, ayakkab\u0131)"
+    - 
+  m_nextLanguageID: 4
+  m_nextFieldID: 15

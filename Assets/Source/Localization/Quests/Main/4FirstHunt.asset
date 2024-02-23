@@ -32,7 +32,7 @@ MonoBehaviour:
     m_values:
     - "\u041F\u0435\u0440\u0432\u0430\u044F \u043E\u0445\u043E\u0442\u0430"
     - The first hunt
-    - "\u0130lk Av"
+    - "\u0130lk av"
     - 
   - m_fieldName: group
     m_keys: 01000000020000000300000000000000
@@ -44,18 +44,18 @@ MonoBehaviour:
   - m_fieldName: journalActive
     m_keys: 01000000020000000300000000000000
     m_values:
-    - "\u041C\u043E\u0436\u043D\u043E \u0442\u0435\u043F\u0435\u0440\u044C \u043E\u0445\u043E\u0442\u0438\u0442\u044C\u0441\u044F,
+    - "\u041F\u043E\u0440\u0430 \u043E\u0445\u043E\u0442\u0438\u0442\u044C\u0441\u044F,
       \u043F\u043E\u043F\u0440\u043E\u0431\u0443\u0435\u043C \u0443\u0431\u0438\u0442\u044C
       \u0437\u0430\u0439\u0446\u0430. "
-    - You can now hunt, try to kill the hare.
-    - "\u015Eimdi avlayabilir, tav\u015Fan\u0131 \xF6ld\xFCrmeye \xE7al\u0131\u015Fabilirsiniz."
+    - It's time to hunt, try to kill a hare.
+    - "Avlanma, bir tav\u015Fan\u0131 \xF6ld\xFCrmeye \xE7al\u0131\u015Fma zaman\u0131."
     - 
   - m_fieldName: journalKillHareActive
     m_keys: 01000000020000000300000000000000
     m_values:
-    - "\u0417\u0430\u044F\u0446: {#KillHare}/{>#KillHare}"
-    - 'Hare: {#KillHare}/{>#KillHare}'
-    - "Tav\u015Fan: {#KillHare}/{>#KillHare}"
+    - "\u0417\u0430\u044F\u0446:{#Hare}/{>#Hare}"
+    - Hare:{#Hare}/{>#Hare}
+    - "Tav\u015Fan:{#Hare}/{>#Hare}"
     - 
   - m_fieldName: journalSuccess
     m_keys: 01000000020000000300000000000000
@@ -76,9 +76,9 @@ MonoBehaviour:
   - m_fieldName: HUDKillHareActive
     m_keys: 01000000020000000300000000000000
     m_values:
-    - "\u0417\u0430\u044F\u0446: {#KillHare}/{>#KillHare}"
-    - 'Hare: {#KillHare}/{>#KillHare}'
-    - "Tav\u015Fan: {#KillHare}/{>#KillHare}"
+    - "\u0417\u0430\u044F\u0446:{#Hare}/{>#Hare}"
+    - Hare:{#Hare}/{>#Hare}
+    - "Tav\u015Fan:{#Hare}/{>#Hare}"
     - 
   m_nextLanguageID: 4
   m_nextFieldID: 11

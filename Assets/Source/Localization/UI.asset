@@ -1,0 +1,635 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9839ff07fc3994aa17c3c6b5ecfd28, type: 3}
+  m_Name: UI
+  m_EditorClassIdentifier: 
+  m_languageKeys:
+  - Default
+  - tr
+  - en
+  - ru
+  m_languageValues: 00000000060000000500000004000000
+  m_fieldKeys: 1b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000400000004100000042000000430000004400000045000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f000000500000005100000052000000530000005400000055000000560000005700000058000000590000005a0000005b0000005c0000005d0000005e0000005f000000600000006100000062000000630000006400000065000000660000006700000068000000690000006a0000006b0000006c0000006d0000006e0000006f00000070000000
+  m_fieldValues:
+  - m_fieldName: Inventory
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0418\u043D\u0432\u0435\u043D\u0442\u0430\u0440\u044C"
+    - Inventory
+    - Envanter
+    - 
+  - m_fieldName: ManualWorkbench
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0420\u0443\u0447\u043D\u043E\u0439 \u0432\u0435\u0440\u0441\u0442\u0430\u043A"
+    - Manual workbench
+    - Manuel tezgah
+    - 
+  - m_fieldName: ThrowAway
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u044B\u0431\u0440\u043E\u0441\u0438\u0442\u044C"
+    - Throw away
+    - Atmak
+    - 
+  - m_fieldName: Eat
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u044A\u0435\u0441\u0442\u044C"
+    - Eat
+    - Yemek yemek
+    - 
+  - m_fieldName: Shop
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041C\u0430\u0433\u0430\u0437\u0438\u043D"
+    - Shop
+    - "Ma\u011Faza"
+    - 
+  - m_fieldName: Awards
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041D\u0430\u0433\u0440\u0430\u0434\u044B"
+    - Awards
+    - "\xD6d\xFCller"
+    - 
+  - m_fieldName: Roulette
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0420\u0443\u043B\u0435\u0442\u043A\u0430"
+    - Roulette
+    - Rulet
+    - 
+  - m_fieldName: Leaderboard
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041B\u0438\u0434\u0435\u0440\u0431\u043E\u0440\u0434"
+    - Leaderboard
+    - Liderlik tablosu
+    - 
+  - m_fieldName: Settings
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+    - Settings
+    - Ayarlar
+    - 
+  - m_fieldName: Continue
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
+    - Continue
+    - Devam etmek
+    - 
+  - m_fieldName: Save
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C"
+    - Save
+    - Kurtarmak
+    - 
+  - m_fieldName: ExitMainMenu
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u044B\u0439\u0442\u0438 \u0432 \u0433\u043B\u0430\u0432\u043D\u043E\u0435
+      \u043C\u0435\u043D\u044E"
+    - Exit to main menu
+    - "Ana men\xFCye \xE7\u0131k\u0131\u015F"
+    - 
+  - m_fieldName: Pause
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0430\u0443\u0437\u0430"
+    - Pause
+    - Duraklat
+    - 
+  - m_fieldName: 'DaysLived:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0440\u043E\u0436\u0438\u0442\u043E \u0434\u043D\u0435\u0439:"
+    - 'Days lived:'
+    - "Ya\u015Fanan g\xFCnler:"
+    - 
+  - m_fieldName: Spin!
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A\u0440\u0443\u0442\u0438\u0442\u044C!"
+    - Spin!
+    - "D\xF6nd\xFCrmek!"
+    - 
+  - m_fieldName: StarterSet
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u0442\u0430\u0440\u0442\u043E\u0432\u044B\u0439 \u043D\u0430\u0431\u043E\u0440"
+    - Starter set
+    - "Ba\u015Flang\u0131\xE7 \u200B\u200Bseti"
+    - 
+  - m_fieldName: StoneSet
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A\u0430\u043C\u0435\u043D\u043D\u044B\u0439 \u043D\u0430\u0431\u043E\u0440"
+    - Stone set
+    - "Ta\u015F seti"
+    - 
+  - m_fieldName: IronSet
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0416\u0435\u043B\u0435\u0437\u043D\u044B\u0439 \u043D\u0430\u0431\u043E\u0440"
+    - Iron set
+    - "\xDCt\xFC seti"
+    - 
+  - m_fieldName: BattlePack
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0411\u043E\u0435\u0432\u043E\u0439 \u043D\u0430\u0431\u043E\u0440"
+    - Battle pack
+    - "Sava\u015F paketi"
+    - 
+  - m_fieldName: ResourceSet
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041D\u0430\u0431\u043E\u0440 \u0440\u0435\u0441\u0443\u0440\u0441\u043E\u0432"
+    - Resource set
+    - Kaynak seti
+    - 
+  - m_fieldName: NiceLunch
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0425\u043E\u0440\u043E\u0448\u0438\u0439 \u043E\u0431\u0435\u0434"
+    - Nice lunch
+    - "G\xFCzel \xF6\u011Fle yeme\u011Fi"
+    - 
+  - m_fieldName: AlmightySet
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u0441\u0435\u043C\u043E\u0433\u0443\u0449\u0438\u0439 \u043D\u0430\u0431\u043E\u0440"
+    - Almighty set
+    - "Y\xFCce set"
+    - 
+  - m_fieldName: DailyRewards
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0415\u0436\u0435\u0434\u043D\u0435\u0432\u043D\u044B\u0435 \u043D\u0430\u0433\u0440\u0430\u0434\u044B"
+    - Daily rewards
+    - "G\xFCnl\xFCk \xD6d\xFCller"
+    - 
+  - m_fieldName: 'TimeLeftUntilNextReward:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u043E \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0435\u0439 \u043D\u0430\u0433\u0440\u0430\u0434\u044B
+      \u043E\u0441\u0442\u0430\u043B\u043E\u0441\u044C:"
+    - 'Time left until the next reward:'
+    - "Bir sonraki \xF6d\xFCle kalan s\xFCre:"
+    - 
+  - m_fieldName: Day1
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0435\u043D\u044C 1"
+    - Day 1
+    - "1. G\xFCn"
+    - 
+  - m_fieldName: Day2
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0435\u043D\u044C 2"
+    - Day 2
+    - "2. G\xFCn"
+    - 
+  - m_fieldName: Day3
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0435\u043D\u044C 3"
+    - Day 3
+    - "3. G\xFCn"
+    - 
+  - m_fieldName: Day4
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0435\u043D\u044C 4"
+    - Day 4
+    - "4. G\xFCn"
+    - 
+  - m_fieldName: Day5
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0435\u043D\u044C 5"
+    - Day 5
+    - "5. G\xFCn"
+    - 
+  - m_fieldName: Day6
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0435\u043D\u044C 6"
+    - Day 6
+    - "6. G\xFCn"
+    - 
+  - m_fieldName: Day7
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0435\u043D\u044C 7"
+    - Day 7
+    - "7. G\xFCn"
+    - 
+  - m_fieldName: Take!
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0417\u0430\u0431\u0440\u0430\u0442\u044C!"
+    - Take!
+    - Almak!
+    - 
+  - m_fieldName: Place
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041C\u0435\u0441\u0442\u043E"
+    - Place
+    - Yer
+    - 
+  - m_fieldName: Name
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0418\u043C\u044F"
+    - Name
+    - "\u0130sim"
+    - 
+  - m_fieldName: DaysLived
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0440\u043E\u0436\u0438\u0442\u043E \u0434\u043D\u0435\u0439"
+    - Days lived
+    - "Ya\u015Fanan g\xFCnler"
+    - 
+  - m_fieldName: General
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041E\u0431\u0449\u0438\u0435"
+    - General
+    - Genel
+    - 
+  - m_fieldName: Sounds
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0417\u0432\u0443\u043A\u0438"
+    - Sounds
+    - Sesler
+    - 
+  - m_fieldName: Control
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435"
+    - Control
+    - Kontrol
+    - 
+  - m_fieldName: 'Sensitivity:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0427\u0443\u0432\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C:"
+    - 'Sensitivity:'
+    - "Duyarl\u0131l\u0131k:"
+    - 
+  - m_fieldName: ControlTips
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438 \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u044F"
+    - Control tips
+    - "Kontrol ipu\xE7lar\u0131"
+    - 
+  - m_fieldName: AutomaticLiftingObjects
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0410\u0432\u0442\u043E\u043F\u043E\u0434\u0431\u043E\u0440 \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u043E\u0432"
+    - Automatic lifting of objects
+    - "Otomatik \xF6\u011Fe toplama"
+    - 
+  - m_fieldName: DynamicMovementTrees
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0438\u043D\u0430\u043C\u0438\u0447\u043D\u043E\u0435 \u0434\u0432\u0438\u0436\u0435\u043D\u0438\u0435
+      \u0434\u0435\u0440\u0435\u0432\u044C\u0435\u0432"
+    - Dynamic movement of trees
+    - "A\u011Fa\xE7lar\u0131n dinamik hareketi"
+    - 
+  - m_fieldName: 'WaterTexture:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0422\u0435\u043A\u0441\u0442\u0443\u0440\u0430 \u0432\u043E\u0434\u044B:"
+    - 'Water texture:'
+    - 'Su dokusu:'
+    - 
+  - m_fieldName: Low
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041D\u0438\u0437\u043A\u0430\u044F"
+    - Low
+    - "D\xFC\u015F\xFCk"
+    - 
+  - m_fieldName: High
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u044B\u0441\u043E\u043A\u0430\u044F"
+    - High
+    - "Y\xFCksek"
+    - 
+  - m_fieldName: 'SelectionArea:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041E\u0431\u043B\u0430\u0441\u0442\u044C \u043F\u043E\u0434\u0431\u043E\u0440\u0430:"
+    - 'Selection area:'
+    - "Se\xE7im alan\u0131:"
+    - 
+  - m_fieldName: Small
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F"
+    - Small
+    - "K\xFC\xE7\xFCk"
+    - 
+  - m_fieldName: Big
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0411\u043E\u043B\u044C\u0448\u0430\u044F"
+    - Big
+    - "B\xFCy\xFCk"
+    - 
+  - m_fieldName: 'Language:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u042F\u0437\u044B\u043A:"
+    - 'Language:'
+    - 'Dil:'
+    - 
+  - m_fieldName: 'AllSounds:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u0441\u0435 \u0437\u0432\u0443\u043A\u0438:"
+    - 'All sounds:'
+    - "T\xFCm sesler:"
+    - 
+  - m_fieldName: 'Music:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041C\u0443\u0437\u044B\u043A\u0430:"
+    - 'Music:'
+    - "M\xFCzik:"
+    - 
+  - m_fieldName: 'Effects:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u042D\u0444\u0444\u0435\u043A\u0442\u044B:"
+    - 'Effects:'
+    - 'Etkileri:'
+    - 
+  - m_fieldName: Reborn
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u043E\u0437\u0440\u043E\u0434\u0438\u0442\u044C\u0441\u044F"
+    - Reborn
+    - "Yeniden do\u011Fmak"
+    - 
+  - m_fieldName: RespawnButLose2/3YourInventory
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u043E\u0437\u0440\u043E\u0434\u0438\u0442\u044C\u0441\u044F, \u043D\u043E
+      \u043F\u043E\u0442\u0435\u0440\u044F\u0442\u044C 2/3 \u0438\u043D\u0432\u0435\u043D\u0442\u0430\u0440\u044F"
+    - Respawn but lose 2/3 of your inventory
+    - "Yeniden do\u011Far ancak envanterinizin 2/3'\xFCn\xFC kaybedersiniz"
+    - 
+  - m_fieldName: 'AdvertisingThrough:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0420\u0435\u043A\u043B\u0430\u043C\u0430 \u0447\u0435\u0440\u0435\u0437:"
+    - 'Advertising through:'
+    - "\u015Eu yolla reklam verin:"
+    - 
+  - m_fieldName: RaiseEverything50%
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u043E\u0434\u043D\u044F\u0442\u044C \u0432\u0441\u0435 \u043D\u0430
+      50%"
+    - Raise everything by 50%
+    - "Her \u015Feyi %50 art\u0131r"
+    - 
+  - m_fieldName: 'Build:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u0442\u0440\u043E\u0438\u0442\u044C\u0441\u044F:"
+    - 'Build:'
+    - "\u0130n\u015Fa etmek:"
+    - 
+  - m_fieldName: 'TimeSpent:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0417\u0430\u0442\u0440\u0430\u0447\u0435\u043D\u043D\u043E\u0435 \u0432\u0440\u0435\u043C\u044F:"
+    - 'Time spent:'
+    - 'Harcanan zaman:'
+    - 
+  - m_fieldName: Bonfire
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A\u043E\u0441\u0442\u0451\u0440"
+    - Bonfire
+    - "\u015Eenlik ate\u015Fi"
+    - 
+  - m_fieldName: Craft
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A\u0440\u0430\u0444\u0442"
+    - Craft
+    - Zanaat
+    - 
+  - m_fieldName: Workbench
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u0435\u0440\u0441\u0442\u0430\u043A"
+    - Workbench
+    - "\u0130\u015F\xE7ilik masas\u0131"
+    - 
+  - m_fieldName: Oven
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0435\u0447\u044C"
+    - Oven
+    - "F\u0131r\u0131n"
+    - 
+  - m_fieldName: 'UnderConstruction:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u0442\u0440\u043E\u0438\u0442\u0441\u044F:"
+    - 'Under construction:'
+    - "Yap\u0131m halinde:"
+    - 
+  - m_fieldName: Boiler
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A\u0430\u0437\u0430\u043D"
+    - Boiler
+    - Kazan
+    - 
+  - m_fieldName: Sleep...
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u043F\u0430\u0442\u044C..."
+    - Sleep...
+    - Uyumak...
+    - 
+  - m_fieldName: GoToBed
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041B\u0435\u0447\u044C \u0441\u043F\u0430\u0442\u044C"
+    - Go to bed
+    - Yatmak
+    - 
+  - m_fieldName: TimeUntilFullEnergyRecovery
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u0440\u0435\u043C\u044F \u0434\u043E \u043F\u043E\u043B\u043D\u043E\u0433\u043E
+      \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F
+      \u044D\u043D\u0435\u0440\u0433\u0438\u0438"
+    - Time until full energy recovery
+    - "Tam enerji geri kazan\u0131m\u0131na kadar ge\xE7en s\xFCre"
+    - 
+  - m_fieldName: Close
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0417\u0430\u043A\u0440\u044B\u0442\u044C"
+    - Close
+    - "Kapal\u0131"
+    - 
+  - m_fieldName: Chest
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u0443\u043D\u0434\u0443\u043A"
+    - Chest
+    - Kutu
+    - 
+  - m_fieldName: MainMenu
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0413\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E"
+    - Main menu
+    - "Ana men\xFC"
+    - 
+  - m_fieldName: ContinueGame
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C \u0438\u0433\u0440\u0443"
+    - Continue game
+    - Oyuna Devam Et
+    - 
+  - m_fieldName: NewGame
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041D\u043E\u0432\u0430\u044F \u0438\u0433\u0440\u0430"
+    - New game
+    - Yeni bir oyun
+    - 
+  - m_fieldName: MysteriousForest
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0422\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439 \u043B\u0435\u0441"
+    - Mysterious forest
+    - Gizemli orman
+    - 
+  - m_fieldName: Mine
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0428\u0430\u0445\u0442\u0430"
+    - Mine
+    - Bana ait
+    - 
+  - m_fieldName: ChangeLocation
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0421\u043C\u0435\u043D\u0430 \u043B\u043E\u043A\u0430\u0446\u0438\u0438"
+    - Change of location
+    - "Konum de\u011Fi\u015Fikli\u011Fi"
+    - 
+  - m_fieldName: ClickContinue
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041D\u0430\u0436\u043C\u0438\u0442\u0435, \u0447\u0442\u043E\u0431\u044B
+      \u043F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
+    - Click to continue
+    - "Devam etmek i\xE7in t\u0131klay\u0131n"
+    - 
+  - m_fieldName: 'GoTo:'
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u0432:"
+    - 'Go to:'
+    - "\u015Euraya git:"
+    - 
+  - m_fieldName: Yes
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0414\u0430"
+    - Yes
+    - Evet
+    - 
+  - m_fieldName: Well
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041A\u043E\u043B\u043E\u0434\u0435\u0446"
+    - Well
+    - Kuyu
+    - 
+  - m_fieldName: 'Crafting:'
+    m_keys: 00000000060000000500000004000000
+    m_values:
+    - 
+    - "\xDCretmek:"
+    - 'Crafting:'
+    - "\u041A\u0440\u0430\u0444\u0442\u0438\u0442\u0441\u044F:"
+  - m_fieldName: LoginAccount
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u043E\u0439\u0442\u0438 \u0432 \u0430\u043A\u043A\u0430\u0443\u043D\u0442"
+    - Login to account
+    - "Hesaba giri\u015F yap\u0131n"
+    - 
+  - m_fieldName: BuildingRemovalMode
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0420\u0435\u0436\u0438\u043C \u0443\u0434\u0430\u043B\u0435\u043D\u0438\u044F
+      \u043F\u043E\u0441\u0442\u0440\u043E\u0435\u043A"
+    - Building removal mode
+    - "Bina kald\u0131rma modu"
+    - 
+  - m_fieldName: Trader
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0422\u043E\u0440\u0433\u043E\u0432\u0435\u0446"
+    - Trader
+    - "Sat\u0131c\u0131"
+    - 
+  - m_fieldName: YourRating
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0412\u0430\u0448 \u0440\u0435\u0439\u0442\u0438\u043D\u0433"
+    - Your rating
+    - Sizin dereceniz
+    - 
+  - m_fieldName: Exchange
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u041E\u0431\u043C\u0435\u043D"
+    - Exchange
+    - "De\u011Fi\u015Fme"
+    - 
+  - m_fieldName: "Bonus\u0421hest"
+    m_keys: 04000000050000000600000000000000
+    m_values:
+    - "\u0411\u043E\u043D\u0443\u0441\u043D\u044B\u0439 \u0441\u0443\u043D\u0434\u0443\u043A"
+    - Bonus chest
+    - "Bonus sand\u0131\u011F\u0131"
+    - 
+  m_nextLanguageID: 7
+  m_nextFieldID: 113

@@ -54,6 +54,29 @@ MonoBehaviour:
     m_stringAsset: {fileID: 0}
     m_textTable: {fileID: 11400000, guid: 2c01ecb2e59cb9940a162e01a8c22e68, type: 2}
     m_textTableFieldID: 7
+--- !u!114 &-4165994512397972649
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a00f693c81283c4085385e484f71206, type: 3}
+  m_Name: GiveQuestToQuesterQuestAction
+  m_EditorClassIdentifier: 
+  m_questToGive: {fileID: 11400000, guid: 1c0c97af5f4f2414185c1d793257fd27, type: 2}
+  m_questIDToGive:
+    m_text: 
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 11400000, guid: 03665d81473a6cf47aae46b6cf7569b6, type: 2}
+    m_textTableFieldID: 1
+  m_questerID:
+    m_text: Player
+    m_stringAsset: {fileID: 0}
+    m_textTable: {fileID: 0}
+    m_textTableFieldID: 0
 --- !u!114 &-2301060172530452045
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -165,7 +188,8 @@ MonoBehaviour:
     - m_contentList:
       - {fileID: 5567145140338892258}
       - {fileID: -5847921145621831108}
-  - m_actionList: []
+  - m_actionList:
+    - {fileID: -4165994512397972649}
     m_categorizedContentList:
     - m_contentList: []
     - m_contentList:
