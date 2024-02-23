@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DayUI : MonoBehaviour
 {
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private TMP_Text _currentDayText;
 
     private void OnEnable()

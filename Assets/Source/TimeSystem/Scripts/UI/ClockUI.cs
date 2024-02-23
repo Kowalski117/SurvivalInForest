@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ClockUI : MonoBehaviour
 {
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private TMP_Text _currentTimeText;
 
     private void OnEnable()
