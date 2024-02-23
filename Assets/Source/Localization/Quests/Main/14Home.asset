@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9839ff07fc3994aa17c3c6b5ecfd28, type: 3}
+  m_Name: 14Home
+  m_EditorClassIdentifier: 
+  m_languageKeys:
+  - Default
+  - ru
+  - en
+  - tr
+  m_languageValues: 00000000010000000200000003000000
+  m_fieldKeys: 010000000200000003000000040000000900000006000000070000000a000000
+  m_fieldValues:
+  - m_fieldName: id
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - Home
+    - Home
+    - Home
+    - 
+  - m_fieldName: title
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0421\u0442\u0440\u043E\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\u043E
+      \u0434\u043E\u043C\u0430"
+    - Home construction
+    - "Ev in\u015Faat\u0131"
+    - 
+  - m_fieldName: group
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0413\u043B\u0430\u0432\u043D\u044B\u0435 \u0437\u0430\u0434\u0430\u043D\u0438\u044F"
+    - The main tasks
+    - "Ana g\xF6revler"
+    - 
+  - m_fieldName: journalActive
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u043B\u044F \u0441\u0442\u0440\u043E\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\u0430
+      \u0434\u043E\u043C\u0430 \u0442\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044F
+      \u043F\u043E\u0441\u0442\u0440\u043E\u0438\u0442\u044C \u0434\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u044B\u0439
+      \u043F\u043E\u043B/\u043A\u0440\u044B\u0448\u0430"
+    - To build a house you need to build a wooden floor/roof
+    - "Bir ev in\u015Fa etmek i\xE7in ah\u015Fap bir zemin/\xE7at\u0131 in\u015Fa
+      etmeniz gerekir"
+    - 
+  - m_fieldName: journalBuildHomeActive
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u044B\u0439 \u043F\u043E\u043B/\u043A\u0440\u044B\u0448\u0430:{#WoodenFloor}/{>#WoodenFloor}"
+    - Wooden floor/roof:{#WoodenFloor}/{>#WoodenFloor}
+    - "Ah\u015Fap zemin/\xE7at\u0131:{#WoodenFloor}/{>#WoodenFloor}"
+    - 
+  - m_fieldName: journalSuccess
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0424\u0443\u043D\u0434\u0430\u043C\u0435\u043D\u0442 \u043F\u043E\u0441\u0442\u0440\u043E\u0435\u043D,
+      \u0442\u0435\u043F\u0435\u0440\u044C \u043C\u043E\u0436\u043D\u043E \u0441\u0442\u0440\u043E\u0438\u0442\u044C
+      \u0441\u0442\u0435\u043D\u044B."
+    - The foundation is built, now you can build walls.
+    - "Temel in\u015Fa edildi, art\u0131k duvarlar in\u015Fa edebilirsiniz."
+    - 
+  - m_fieldName: HUDActive
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u041F\u043E\u0441\u0442\u0440\u043E\u0438\u0442\u044C \u0434\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u044B\u0439
+      \u043F\u043E\u043B/\u043A\u0440\u044B\u0448\u0430"
+    - Build a wooden floor/roof
+    - "Ah\u015Fap bir zemin/\xE7at\u0131 in\u015Fa edin"
+    - 
+  - m_fieldName: HUDBuildHomeActive
+    m_keys: 01000000020000000300000000000000
+    m_values:
+    - "\u0414\u0435\u0440\u0435\u0432\u044F\u043D\u043D\u044B\u0439 \u043F\u043E\u043B/\u043A\u0440\u044B\u0448\u0430:{#WoodenFloor}/{>#WoodenFloor}"
+    - Wooden floor/roof:{#WoodenFloor}/{>#WoodenFloor}
+    - "Ah\u015Fap zemin/\xE7at\u0131:{#WoodenFloor}/{>#WoodenFloor}"
+    - 
+  m_nextLanguageID: 4
+  m_nextFieldID: 15

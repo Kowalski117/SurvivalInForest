@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Repos\SurvivalInForest" t="IncludeRecursive">
+      <e p="Agava.VKGames.Samples.Playtesting.csproj" t="IncludeRecursive" />
       <e p="Agava.WebUtility.Samples.Playtesting.csproj" t="IncludeRecursive" />
       <e p="Agava.YandexGames.Samples.Playtesting.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
@@ -28,6 +29,141 @@
         <e p="Editor Default Resources" t="Include">
           <e p="Dialogue System" t="Include" />
           <e p="Quest Machine" t="Include" />
+        </e>
+        <e p="ExternalDependencyManager" t="Include">
+          <e p="Editor" t="Include">
+            <e p="1.2.177" t="Include" />
+            <e p="external-dependency-manager_version-1.2.177_manifest.txt" t="Include" />
+          </e>
+        </e>
+        <e p="GameAnalytics" t="Include">
+          <e p="Editor" t="Include">
+            <e p="Android" t="Include">
+              <e p="Dependencies.xml" t="Include" />
+            </e>
+            <e p="GA_AssetPostprocessor.cs" t="Include" />
+            <e p="GA_AutoRun.cs" t="Include" />
+            <e p="GA_ContinuationManager.cs" t="Include" />
+            <e p="GA_EditorUtilities.cs" t="Include" />
+            <e p="GA_Menu.cs" t="Include" />
+            <e p="GA_PostprocessBuild.cs" t="Include" />
+            <e p="GA_SettingsInspector.cs" t="Include" />
+            <e p="GA_SignUp.cs" t="Include" />
+            <e p="GA_UpdateWindow.cs" t="Include" />
+            <e p="GameAnalyticsInspector.cs" t="Include" />
+            <e p="PlayMaker" t="Include">
+              <e p="PlayMakerPresenceCheck.cs" t="Include" />
+              <e p="SendProgressionEventActionEditor.cs" t="Include" />
+              <e p="SendResourceEventActionEditor.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Gizmos" t="Include">
+            <e p="GameAnalytics" t="Include">
+              <e p="Images" t="Include" />
+            </e>
+          </e>
+          <e p="Plugins" t="Include">
+            <e p="Android" t="Include" />
+            <e p="iOS" t="Include" />
+            <e p="Linux" t="Include" />
+            <e p="PlayMaker" t="Include">
+              <e p="Examples" t="Include" />
+              <e p="GAInitialize.cs" t="Include" />
+              <e p="GetABTestingId.cs" t="Include" />
+              <e p="GetABTestingVariantId.cs" t="Include" />
+              <e p="GetRemoteConfigsValueAsString.cs" t="Include" />
+              <e p="IsRemoteConfigsReady.cs" t="Include" />
+              <e p="SendAdEvent.cs" t="Include" />
+              <e p="SendBusinessEvent.cs" t="Include" />
+              <e p="SendDesignEvent.cs" t="Include" />
+              <e p="SendErrorEvent.cs" t="Include" />
+              <e p="SendProgressionEvent.cs" t="Include" />
+              <e p="SendResourceEvent.cs" t="Include" />
+              <e p="SetCustomDimension.cs" t="Include" />
+            </e>
+            <e p="Prefabs" t="Include" />
+            <e p="SamsungTV" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="ATT" t="Include">
+                <e p="GameAnalyticsATTClient.cs" t="Include" />
+                <e p="GameAnalyticsATTObjCBridge.cs" t="Include" />
+              </e>
+              <e p="Enums.cs" t="Include" />
+              <e p="Events" t="Include">
+                <e p="GA_Ads.cs" t="Include" />
+                <e p="GA_Business.cs" t="Include" />
+                <e p="GA_Debug.cs" t="Include" />
+                <e p="GA_Design.cs" t="Include" />
+                <e p="GA_Error.cs" t="Include" />
+                <e p="GA_Progression.cs" t="Include" />
+                <e p="GA_Resource.cs" t="Include" />
+                <e p="GA_Setup.cs" t="Include" />
+                <e p="GA_SpecialEvents.cs" t="Include" />
+                <e p="GAValidator.cs" t="Include" />
+              </e>
+              <e p="GameAnalytics.cs" t="Include" />
+              <e p="IGameAnalyticsATTListener.cs" t="Include" />
+              <e p="ILRD" t="Include">
+                <e p="AdMob" t="Include">
+                  <e p="GAAdMobIntegration.cs" t="Include" />
+                </e>
+                <e p="Aequus" t="Include">
+                  <e p="GAAequusIntegration.cs" t="Include" />
+                </e>
+                <e p="Fyber" t="Include">
+                  <e p="GAFyberIntegration.cs" t="Include" />
+                </e>
+                <e p="GameAnalyticsILRD.cs" t="Include" />
+                <e p="HyperBid" t="Include">
+                  <e p="GAHyperBidIntegration.cs" t="Include" />
+                </e>
+                <e p="IronSource" t="Include">
+                  <e p="GAIronSourceIntegration.cs" t="Include" />
+                </e>
+                <e p="Max" t="Include">
+                  <e p="GAMaxIntegration.cs" t="Include" />
+                </e>
+                <e p="Mopub" t="Include">
+                  <e p="GAMopubIntegration.cs" t="Include" />
+                </e>
+                <e p="TopOn" t="Include">
+                  <e p="GATopOnIntegration.cs" t="Include" />
+                </e>
+              </e>
+              <e p="Setup" t="Include">
+                <e p="Settings.cs" t="Include" />
+              </e>
+              <e p="State" t="Include">
+                <e p="GAState.cs" t="Include" />
+              </e>
+              <e p="Utilities" t="Include">
+                <e p="GA_MiniJson.cs" t="Include" />
+              </e>
+              <e p="Wrapper" t="Include">
+                <e p="GA_AndroidWrapper.cs" t="Include" />
+                <e p="GA_iOSWrapper.cs" t="Include" />
+                <e p="GA_MonoWrapper.cs" t="Include" />
+                <e p="GA_TizenWrapper.cs" t="Include" />
+                <e p="GA_tvOSWrapper.cs" t="Include" />
+                <e p="GA_UWPWrapper.cs" t="Include" />
+                <e p="GA_WebGLWrapper.cs" t="Include" />
+                <e p="GA_Wrapper.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Tizen" t="Include" />
+            <e p="tvOS" t="Include" />
+            <e p="WebGL" t="Include" />
+            <e p="Windows" t="Include">
+              <e p="x64" t="Include" />
+              <e p="x86" t="Include" />
+            </e>
+            <e p="WSA" t="Include">
+              <e p="ARM" t="Include" />
+              <e p="x64" t="Include" />
+              <e p="x86" t="Include" />
+            </e>
+          </e>
+          <e p="readme.txt" t="Include" />
         </e>
         <e p="Gizmos" t="Include">
           <e p="LoveHate" t="Include" />
@@ -751,7 +887,6 @@
                   <e p="128" t="Include" />
                   <e p="256" t="Include" />
                   <e p="32" t="Include" />
-                  <e p="512" t="Include" />
                   <e p="64" t="Include" />
                 </e>
                 <e p="Misc" t="Include" />
@@ -5239,8 +5374,25 @@
             </e>
           </e>
         </e>
-        <e p="Resources" t="Include" />
+        <e p="Resources" t="Include">
+          <e p="GameAnalytics" t="Include" />
+        </e>
         <e p="Samples" t="Include">
+          <e p="VK Games" t="Include">
+            <e p="2.0.1" t="Include">
+              <e p="Playtesting Sample" t="Include">
+                <e p="Agava.VKGames.Samples.Playtesting.asmdef" t="Include" />
+                <e p="Billing" t="Include">
+                  <e p="ItemCatalog.cs" t="Include" />
+                  <e p="ItemCatalogPanel.cs" t="Include" />
+                  <e p="ItemPanel.cs" t="Include" />
+                  <e p="PurchasedItemListPanel.cs" t="Include" />
+                  <e p="PurchasedItemsSaveData.cs" t="Include" />
+                </e>
+                <e p="PlaytestingCanvas.cs" t="Include" />
+              </e>
+            </e>
+          </e>
           <e p="Web Utility" t="Include">
             <e p="2.2.0" t="Include">
               <e p="Playtesting Sample" t="Include">
@@ -5261,6 +5413,7 @@
                 <e p="WebEventSystem.cs" t="Include" />
               </e>
             </e>
+            <e p="16.0.0" t="Include" />
           </e>
         </e>
         <e p="Scenes" t="Include">
@@ -5318,7 +5471,10 @@
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
               <e p="AudioHandler.cs" t="Include" />
+              <e p="AudioTrigger.cs" t="Include" />
+              <e p="AudioTriggerHandler.cs" t="Include" />
               <e p="ButtonFx.cs" t="Include" />
+              <e p="MusicHandler.cs" t="Include" />
               <e p="PlayerAudioHandler.cs" t="Include" />
               <e p="Resources" t="Include">
                 <e p="TouchingGround.cs" t="Include" />
@@ -5326,11 +5482,15 @@
             </e>
             <e p="Sounds" t="Include">
               <e p="Fire" t="Include" />
+              <e p="Music" t="Include" />
+              <e p="Player" t="Include" />
               <e p="Resources" t="Include">
                 <e p="ByAir" t="Include" />
                 <e p="Shovel" t="Include" />
               </e>
+              <e p="Step" t="Include" />
               <e p="Torch" t="Include" />
+              <e p="Triggers" t="Include" />
               <e p="Walk" t="Include">
                 <e p="Stone" t="Include" />
                 <e p="Wooden" t="Include" />
@@ -5362,9 +5522,24 @@
               <e p="DoorAudioHandler.cs" t="Include" />
               <e p="DoorRotate.cs" t="Include" />
               <e p="foundationConnection.cs" t="Include" />
+              <e p="TouchColliderBuildingHandler.cs" t="Include" />
+              <e p="UI" t="Include">
+                <e p="BuildingRemoveModeView.cs" t="Include" />
+              </e>
               <e p="WorldGrid.cs" t="Include" />
             </e>
             <e p="Sounds" t="Include" />
+          </e>
+          <e p="CameraEffects" t="Include">
+            <e p="EatEffect" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="CameraRotation.cs" t="Include" />
+                <e p="ColorRotation.cs" t="Include" />
+                <e p="EatEffectHandler.cs" t="Include" />
+                <e p="FoodEffect.cs" t="Include" />
+              </e>
+            </e>
+            <e p="ShakeEffect.cs" t="Include" />
           </e>
           <e p="ClothingSystem" t="Include">
             <e p="Scripts" t="Include">
@@ -5376,10 +5551,13 @@
           </e>
           <e p="Constants" t="Include">
             <e p="Scripts" t="Include">
+              <e p="ConstantsSDK.cs" t="Include" />
+              <e p="GameAnalyticsConstants.cs" t="Include" />
               <e p="GameConstants.cs" t="Include" />
               <e p="MessageConstants.cs" t="Include" />
               <e p="PlayerAnimationConstants.cs" t="Include" />
               <e p="SaveLoadConstants.cs" t="Include" />
+              <e p="SettingConstants.cs" t="Include" />
             </e>
           </e>
           <e p="CraftingSystem" t="Include">
@@ -5388,6 +5566,7 @@
               <e p="Build" t="Include">
                 <e p="Decor" t="Include" />
               </e>
+              <e p="Clothes" t="Include" />
               <e p="Food" t="Include" />
               <e p="Item" t="Include" />
               <e p="Tool" t="Include" />
@@ -5427,6 +5606,11 @@
             <e p="Materials" t="Include" />
             <e p="Scripts" t="Include">
               <e p="CutScene.cs" t="Include" />
+              <e p="Movement" t="Include">
+                <e p="FollowPath.cs" t="Include" />
+                <e p="MovementPath.cs" t="Include" />
+              </e>
+              <e p="StonesActive.cs" t="Include" />
             </e>
             <e p="Signals" t="Include" />
             <e p="Sound" t="Include" />
@@ -5438,13 +5622,8 @@
               <e p="Main" t="Include" />
               <e p="Resident" t="Include" />
             </e>
-          </e>
-          <e p="EatEffect" t="Include">
             <e p="Scripts" t="Include">
-              <e p="CameraRotation.cs" t="Include" />
-              <e p="ColorRotation.cs" t="Include" />
-              <e p="EatEffectHandler.cs" t="Include" />
-              <e p="FoodEffect.cs" t="Include" />
+              <e p="EnableGameObject.cs" t="Include" />
             </e>
           </e>
           <e p="Editor" t="Include">
@@ -5461,15 +5640,23 @@
             <e p="RadioTower" t="Include" />
           </e>
           <e p="ExchangeSystem" t="Include">
-            <e p="ExchangeItemListSO" t="Include" />
+            <e p="ExchangeItem" t="Include">
+              <e p="List" t="Include" />
+              <e p="Rank1" t="Include" />
+              <e p="Rank2" t="Include" />
+              <e p="Rank3" t="Include" />
+            </e>
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
               <e p="ExchangeHandler.cs" t="Include" />
               <e p="ExchangeKeeper.cs" t="Include" />
+              <e p="ExchangerItemData.cs" t="Include" />
               <e p="ExchangerItemList.cs" t="Include" />
+              <e p="TradingRating.cs" t="Include" />
               <e p="UI" t="Include">
-                <e p="ExchangedItemView.cs" t="Include" />
                 <e p="ExchangerSlotView.cs" t="Include" />
+                <e p="ItemView.cs" t="Include" />
+                <e p="TradingRatingView.cs" t="Include" />
                 <e p="UIInventoryHandler.cs" t="Include" />
               </e>
             </e>
@@ -5483,6 +5670,7 @@
           <e p="FireSystem" t="Include">
             <e p="Scripts" t="Include">
               <e p="Fire.cs" t="Include" />
+              <e p="FireDamage.cs" t="Include" />
               <e p="UI" t="Include">
                 <e p="GorenjeTimerView.cs" t="Include" />
               </e>
@@ -5510,7 +5698,10 @@
             <e p="Prefabs" t="Include" />
             <e p="Scripts" t="Include">
               <e p="Compass.cs" t="Include" />
+              <e p="CompassLocalization.cs" t="Include" />
               <e p="QuestMaker.cs" t="Include" />
+              <e p="QuestMakersHandler.cs" t="Include" />
+              <e p="QuestMakerZone.cs" t="Include" />
             </e>
             <e p="Sprite" t="Include" />
           </e>
@@ -5560,6 +5751,7 @@
               </e>
               <e p="Inventory" t="Include">
                 <e p="BackpackInventory.cs" t="Include" />
+                <e p="BonusesHandler.cs" t="Include" />
                 <e p="ChestHandler.cs" t="Include" />
                 <e p="ChestInventory.cs" t="Include" />
                 <e p="ClothesInventory.cs" t="Include" />
@@ -5571,6 +5763,7 @@
                 <e p="PlayerInventoryHolder.cs" t="Include" />
                 <e p="UI" t="Include">
                   <e p="BackpackInventoryView.cs" t="Include" />
+                  <e p="ChestView.cs" t="Include" />
                   <e p="DynamicInventoryDisplay.cs" t="Include" />
                   <e p="InventoryDescriptionUI.cs" t="Include" />
                   <e p="InventoryDisplay.cs" t="Include" />
@@ -5605,6 +5798,7 @@
               <e p="UI" t="Include">
                 <e p="ChangingInventory.cs" t="Include" />
                 <e p="DelayIcon.cs" t="Include" />
+                <e p="PanelScale.cs" t="Include" />
                 <e p="ViewInventoryNotifier.cs" t="Include" />
               </e>
             </e>
@@ -5628,6 +5822,9 @@
               <e p="Main" t="Include" />
               <e p="Resident" t="Include" />
             </e>
+            <e p="Scripts" t="Include">
+              <e p="LocalizationHandler.cs" t="Include" />
+            </e>
           </e>
           <e p="Materials" t="Include" />
           <e p="MiningSystem" t="Include">
@@ -5645,6 +5842,14 @@
               <e p="Treasure.cs" t="Include" />
               <e p="Tree.cs" t="Include" />
             </e>
+          </e>
+          <e p="NoteSystem" t="Include">
+            <e p="NotesData" t="Include" />
+            <e p="Scripts" t="Include">
+              <e p="Note.cs" t="Include" />
+              <e p="NoteItemData.cs" t="Include" />
+            </e>
+            <e p="Sprites" t="Include" />
           </e>
           <e p="NPC" t="Include">
             <e p="Animation" t="Include" />
@@ -5670,6 +5875,7 @@
               <e p="Axe" t="Include" />
               <e p="Bow" t="Include" />
               <e p="Empty" t="Include" />
+              <e p="FishingRod" t="Include" />
               <e p="Knife" t="Include" />
               <e p="Shovel" t="Include" />
               <e p="Spear" t="Include" />
@@ -5700,13 +5906,15 @@
             <e p="Models" t="Include" />
             <e p="Prefab" t="Include" />
             <e p="Scripts" t="Include">
+              <e p="ButtonsInputHandler.cs" t="Include" />
+              <e p="FallDamage.cs" t="Include" />
+              <e p="PlayerHandler.cs" t="Include" />
               <e p="PlayerInput" t="Include">
                 <e p="BuildPlayerInput.cs" t="Include" />
                 <e p="InteractionPlayerInput.cs" t="Include" />
                 <e p="InventoryPlayerInput.cs" t="Include" />
                 <e p="UIScreenPlayerInput.cs" t="Include" />
               </e>
-              <e p="PlayerInputHandler.cs" t="Include" />
             </e>
             <e p="StarterAssets" t="Include">
               <e p="Environment" t="Include">
@@ -5798,6 +6006,13 @@
             </e>
           </e>
           <e p="RaycastTarget.cs" t="Include" />
+          <e p="Roulette" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="ItemsSpawner.cs" t="Include" />
+              <e p="RouletteScrollHandler.cs" t="Include" />
+              <e p="RouletteSlot.cs" t="Include" />
+            </e>
+          </e>
           <e p="SaveLoadSystem" t="Include">
             <e p="EasySave" t="Include">
               <e p="SaveGame.cs" t="Include" />
@@ -5826,6 +6041,9 @@
                 </e>
               </e>
             </e>
+            <e p="NoteScreen" t="Include">
+              <e p="NoteScreen.cs" t="Include" />
+            </e>
             <e p="RewardScreen" t="Include">
               <e p="DayRewardsData" t="Include" />
               <e p="Prefabs" t="Include" />
@@ -5839,10 +6057,16 @@
                 </e>
               </e>
             </e>
+            <e p="RouletteScreen" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="RouletteScreen.cs" t="Include" />
+              </e>
+            </e>
             <e p="Scripts" t="Include">
               <e p="MenuScreen.cs" t="Include" />
               <e p="PauseScreen.cs" t="Include" />
               <e p="ScreenUI.cs" t="Include" />
+              <e p="Timer.cs" t="Include" />
               <e p="UIScaler.cs" t="Include" />
             </e>
             <e p="SettingScreen" t="Include">
@@ -5864,13 +6088,49 @@
                   <e p="ShopScreen.cs" t="Include" />
                 </e>
               </e>
+              <e p="Sprites" t="Include" />
               <e p="StoreSlots" t="Include" />
+            </e>
+          </e>
+          <e p="SDK" t="Include">
+            <e p="GameAnalytics" t="Include">
+              <e p="Analytics.cs" t="Include" />
+              <e p="CatSceneAnalytics.cs" t="Include" />
+              <e p="GameAnalyticsEvent.cs" t="Include" />
+              <e p="ScenesAnalytics.cs" t="Include" />
+              <e p="ScreensAnalytics.cs" t="Include" />
+              <e p="StartMenuAnalytics.cs" t="Include" />
+              <e p="SurvivalAnalytics.cs" t="Include" />
+            </e>
+            <e p="Scripts" t="Include">
+              <e p="InitializationSDK.cs" t="Include" />
+              <e p="PlatformHandler.cs" t="Include" />
+              <e p="UI" t="Include">
+                <e p="NotifierPlayer.cs" t="Include" />
+                <e p="RotateImage.cs" t="Include" />
+              </e>
+              <e p="YandexAds.cs" t="Include" />
+            </e>
+            <e p="VKGames" t="Include">
+              <e p="Scripts" t="Include" />
+            </e>
+            <e p="Yandex" t="Include">
+              <e p="LeaderBoard" t="Include">
+                <e p="Scripts" t="Include">
+                  <e p="Leaderboard.cs" t="Include" />
+                  <e p="LeaderboardElement.cs" t="Include" />
+                  <e p="LeaderboardPlayer.cs" t="Include" />
+                  <e p="LeaderboardView.cs" t="Include" />
+                </e>
+              </e>
+              <e p="Sprites" t="Include" />
             </e>
           </e>
           <e p="Setting" t="Include">
             <e p="Scripts" t="Include">
               <e p="AudioSetting.cs" t="Include" />
               <e p="GeneralSettings.cs" t="Include" />
+              <e p="PlatformSettings.cs" t="Include" />
             </e>
           </e>
           <e p="Skybox" t="Include">
@@ -5897,6 +6157,7 @@
                 <e p="AttributeMetricView.cs" t="Include" />
                 <e p="HealthMetricView.cs" t="Include" />
                 <e p="StaminaValueMetricView.cs" t="Include" />
+                <e p="StatsBuff.cs" t="Include" />
                 <e p="ValueMetricView.cs" t="Include" />
               </e>
             </e>
@@ -5938,10 +6199,12 @@
               </e>
             </e>
             <e p="Scripts" t="Include">
+              <e p="InfoAnimal.cs" t="Include" />
               <e p="InfoObject.cs" t="Include" />
               <e p="InfoObjectData.cs" t="Include" />
               <e p="TutorialHandler.cs" t="Include" />
             </e>
+            <e p="Sprites" t="Include" />
           </e>
           <e p="WeaponAndTool" t="Include">
             <e p="Bow" t="Include">
@@ -5963,23 +6226,6 @@
               <e p="Scripts" t="Include">
                 <e p="Torch.cs" t="Include" />
               </e>
-            </e>
-          </e>
-          <e p="Yandex" t="Include">
-            <e p="LeaderBoard" t="Include">
-              <e p="Scripts" t="Include">
-                <e p="Leaderboard.cs" t="Include" />
-                <e p="LeaderboardElement.cs" t="Include" />
-                <e p="LeaderboardPlayer.cs" t="Include" />
-                <e p="LeaderboardView.cs" t="Include" />
-              </e>
-            </e>
-            <e p="Scripts" t="Include">
-              <e p="UI" t="Include">
-                <e p="NotifierPlayer.cs" t="Include" />
-              </e>
-              <e p="YandexAds.cs" t="Include" />
-              <e p="YandexInitialization.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -6033,6 +6279,8 @@
           </e>
         </e>
         <e p="WebGLTemplates" t="Include">
+          <e p="Crazy_2020" t="Include" />
+          <e p="Crazy_5_6+" t="Include" />
           <e p="FullscreenWindow" t="Include" />
         </e>
       </e>
