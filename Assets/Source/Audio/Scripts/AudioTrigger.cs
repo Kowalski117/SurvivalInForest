@@ -3,13 +3,8 @@ using UnityEngine;
 
 public class AudioTrigger : MonoBehaviour
 {
-    //[SerializeField] private TimeHandler _timeHandler;
-    //[SerializeField] private AudioClip[] _dayClips;
-    //[SerializeField] private AudioClip[] _nightClips;
-
     private AudioTriggerHandler _audioTriggerHandler;
     private AudioSource _source;
-    //private Vector2 _day = new Vector2(4, 19);
     private bool _isActive = true;
     private float _delay = 180f;
     private WaitForSeconds _waitForSeconds;
@@ -25,12 +20,7 @@ public class AudioTrigger : MonoBehaviour
     {
         if (other.GetComponent<PlayerHealth>() && _isActive)
         {
-            //if(_timeHandler.CurrentHurts > _day.x && _timeHandler.CurrentHurts < _day.y)
-            //    _source.PlayOneShot(_dayClips[Random.Range(0, _dayClips.Length)]);
-            //else
-            //    _source.PlayOneShot(_nightClips[Random.Range(0, _nightClips.Length)]);
              _source.PlayOneShot(_audioTriggerHandler.GetAudioClip());
-
             StartCoroutine();
         }
     }
@@ -50,6 +40,7 @@ public class AudioTrigger : MonoBehaviour
     {
         _isActive = false;
         _waitForSeconds =  new WaitForSeconds(_delay);
+
         yield return _waitForSeconds;
 
         _isActive = true;

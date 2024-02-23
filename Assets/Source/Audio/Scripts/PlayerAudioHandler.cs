@@ -23,17 +23,16 @@ public class PlayerAudioHandler : MonoBehaviour
     private AudioClip[] _footStepsOverride;
     private AudioClip _jumpSoundOverride;
     private AudioClip _landSoundOverride;
+    private Coroutine _coroutine;
     private bool _isInSpecialSurface;
     private bool _isFootstepPlaying = false;
     private bool _isJumping = false;
-    private Coroutine _coroutine;
     private float _longDelay = 0.5f;
     private float _shortDelay = 0.25f;
     private float _damageClipDelay = 3f;
     private bool _isEnable;
     private bool _isDamageSoundPlaying = false;
 
-    public AudioClip[] HitInAirClips => _hitInAirClips;
     public AudioClip PickUpClip => _pickUpClip;
 
     private void Awake()
@@ -86,6 +85,7 @@ public class PlayerAudioHandler : MonoBehaviour
     public void PlayEatingSound(float eatValue, float drinkValue)
     {
         drinkValue /= 2.5f;
+
         if (eatValue > 0 || drinkValue > 0 && _isEnable)
         {
             if (eatValue >= drinkValue)
@@ -98,6 +98,7 @@ public class PlayerAudioHandler : MonoBehaviour
                 int n = Random.Range(0, _drinkingSounds.Length);
                 _audioSourceForSteps.clip = _drinkingSounds[n];
             }
+
             _audioSourceForSteps.PlayOneShot(_audioSourceForSteps.clip);
             _isJumping = true;
             StartCoroutine(_longDelay);
@@ -109,13 +110,10 @@ public class PlayerAudioHandler : MonoBehaviour
         if (_isJumping && !isJumping && _isEnable)
         {
             if (_isInSpecialSurface)
-            {
                 _audioSourceForSteps.clip = _landSoundOverride;
-            }
             else
-            {
                 _audioSourceForSteps.clip = _landSound;
-            }
+
             _audioSourceForSteps.Play();
             _isJumping = false;
         }
@@ -126,13 +124,10 @@ public class PlayerAudioHandler : MonoBehaviour
         if (!_isJumping && isJumping && _isEnable)
         {
             if (_isInSpecialSurface)
-            {
                 _audioSourceForSteps.clip = _jumpSoundOverride;
-            }
             else
-            {
                 _audioSourceForSteps.clip = _jumpSound;
-            }
+
             _audioSourceForSteps.Play();
             _isFootstepPlaying = true;
             StartCoroutine(_longDelay);
