@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TransitionHandlerBetweenScenes : MonoBehaviour
 {
@@ -47,9 +46,7 @@ public class TransitionHandlerBetweenScenes : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out PlayerHealth playerHealth))
-        {
+        if (other.GetComponent<PlayerHealth>())
             _isActive = true;
-        }
     }
 }

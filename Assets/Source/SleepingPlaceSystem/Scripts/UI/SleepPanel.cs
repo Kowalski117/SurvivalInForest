@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SleepPanel : ScreenUI
@@ -16,9 +15,9 @@ public class SleepPanel : ScreenUI
     private DateTime _sleepTime;
     private float _maximumDivisor = 3;
 
-    public static event UnityAction<bool> OnStoppedTime;
-    public static event UnityAction<float> OnSubtractTime;
-    public event UnityAction OnPlayerSleeped;
+    public static event Action<bool> OnStoppedTime;
+    public static event Action<float> OnSubtractTime;
+    public event Action OnPlayerSleeped;
 
     protected override void OnEnable()
     {

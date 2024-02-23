@@ -25,6 +25,8 @@ public class PlayerHandler : MonoBehaviour
     private bool _isAllParametrsEnablePrevious;
     private bool _isControllerActive;
     private bool _isControllerActivePrevious;
+    private bool _isCameraActive;
+    private bool _isCameraActivePrevious;
 
     public FirstPersonController FirstPersonController => _firstPersonController;
     public HotbarDisplay HotbarDisplay => _hotbarDisplay;
@@ -132,7 +134,14 @@ public class PlayerHandler : MonoBehaviour
 
     public void ToggleCamera(bool visible)
     {
-        _firstPersonController.ToggleCamera(visible);
+        if (_isCameraActivePrevious && !visible)
+        {
+            _isCameraActivePrevious = false;
+            return;
+        }
+        _isCameraActivePrevious = _isCameraActive;
+        _isCameraActive = visible;
+        _firstPersonController.ToggleCamera(_isCameraActive);
     }
 
     private void ToggleCursor(bool visible)

@@ -38,7 +38,7 @@ public class QuestJournalScreen : MonoBehaviour
             _playerInputHandler.ToggleInteractionInput(false);
             _playerInputHandler.ToggleInventoryInput(false);
             _playerInputHandler.ToggleBuildPlayerInput(false);
-            _playerInputHandler.SetActiveCollider(false);
+            //_playerInputHandler.SetActiveCollider(false);
         }
         else
         {
@@ -47,7 +47,7 @@ public class QuestJournalScreen : MonoBehaviour
             _playerInputHandler.ToggleHotbarDisplay(true);
             _playerInputHandler.ToggleInventoryInput(true);
             _playerInputHandler.ToggleBuildPlayerInput(true);
-            _playerInputHandler.SetActiveCollider(true);
+            //_playerInputHandler.SetActiveCollider(true);
             _questJournal.HideJournalUI();
         }
     }

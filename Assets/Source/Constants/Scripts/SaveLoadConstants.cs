@@ -32,4 +32,8 @@ public class SaveLoadConstants
     public const string IsAddMaker = "IsAddMaker";
 
     public const string TradingRating = "TradingRating";
+
+    public const string IsDone = "IsDone";
+
+    public const string Time = "Time";
 }

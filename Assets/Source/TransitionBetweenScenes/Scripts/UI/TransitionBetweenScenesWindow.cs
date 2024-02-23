@@ -1,6 +1,6 @@
+using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class TransitionBetweenScenesWindow : ScreenUI
@@ -8,7 +8,7 @@ public class TransitionBetweenScenesWindow : ScreenUI
     [SerializeField] private TMP_Text _nameSceneText;
     [SerializeField] private Button _transitionButton;
 
-    public event UnityAction OnTransitionButton;
+    public event Action OnTransitionButton;
 
     protected override void OnEnable()
     {
@@ -37,6 +37,5 @@ public class TransitionBetweenScenesWindow : ScreenUI
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
-        //ToggleScreen();
     }
 }

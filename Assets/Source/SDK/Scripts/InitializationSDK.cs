@@ -11,14 +11,16 @@ public class InitializationSDK : MonoBehaviour
     [SerializeField] private YandexAds _yandexAds;
     [SerializeField] private SaveGame _saveGame;
 
+    private string _defaultLanguage = "en";
+
     private void Awake()
     {
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         YandexGamesSdk.CallbackLogging = true;
 #endif
-//#if UNITY_WEBGL && !UNITY_EDITOR
-//        InitAnalytics();
-//#endif
+#if UNITY_WEBGL && !UNITY_EDITOR
+        InitAnalytics();
+#endif
     }
 
     private IEnumerator Start()
@@ -51,7 +53,7 @@ public class InitializationSDK : MonoBehaviour
         if (PlayerPrefs.HasKey(ConstantsSDK.Language))
             _localization.SetLanguageString(PlayerPrefs.GetString(ConstantsSDK.Language));
         else
-            _localization.SetLanguageString("en");
+            _localization.SetLanguageString(_defaultLanguage);
 
         SwitchScene();
     }

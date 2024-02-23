@@ -2,14 +2,13 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DelayWindow : MonoBehaviour
 {
     [SerializeField] private AnimationUI _animationUI;
     [SerializeField] private Image _loadingBar;
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private TMP_Text _nameText;
@@ -23,7 +22,7 @@ public class DelayWindow : MonoBehaviour
     private float _delay = 0.5f;
     private float _maximumDivisor = 3;
 
-    public event UnityAction OnLoadingComplete;
+    public event Action OnLoadingComplete;
 
     private void Awake()
     {
@@ -53,12 +52,11 @@ public class DelayWindow : MonoBehaviour
         _playerInputHandler.ToggleScreenPlayerInput(false);
         _playerInputHandler.ToggleAllInput(false);
         _playerInputHandler.TogglePersonController(false);
-        //_playerInputHandler.SetCursorVisible(false);
         _playerInputHandler.ToggleCamera(false);
 
         _animationUI.OpenAnimation();
 
-        _time = _time + TimeSpan.FromHours(skipTime);
+        _time += TimeSpan.FromHours(skipTime);
 
         _nameText.text = name;
         _timerText.text = _time.ToString(GameConstants.HHmm);

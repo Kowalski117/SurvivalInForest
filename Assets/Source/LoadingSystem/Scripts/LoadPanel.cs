@@ -125,7 +125,7 @@ public class LoadPanel : MonoBehaviour
             ES3.Save(SaveLoadConstants.LastSceneIndex, SceneManager.GetActiveScene().buildIndex);
             ES3.Save(SaveLoadConstants.NextSceneIndex, indexScene);
         }
-        _loadBarTransform.gameObject.SetActive(true);
+        //_loadBarTransform.gameObject.SetActive(true);
         _loadBarImage.fillAmount = 0;
 
         while (_canvasGroup.alpha != 1)

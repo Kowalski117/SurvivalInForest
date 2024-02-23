@@ -46,6 +46,12 @@ public class RouletteScrollHandler : MonoBehaviour
             _revardImage.Open();
     }
 
+    private void Start()
+    {
+        if (!_timer.IsClaimReward)
+            _buttonScroll.enabled = false;
+    }
+
     private void OnEnable()
     {
         _screen.OnOpenScreen += StartCoroutine;

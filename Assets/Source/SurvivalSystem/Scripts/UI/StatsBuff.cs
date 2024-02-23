@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class StatsBuff : MonoBehaviour
@@ -16,7 +16,7 @@ public class StatsBuff : MonoBehaviour
     private float _delay = 300f;
     private Coroutine _coroutine;
 
-    public event UnityAction OnUseBuff;
+    public event Action OnUseBuff;
 
     private void Awake()
     {

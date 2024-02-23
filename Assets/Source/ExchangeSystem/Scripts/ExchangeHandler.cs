@@ -9,7 +9,7 @@ public class ExchangeHandler : Raycast
     [SerializeField] private ExchangerItemList _exchangerItemList;
     [SerializeField] private ExchangerSlotView[] _exchangerSlots;
     [SerializeField] private TradingRating _tradingRating;
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private ExchangeWindow _exchangeWindow;
 
     private ExchangeKeeper _exchangeKeeper;

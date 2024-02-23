@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Bow : MonoBehaviour
 {
@@ -16,9 +16,9 @@ public class Bow : MonoBehaviour
     private bool _isEnable = false;
     private bool _isAim = false;
 
-    public event UnityAction OnInitialized;
-    public event UnityAction OnCleared;
-    public event UnityAction OnShooting;
+    public event Action OnInitialized;
+    public event Action OnCleared;
+    public event Action OnShooting;
 
     private void Start()
     {
@@ -59,13 +59,10 @@ public class Bow : MonoBehaviour
         if (_isEnable)
         {
             if (_isAim)
-            {
                 _isAim = false;
-            }
             else
-            {
                 _isAim = true;
-            }
+
             _playerAnimatorHandler.Aim(_isAim);
         }
     }
@@ -102,7 +99,7 @@ public class Bow : MonoBehaviour
 
     public void InstantiateArrow(Arrow arrow, Transform parent, Animals animals)
     {
-        if(Random.Range(0, 2) == 0)
+        if(UnityEngine.Random.Range(0, 2) == 0)
         {
             ItemPickUp arrowItem = Instantiate(_currentWeapon.Bullet, arrow.transform.position, arrow.transform.rotation);
             arrowItem.GenerateNewID();
@@ -115,9 +112,7 @@ public class Bow : MonoBehaviour
         _isShoot = false;
 
         if (animals != null)
-        {
             _playerInteraction.TakeDamageAnimal(animals, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
-        }
     }
 
     private void Init(WeaponItemData itemData)

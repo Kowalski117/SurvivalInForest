@@ -3,7 +3,7 @@ using UnityEngine;
 public class SurvivalAnalytics : Analytics
 {
     [SerializeField] private PlayerHealth _playerHealth;
-    [SerializeField] private TimeHandler _timeHandler;
+    [SerializeField] private MainClock _timeHandler;
     [SerializeField] private PlayerInteraction _playerInteraction;
     [SerializeField] private Interactor _interactor;
     [SerializeField] private FishingRod _fishingRod;
