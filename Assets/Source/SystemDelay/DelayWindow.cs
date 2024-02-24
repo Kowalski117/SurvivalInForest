@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using PixelCrushers.DialogueSystem;
+using PixelCrushers.Wrappers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +16,13 @@ public class DelayWindow : MonoBehaviour
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _timerText;
     [SerializeField] private TMP_Text _actionText;
+    [SerializeField] private TextTable _textTable;
 
+    private const String CraftItem = "Crafting:";
+    private const String Build = "Build:";
+    private const String Sleep = "Sleeping";
+    private const String Preparing = "Prepare:";
+    
     private AudioSource _audioSource;
     private DateTime _time;
     private Coroutine _coroutine;
@@ -110,20 +118,20 @@ public class DelayWindow : MonoBehaviour
     {
         if(actionType == ActionType.CraftItem)
         {
-            _actionText.text = "Крафтится:";
+            _actionText.text = _textTable.GetFieldTextForLanguage(CraftItem, Localization.language);
         }
         else if(actionType == ActionType.CraftBuild)
         {
-            _actionText.text = "Строится:";
+            _actionText.text = _textTable.GetFieldTextForLanguage(Build, Localization.language);
         }
         else if(actionType == ActionType.Sleep) 
         {
-            _actionText.text = "Спит:";
+            _actionText.text = _textTable.GetFieldTextForLanguage(Sleep, Localization.language);
             _nameText.text = "...";
         }
         else if(actionType == ActionType.Preparing)
         {
-            _actionText.text = "Готовится:";
+            _actionText.text = _textTable.GetFieldTextForLanguage(Preparing, Localization.language);
         }
     }
 }

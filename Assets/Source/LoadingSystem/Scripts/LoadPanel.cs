@@ -22,8 +22,8 @@ public class LoadPanel : MonoBehaviour
     [SerializeField] private float _fadeSpeed;
     [SerializeField] private bool _isStart = false;
 
-    private const float _waitForFadeTime = 4f;
-    private const float _zeroVolume = -80f;
+    private const float WaitForFadeTime = 4f;
+    private const float ZeroVolume = -80f;
 
     private Coroutine _coroutine;
     private Coroutine _coroutineDeactivate;
@@ -97,7 +97,7 @@ public class LoadPanel : MonoBehaviour
         {
             _canvasGroup.alpha = 1;
             float elapsedTime = 0;
-            float targetTime = _waitForFadeTime;
+            float targetTime = WaitForFadeTime;
             _loadBarText.enabled = true;
 
             while (elapsedTime < targetTime)
@@ -135,7 +135,7 @@ public class LoadPanel : MonoBehaviour
         }
 
         if (alpha == 1)
-            yield return new WaitForSeconds(_waitForFadeTime);
+            yield return new WaitForSeconds(WaitForFadeTime);
 
         if (OnFadingDone != null)
         {
