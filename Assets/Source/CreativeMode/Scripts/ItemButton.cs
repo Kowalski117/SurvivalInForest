@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ItemButton : MonoBehaviour
 {
     [SerializeField] private Image _icon;
+    [SerializeField] private int _amountMax = 50;
 
     private Button _button;
     private InventoryItemData _inventoryItemData;
@@ -38,8 +39,8 @@ public class ItemButton : MonoBehaviour
     private void AddItem()
     {
         if(Keyboard.current.leftShiftKey.isPressed)
-            _inventoryHolder.AddToInventory(_inventoryItemData, 50, _inventoryItemData.Durability);
+            _inventoryHolder.AddItem(_inventoryItemData, _amountMax, _inventoryItemData.Durability);
         else
-            _inventoryHolder.AddToInventory(_inventoryItemData, _amount, _inventoryItemData.Durability);
+            _inventoryHolder.AddItem(_inventoryItemData, _amount, _inventoryItemData.Durability);
     }
 }

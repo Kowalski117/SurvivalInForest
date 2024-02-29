@@ -36,12 +36,12 @@ namespace StarterAssets
 
         public void ToggleInventory()
         {
-            _playerInputHandler.InventoryPlayerInput.ToggleInventory();
+            _playerInputHandler.InventoryPlayerInput.Toggle();
         }
 
         public void InteractedConstruction()
         {
-            _playerInputHandler.InteractionPlayerInput.InteractedConstruction();
+            _playerInputHandler.InteractionPlayerInput.InteractConstruction();
         }
 
         public void AddFire()
@@ -51,7 +51,7 @@ namespace StarterAssets
 
         public void RotateBuild()
         {
-            _playerInputHandler.BuildPlayerInput.RotateBuilding();
+            _playerInputHandler.BuildPlayerInput.Rotate();
         }
 
         public void DestroyBuild()
@@ -61,18 +61,18 @@ namespace StarterAssets
 
         public void RemoveBuildingMode()
         {
-            _playerInputHandler.BuildPlayerInput.DeleteModeBuilding();
+            _playerInputHandler.BuildPlayerInput.ToggleDeleteMode();
         }
         
         public void DeleteBuildingMode()
         {
-            _playerInputHandler.BuildPlayerInput.DeleteBuilding();
+            _playerInputHandler.BuildPlayerInput.Delete();
         }
 
 
         public void PutBuild()
         {
-            _playerInputHandler.BuildPlayerInput.PutBuilding();
+            _playerInputHandler.BuildPlayerInput.Put();
         }
 
         public void UseItem()

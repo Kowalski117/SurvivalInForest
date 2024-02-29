@@ -20,22 +20,17 @@ public class RewardSlot : MonoBehaviour
     {
         _isEmpty = false;
         _slot.AssignedInventorySlot.AssignItem(dayReward.Slot.ItemData, dayReward.Slot.Amount, dayReward.Slot.ItemData.Durability);
-        _slot.UpdateUiSlot();
-        _view.UpdateSlot(day, dayReward.BackgroundColor);
+        _slot.UpdateItem();
+        _view.UpdateInfo(day, dayReward.BackgroundColor);
     }
 
-    public void ToggleSlot(bool isActive)
+    public void Take()
     {
-        _view.ToggleFrameImage(isActive);
+        _view.Use();
     }
 
-    public void TakeSlot()
+    public void Clear()
     {
-        _view.UseSlot();
-    }
-
-    public void ResetSlot()
-    {
-        _view.ResetSlot();
+        _view.Clear();
     }
 }

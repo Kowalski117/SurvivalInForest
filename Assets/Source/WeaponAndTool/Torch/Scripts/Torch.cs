@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Torch : MonoBehaviour
 {
-    [SerializeField] private PlayerInteraction _playerInteraction;
+    [SerializeField] private PlayerEquipmentHandler _playerEquipmentHandler;
     [SerializeField] private PlayerAnimatorHandler _playerAnimatorHandler;
     [SerializeField] private AudioClip _gorenjeClip;
     [SerializeField] private AudioClip _hitClip;
@@ -18,18 +18,18 @@ public class Torch : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInteraction.OnUpdateToolItemData += Init;
+        _playerEquipmentHandler.OnUpdateToolItemData += Init;
     }
 
     private void OnDisable()
     {
-        _playerInteraction.OnUpdateToolItemData -= Init;
+        _playerEquipmentHandler.OnUpdateToolItemData -= Init;
     }
 
     private void Update()
     {
         if (_isEnable && _currentTool != null)
-            _playerInteraction.UpdateDurabilityWithGameTime(_playerInteraction.CurrentInventorySlot);
+            _playerEquipmentHandler.UpdateDurabilityWithGameTime(_playerEquipmentHandler.CurrentInventorySlot);
     }
 
     private void Init(ToolItemData itemData)

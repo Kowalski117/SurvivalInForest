@@ -11,21 +11,21 @@ public class QuestMakersHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _compass.OnQuestMakerAdded += AddMaker;
+        _compass.OnQuestMakerAdded += Add;
 
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
     }
 
     private void OnDisable()
     {
-        _compass.OnQuestMakerAdded -= AddMaker;
+        _compass.OnQuestMakerAdded -= Add;
 
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
     }
 
-    public void AddMaker(QuestMaker questMaker)
+    public void Add(QuestMaker questMaker)
     {
         if (!_idMakers.Contains(questMaker.Id))
             _idMakers.Add(questMaker.Id);

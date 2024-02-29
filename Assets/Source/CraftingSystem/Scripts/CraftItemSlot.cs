@@ -15,24 +15,24 @@ public class CraftItemSlot : CraftSlot
 
     private void OnEnable()
     {
-        _slotView.OnCreateRecipeButtonClick += CraftingItem;
+        _slotView.OnCreatedRecipeButtonClick += Crafting;
     }
 
     private void OnDisable()
     {
-        _slotView.OnCreateRecipeButtonClick -= CraftingItem;
+        _slotView.OnCreatedRecipeButtonClick -= Crafting;
     }
 
-    private void CraftingItem(ItemRecipe craftRecipe, PlayerInventoryHolder playerInventoryHolder)
+    private void Crafting(ItemRecipe craftRecipe, PlayerInventoryHolder playerInventoryHolder)
     {
         if (CheckIfCanCraft(craftRecipe, playerInventoryHolder))
         {
             foreach (var ingredient in craftRecipe.CraftingIngridients)
             {
-                playerInventoryHolder.RemoveInventory(ingredient.ItemRequired, ingredient.AmountRequured);
+                playerInventoryHolder.RemoveItem(ingredient.ItemRequired, ingredient.AmountRequured);
             }
 
-            playerInventoryHolder.AddToInventory(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, craftRecipe.CraftedItem.Durability);
+            playerInventoryHolder.AddItem(craftRecipe.CraftedItem, craftRecipe.CraftingAmount, craftRecipe.CraftedItem.Durability);
             OnCraftSlotUpdate?.Invoke();
         }
     }

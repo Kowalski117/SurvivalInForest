@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class QuestMakerZone : MonoBehaviour
 {
+    [SerializeField] private Compass _compass;
     [SerializeField] private QuestMaker[] _hiddenQuestMakers;
     [SerializeField] private QuestMaker[] _openQuestMakers;
 
@@ -18,23 +19,23 @@ public class QuestMakerZone : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameLoaded += Load;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameLoaded -= Load;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out PlayerHandler playerHandler) && !_isAddMaker)
+        if (other.GetComponent<PlayerHandler>() && !_isAddMaker)
         {
             if (_hiddenQuestMakers.Length > 0)
             {
                 foreach (var maker in _hiddenQuestMakers)
                 {
-                    playerHandler.Compass.RemoveQuestMarket(maker);
+                    _compass.RemoveQuestMarket(maker);
                 }
             }
 
@@ -42,7 +43,7 @@ public class QuestMakerZone : MonoBehaviour
             {
                 foreach (var maker in _openQuestMakers)
                 {
-                    playerHandler.Compass.AddQuestMarket(maker);
+                    _compass.AddQuestMarket(maker);
                 }
             }
 

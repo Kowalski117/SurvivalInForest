@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class TradingRating : MonoBehaviour
 {
@@ -10,20 +10,20 @@ public class TradingRating : MonoBehaviour
     private int _maxRating = 3;
     private int _minRating = 1;
 
-    public event UnityAction<int> OnRatingChanged;
+    public event Action<int> OnRatingChanged;
 
     public int CurrentRating => _currentRating;
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
     }
 
     private void AddQuestsCount()

@@ -16,26 +16,26 @@ public class ChestInventory : InventoryHolder
         base.Awake();;
     }
 
-    public void AddInventoryItem(InventoryItemData itemData, int amount)
+    public void AddItem(InventoryItemData itemData, int amount)
     {
-        PrimaryInventorySystem.AddToInventory(itemData, amount, itemData.Durability);
+        PrimaryInventorySystem.AddItem(itemData, amount, itemData.Durability);
     }
 
     public void RemoveAllItems()
     {
         foreach (InventorySlot slot in PrimaryInventorySystem.GetAllFilledSlots())
         {
-            PrimaryInventorySystem.RemoveItemsInventory(slot.ItemData, slot.Size);
+            PrimaryInventorySystem.RemoveItem(slot.ItemData, slot.Size);
         }
     }
 
-    protected override void SaveInventory()
+    protected override void Save()
     {
         InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
         ES3.Save(_uniqueId.Id, saveData);
     }
 
-    protected override void LoadInventory()
+    protected override void Load()
     {
         if (ES3.KeyExists(_uniqueId.Id))
         {
@@ -53,7 +53,7 @@ public class ChestInventory : InventoryHolder
                 {
                     for (var i = 0; i < inventoryData.Amount; i++)
                     {
-                        AddInventoryItem(inventoryData.ItemData, 1);
+                        AddItem(inventoryData.ItemData, 1);
                     }
                 }
             }

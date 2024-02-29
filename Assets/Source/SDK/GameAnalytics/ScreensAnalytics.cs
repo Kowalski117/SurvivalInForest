@@ -8,15 +8,15 @@ public class ScreensAnalytics : Analytics
 
     private void OnEnable()
     {
-        _rouletteScrollHandler.OnScroll += ScrollRoulette;
-        _statsBuff.OnUseBuff += UseBuff;
+        _rouletteScrollHandler.OnScrolling += ScrollRoulette;
+        _statsBuff.OnUsed += UseBuff;
         _storeHandler.OnProductBuyed += BuyProduct;
     }
 
     private void OnDisable()
     {
-        _rouletteScrollHandler.OnScroll -= ScrollRoulette;
-        _statsBuff.OnUseBuff -= UseBuff;
+        _rouletteScrollHandler.OnScrolling -= ScrollRoulette;
+        _statsBuff.OnUsed -= UseBuff;
         _storeHandler.OnProductBuyed -= BuyProduct;
     }
 

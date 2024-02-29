@@ -17,13 +17,13 @@ public class Leaderboard : MonoBehaviour
     private void OnEnable()
     {
         if(_timeHandler)
-            _timeHandler.OnDayUpdate += SetPlayer;
+            _timeHandler.OnDayUpdated += SetPlayer;
     }
 
     private void OnDisable()
     {
         if (_timeHandler)
-            _timeHandler.OnDayUpdate -= SetPlayer;
+            _timeHandler.OnDayUpdated -= SetPlayer;
     }
 
     public void SetPlayer(int score)

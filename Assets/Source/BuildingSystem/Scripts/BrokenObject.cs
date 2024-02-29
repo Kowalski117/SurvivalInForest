@@ -11,10 +11,17 @@ public class BrokenObject : MonoBehaviour
     private Transform _pointForce;
     private float _force = 3f;
 
+    private Coroutine _coroutine;
+    private WaitForSeconds _destroyWait;
+    private WaitForSeconds _betweenWait;
+
     public int CountObjectFragments => _objectFragments.Count;
 
     private void Awake()
     {
+        _destroyWait = new WaitForSeconds(_timeDestroyFragments);
+        _betweenWait = new WaitForSeconds(_timeBetweenFragments);
+
         foreach (var rigidbody in _objectFragments)
         {
             rigidbody.isKinematic = true;
@@ -41,9 +48,7 @@ public class BrokenObject : MonoBehaviour
         }
 
         if (isDead)
-        {
-            StartCoroutine(DestroyFragments());
-        }
+            StartCoroutine();
     }
 
     private void ApplyForceToFragment(Rigidbody fragmentRigidbody, float forceMagnitude)
@@ -57,13 +62,25 @@ public class BrokenObject : MonoBehaviour
         }
     }
 
+    private void StartCoroutine()
+    {
+        if(_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _coroutine = StartCoroutine(DestroyFragments());
+    }
+
     private IEnumerator DestroyFragments()
     {
-        yield return new WaitForSeconds(_timeDestroyFragments);
+        yield return _destroyWait;
+
         for (int i = 0; i < _objectFragments.Count; i++)
         {
             Destroy(_objectFragments[i].gameObject);
-            yield return new WaitForSeconds(_timeBetweenFragments);
+            yield return _betweenWait;
         }
     }
 }

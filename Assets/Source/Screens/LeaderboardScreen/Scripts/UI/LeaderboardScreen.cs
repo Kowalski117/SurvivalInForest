@@ -4,7 +4,7 @@ using UnityEngine;
 public class LeaderboardScreen : ScreenUI
 {
     [SerializeField] private Leaderboard _leaderboard;
-    [SerializeField] private AuthorizationPanel _authorizationPanel;
+    [SerializeField] private LoginAccountPanel _authorizationPanel;
 
     private void Authorization()
     {
@@ -20,32 +20,28 @@ public class LeaderboardScreen : ScreenUI
             //SaveGame.GetCloudSaveData();
         }
         else
-        {
             _authorizationPanel.OpenScreen();
-        }
 #endif
     }
 
-    public override void ToggleScreen()
+    public override void Toggle()
     {
         IsOpenScreen = !IsOpenScreen;
 
         if (IsOpenScreen)
-        {
             Authorization();
-        }
         else
         {
-            CloseScreen();
+            Close();
 
             if(_authorizationPanel.IsOpenPanel)
-                _authorizationPanel.CloseScreen();
+                _authorizationPanel.Close();
         }
     }
 
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
-        CloseScreen();
+        Close();
     }
 }

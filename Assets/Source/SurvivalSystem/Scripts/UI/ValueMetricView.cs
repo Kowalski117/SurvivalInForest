@@ -8,6 +8,9 @@ public class ValueMetricView : MonoBehaviour
 
     private Color _defoultColor;
 
+    private float _amountOffset = 0.3f;
+    private float _amountRange = 0.4f;
+
     private void Awake()
     {
         _defoultColor = _image.color;
@@ -16,6 +19,6 @@ public class ValueMetricView : MonoBehaviour
     protected void UpdateFillAmount(float amount)
     {
         _image.fillAmount = amount;
-        _image.color = Color.Lerp(_minAmountColor, _defoultColor, (amount - 0.3f) / 0.4f);
+        _image.color = Color.Lerp(_minAmountColor, _defoultColor, (amount - _amountOffset) / _amountRange);
     }
 }

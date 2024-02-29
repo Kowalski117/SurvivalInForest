@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Treasure : Resource
 {
-    [SerializeField] private ObjectPickUp _lootObject;
+    [SerializeField] private BeingLiftedObject _lootObject;
 
     private int[] _array = new int[] { 75, 50, 25, 0};
     private int _index;

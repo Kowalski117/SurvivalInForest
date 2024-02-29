@@ -1,18 +1,18 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(OutlineObject))]
 public class BrokenPackage : MonoBehaviour
 {
     private Box _box;
     private Collider _collider;
     private OutlineObject _outline;
-    private DistanceHandler _distanceHandler;
 
     private void Awake()
     {
         _box = GetComponentInParent<Box>();
         _collider = GetComponent<Collider>();
         _outline = GetComponent<OutlineObject>();
-        _distanceHandler = GetComponentInChildren<DistanceHandler>();
     }
 
     private void Start()
@@ -34,13 +34,11 @@ public class BrokenPackage : MonoBehaviour
     {
         _collider.enabled = true;
         _outline.enabled = true;
-        _distanceHandler.gameObject.SetActive(true);
     }
 
     private void TurnOffPackage()
     {
         _collider.enabled = false;
         _outline.enabled = false;
-        _distanceHandler.gameObject.SetActive(false);
     }
 }

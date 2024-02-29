@@ -30,12 +30,6 @@ public class FishingRodRenderer : MonoBehaviour
         _lineRenderer.positionCount = _maxPositionCount;
     }
 
-    public void Disable()
-    {
-        _isDrawing = false;
-        _lineRenderer.positionCount = 0;
-    }
-
     public void ToggleActive(bool isActive)
     {
         _lineRenderer.enabled = isActive;

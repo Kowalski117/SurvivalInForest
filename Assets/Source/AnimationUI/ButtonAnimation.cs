@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof (Button))]
 public class ButtonAnimation : MonoBehaviour, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Vector3 _minScale = new Vector3(0.7f, 0.7f, 0.7f);
@@ -12,13 +13,14 @@ public class ButtonAnimation : MonoBehaviour, IPointerUpHandler, IPointerEnterHa
     private Button _button;
     private Tween _tween;
     private Vector3 _defaultScale = Vector3.one;
-    private WaitForSeconds _waitForSeconds;
+    private WaitForSeconds _delayWait;
     private Coroutine _coroutine;
     private bool _isPointerOverButton = false;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+        _delayWait = new WaitForSeconds(_delay);
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -54,7 +56,9 @@ public class ButtonAnimation : MonoBehaviour, IPointerUpHandler, IPointerEnterHa
     {
         ResetTween();
         _tween = _button.transform.DOScale(_minScale, _delay);
-        yield return _waitForSeconds = new WaitForSeconds(_delay);
+
+        yield return _delayWait;
+
         ResetTween();
         _tween = _button.transform.DOScale(_defaultScale, _delay);
     }

@@ -16,14 +16,13 @@ public class MusicHandler : MonoBehaviour
     private void Update()
     {
         if (!_audioSource.isPlaying)
-        {
             PlayRandomTrack();
-        }
     }
 
     private void PlayRandomTrack()
     {
         int randomIndex;
+
         do
         {
             randomIndex = Random.Range(0, _musicClips.Length);

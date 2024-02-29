@@ -13,13 +13,13 @@ public class QuestJournalScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInputHandler.ScreenPlayerInput.OnToggleQuestJournal += ToggleActiveWindow;
+        _playerInputHandler.ScreenPlayerInput.OnQuestJournalToggled += ToggleActiveWindow;
         _exitButton.onClick.AddListener(ToggleActiveWindow);
     }
 
     private void OnDisable()
     {
-        _playerInputHandler.ScreenPlayerInput.OnToggleQuestJournal -= ToggleActiveWindow;
+        _playerInputHandler.ScreenPlayerInput.OnQuestJournalToggled -= ToggleActiveWindow;
         _exitButton.onClick.RemoveListener(ToggleActiveWindow);
     }
 
@@ -30,7 +30,7 @@ public class QuestJournalScreen : MonoBehaviour
         if (_isOpen)
         {
             if (_inventoryHandler.IsInventoryOpen)
-                _playerInputHandler.InventoryPlayerInput.ToggleInventory();
+                _playerInputHandler.InventoryPlayerInput.Toggle();
 
             _questJournal.ShowJournalUI();
             _playerInputHandler.SetCursorVisible(true);
@@ -38,7 +38,6 @@ public class QuestJournalScreen : MonoBehaviour
             _playerInputHandler.ToggleInteractionInput(false);
             _playerInputHandler.ToggleInventoryInput(false);
             _playerInputHandler.ToggleBuildPlayerInput(false);
-            //_playerInputHandler.SetActiveCollider(false);
         }
         else
         {
@@ -47,7 +46,6 @@ public class QuestJournalScreen : MonoBehaviour
             _playerInputHandler.ToggleHotbarDisplay(true);
             _playerInputHandler.ToggleInventoryInput(true);
             _playerInputHandler.ToggleBuildPlayerInput(true);
-            //_playerInputHandler.SetActiveCollider(true);
             _questJournal.HideJournalUI();
         }
     }

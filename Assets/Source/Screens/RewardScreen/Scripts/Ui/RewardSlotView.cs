@@ -11,22 +11,21 @@ public class RewardSlotView : MonoBehaviour
     [SerializeField] private Image _frameImage;
     [SerializeField] private TextTable _textTable;
 
-    private const string _day = "Day";
     private Color _defoultColor;
 
-    public void UpdateSlot(int day, Color color)
+    public void UpdateInfo(int day, Color color)
     {
-        _dayText.text = _textTable.GetFieldTextForLanguage(_day, Localization.language) +" "+ day.ToString();
+        _dayText.text = _textTable.GetFieldTextForLanguage(GameConstants.Day, Localization.language) + " " + day.ToString();
         _frameImage.color = color;
         _defoultColor = _frameImage.color;
     }
 
-    public void ResetSlot()
+    public void Clear()
     {
         _frameImage.color = _defoultColor;
     }
 
-    public void UseSlot()
+    public void Use()
     {
         _frameImage.color = _usedSlotColor;
     }
@@ -36,6 +35,6 @@ public class RewardSlotView : MonoBehaviour
         if (isActive)
             _frameImage.color = _usedSlotColor;
         //else
-        //    _frameImage.color = _usedSlotColor;
+        //    _frameImage.color = _defoultColor;
     }
 }

@@ -37,8 +37,8 @@ public class Box : MonoBehaviour, IDamagable
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
 
         _firstDamage = true;
         _isDead = false;
@@ -49,8 +49,8 @@ public class Box : MonoBehaviour, IDamagable
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
     }
 
     public void Die()

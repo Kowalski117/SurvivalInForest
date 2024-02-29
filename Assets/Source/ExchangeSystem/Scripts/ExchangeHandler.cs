@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,9 +15,9 @@ public class ExchangeHandler : Raycast
 
     private ExchangeKeeper _exchangeKeeper;
 
-    public event UnityAction OnInteractionStarted;
-    public event UnityAction OnInteractionFinished;
-    public event UnityAction OnExchangedItem;
+    public event Action OnInteractionStarted;
+    public event Action OnInteractionFinished;
+    public event Action OnItemExchanged;
 
     private void Start()
     {
@@ -30,7 +31,7 @@ public class ExchangeHandler : Raycast
             slotView.OnExchanged += ExchangeEvent;
         }
 
-        _timeHandler.OnDayUpdate += SwapSlots;
+        _timeHandler.OnDayUpdated += SwapSlots;
     }
 
     private void OnDisable()
@@ -40,7 +41,7 @@ public class ExchangeHandler : Raycast
             slotView.OnExchanged -= ExchangeEvent;
         }
 
-        _timeHandler.OnDayUpdate -= SwapSlots;
+        _timeHandler.OnDayUpdated -= SwapSlots;
     }
 
     private void Update()
@@ -99,13 +100,13 @@ public class ExchangeHandler : Raycast
         foreach (var slot in _exchangerSlots)
         {
             if(!slot.IsEmpty)
-                slot.UpdateSlot();
+                slot.UpdateAll();
         }
     }
 
     private void ExchangeEvent()
     {
-        OnExchangedItem?.Invoke();
+        OnItemExchanged?.Invoke();
     }
 
     private void SwapSlots(int day)

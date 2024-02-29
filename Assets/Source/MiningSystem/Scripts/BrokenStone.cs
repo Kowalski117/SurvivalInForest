@@ -1,26 +1,44 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BrokenStone : MonoBehaviour
 {
-  [SerializeField] private float _timeDisappearance = 10f;
-  private float _timeDestroy = 2f;
+    private const float DestroyDelay = 2f;
 
-  private void Start()
-  {
-    StartCoroutine(BeDestroy());
-  }
+    [SerializeField] private float _disappearanceDelay = 10f;
 
+    private List<Collider> _colliders = new List<Collider>();
 
-  IEnumerator BeDestroy()
-  {
-    yield return new WaitForSeconds(_timeDisappearance);
-    
-    foreach (var child in GetComponentsInChildren<Collider>())
+    private WaitForSeconds _disappearanceWait;
+    private WaitForSeconds _destroyWait = new WaitForSeconds(DestroyDelay);
+
+    private void Awake()
     {
-      child.enabled = false;
+        _disappearanceWait = new WaitForSeconds(_disappearanceDelay);
+
+        foreach (var child in GetComponentsInChildren<Collider>())
+        {
+            _colliders.Add(child);
+        }
     }
-    yield return new WaitForSeconds(_timeDestroy);
-    Destroy(this.gameObject);
-  }
+
+    private void Start()
+    {
+        StartCoroutine(Destroy());
+    }
+
+    private IEnumerator Destroy()
+    {
+        yield return _disappearanceWait;
+
+        foreach (var child in _colliders)
+        {
+            child.enabled = false;
+        }
+
+        yield return _destroyWait;
+
+        Destroy(this.gameObject);
+    }
 }

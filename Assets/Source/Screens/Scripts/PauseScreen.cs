@@ -1,15 +1,16 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PauseScreen : MenuScreen
 {
-    [SerializeField] private SaveGame _saveGame;
+    [SerializeField] private SavingGame _saveGame;
     [SerializeField] private LoadPanel _loadPanel;
     [SerializeField] private ShopScreen _shopScreen;
     [SerializeField] private DailyRewardsScreen _dailyRewardsScreen;
     [SerializeField] private RouletteScreen _rouletteScreen;
-    [SerializeField] private UIInventoryHandler _inventoryHandler;
+    [SerializeField] private UIInventoryHandler _inventoryHandlerUI;
     [SerializeField] private BonusesHandler _bonusHandler;
 
     [SerializeField] private Button _pauseButton;
@@ -23,8 +24,8 @@ public class PauseScreen : MenuScreen
 
     private int _indexMenuScene = 1;
 
-    public event UnityAction OnContinueButton;
-    public event UnityAction OnSaveButton;
+    public event Action OnContinuedButton;
+    public event Action OnSavedButton;
 
     protected override void Awake()
     {
@@ -41,42 +42,42 @@ public class PauseScreen : MenuScreen
     protected override void OnEnable()
     {
         base.OnEnable();
-        _shopButton.onClick.AddListener(ToggleShopScreen);
-        _dailyRewardsButton.onClick.AddListener(ToggleDailyRewardsScreen);
-        _rouletteButton.onClick.AddListener(ToggleRouletteScreen);
+        _shopButton.onClick.AddListener(ToggleShop);
+        _dailyRewardsButton.onClick.AddListener(ToggleDailyRewards);
+        _rouletteButton.onClick.AddListener(ToggleRoulette);
         _chestBonusButton.onClick.AddListener(OpenChestBonusClick);
         _continueButton.onClick.AddListener(ContinueButtonClick);
         _saveButton.onClick.AddListener(SaveButtonClick);
         _exitMainMenuButton.onClick.AddListener(ExitMainMenuButtonClick);
 
-        _pauseButton.onClick.AddListener(ToggleAllScreen);
-        PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleAllScreen;
+        _pauseButton.onClick.AddListener(ToggleAll);
+        PlayerInputHandler.ScreenPlayerInput.OnPauseScreenToggled += ToggleAll;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        _shopButton.onClick.RemoveListener(ToggleShopScreen);
-        _dailyRewardsButton.onClick.RemoveListener(ToggleDailyRewardsScreen);
-        _rouletteButton.onClick.RemoveListener(ToggleRouletteScreen);
+        _shopButton.onClick.RemoveListener(ToggleShop);
+        _dailyRewardsButton.onClick.RemoveListener(ToggleDailyRewards);
+        _rouletteButton.onClick.RemoveListener(ToggleRoulette);
         _chestBonusButton.onClick.RemoveListener(OpenChestBonusClick);
         _continueButton.onClick.RemoveListener(ContinueButtonClick);
         _saveButton.onClick.RemoveListener(SaveButtonClick);
         _exitMainMenuButton.onClick.RemoveListener(ExitMainMenuButtonClick);
 
-        _pauseButton.onClick.RemoveListener(ToggleAllScreen);
-        PlayerInputHandler.ScreenPlayerInput.OnTogglePauseScreen += ToggleAllScreen;
+        _pauseButton.onClick.RemoveListener(ToggleAll);
+        PlayerInputHandler.ScreenPlayerInput.OnPauseScreenToggled += ToggleAll;
     }
 
-    public void ToggleAllScreen()
+    public void ToggleAll()
     {
-        ToggleScreen();
+        Toggle();
 
         if (IsOpenPanel)
         {
-            if (_inventoryHandler.IsInventoryOpen)
+            if (_inventoryHandlerUI.IsInventoryOpen)
             {
-                PlayerInputHandler.InventoryPlayerInput.ToggleInventory();
+                PlayerInputHandler.InventoryPlayerInput.Toggle();
                 PlayerInputHandler.ToggleAllInput(false);
             }
 
@@ -89,19 +90,19 @@ public class PauseScreen : MenuScreen
             PlayerInputHandler.ToggleHotbarDisplay(true);
             PlayerInputHandler.ToggleAllParametrs(true);
             PlayerInputHandler.SetActiveCollider(true);
-            CloseAllScreens();
+            CloseAll();
         }
     }
 
     private void ContinueButtonClick()
     {
-        OnContinueButton?.Invoke();
-        ToggleAllScreen();
+        OnContinuedButton?.Invoke();
+        ToggleAll();
     }
 
     private void SaveButtonClick()
     {
-        OnSaveButton?.Invoke();
+        OnSavedButton?.Invoke();
         _saveGame.Save();
     }
 
@@ -115,40 +116,40 @@ public class PauseScreen : MenuScreen
         base.ExitButtonClick();
     }
 
-    protected override void CloseAllScreens()
+    protected override void CloseAll()
     {
-        base.CloseAllScreens();
-        _shopScreen.CloseScreen();
-        _dailyRewardsScreen.CloseScreen();
-        _rouletteScreen.CloseScreen();
+        base.CloseAll();
+        _shopScreen.Close();
+        _dailyRewardsScreen.Close();
+        _rouletteScreen.Close();
     }
 
-    private void ToggleShopScreen()
+    private void ToggleShop()
     {
         if (!_shopScreen.IsOpenPanel)
-            CloseAllScreens();
+            CloseAll();
 
-        _shopScreen.ToggleScreen();
+        _shopScreen.Toggle();
     }
 
-    private void ToggleDailyRewardsScreen()
+    private void ToggleDailyRewards()
     {
         if (!_dailyRewardsScreen.IsOpenPanel)
-            CloseAllScreens();
+            CloseAll();
         
-        _dailyRewardsScreen.ToggleScreen();
+        _dailyRewardsScreen.Toggle();
     }
 
-    private void ToggleRouletteScreen()
+    private void ToggleRoulette()
     {
         if (!_rouletteScreen.IsOpenPanel)
-            CloseAllScreens();
+            CloseAll();
 
-        _rouletteScreen.ToggleScreen();
+        _rouletteScreen.Toggle();
     }
 
     private void OpenChestBonusClick()
     {
-        _bonusHandler.OpenChest();
+        _bonusHandler.Open();
     }
 }

@@ -7,14 +7,14 @@ public class NoteScreen : ScreenUI
 
     public void UpdateLetterText(string letterText)
     {
-        OpenWindow();
+        Toggle();
         _letterText.text = letterText;
     }
 
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
-        ToggleScreen();
+        Toggle();
         PlayerInputHandler.ToggleScreenPlayerInput(true);
     }
 }

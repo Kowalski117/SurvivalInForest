@@ -3,6 +3,9 @@ using UnityEngine;
 [System.Serializable]
 public class InventorySlot : ItemSlot
 {
+    private float _addAmount = 1;
+    private float _divider = 2;
+
     public InventorySlot(InventoryItemData source, int amount, float durability)
     {
         InventoryItemData = source;
@@ -17,7 +20,7 @@ public class InventorySlot : ItemSlot
         ClearSlot();
     }
 
-    public void UpdateInventorySlot(InventoryItemData data, int amount, float durability)
+    public void UpdateItem(InventoryItemData data, int amount, float durability)
     {
         InventoryItemData = data;
         ItemId = ItemData.Id;
@@ -26,37 +29,34 @@ public class InventorySlot : ItemSlot
         ÑurrentDurability = durability;
     }
 
-    public bool EnoughRoomLeftInStack(int amountToAdd, out int amountRemaining)
+    public bool EnoughRoomLeftInStack(int amountAdd, out int amountRemaining)
     {
         amountRemaining = ItemData.MaxStackSize - StackSize;
-        return EnoughRoomLeftInStack(amountToAdd);
+        return EnoughRoomLeftInStack(amountAdd);
     }
 
-    public bool EnoughRoomLeftInStack(int amountToAdd)
+    public bool EnoughRoomLeftInStack(int amountAdd)
     {
         if (ItemData != null)
         {
-            if (ItemData.MaxStackSize > 1)
-            {
-                return StackSize + amountToAdd <= ItemData.MaxStackSize;
-            }
+            if (ItemData.MaxStackSize > _addAmount)
+                return StackSize + amountAdd <= ItemData.MaxStackSize;
             else
-            {
-                return StackSize < 1; // Ìîæíî äîáàâèòü òîëüêî îäèí ïðåäìåò
-            }
+                return StackSize < _addAmount;
         }
+
         return false;
     }
 
     public bool SplitStack(out InventorySlot splitSlot)
     {
-        if (StackSize <= 1)
+        if (StackSize <= _addAmount)
         {
             splitSlot = null;
             return false;
         }
 
-        int halfStack = Mathf.RoundToInt(StackSize / 2);
+        int halfStack = Mathf.RoundToInt(StackSize / _divider);
         RemoveFromStack(halfStack);
 
         splitSlot = new InventorySlot(ItemData, halfStack, ÑurrentDurability);

@@ -1,55 +1,49 @@
-using UnityEngine;
-using UnityEngine.Events;
+using System;
 
-public class BuildPlayerInput : MonoBehaviour
+public class BuildPlayerInput : PlayerInputAction
 {
-    private PlayerInput _playerInput;
+    public event Action OnBuildingPutted;
+    public event Action OnBuildingRotated;
+    public event Action OnDeleteModeBuildingToggled;
+    public event Action OnBuildingDeleted;
 
-    public event UnityAction OnPutBuilding;
-    public event UnityAction OnRotateBuilding;
-    public event UnityAction OnDeleteModeBuilding;
-    public event UnityAction OnDeleteBuilding;
-
-    private void Awake()
+    protected override void OnEnable()
     {
-        _playerInput = new PlayerInput();
+        base.OnEnable();
+
+        PlayerInput.BuildSystem.PutBuilding.performed += ctx => Put();
+        PlayerInput.BuildSystem.RotateBuilding.performed += ctx => Rotate();
+        PlayerInput.BuildSystem.DeleteModeBuilding.performed += ctx => ToggleDeleteMode();
+        PlayerInput.BuildSystem.DeleteBuilding.performed += ctx => Delete();
     }
 
-    private void OnEnable()
+    protected override void OnDisable()
     {
-        _playerInput.Enable();
-        _playerInput.BuildSystem.PutBuilding.performed += ctx => PutBuilding();
-        _playerInput.BuildSystem.RotateBuilding.performed += ctx => RotateBuilding();
-        _playerInput.BuildSystem.DeleteModeBuilding.performed += ctx => DeleteModeBuilding();
-        _playerInput.BuildSystem.DeleteBuilding.performed += ctx => DeleteBuilding();
+        PlayerInput.BuildSystem.PutBuilding.performed -= ctx => Put();
+        PlayerInput.BuildSystem.RotateBuilding.performed -= ctx => Rotate();
+        PlayerInput.BuildSystem.DeleteModeBuilding.performed -= ctx => ToggleDeleteMode();
+        PlayerInput.BuildSystem.DeleteBuilding.performed -= ctx => Delete();
+
+        base.OnDisable();
     }
 
-    private void OnDisable()
+    public void Put()
     {
-        _playerInput.BuildSystem.PutBuilding.performed -= ctx => PutBuilding();
-        _playerInput.BuildSystem.RotateBuilding.performed -= ctx => RotateBuilding();
-        _playerInput.BuildSystem.DeleteModeBuilding.performed -= ctx => DeleteModeBuilding();
-        _playerInput.BuildSystem.DeleteBuilding.performed -= ctx => DeleteBuilding();
-        _playerInput.Disable();
+        OnBuildingPutted?.Invoke();
     }
 
-    public void PutBuilding()
+    public void Rotate()
     {
-        OnPutBuilding?.Invoke();
+        OnBuildingRotated?.Invoke();
     }
 
-    public void RotateBuilding()
+    public void ToggleDeleteMode()
     {
-        OnRotateBuilding?.Invoke();
+        OnDeleteModeBuildingToggled?.Invoke();
     }
 
-    public void DeleteModeBuilding()
+    public void Delete()
     {
-        OnDeleteModeBuilding?.Invoke();
-    }
-
-    public void DeleteBuilding()
-    {
-        OnDeleteBuilding?.Invoke();
+        OnBuildingDeleted?.Invoke();
     }
 }

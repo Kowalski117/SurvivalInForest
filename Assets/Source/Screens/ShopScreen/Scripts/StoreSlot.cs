@@ -1,6 +1,6 @@
+using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class StoreSlot : MonoBehaviour
@@ -16,7 +16,7 @@ public class StoreSlot : MonoBehaviour
 
     private StoreSlotData _slotData;
 
-    public event UnityAction<StoreSlot> OnPayButton;
+    public event Action<StoreSlot> OnPayedButton;
 
     public StoreSlotData StoreSlotData => _slotData;
 
@@ -69,14 +69,12 @@ public class StoreSlot : MonoBehaviour
         foreach (var slot in _slots)
         {
             if (!slot.IsBusy)
-            {
                 slot.gameObject.SetActive(false);
-            }
         }
     }
 
     public void PayButtonClick()
     {
-        OnPayButton?.Invoke(this);
+        OnPayedButton?.Invoke(this);
     }
 }

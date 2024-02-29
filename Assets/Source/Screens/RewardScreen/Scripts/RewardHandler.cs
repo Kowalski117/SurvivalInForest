@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
+[RequireComponent(typeof(DailyRewardsScreen))]
 public class RewardHandler : MonoBehaviour
 {
+    private const float UpdateStateDelay = 1f;
+
     [SerializeField] private RewardSlot[] _rewardSlots;
     [SerializeField] private DayRewardsData _dayRewardsData;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
@@ -14,8 +16,9 @@ public class RewardHandler : MonoBehaviour
     private DailyRewardsScreen _dailyRewardsScreen;
 
     private Coroutine _claimCoroutine;
+    private WaitForSeconds _updateStateWait = new WaitForSeconds(UpdateStateDelay);
 
-    public event UnityAction<Dictionary<InventoryItemData, int>> OnBonusShown;
+    public event Action<Dictionary<InventoryItemData, int>> OnBonusShown;
 
     private int _currentStreak
     {
@@ -30,37 +33,37 @@ public class RewardHandler : MonoBehaviour
 
     private void Start()
     {
-        CreateRewardSlots();
+        CreateSlots();
         StartCoroutine();
         SlotsUpdate(_currentStreak);
     }
 
     private void OnEnable()
     {
-        _dailyRewardsScreen.OnOpenScreen += StartCoroutine;
-        _dailyRewardsScreen.OnCloseScreen += StopCoroutine;
+        _dailyRewardsScreen.OnScreenOpened += StartCoroutine;
+        _dailyRewardsScreen.OnScreenClosed += StopCoroutine;
     }
 
     private void OnDisable()
     {
-        _dailyRewardsScreen.OnOpenScreen -= StartCoroutine;
-        _dailyRewardsScreen.OnCloseScreen -= StopCoroutine;
+        _dailyRewardsScreen.OnScreenOpened -= StartCoroutine;
+        _dailyRewardsScreen.OnScreenClosed -= StopCoroutine;
     }
 
-    public void ClaimReward()
+    public void Claim()
     {
         if (!_timer.IsClaimReward)
             return;
 
         RewardSlot rewardSlot = _rewardSlots[_currentStreak];
         AddItem(rewardSlot);
-        rewardSlot.TakeSlot();
+        rewardSlot.Take();
         SlotsUpdate(_currentStreak + 1);
 
         _timer.SetLastClaimTime();
         _currentStreak = (_currentStreak + 1) % _dayRewardsData.DayRewards.Length;
 
-        UpdateRewardsState();
+        VerifyState();
     }
 
     public void StopCoroutine()
@@ -88,10 +91,10 @@ public class RewardHandler : MonoBehaviour
             _claimCoroutine = null;
         }
 
-        _claimCoroutine = StartCoroutine(RewardsStateUpdate());
+        _claimCoroutine = StartCoroutine(UpdateState());
     }
 
-    private void CreateRewardSlots()
+    private void CreateSlots()
     {
         for (int i = 0; i < _dayRewardsData.DayRewards.Length; i++)
         {
@@ -114,15 +117,15 @@ public class RewardHandler : MonoBehaviour
         }
     }
 
-    private IEnumerator RewardsStateUpdate()
+    private IEnumerator UpdateState()
     {
-        UpdateRewardsState();
-        yield return new WaitForSeconds(1f);
+        VerifyState();
+        yield return _updateStateWait;
 
         StartCoroutine();
     }
 
-    private void UpdateRewardsState()
+    private void VerifyState()
     {
         if (_timer.IsCheckState())
         {
@@ -142,11 +145,7 @@ public class RewardHandler : MonoBehaviour
             if(i == index)
             {
                 if(i - 1 >= 0)
-                    _rewardSlots[i-1].ToggleSlot(true);
-            }
-            else
-            {
-                _rewardSlots[i].ToggleSlot(false);
+                    _rewardSlots[i-1].Take();
             }
         }
     }
@@ -155,7 +154,7 @@ public class RewardHandler : MonoBehaviour
     {
         foreach (var slot in _rewardSlots)
         {
-            slot.ResetSlot();
+            slot.Clear();
         } 
     }
 }

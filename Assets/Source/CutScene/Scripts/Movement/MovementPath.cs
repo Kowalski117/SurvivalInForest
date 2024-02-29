@@ -11,7 +11,6 @@ public class MovementPath : MonoBehaviour
     private bool _isActive = false;
 
     public Action OnStarted;
-    public bool IsActive => _isActive;
 
     public void OnDrawGizmos()
     {

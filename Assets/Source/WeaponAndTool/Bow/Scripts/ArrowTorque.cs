@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ArrowTorque : MonoBehaviour
 {
     [SerializeField] private float _velocityValue = 1;

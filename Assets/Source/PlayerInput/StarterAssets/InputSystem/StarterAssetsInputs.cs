@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -8,19 +7,18 @@ namespace StarterAssets
 {
     public class StarterAssetsInputs : MonoBehaviour
     {
-        [Header("Character Input Values")]
-        public Vector2 move;
-        public Vector2 look;
-        public bool jump;
-        public bool sprint;
-        public bool stealth;
-        public bool interact;
-        public bool attack;
-
         [Header("Movement Settings")]
-        public bool analogMovement;
+        [SerializeField] private bool _isAnalogMovement;
 
-        //private bool cursorInputForLook => Cursor.lockState;
+        public Vector2 Move { get; private set; }
+        public Vector2 Look { get; private set; }
+        public bool Jump { get; private set; }
+        public bool Sprint { get; private set; }
+        public bool Stealth { get; private set; }
+        public bool Interact { get; private set; }
+        public bool Attack { get; private set; }
+
+        public bool IsAnalogMovement => _isAnalogMovement;
 
 #if ENABLE_INPUT_SYSTEM
         public void OnMove(InputValue value)
@@ -30,10 +28,7 @@ namespace StarterAssets
 
         public void OnLook(InputValue value)
         {
-            //if (cursorInputForLook)
-            {
-                LookInput(value.Get<Vector2>());
-            }
+            LookInput(value.Get<Vector2>());
         }
 
         public void OnJump(InputValue value)
@@ -64,44 +59,37 @@ namespace StarterAssets
 
         public void MoveInput(Vector2 newMoveDirection)
         {
-            move = newMoveDirection;
+            Move = newMoveDirection;
         }
 
         public void LookInput(Vector2 newLookDirection)
         {
-            look = newLookDirection;
+            Look = newLookDirection;
         }
 
         public void JumpInput(bool newJumpState)
         {
-            jump = newJumpState;
+            Jump = newJumpState;
         }
 
         public void SprintInput(bool newSprintState)
         {
-            sprint = newSprintState;
+            Sprint = newSprintState;
         }
 
         public void StealthInput(bool newStealthState)
         {
-            stealth = !stealth;
+            Stealth = !Stealth;
         }
 
         public void InteractInput(bool newInteractState)
         {
-            interact = newInteractState;
+            Interact = newInteractState;
         }
 
         public void AttackInput(bool newAttackState)
         {
-            attack = newAttackState;
+            Attack = newAttackState;
         }
-
-
-
-        //public void SetCursorState(bool newState)
-        //{
-        //    Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-        //}
     }
 }

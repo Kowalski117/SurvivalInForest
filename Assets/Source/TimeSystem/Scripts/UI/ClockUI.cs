@@ -9,12 +9,12 @@ public class ClockUI : MonoBehaviour
 
     private void OnEnable()
     {
-        _timeHandler.OnTimeUpdate += UpdateTime;
+        _timeHandler.OnTimeUpdated += UpdateTime;
     }
 
     private void OnDisable()
     {
-        _timeHandler.OnTimeUpdate -= UpdateTime;
+        _timeHandler.OnTimeUpdated -= UpdateTime;
     }
 
     private void UpdateTime(DateTime dateTime)

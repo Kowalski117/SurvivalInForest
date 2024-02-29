@@ -30,7 +30,7 @@ public class SaveBuildingHandler : SaveHandler
                         {
                             _currentBuilding = Instantiate(data.BuildingData.Prefab, itemSaveData.Position, itemSaveData.Rotation, Container);
                             _currentBuilding.Init(data, buildingData);
-                            _currentBuilding.PlaceBuilding();
+                            _currentBuilding.Place();
                             _currentBuilding = null;
                             break;
                         }

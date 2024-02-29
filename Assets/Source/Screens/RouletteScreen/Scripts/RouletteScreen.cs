@@ -28,6 +28,6 @@ public class RouletteScreen : ScreenUI
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
-        ToggleScreen();
+        Toggle();
     }
 }

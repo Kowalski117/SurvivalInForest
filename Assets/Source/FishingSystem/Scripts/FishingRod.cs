@@ -1,13 +1,17 @@
-using PixelCrushers.QuestMachine;
+using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
+[RequireComponent(typeof(PixelCrushers.QuestMachine.QuestControl))]
 public class FishingRod : MonoBehaviour
 {
+    private const float ThrowDelay = 0.75f;
+    private const float TurnOffDelay = 1.5f;
+
     [SerializeField] private Float _float;
     [SerializeField] private FishingRodRenderer _renderer;
-    [SerializeField] private PlayerInteraction _playerInteraction;
+    [SerializeField] private PlayerEquipmentHandler _playerEquipmentHandler;
     [SerializeField] private PlayerHandler _inputHandler;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
@@ -15,37 +19,42 @@ public class FishingRod : MonoBehaviour
     [SerializeField] private float _distance = 10;
     [SerializeField] private float _velocityForse = 50;
 
-    private QuestControl _questControl;
     private bool _isFishing = false;
     private bool _isAllowedFishing = true;
     private bool _isEnable = false;
-    private FishingRodItemData _currentFishingRod;
     private float _fishingDelay = 1.5f;
     private float _timer = 0;
     private int _maxRandomNumder = 100;
     private int _addAmount = 1;
-    private Coroutine _throwCoroutine;
-    private Coroutine _turnOffRendererCoroutine;
 
-    public event UnityAction OnFishCaughted;
+    private FishingRodItemData _currentFishingRod;
+
+    private PixelCrushers.QuestMachine.QuestControl _questControl;
+    private Coroutine _throwCoroutine;
+    private WaitForSeconds _throwWait = new WaitForSeconds(ThrowDelay);
+    private Coroutine _turnOffRendererCoroutine;
+    private WaitForSeconds _turnOffWait = new WaitForSeconds(TurnOffDelay);
+
+
+    public event Action OnFishCaughted;
 
     private void Awake()
     {
-        _questControl = GetComponent<QuestControl>();
+        _questControl = GetComponent<PixelCrushers.QuestMachine.QuestControl>();
     }
 
     private void OnEnable()
     {
-        _inputHandler.InteractionPlayerInput.OnUse += StartThrow;
-        _playerInteraction.OnUpdateItemData += InitItemData;
+        _inputHandler.InteractionPlayerInput.OnUsed += StartThrow;
+        _playerEquipmentHandler.OnUpdateItemData += InitItemData;
         _float.FishCaught += CatchFish;
         _float.FishMissed += MissFish;
     }
 
     private void OnDisable()
     {
-        _inputHandler.InteractionPlayerInput.OnUse += StartThrow;
-        _playerInteraction.OnUpdateItemData -= InitItemData;
+        _inputHandler.InteractionPlayerInput.OnUsed += StartThrow;
+        _playerEquipmentHandler.OnUpdateItemData -= InitItemData;
         _float.FishCaught -= CatchFish;
         _float.FishMissed -= MissFish;
     }
@@ -53,9 +62,7 @@ public class FishingRod : MonoBehaviour
     private void Update()
     {
         if (Vector3.Distance(transform.position, _float.transform.position) > _distance && _isEnable)
-        {
             RebornToRod();
-        }
 
         if (!_isAllowedFishing)
         {
@@ -65,15 +72,11 @@ public class FishingRod : MonoBehaviour
                 _isAllowedFishing = true;
             }
             else
-            {
                 _timer += Time.deltaTime;
-            }
         }
 
         if (_currentFishingRod == null && _float.transform.position != transform.position)
-        {
             RebornToRod();
-        }
     }
 
     private void StartThrow()
@@ -97,7 +100,7 @@ public class FishingRod : MonoBehaviour
                     _renderer.ToggleActive(true);
 
                 _playerAnimatorHandler.SwingFishingRod();
-                yield return new WaitForSeconds(0.75f);
+                yield return _throwWait;
                 _isFishing = true;
 
                 _renderer.DrawRope();
@@ -106,9 +109,7 @@ public class FishingRod : MonoBehaviour
                     _float.StartFishing(_velocityForse, _currentFishingRod.RandomTime, GetRandomItem());
             }
             else
-            {
                 RebornToRod();
-            }
         }
     }
 
@@ -116,6 +117,7 @@ public class FishingRod : MonoBehaviour
     {
         if(_isFishing)
             _playerAnimatorHandler.ThrowFishingRod();
+
         _float.ReturnToRod(transform);
         _isFishing = false;
         _isAllowedFishing = false;
@@ -123,24 +125,25 @@ public class FishingRod : MonoBehaviour
 
     private IEnumerator TurnOffRenderer()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return _turnOffWait;
         _renderer.ToggleActive(false);
     }
 
     private InventoryItemData GetRandomItem() 
     {
-        int randomValue = Random.Range(0, _maxRandomNumder);
-        int currentProbability = 0;
+        int randomValue = UnityEngine.Random.Range(0, _maxRandomNumder);
+        float currentProbability = 0;
 
         foreach (var extraction in _currentFishingRod.Extractions)
         {
-            currentProbability += (int)(extraction.Chance * _maxRandomNumder);
+            currentProbability += extraction.Chance * _maxRandomNumder;
 
             if (randomValue < currentProbability)
             {
                 return extraction.InventoryItemData;
             }
         }
+
         return null;
     }
 
@@ -148,8 +151,8 @@ public class FishingRod : MonoBehaviour
     {
         if (inventoryItemData != null)
         {
-            _inventoryHolder.AddToInventory(inventoryItemData, _addAmount);
-            _playerInteraction.UpdateDurabilityItem(_playerInteraction.CurrentInventorySlot);
+            _inventoryHolder.AddItem(inventoryItemData, _addAmount);
+            _playerEquipmentHandler.UpdateDurabilityItem(_playerEquipmentHandler.CurrentInventorySlot);
             _questControl.SendToMessageSystem(MessageConstants.Сaught + inventoryItemData.Name);
             OnFishCaughted?.Invoke();
         }

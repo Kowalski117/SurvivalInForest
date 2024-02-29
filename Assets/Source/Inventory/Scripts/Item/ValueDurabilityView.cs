@@ -16,15 +16,11 @@ public class ValueDurabilityView : MonoBehaviour
                 _image.enabled = true;
             }
             else
-            {
                 _image.enabled = false;
-            }
 
             _image.fillAmount = _itemSlot.AssignedInventorySlot.DurabilityPercent;
         }
         else
-        {
             _image.enabled = false;
-        }
     }
 }

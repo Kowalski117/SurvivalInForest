@@ -18,7 +18,7 @@ public class InfoScreen : ScreenUI
     protected override void ExitButtonClick()
     {
         base.ExitButtonClick();
-        ToggleScreen();
+        Toggle();
         PlayerInputHandler.ToggleScreenPlayerInput(true);
     }
 }

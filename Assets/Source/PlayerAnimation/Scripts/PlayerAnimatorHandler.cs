@@ -7,16 +7,17 @@ public class PlayerAnimatorHandler : MonoBehaviour
     [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private StarterAssetsInputs _starterAssets;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
+    [SerializeField] private PlayerAudioHandler _playerAudioHandler;
 
-    [SerializeField] private ItemAnimator[] _itemsAnimator;
+    [SerializeField] private ItemAnimator[] _items;
     [SerializeField] private ItemAnimator _defoultItem;
 
-    private ItemAnimator _handAnimator;
+    private ItemAnimator _hand;
 
     private InventoryItemData _currentItemData;
     private InventoryItemData _previousItemData;
 
-    public ItemAnimator CurrentItemAnimation => _handAnimator;
+    public ItemAnimator CurrentItemAnimation => _hand;
 
     private void Awake()
     {
@@ -35,16 +36,15 @@ public class PlayerAnimatorHandler : MonoBehaviour
 
     private void Update()
     {
-        if(_handAnimator != null)
+        if(_hand != null)
         {
-            if (_starterAssets.move != Vector2.zero) 
+            if (_starterAssets.Move != Vector2.zero) 
             {
-                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed,(_firstPersonController.Speed / 
+                _hand.HandAnimator.SetFloat(PlayerAnimationConstants.Speed,(_firstPersonController.Speed / 
                     _firstPersonController.SprintSpeed));
-
             }
             else
-                _handAnimator.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, 0);
+                _hand.HandAnimator.SetFloat(PlayerAnimationConstants.Speed, 0);
         }
     }
 
@@ -58,109 +58,105 @@ public class PlayerAnimatorHandler : MonoBehaviour
             _currentItemData = _defoultItem.ItemData;
 
         if (_currentItemData != _previousItemData)
-            PullItemAnimation();
+            PullItem();
 
     }
 
     public void PickUp()
     {
-        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.PickUp);
+        _hand.HandAnimator.SetTrigger(PlayerAnimationConstants.PickUp);
+        _playerAudioHandler.PlayPickUpClip();
     }
 
     public void Build()
     {
         TurnOffAnimations();
-        _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Build, true);
+        _hand.HandAnimator.SetBool(PlayerAnimationConstants.Build, true);
     }
 
     public void ThrowFishingRod()
     {
-        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.ThrowFishingRod);
+        _hand.HandAnimator.SetTrigger(PlayerAnimationConstants.ThrowFishingRod);
     }
 
     public void SwingFishingRod()
     {
-        _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.SwingFishingRod);
+        _hand.HandAnimator.SetTrigger(PlayerAnimationConstants.SwingFishingRod);
     }
 
     public void Hit(bool isActive)
     {
         if (isActive)
         {
-            _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.Hit);
+            _hand.HandAnimator.SetTrigger(PlayerAnimationConstants.Hit);
         }
         else
         {
-            _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.HitInAir);
+            _hand.HandAnimator.SetTrigger(PlayerAnimationConstants.HitInAir);
         }
     }
 
     public void Aim(bool value)
     {
-        _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Aim, value);
+        _hand.HandAnimator.SetBool(PlayerAnimationConstants.Aim, value);
     }
 
-    public void PullItemAnimation()
+    public void PullItem()
     {
-        if (_currentItemData == _defoultItem.ItemData || !_itemsAnimator.Any(item => _currentItemData == item.ItemData))
+        if (_currentItemData == _defoultItem.ItemData || !_items.Any(item => _currentItemData == item.ItemData))
             SwitchToDefaultItem();
         else 
             SwitchToItem(_currentItemData);
     }
 
+    public void TurnOffAnimations()
+    {
+        _hand.HandAnimator.SetBool(PlayerAnimationConstants.Build, false);
+    }
+
     private void SwitchToDefaultItem()
     {
-        if (_handAnimator != _defoultItem)
+        if (_hand != _defoultItem)
         {
-            if(_handAnimator != null ) 
-                _handAnimator.ToggleLayer(false);
+            if(_hand != null ) 
+                _hand.ToggleLayer(false);
 
-            _handAnimator = _defoultItem;
-            _handAnimator.ToggleLayer(true);
-            _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.PullItem);
+            _hand = _defoultItem;
+            _hand.ToggleLayer(true);
+            _hand.HandAnimator.SetTrigger(PlayerAnimationConstants.PullItem);
         }
         return;
     }
 
     private void SwitchToItem(InventoryItemData itemData)
     {
-        foreach (var item in _itemsAnimator)
+        foreach (var item in _items)
         {
             item.ToggleLayer(false);
         }
 
-        foreach (var item in _itemsAnimator)
+        foreach (var item in _items)
         {
             if (itemData == item.ItemData)
             {
                 item.ToggleLayer(true);
 
-                if (_handAnimator != item)
+                if (_hand != item)
                 {
-                    _handAnimator = item;
-                    _handAnimator.HandAnimator.SetTrigger(PlayerAnimationConstants.PullItem);
+                    _hand = item;
+                    _hand.HandAnimator.SetTrigger(PlayerAnimationConstants.PullItem);
                 }
             }
             else
             {
-                if(_handAnimator != null && _handAnimator != _defoultItem) 
+                if(_hand != null && _hand != _defoultItem) 
                 {
-                    if (_handAnimator.IndexLayer == item.IndexLayer || _handAnimator.HandAnimator == item.HandAnimator)
-                    {
+                    if (_hand.IndexLayer == item.IndexLayer || _hand.HandAnimator == item.HandAnimator)
                         item.ToggleItem(false);
-                    }
                     else
-                    {
-                        item.ToggleAnimator(false);
-                    }
-
+                        item.Toggle(false);
                 }
             }
         }
-    }
-
-    public void TurnOffAnimations()
-    {
-        _handAnimator.HandAnimator.SetBool(PlayerAnimationConstants.Build, false);
     }
 }

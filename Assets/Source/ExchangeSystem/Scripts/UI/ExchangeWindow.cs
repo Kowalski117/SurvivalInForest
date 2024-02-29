@@ -31,14 +31,14 @@ public class ExchangeWindow : MonoBehaviour
         _panel.SetActive(true);
 
         if (_inventoryHandler.IsInventoryOpen)
-            _panel.OpenAnimation();
+            _panel.Open();
 
         _isShopOpen = true;
     }
 
     public void Close()
     {
-        _panel.CloseAnimation();
+        _panel.Close();
         _panel.SetActive(false);
         _isShopOpen = false;
     }

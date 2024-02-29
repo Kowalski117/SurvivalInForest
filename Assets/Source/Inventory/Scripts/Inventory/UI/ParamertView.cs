@@ -8,7 +8,7 @@ public class ParamertView : MonoBehaviour
     [SerializeField] private string _textBegin;
     [SerializeField] private string _textEnd;
 
-    public void UpdateParametr(ParamertType paramertType, float valueText)
+    public void UpdateInfo(ParamertType paramertType, float valueText)
     {
         if(paramertType == _paramertType)
         {
@@ -16,7 +16,8 @@ public class ParamertView : MonoBehaviour
                 _valueText.text = _textBegin + valueText + _textEnd;
             else
                 _valueText.text = valueText + _textEnd;
-            gameObject.gameObject.SetActive(true);
+
+            gameObject.SetActive(true);
         }
     }
 }

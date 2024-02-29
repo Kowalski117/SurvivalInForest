@@ -4,19 +4,19 @@ public class AnimationEvent : MonoBehaviour
 {
     [SerializeField] private PlayerAudioHandler _playerAudioHandler;
 
-    private PlayerInteraction _playerInteraction;
+    private TargetInteractionHandler _playerInteraction;
 
     private void Awake()
     {
-        _playerInteraction = GetComponentInParent<PlayerInteraction>();
+        _playerInteraction = GetComponentInParent<TargetInteractionHandler>();
     }
 
-    public void InteractResourceEvent()
+    public void InteractResource()
     {
         _playerInteraction.InteractResource();
     }
 
-    public void HitEvent()
+    public void Hit()
     {
         _playerInteraction.Hit();
     }

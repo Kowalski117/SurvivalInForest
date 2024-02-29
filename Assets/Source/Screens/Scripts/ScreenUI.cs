@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ScreenUI : MonoBehaviour
@@ -13,21 +13,21 @@ public class ScreenUI : MonoBehaviour
 
     protected bool IsOpenScreen = false;
 
-    public event UnityAction OnOpenScreen;
-    public event UnityAction OnCloseScreen;
-    public event UnityAction OnExitButton;
+    public event Action OnScreenOpened;
+    public event Action OnScreenClosed;
+    public event Action OnButtonExited;
 
     public bool IsOpenPanel => IsOpenScreen;
 
     protected virtual void Awake()
     {
-        CloseScreen();
+        Close();
     }
 
     protected virtual void OnEnable()
     {
         if (PlayerInputHandler)
-            PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied += Close;
+            PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied += CloseDied;
 
         if(_exitButton)
             _exitButton.onClick.AddListener(ExitButtonClick);
@@ -36,60 +36,44 @@ public class ScreenUI : MonoBehaviour
     protected virtual void OnDisable()
     {
         if (PlayerInputHandler)
-            PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied -= Close;
+            PlayerInputHandler.SurvivalHandler.PlayerHealth.OnDied -= CloseDied;
 
         if (_exitButton)
             _exitButton.onClick.RemoveListener(ExitButtonClick);
     }
 
-    public void OpenScreen()
+    public void Open()
     {
         IsOpenScreen = true;
-        OnOpenScreen?.Invoke();
+        OnScreenOpened?.Invoke();
 
         if (_animationUI)
-        {
-            _animationUI.OpenAnimation();
-        }
+            _animationUI.Open();
         else
-        {
-            _panel.blocksRaycasts = true;
-            _panel.alpha = Mathf.Lerp(0, 1, 1);
-        }
+            SetCanvasGroup(true);
     }
 
-    public void OpenWindow()
-    {
-        ToggleScreen();
-        PlayerInputHandler.ToggleScreenPlayerInput(false);
-    }
-
-    public void CloseScreen()
+    public void Close()
     {
         if (!_panel && !_animationUI)
             return;
 
         IsOpenScreen = false;
-        OnCloseScreen?.Invoke();
+        OnScreenClosed?.Invoke();
 
         if (_animationUI)
-        {
-            _animationUI.CloseAnimation();
-        }
+            _animationUI.Close();
         else
-        {
-            _panel.blocksRaycasts = false;
-            _panel.alpha = _panel.alpha = Mathf.Lerp(1, 0, 1);
-        }
+            SetCanvasGroup(false);
     }
 
-    public virtual void ToggleScreen()
+    public virtual void Toggle()
     {
         IsOpenScreen = !IsOpenScreen;
 
         if (IsOpenScreen)
         {
-            OpenScreen();
+            Open();
 
             if (PlayerInputHandler)
             {
@@ -106,7 +90,7 @@ public class ScreenUI : MonoBehaviour
         }
         else
         {
-            CloseScreen();
+            Close();
 
             if (PlayerInputHandler)
             {
@@ -121,17 +105,31 @@ public class ScreenUI : MonoBehaviour
         }
     }
 
-    public void Close()
+    public void CloseDied()
     {
         IsOpenScreen = false;
-        CloseScreen();
+        Close();
         PlayerInputHandler.SetCursorVisible(false);
         PlayerInputHandler.ToggleAllInput(true);
-        OnCloseScreen?.Invoke();
+        OnScreenClosed?.Invoke();
     }
 
     protected virtual void ExitButtonClick()
     {
-        OnExitButton?.Invoke();
+        OnButtonExited?.Invoke();
+    }
+
+    private void SetCanvasGroup(bool isActive)
+    {
+        if (isActive)
+        {
+            _panel.blocksRaycasts = true;
+            _panel.alpha = 1;
+        }
+        else
+        {
+            _panel.blocksRaycasts = false;
+            _panel.alpha = 0;
+        }
     }
 }

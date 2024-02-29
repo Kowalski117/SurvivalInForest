@@ -7,7 +7,7 @@ public class BuildingRemoveModeView : MonoBehaviour
 
     private void Awake()
     {
-        _animationUI.CloseAnimation();
+        _animationUI.Close();
     }
 
     private void OnEnable()
@@ -23,8 +23,8 @@ public class BuildingRemoveModeView : MonoBehaviour
     private void TogglePanel(bool toggle)
     {
         if(toggle)
-            _animationUI.OpenAnimation();
+            _animationUI.Open();
         else
-            _animationUI.CloseAnimation();
+            _animationUI.Close();
     }
 }

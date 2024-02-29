@@ -1,11 +1,10 @@
 using System;
-using UnityEngine.Events;
 
 public class CraftBuildSlotView : CraftSlotView
 {
     private BuildingRecipe _recipe;
 
-    public event UnityAction<BuildingRecipe> OnCreateRecipeButtonClick;
+    public event Action<BuildingRecipe> OnCreatedRecipeButtonClick;
 
     public BuildingRecipe Recipe => _recipe;
 
@@ -19,7 +18,7 @@ public class CraftBuildSlotView : CraftSlotView
         CraftedButton.onClick.RemoveListener(OnCreateRecipeButton);
     }
 
-    public void Init(PlayerInventoryHolder playerInventory, BuildingRecipe craftRecipe, Crafting—ategory Òategory, DelayWindow loadingWindow)
+    public void Init(PlayerInventoryHolder playerInventory, BuildingRecipe craftRecipe, Crafting—ategory Òategory, DelayHandler loadingWindow)
     {
         CraftedTime = DateTime.MinValue;
         _recipe = craftRecipe;
@@ -43,7 +42,7 @@ public class CraftBuildSlotView : CraftSlotView
     {
         if (InventoryHolder.CheckIfCanCraft(_recipe))
         {
-            OnCreateRecipeButtonClick?.Invoke(_recipe);
+            OnCreatedRecipeButtonClick?.Invoke(_recipe);
         }
     }
 

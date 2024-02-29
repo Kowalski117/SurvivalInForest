@@ -14,11 +14,11 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     [SerializeField] private ItemType _allowedItemTypes;
     [SerializeField] private bool _isMouseSlot = false;
 
-    private bool _empty = true;
+    private bool _isEmpty = true;
 
-    public event UnityAction<InventorySlotUI> OnItemUpdate;
-    public event UnityAction<InventorySlot> OnItemClear;
-    public static UnityAction<InventorySlotUI> OnItemRemove;
+    public event UnityAction<InventorySlotUI> OnItemUpdated;
+    public event UnityAction<InventorySlot> OnItemCleared;
+    public static UnityAction<InventorySlotUI> OnItemRemoved;
 
     public event Action<InventorySlotUI> OnItemClicked;
     public event Action<InventorySlotUI> OnItemDroppedOn;
@@ -30,7 +30,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     private void Awake()
     {
-        CleanSlot();
+        Clear();
         TurnOffHighlight();
         _iconImage.preserveAspect = false;
     }
@@ -38,9 +38,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     private void Update()
     {
         if (_assignedInventorySlot.ItemData != null && _assignedInventorySlot.ItemData.Type != _allowedItemTypes && _allowedItemTypes != ItemType.None && !_isMouseSlot)
-        {
             CanDropItem();
-        }
     }
 
     public void CanDropItem()
@@ -51,67 +49,57 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         if(_assignedInventorySlot.ItemData.Type == _allowedItemTypes) 
             return;
         else
-            OnItemRemove?.Invoke(this);
+            OnItemRemoved?.Invoke(this);
     }
 
     public void Init(InventorySlot slot)
     {
         _assignedInventorySlot = slot;
-        UpdateUiSlot();
+        UpdateItem();
     }
 
-    public void Deselect()
-    {
-        if (_borderImage != null)
-            _borderImage.enabled = false;
-    }
-
-    public void UpdateUiSlot()
+    public void UpdateItem()
     {
         if (_assignedInventorySlot.ItemData != null)
         {
             _iconImage.gameObject.SetActive(true);
             _iconImage.sprite = _assignedInventorySlot.ItemData.Icon;
             _iconImage.color = Color.white;
-            _empty = false;
+            _isEmpty = false;
             _iconImage.preserveAspect = false;
         }
         else
-        {
-            CleanSlot();
-        }
+            Clear();
 
         if (_assignedInventorySlot.Size > 1)
             _itemCount.text = _assignedInventorySlot.Size.ToString();
         else
             _itemCount.text = "";
 
-        UpdateUiSlotEvent();
+        UpdateItemEvent();
     }
 
-    private void UpdateUiSlotEvent()
+    private void UpdateItemEvent()
     {
         if (_assignedInventorySlot.ItemData == null)
-        {
-            CleanUiSlotEvent();
-        }
+            ClearItemEvent();
 
-        OnItemUpdate?.Invoke(this);
+        OnItemUpdated?.Invoke(this);
     }
     
-    public void CleanUiSlotEvent()
+    public void ClearItemEvent()
     {
-        OnItemClear?.Invoke(this._assignedInventorySlot);
+        OnItemCleared?.Invoke(this._assignedInventorySlot);
     }
 
-    public void CleanSlot()
+    public void Clear()
     {
         _assignedInventorySlot?.ClearSlot();
         _iconImage.sprite = null;
         _iconImage.color = Color.clear;
         _itemCount.text = "";
         _iconImage.gameObject.SetActive(false);
-        _empty = true;
+        _isEmpty = true;
     }
 
     public void ToggleHighlight()
@@ -135,7 +123,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_empty)
+        if (_isEmpty)
             return;
         OnItemBeginDrag?.Invoke(this);
     }
@@ -150,8 +138,5 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         OnItemDroppedOn?.Invoke(this);
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-
-    }
+    public void OnDrag(PointerEventData eventData) { }
 }

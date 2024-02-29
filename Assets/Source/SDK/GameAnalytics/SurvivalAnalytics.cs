@@ -4,14 +4,14 @@ public class SurvivalAnalytics : Analytics
 {
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private MainClock _timeHandler;
-    [SerializeField] private PlayerInteraction _playerInteraction;
-    [SerializeField] private Interactor _interactor;
+    [SerializeField] private TargetInteractionHandler _playerInteraction;
+    [SerializeField] private InteractorConstruction _interactor;
     [SerializeField] private FishingRod _fishingRod;
     [SerializeField] private BuildTool _buildTool;
     [SerializeField] private CraftingHandler _craftingHandler;
     [SerializeField] private ExchangeHandler _exchangeHandler;
     [SerializeField] private SleepPanel _sleepPanel;
-    [SerializeField] private SaveGame _saveGame;
+    [SerializeField] private SavingGame _saveGame;
 
     private void OnEnable()
     {
@@ -27,12 +27,12 @@ public class SurvivalAnalytics : Analytics
         _playerInteraction.OnStoneBroken += BreakStone;
         _playerInteraction.OnTreasureBroken += BreakTreasure;
 
-        _buildTool.OnCompletedBuilding += PutBuilding;
+        _buildTool.OnBuildingCompleted += PutBuilding;
         _craftingHandler.OnItemCrafted += CraftItem;
-        _exchangeHandler.OnExchangedItem += ExchangeItem;
+        _exchangeHandler.OnItemExchanged += ExchangeItem;
         _sleepPanel.OnPlayerSleeped += SleepPlayer;
 
-        _timeHandler.OnDayUpdate += UpdateDay;
+        _timeHandler.OnDayUpdated += UpdateDay;
         _fishingRod.OnFishCaughted += CatchFish;
         _interactor.OnSeedPlanted += PlantSeed;
 
@@ -53,12 +53,12 @@ public class SurvivalAnalytics : Analytics
         _playerInteraction.OnStoneBroken -= BreakStone;
         _playerInteraction.OnTreasureBroken -= BreakTreasure;
 
-        _buildTool.OnCompletedBuilding -= PutBuilding;
+        _buildTool.OnBuildingCompleted -= PutBuilding;
         _craftingHandler.OnItemCrafted -= CraftItem;
-        _exchangeHandler.OnExchangedItem -= ExchangeItem;
+        _exchangeHandler.OnItemExchanged -= ExchangeItem;
         _sleepPanel.OnPlayerSleeped -= SleepPlayer;
 
-        _timeHandler.OnDayUpdate -= UpdateDay;
+        _timeHandler.OnDayUpdated -= UpdateDay;
         _fishingRod.OnFishCaughted -= CatchFish;
         _interactor.OnSeedPlanted -= PlantSeed;
 

@@ -1,46 +1,46 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ClothesSlotsHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private MouseItemData _mouseItemData;
-    [SerializeField] private ProtectionValue _protectionValue;
+    [SerializeField] private Protection _protectionValue;
     [SerializeField] private StaminaAttribute _stiminaAttribute;
     [SerializeField] private InventorySlotUI[] _slots;
 
     private List<ClothesItemData> _clothesItems = new List<ClothesItemData>();
 
-    public event UnityAction OnInteractionBackpack;
-    public event UnityAction<ClothesItemData> OnAddClothes;
-    public event UnityAction<ClothesItemData> OnRemoveClothes;
-    public event UnityAction OnRemoveBackpack;
+    public event Action OnBackpackInteractioned;
+    public event Action<ClothesItemData> OnClothesAdded;
+    public event Action<ClothesItemData> OnClothesRemoved;
+    public event Action OnBackpackRemoved;
 
     private void OnEnable()
     {
         foreach (var slot in _slots)
         {
-            slot.OnItemUpdate += AddClothesItems;
-            slot.OnItemClear += RemoveClothesItems;
+            slot.OnItemUpdated += AddItems;
+            slot.OnItemCleared += RemoveSlot;
         }
 
-        _inventoryHolder.OnClearItemSlot += UpdateClothesItems;
+        _inventoryHolder.OnItemSlotCleared += UpdateItems;
     }
 
     private void OnDisable()
     {
         foreach (var slot in _slots)
         {
-            slot.OnItemUpdate -= AddClothesItems;
-            slot.OnItemClear -= RemoveClothesItems;
+            slot.OnItemUpdated -= AddItems;
+            slot.OnItemCleared -= RemoveSlot;
         }
 
-        _inventoryHolder.OnClearItemSlot += UpdateClothesItems;
+        _inventoryHolder.OnItemSlotCleared -= UpdateItems;
     }
 
-    public void AddClothesItems(InventorySlotUI inventorySlotUI)
+    public void AddItems(InventorySlotUI inventorySlotUI)
     {
         if (inventorySlotUI.AssignedInventorySlot.ItemData != null && inventorySlotUI.AssignedInventorySlot.ItemData is ClothesItemData clothesItemData)
         {
@@ -55,40 +55,34 @@ public class ClothesSlotsHandler : MonoBehaviour
             if (isClothesAlreadyAdded)
             {
                 _mouseItemData.CurrentSlot.AssignedInventorySlot.AssignItem(inventorySlotUI.AssignedInventorySlot);
-                _mouseItemData.CurrentSlot.UpdateUiSlot();
-                inventorySlotUI.CleanSlot();
+                _mouseItemData.CurrentSlot.UpdateItem();
+                inventorySlotUI.Clear();
             }
             else
             {
                 _clothesItems.Add(clothesItemData);
-                _protectionValue.UpdateProtectionValue(clothesItemData.Protection);
-                _stiminaAttribute.AddMaxValueStamina(clothesItemData.Boost);
-                OnAddClothes?.Invoke(clothesItemData);
+                _protectionValue.UpdateValue(clothesItemData.Protection);
+                _stiminaAttribute.AddMaxValue(clothesItemData.Boost);
+                OnClothesAdded?.Invoke(clothesItemData);
             }
 
             if(clothesItemData.ClothingType == ClothingType.Backpack)
-            {
-                OnInteractionBackpack?.Invoke();
-            }
+                OnBackpackInteractioned?.Invoke();
         }
     }
 
-    public void RemoveClothesItems(InventorySlot inventorySlotUI)
+    public void RemoveSlot(InventorySlot inventorySlotUI)
     {
         if(inventorySlotUI.ItemData != null)
-        {
             RemoveItem(inventorySlotUI.ItemData);
-        }
     }
 
-    private void UpdateClothesItems(InventorySlot inventorySlot, InventoryItemData itemData)
+    private void UpdateItems(InventorySlot inventorySlot, InventoryItemData itemData)
     {
         foreach (var slotUI in _slots)
         {
             if(inventorySlot == slotUI.AssignedInventorySlot)
-            {
                 RemoveItem(itemData);
-            }
         }
     }
 
@@ -99,15 +93,13 @@ public class ClothesSlotsHandler : MonoBehaviour
             if (_clothesItems.Contains(clothesItemData))
             {
                 _clothesItems.Remove(clothesItemData);
-                _protectionValue.UpdateProtectionValue(-clothesItemData.Protection);
-                _stiminaAttribute.AddMaxValueStamina(-clothesItemData.Boost);
+                _protectionValue.UpdateValue(-clothesItemData.Protection);
+                _stiminaAttribute.AddMaxValue(-clothesItemData.Boost);
 
                 if (clothesItemData.ClothingType == ClothingType.Backpack)
-                {
-                    OnRemoveBackpack?.Invoke();
-                }
+                    OnBackpackRemoved?.Invoke();
 
-                OnRemoveClothes?.Invoke(clothesItemData);
+                OnClothesRemoved?.Invoke(clothesItemData);
             }
         }
     }

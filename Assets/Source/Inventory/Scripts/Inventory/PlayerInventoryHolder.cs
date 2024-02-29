@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PlayerInventoryHolder : InventoryHolder
 {
@@ -10,43 +10,43 @@ public class PlayerInventoryHolder : InventoryHolder
      
     private InventoryItemData _currentItemData;
 
-    public static UnityAction<InventorySystem, int> OnPlayerInventoryDispleyRequested;
-    public event UnityAction<InventoryItemData, int> OnItemDataChanged;
-    public event UnityAction OnUpdateItemSlot;
-    public event UnityAction<InventorySlot, InventoryItemData> OnClearItemSlot;
+    public static Action<InventorySystem, int> OnPlayerInventoryDispleyRequested;
+    public event Action<InventoryItemData, int> OnItemDataChanged;
+    public event Action OnItemSlotUpdated;
+    public event Action<InventorySlot, InventoryItemData> OnItemSlotCleared;
 
-    public bool AddToInventory(InventoryItemData data, int amount, float durability = 0)
+    public bool AddItem(InventoryItemData data, int amount, float durability = 0)
     {
-        if (PrimaryInventorySystem.AddToInventory(data, amount, durability) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.AddToInventory(data, amount, durability))
+        if (PrimaryInventorySystem.AddItem(data, amount, durability) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.AddItem(data, amount, durability))
         {
             OnItemDataChanged?.Invoke(data, amount);
-            OnUpdateItemSlot?.Invoke();
+            OnItemSlotUpdated?.Invoke();
             return true;
         }
         return false;
     }
 
-    public bool RemoveInventory(InventoryItemData data, int amount)
+    public bool RemoveItem(InventoryItemData data, int amount)
     {
-        if (PrimaryInventorySystem.RemoveItemsInventory(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(data, amount) || _clothesInventory.InventorySystem.RemoveItemsInventory(data, amount))
+        if (PrimaryInventorySystem.RemoveItem(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItem(data, amount) || _clothesInventory.InventorySystem.RemoveItem(data, amount))
         {
             OnItemDataChanged?.Invoke(data, -amount);
-            OnUpdateItemSlot?.Invoke();
+            OnItemSlotUpdated?.Invoke();
             return true;
         }
 
         return false;
     }
 
-    public bool RemoveInventory(InventorySlot slot, int amount)
+    public bool RemoveSlot(InventorySlot slot, int amount)
     {
         _currentItemData = slot.ItemData;
 
-        if (PrimaryInventorySystem.RemoveItemsInventory(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItemsInventory(slot, amount) || _clothesInventory.InventorySystem.RemoveItemsInventory(slot, amount) || _chestHandler.ChestInventory != null && _chestHandler.ChestInventory.InventorySystem.RemoveItemsInventory(slot, amount))
+        if (PrimaryInventorySystem.RemoveSlot(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveSlot(slot, amount) || _clothesInventory.InventorySystem.RemoveSlot(slot, amount) || _chestHandler.ChestInventory != null && _chestHandler.ChestInventory.InventorySystem.RemoveSlot(slot, amount))
         {
             OnItemDataChanged?.Invoke(_currentItemData, -amount);
-            OnUpdateItemSlot?.Invoke();
-            OnClearItemSlot?.Invoke(slot, _currentItemData);
+            OnItemSlotUpdated?.Invoke();
+            OnItemSlotCleared?.Invoke(slot, _currentItemData);
             _currentItemData = null;
             return true;
         }
@@ -70,33 +70,30 @@ public class PlayerInventoryHolder : InventoryHolder
         return true;
     }
 
-    public void DeletePartOfInventory(int count)
+    public void DeletePart(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            int index = Random.Range(0, PrimaryInventorySystem.GetAllFilledSlots().Count);
+            int index = UnityEngine.Random.Range(0, PrimaryInventorySystem.GetAllFilledSlots().Count);
             InventorySlot slot = PrimaryInventorySystem.GetAllFilledSlots()[index];
-            int amountRandom = Random.Range(1, slot.Size);
-            RemoveInventory(slot, amountRandom);
+            int amountRandom = UnityEngine.Random.Range(1, slot.Size);
+            RemoveSlot(slot, amountRandom);
         }
     }
 
-    protected override void SaveInventory()
+    protected override void Save()
     {
         InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
         ES3.Save(SaveLoadConstants.PlayerInvetory, saveData);
     }
 
-    protected override void LoadInventory()
+    protected override void Load()
     {
         if (ES3.KeyExists(SaveLoadConstants.PlayerInvetory))
         {
             InventorySaveData saveData = ES3.Load<InventorySaveData>(SaveLoadConstants.PlayerInvetory);
-            _playerInputHandler.FirstPersonController.enabled = false;
             PrimaryInventorySystem = saveData.InventorySystem;
-            _playerInputHandler.FirstPersonController.enabled = true;
-
-            base.LoadInventory();
+            base.Load();
         }
     }
 }

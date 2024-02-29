@@ -1,18 +1,19 @@
-using PixelCrushers.DialogueSystem;
-using PixelCrushers.QuestMachine.Wrappers;
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(UniqueID))]
+[RequireComponent(typeof(PixelCrushers.QuestMachine.QuestControl))]
+[RequireComponent(typeof(OutlineObject))]
+[RequireComponent(typeof(Rigidbody))]
 public class ItemPickUp : MonoBehaviour
 {
     [SerializeField] private InventoryItemData _itemData;
     [SerializeField] private ItemPickUpSaveData _itemSaveData;
     [SerializeField] private float _durability;
 
-    public event UnityAction DestroyItem;
+    public event Action DestroyItem;
     
-    private QuestControl _questControl;
+    private PixelCrushers.QuestMachine.QuestControl _questControl;
     private OutlineObject _outline;
     private Rigidbody _rigidbody;
     private UniqueID _uniqueID;
@@ -25,12 +26,10 @@ public class ItemPickUp : MonoBehaviour
     private void Awake()
     {
         _outline = GetComponent<OutlineObject>();
-        _questControl = GetComponent<QuestControl>();
+        _questControl = GetComponent<PixelCrushers.QuestMachine.QuestControl>();
         _uniqueID = GetComponent<UniqueID>();
         _durability = _itemData.Durability;
         _rigidbody = GetComponent<Rigidbody>();
-
-        Load();
     }
 
     public void GenerateNewID()
@@ -49,23 +48,6 @@ public class ItemPickUp : MonoBehaviour
         ES3.Save(_uniqueID.Id, _uniqueID.Id);
         DestroyItem?.Invoke();
         Destroy(this.gameObject);
-    }
-
-    public void TurnOff()
-    {
-        _rigidbody.isKinematic = true;
-        _outline.enabled = false;
-        gameObject.layer = default;
-        enabled = false;
-    }
-
-    private void Load()
-    {
-        if (ES3.KeyExists(_uniqueID.Id))
-        {
-            Destroy(gameObject);
-            ES3.DeleteKey(_uniqueID.Id);
-        }
     }
 }
 

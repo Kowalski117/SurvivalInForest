@@ -1,7 +1,7 @@
 using Agava.YandexGames;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class StoreHandler : MonoBehaviour
 {
@@ -12,8 +12,8 @@ public class StoreHandler : MonoBehaviour
     [SerializeField] private Transform _containerSlots;
     [SerializeField] private YandexAds _yandexAds;
 
-    public event UnityAction<Dictionary<InventoryItemData, int>> OnBonusShown;
-    public event UnityAction OnProductBuyed;
+    public event Action<Dictionary<InventoryItemData, int>> OnBonusShown;
+    public event Action OnProductBuyed;
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class StoreHandler : MonoBehaviour
     {
         foreach (var slot in _storeSlots)
         {
-            slot.OnPayButton += TrySellProduct;
+            slot.OnPayedButton += TrySellProduct;
         }
     }
 
@@ -32,7 +32,7 @@ public class StoreHandler : MonoBehaviour
     {
         foreach (var slot in _storeSlots)
         {
-            slot.OnPayButton -= TrySellProduct;
+            slot.OnPayedButton -= TrySellProduct;
         }
     }
 

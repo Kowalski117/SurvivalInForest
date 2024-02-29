@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ViewInventoryNotifier : MonoBehaviour
 {
+    private const float Delay = 1f;
+
     [SerializeField] private Image _frame;
     [SerializeField] private Image _icon;
     [SerializeField] private TMP_Text _amountText;
@@ -13,10 +15,7 @@ public class ViewInventoryNotifier : MonoBehaviour
     [SerializeField] private AnimationUI _animationUI;
 
     private Coroutine _coroutine;
-    private WaitForSeconds _waitForSeconds;
-    private float _delay = 1f;
-
-    public bool IsOpen => _animationUI.IsOpen;
+    private WaitForSeconds _delayWait = new WaitForSeconds(Delay);
 
     public void Init(InventoryItemData itemData, int amount)
     {
@@ -25,7 +24,7 @@ public class ViewInventoryNotifier : MonoBehaviour
         if(amount > 0)
         {
             _frame.color = _addItemColor;
-            _amountText.text = "+" + amount.ToString();
+            _amountText.text = GameConstants.Plus + amount.ToString();
         }
         else
         {
@@ -41,7 +40,7 @@ public class ViewInventoryNotifier : MonoBehaviour
 
     public void Open()
     {
-        _animationUI.OpenAnimation();
+        _animationUI.Open();
 
         ClearCoroutine();
         _coroutine = StartCoroutine(CloseWaitForSecound());
@@ -49,7 +48,7 @@ public class ViewInventoryNotifier : MonoBehaviour
 
     public void Close()
     {
-        _animationUI.CloseAnimation();
+        _animationUI.Close();
     }
 
     private void ClearCoroutine()
@@ -63,9 +62,10 @@ public class ViewInventoryNotifier : MonoBehaviour
 
     private IEnumerator CloseWaitForSecound()
     {
-        yield return _waitForSeconds = new WaitForSeconds(_delay);
+        yield return _delayWait;
         Close();
-        yield return _waitForSeconds = new WaitForSeconds(_delay);
+
+        yield return _delayWait;
         gameObject.SetActive(false);
     }
 }

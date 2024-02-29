@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -10,8 +10,10 @@ public class MainMenuScreen : MenuScreen
 
     [SerializeField] private LoadPanel _loadPanel;
 
-    public event UnityAction OnResumeGame;
-    public event UnityAction OnStartNewGame;
+    private int _nextSceneIndex = 1;
+
+    public event Action OnResumeGame;
+    public event Action OnStartNewGame;
 
     protected override void OnEnable()
     {
@@ -29,16 +31,16 @@ public class MainMenuScreen : MenuScreen
         _startButton.onClick.RemoveListener(StartButtonClick);
     }
 
-    public void ResumeButtonClick()
+    private void ResumeButtonClick()
     {
         OnResumeGame?.Invoke();
         _loadPanel.StartLoadLastSave();
     }
 
-    public void StartButtonClick()
+    private void StartButtonClick()
     {
         OnStartNewGame?.Invoke();
-        SaveGame.Delete();
-        _loadPanel.StartLoad(SceneManager.GetActiveScene().buildIndex + 1);
+        SavingGame.Delete();
+        _loadPanel.StartLoad(SceneManager.GetActiveScene().buildIndex + _nextSceneIndex);
     }
 }

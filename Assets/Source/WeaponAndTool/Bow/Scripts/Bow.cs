@@ -6,9 +6,10 @@ public class Bow : MonoBehaviour
     [SerializeField] private Transform _shootPoint;
     [SerializeField] private Arrow[] _arrows;
     [SerializeField] private PlayerHandler _inputHandler;
-    [SerializeField] private PlayerInteraction _playerInteraction;
+    [SerializeField] private PlayerEquipmentHandler _playerEquipmentHandler;
+    [SerializeField] private TargetInteractionHandler _targetInteractionHandler;
     [SerializeField] private PlayerAnimatorHandler _playerAnimatorHandler;
-    [SerializeField] private Interactor  _interactor;
+    [SerializeField] private InteractorConstruction  _interactor;
     [SerializeField] private float _arrowSpeed = 10f;
 
     private WeaponItemData _currentWeapon;
@@ -30,31 +31,31 @@ public class Bow : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInteraction.OnUpdateWeaponItemData += Init;
+        _playerEquipmentHandler.OnUpdateWeaponItemData += Init;
 
-        _inputHandler.InteractionPlayerInput.OnUse += Shoot;
-        _inputHandler.InteractionPlayerInput.OnAim += Aim;
+        _inputHandler.InteractionPlayerInput.OnUsed += Shoot;
+        _inputHandler.InteractionPlayerInput.OnAimed += Aim;
 
         foreach (var arrow in _arrows)
         {
-            arrow.OnEnteredCollider += InstantiateArrow;
+            arrow.OnColliderEntered += InstantiateArrow;
         }
     }
 
     private void OnDisable()
     {
-        _playerInteraction.OnUpdateWeaponItemData -= Init;
+        _playerEquipmentHandler.OnUpdateWeaponItemData -= Init;
 
-        _inputHandler.InteractionPlayerInput.OnUse -= Shoot;
-        _inputHandler.InteractionPlayerInput.OnAim -= Aim;
+        _inputHandler.InteractionPlayerInput.OnUsed -= Shoot;
+        _inputHandler.InteractionPlayerInput.OnAimed -= Aim;
 
         foreach (var arrow in _arrows)
         {
-            arrow.OnEnteredCollider -= InstantiateArrow;
+            arrow.OnColliderEntered -= InstantiateArrow;
         }
     }
 
-    public void Aim()
+    private void Aim()
     {
         if (_isEnable)
         {
@@ -67,9 +68,9 @@ public class Bow : MonoBehaviour
         }
     }
 
-    public void Shoot()
+    private void Shoot()
     {
-        if (_isAim && _playerInteraction.IsShoot())
+        if (_isAim && _playerEquipmentHandler.IsShoot())
         {
             foreach (var arrow in _arrows)
             {
@@ -97,7 +98,7 @@ public class Bow : MonoBehaviour
         }
     }
 
-    public void InstantiateArrow(Arrow arrow, Transform parent, Animals animals)
+    private void InstantiateArrow(Arrow arrow, Transform parent, Animals animals)
     {
         if(UnityEngine.Random.Range(0, 2) == 0)
         {
@@ -112,7 +113,7 @@ public class Bow : MonoBehaviour
         _isShoot = false;
 
         if (animals != null)
-            _playerInteraction.TakeDamageAnimal(animals, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
+            _targetInteractionHandler.TakeDamageAnimal(animals, _currentWeapon.Damage, _currentWeapon.OverTimeDamage);
     }
 
     private void Init(WeaponItemData itemData)

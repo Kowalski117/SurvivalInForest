@@ -6,14 +6,14 @@ public class GameTimeСounter : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
     }
 
     private void Update()

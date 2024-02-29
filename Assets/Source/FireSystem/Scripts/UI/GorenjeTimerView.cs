@@ -30,9 +30,7 @@ public class GorenjeTimerView : MonoBehaviour
     private void LateUpdate()
     {
         if (_mainCamera != null && _timerText.gameObject.activeInHierarchy && _isRotate)
-        {
             transform.LookAt(transform.position + _mainCamera.transform.rotation * Vector3.forward, _mainCamera.transform.rotation * Vector3.up);
-        }
     }
 
     private void UpdateTimer(DateTime dateTime)
@@ -43,8 +41,6 @@ public class GorenjeTimerView : MonoBehaviour
         _timerText.text = dateTime.ToString(GameConstants.HHmm);
 
         if (dateTime.TimeOfDay.TotalMilliseconds < _minTotalMilliseconds)
-        {
             _timerText.gameObject.SetActive(false);
-        }
     }
 }

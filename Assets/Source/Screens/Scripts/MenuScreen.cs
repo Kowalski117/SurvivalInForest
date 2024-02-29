@@ -36,20 +36,20 @@ public class MenuScreen : ScreenUI
     protected void SettingButtonClick()
     {
         if (!_settingScreen.IsOpenPanel)
-            CloseAllScreens();
-        _settingScreen.ToggleScreen();
+            CloseAll();
+        _settingScreen.Toggle();
     }
 
     protected void LeaderboardButtonClick()
     {
         if (!_leaderboardScreen.IsOpenPanel)
-            CloseAllScreens();
-        _leaderboardScreen.ToggleScreen();
+            CloseAll();
+        _leaderboardScreen.Toggle();
     }
 
-    protected virtual void CloseAllScreens()
+    protected virtual void CloseAll()
     {
-        _settingScreen.CloseScreen();
-        _leaderboardScreen.CloseScreen();
+        _settingScreen.Close();
+        _leaderboardScreen.Close();
     }
 }

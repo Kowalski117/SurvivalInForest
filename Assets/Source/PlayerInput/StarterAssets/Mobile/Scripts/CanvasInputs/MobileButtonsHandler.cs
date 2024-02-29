@@ -18,21 +18,21 @@ public class MobileButtonsHandler : ButtonsInputHandler
     {
         base.ClearAll();
 
-        _aimButton.CloseAnimation();
-        _putBuildButton.CloseAnimation();
-        _destroyBuildButton.CloseAnimation();
-        _rotateBuildButton.CloseAnimation();
-        _removeBuildModeButton.CloseAnimation();
+        _aimButton.Close();
+        _putBuildButton.Close();
+        _destroyBuildButton.Close();
+        _rotateBuildButton.Close();
+        _removeBuildModeButton.Close();
     }
 
-    protected override void ToggleButtons(InventorySlotUI inventorySlotUI)
+    protected override void Toggle(InventorySlotUI inventorySlotUI)
     {
-        base.ToggleButtons(inventorySlotUI);
+        base.Toggle(inventorySlotUI);
 
-        _aimButton.CloseAnimation();
+        _aimButton.Close();
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData is WeaponItemData weaponItemData && weaponItemData.WeaponType == WeaponType.RangedWeapon)
-            _aimButton.OpenAnimation();
+            _aimButton.Open();
     }
 
     protected override void EnableConstructionMode()
@@ -41,17 +41,17 @@ public class MobileButtonsHandler : ButtonsInputHandler
 
         if (IsBuilding)
         {
-            _rotateBuildButton.OpenAnimation();
-            _destroyBuildButton.OpenAnimation();
-            _putBuildButton.OpenAnimation();
+            _rotateBuildButton.Open();
+            _destroyBuildButton.Open();
+            _putBuildButton.Open();
 
-            _attackButton.CloseAnimation();
-            _aimButton.CloseAnimation();
-            _sprintButton.CloseAnimation();
-            _stealthButton.CloseAnimation();
-            _removeBuildModeButton.CloseAnimation();
-            _toggleBuildModeButton.CloseAnimation();
-            _toggleQuestJournalButton.CloseAnimation();
+            _attackButton.Close();
+            _aimButton.Close();
+            _sprintButton.Close();
+            _stealthButton.Close();
+            _removeBuildModeButton.Close();
+            _toggleBuildModeButton.Close();
+            _toggleQuestJournalButton.Close();
         }
     }
 
@@ -59,15 +59,15 @@ public class MobileButtonsHandler : ButtonsInputHandler
     {
         base.TurnOffConstructionMode();
 
-        _rotateBuildButton.CloseAnimation();
-        _destroyBuildButton.CloseAnimation();
-        _putBuildButton.CloseAnimation();
+        _rotateBuildButton.Close();
+        _destroyBuildButton.Close();
+        _putBuildButton.Close();
 
-        _attackButton.OpenAnimation();
-        _sprintButton.OpenAnimation();
-        _stealthButton.OpenAnimation();
-        _toggleBuildModeButton.OpenAnimation();
-        _toggleQuestJournalButton.OpenAnimation();
+        _attackButton.Open();
+        _sprintButton.Open();
+        _stealthButton.Open();
+        _toggleBuildModeButton.Open();
+        _toggleQuestJournalButton.Open();
     }
 
     protected override void ToggleDestroyBuildingMode(bool isActive)
@@ -76,24 +76,24 @@ public class MobileButtonsHandler : ButtonsInputHandler
 
         if (isActive)
         {
-            _removeBuildModeButton.OpenAnimation();
+            _removeBuildModeButton.Open();
 
-            _rotateBuildButton.CloseAnimation();
-            _destroyBuildButton.CloseAnimation();
-            _putBuildButton.CloseAnimation();
-            _attackButton.CloseAnimation();
-            _aimButton.CloseAnimation();
-            _sprintButton.CloseAnimation();
-            _stealthButton.CloseAnimation();
-            _toggleQuestJournalButton.CloseAnimation();
+            _rotateBuildButton.Close();
+            _destroyBuildButton.Close();
+            _putBuildButton.Close();
+            _attackButton.Close();
+            _aimButton.Close();
+            _sprintButton.Close();
+            _stealthButton.Close();
+            _toggleQuestJournalButton.Close();
         }
         else
         {
-            _removeBuildModeButton.CloseAnimation();
-            _attackButton.OpenAnimation();
-            _sprintButton.OpenAnimation();
-            _stealthButton.OpenAnimation();
-            _toggleQuestJournalButton.OpenAnimation();
+            _removeBuildModeButton.Close();
+            _attackButton.Open();
+            _sprintButton.Open();
+            _stealthButton.Open();
+            _toggleQuestJournalButton.Open();
         }
     }
 }

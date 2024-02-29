@@ -41,7 +41,7 @@ public class LocalizationHandler : MonoBehaviour
 
     public void SetLanguageIndex(int index)
     {
-        //if (_language.Count > index + 1)
+        if (_language.Count >= index)
             SetLanguage(_language.Keys.ElementAt(index));
     }
 

@@ -5,7 +5,7 @@ public abstract class FoodEffect : MonoBehaviour
 {
     private Coroutine _coroutine;
 
-    public void StartEffect( float duration)
+    public void StartRotate( float duration)
     {
         if (_coroutine != null)
         {
@@ -13,8 +13,8 @@ public abstract class FoodEffect : MonoBehaviour
             _coroutine = null;
         }
 
-        _coroutine = StartCoroutine(RotateColors(duration));
+        _coroutine = StartCoroutine(Rotate(duration));
     }
 
-    protected abstract IEnumerator RotateColors(float duration);
+    protected abstract IEnumerator Rotate(float duration);
 }

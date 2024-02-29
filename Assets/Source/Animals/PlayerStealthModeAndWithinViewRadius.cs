@@ -11,7 +11,7 @@ public class PlayerStealthModeAndWithinViewRadius : Conditional
 
     public override TaskStatus OnUpdate()
     {
-        if (Player.Value.GetComponent<StarterAssetsInputs>().stealth == true && IsAttack.Value == false)
+        if (Player.Value.GetComponent<StarterAssetsInputs>().Stealth == true && IsAttack.Value == false)
 
         {
             Vector3 directionToTarget = (Player.Value.transform.position - transform.position).normalized;

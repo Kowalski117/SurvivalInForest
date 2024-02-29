@@ -9,14 +9,12 @@ public class ToolItemData : InventoryItemData
     [SerializeField] private float _damageResources;
     [SerializeField] private float _damageLiving;
     [SerializeField] private float _speed;
-    [SerializeField] private AudioClip _muzzleSound;
 
     public ToolType ToolType => _toolType;
     public ResourseType ResourseType => _resourseType;
     public float DamageResources => _damageResources;
     public float DamageLiving => _damageLiving;
     public float Speed => _speed;
-    public AudioClip MuzzleSound => _muzzleSound;
 }
 
 public enum ToolType

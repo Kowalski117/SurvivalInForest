@@ -19,7 +19,7 @@ public class CameraRotation : FoodEffect
         _defaultFrequencyGain = _multiChannelPerlin.m_FrequencyGain;
     }
 
-    protected override IEnumerator RotateColors(float duration)
+    protected override IEnumerator Rotate(float duration)
     {
         _multiChannelPerlin.m_AmplitudeGain = _amplitudeGain;
         _multiChannelPerlin.m_FrequencyGain= _frequencyGain;

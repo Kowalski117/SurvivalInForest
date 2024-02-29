@@ -15,20 +15,18 @@ public class TutorialHandler : Raycast
 
     private void OnEnable()
     {
-        SaveGame.OnLoadData += InitInfoObjects;
+        SavingGame.OnGameLoaded += InitInfoObjects;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnLoadData -= InitInfoObjects;
+        SavingGame.OnGameLoaded -= InitInfoObjects;
     }
 
     private void Update()
     {
         if(IsRayHittingSomething(_layerMask, out RaycastHit hitInfo))
-        {
             CheckObject(hitInfo.transform.gameObject);
-        }
         else
         {
             if (_infoObject)
@@ -36,7 +34,7 @@ public class TutorialHandler : Raycast
                 _infoObject = null;
 
                 if (_infoScreen.IsOpenPanel)
-                    _infoScreen.OpenWindow();
+                    _infoScreen.Toggle();
             }
         }
     }
@@ -51,7 +49,7 @@ public class TutorialHandler : Raycast
                 {
                     _infoObject = infoObject;
                     _infoScreen.Init(info.Name, info.Description, info.Sprite);
-                    _infoScreen.ToggleScreen();
+                    _infoScreen.Toggle();
                     info.SetIsDone(true);
                 }
             }

@@ -15,7 +15,7 @@ public abstract class AnimationUI : MonoBehaviour
 
     protected Tween Tween;
     protected Coroutine Coroutine;
-    protected WaitForSeconds Delay;
+    protected WaitForSeconds DelayWait;
 
     private Tween _tweenGroup;
     private bool _isActiveGroup = true;
@@ -24,7 +24,12 @@ public abstract class AnimationUI : MonoBehaviour
 
     public bool IsOpen => _isOpen;
 
-    public void OpenAnimation()
+    private void Awake()
+    {
+        DelayWait = new WaitForSeconds(DurationAnim);
+    }
+
+    public void Open()
     {
         if (!_isActive || _isOpen)
             return;
@@ -32,12 +37,12 @@ public abstract class AnimationUI : MonoBehaviour
         ClearTween();
         ClearCoroutine();
 
-        Coroutine = StartCoroutine(Open());
+        Coroutine = StartCoroutine(OpenWaitFor());
 
         _isOpen = true;
     }
 
-    public void CloseAnimation()
+    public void Close()
     {
         if (!_isOpen)
             return;
@@ -45,7 +50,7 @@ public abstract class AnimationUI : MonoBehaviour
         ClearTween();
         ClearCoroutine();
 
-        Coroutine = StartCoroutine(Close());
+        Coroutine = StartCoroutine(CloseWaitFor());
 
         _isOpen = false;
     }
@@ -89,9 +94,9 @@ public abstract class AnimationUI : MonoBehaviour
             SetActivePanel(false);
     }
 
-    protected abstract IEnumerator Open();
+    protected abstract IEnumerator OpenWaitFor();
 
-    protected abstract IEnumerator Close();
+    protected abstract IEnumerator CloseWaitFor();
 
     protected void SetChildren(bool isActive)
     {
@@ -100,9 +105,9 @@ public abstract class AnimationUI : MonoBehaviour
             for (int i = 0; i < Children.Length; i++)
             {
                 if(isActive)
-                    Children[i].OpenAnimation();
+                    Children[i].Open();
                 else
-                    Children[i].CloseAnimation();
+                    Children[i].Close();
             }
         }
     }

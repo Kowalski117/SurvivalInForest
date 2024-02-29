@@ -14,7 +14,7 @@ public class StoreSlotData : ScriptableObject
     [SerializeField] private Product[] _products;
     [SerializeField] private TextTable _textTable;
     public string Id => _id;
-    public string Name => _textTable.GetFieldTextForLanguage(_textTableField,Localization.language);
+    public string Name => _textTable.GetFieldTextForLanguage(_textTableField, Localization.language);
     public string Description => _description;
     public Sprite Sprite => _sprite;
     public int Price => _price;

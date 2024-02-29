@@ -9,7 +9,7 @@ public class PositionAnimation : AnimationUI
 
     [SerializeField] private bool _defoultY;
 
-    protected override IEnumerator Open()
+    protected override IEnumerator OpenWaitFor()
     {
         if (Children.Length > 0)
         {
@@ -34,17 +34,17 @@ public class PositionAnimation : AnimationUI
         }
 
         if (IsStartingInOrder)
-            yield return Delay = new WaitForSeconds(DurationAnim);
+            yield return DelayWait;
 
         SetChildren(true);
     }
 
-    protected override IEnumerator Close()
+    protected override IEnumerator CloseWaitFor()
     {
         SetChildren(false);
 
         if (IsStartingInOrder)
-            yield return Delay = new WaitForSeconds(DurationAnim);
+            yield return DelayWait;
 
         ClearTween();
 
@@ -59,7 +59,7 @@ public class PositionAnimation : AnimationUI
             Tween = Panel.DOAnchorPos(_positonStart, DurationAnim);
         }
 
-        yield return Delay = new WaitForSeconds(DurationAnim);
+        yield return DelayWait;
 
         SetCanvasGroup(false);
     }

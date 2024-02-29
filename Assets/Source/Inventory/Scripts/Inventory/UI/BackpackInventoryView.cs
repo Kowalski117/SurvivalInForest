@@ -30,7 +30,7 @@ public class BackpackInventoryView : MonoBehaviour
         if (_isOpenBackpack)
         {
             _miniBackpackDisplay.gameObject.SetActive(true);
-            _miniBackpackDisplay.RefreshDynamicInventory(inventoryDisplay, offset);
+            _miniBackpackDisplay.Refresh(inventoryDisplay, offset);
         }
         else
         {

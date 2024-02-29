@@ -13,14 +13,14 @@ public class Headlamp : MonoBehaviour
 
     private void OnEnable()
     {
-        _clothesSlotsHandler.OnAddClothes += TurnOnLight;
-        _clothesSlotsHandler.OnRemoveClothes += TurnOffLight;
+        _clothesSlotsHandler.OnClothesAdded += TurnOnLight;
+        _clothesSlotsHandler.OnClothesRemoved += TurnOffLight;
     }
 
     private void OnDisable()
     {
-        _clothesSlotsHandler.OnAddClothes -= TurnOnLight;
-        _clothesSlotsHandler.OnRemoveClothes -= TurnOffLight;
+        _clothesSlotsHandler.OnClothesAdded -= TurnOnLight;
+        _clothesSlotsHandler.OnClothesRemoved -= TurnOffLight;
     }
 
     private void TurnOnLight(ClothesItemData clothes)

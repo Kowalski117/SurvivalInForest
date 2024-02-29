@@ -6,8 +6,18 @@ public class StaminaValueMetricView : MonoBehaviour
     [SerializeField] private StaminaAttribute _survivalAttribute;
     [SerializeField] private Image _image;
 
-    private void FixedUpdate()
+    private void OnEnable()
     {
-        _image.fillAmount = _survivalAttribute.ValuePercent;
+        _survivalAttribute.OnValueChanged += UpdateFillAmount;
+    }
+
+    private void OnDisable()
+    {
+        _survivalAttribute.OnValueChanged -= UpdateFillAmount;
+    }
+
+    private void UpdateFillAmount(float percent)
+    {
+        _image.fillAmount = percent;
     }
 }

@@ -1,30 +1,38 @@
 using StarterAssets;
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
+    private const float Delay = 1;
+
     [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private InteractionPlayerInput _interactionPlayerInput;
     [SerializeField] private BuildPlayerInput _buildPlayerInput;
-    [SerializeField] private UIScreenPlayerInput _screenPlayerInput;
-    [SerializeField] private SurvivalHandler _survivalHandler;
+    [SerializeField] private ScreenPlayerInput _screenPlayerInput;
+
     [SerializeField] private BuildTool _buildTool;
+    [SerializeField] private SurvivalHandler _survivalHandler;
     [SerializeField] private ScreenAnimation _inventoryPanels;
-    [SerializeField] private PlayerHealth _playerHealth;
-    [SerializeField] private Interactor _interactor;
-    [SerializeField] private LoadPanel _loadPanel;
-    [SerializeField] private Compass _compass;
+
+    private WaitForSeconds _startWait = new WaitForSeconds(Delay);
+
+    private bool _isControllerActive;
+    private bool _isControllerActivePrevious;
 
     private bool _isCursorEnable;
     private bool _isCursorEnablePrevious;
+
     private bool _isAllParametrsEnable;
     private bool _isAllParametrsEnablePrevious;
-    private bool _isControllerActive;
-    private bool _isControllerActivePrevious;
+
+    private bool _isColliderActive;
+    private bool _isColliderActivePrevious;
+
     private bool _isCameraActive;
     private bool _isCameraActivePrevious;
 
@@ -33,23 +41,14 @@ public class PlayerHandler : MonoBehaviour
     public InventoryPlayerInput InventoryPlayerInput => _inventoryPlayerInput;
     public InteractionPlayerInput InteractionPlayerInput => _interactionPlayerInput;
     public BuildPlayerInput BuildPlayerInput => _buildPlayerInput;
-    public UIScreenPlayerInput ScreenPlayerInput => _screenPlayerInput;
+    public ScreenPlayerInput ScreenPlayerInput => _screenPlayerInput;
     public SurvivalHandler SurvivalHandler => _survivalHandler;
     public BuildTool BuildTool => _buildTool;
-    public PlayerHealth PlayerHealth => _playerHealth;
-    public Interactor Interactor => _interactor;
-    public LoadPanel LoadPanel => _loadPanel;
-    public Compass Compass => _compass;
-    public bool IsCursorEnable => _isCursorEnable;
 
-    private void Start()
+    private IEnumerator Start()
     {
-        StartCoroutine(WaitForLoad(1f));
-    }
+        yield return _startWait;
 
-    private IEnumerator WaitForLoad(float delay)
-    {
-        yield return new WaitForSeconds(delay);
         ToggleAllParametrs(false);
         ToggleAllInput(false);
         TogglePersonController(false);
@@ -58,36 +57,22 @@ public class PlayerHandler : MonoBehaviour
 
     public void SetActiveCollider(bool isActive)
     {
-        _characterController.enabled = isActive;
+        ToggleActive(isActive, ref _isColliderActive, ref _isColliderActivePrevious, () => _characterController.enabled = _isColliderActive);
     }
 
     public void SetCursorVisible(bool visible)
     {
-        if (_isCursorEnablePrevious && !visible)
-        {
-            _isCursorEnablePrevious = false;
-            return;
-        }
-
-        _isCursorEnablePrevious = _isCursorEnable;
-        _isCursorEnable = visible;
-        ToggleCursor(visible);
+        ToggleActive(visible, ref _isCursorEnable, ref _isCursorEnablePrevious, () => ToggleCursor(_isCursorEnable));
     }
 
     public void TogglePersonController(bool visible)
     {
-        if (_isControllerActivePrevious && !visible)
-        {
-            _isControllerActivePrevious = false;
-            return;
-        }
-        _isControllerActivePrevious = _isControllerActive;
-        _isControllerActive = visible;
-        _firstPersonController.TogglePersonController(_isControllerActive);
+        ToggleActive(visible, ref _isControllerActive, ref _isControllerActivePrevious, () => _firstPersonController.TogglePersonController(_isControllerActive));
     }
+
     public void ToggleHotbarDisplay(bool visible)
     {
-        _hotbarDisplay.ToggleHotbarDisplay(visible);
+        _hotbarDisplay.Toggle(visible);
     }
 
     public void ToggleInventoryInput(bool visible)
@@ -134,14 +119,21 @@ public class PlayerHandler : MonoBehaviour
 
     public void ToggleCamera(bool visible)
     {
-        if (_isCameraActivePrevious && !visible)
+        ToggleActive(visible, ref _isCameraActive, ref _isCameraActivePrevious, () => _firstPersonController.ToggleCamera(_isCameraActive));
+    }
+
+    private void ToggleActive(bool visible, ref bool isActive, ref bool isActivePrevious, Action OnToggled)
+    {
+        if (isActivePrevious && !visible)
         {
-            _isCameraActivePrevious = false;
+            isActivePrevious = false;
             return;
         }
-        _isCameraActivePrevious = _isCameraActive;
-        _isCameraActive = visible;
-        _firstPersonController.ToggleCamera(_isCameraActive);
+
+        isActivePrevious = isActive;
+        isActive = visible;
+
+        OnToggled?.Invoke();
     }
 
     private void ToggleCursor(bool visible)
@@ -153,14 +145,6 @@ public class PlayerHandler : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        if(_isAllParametrsEnablePrevious && !focus)
-        {
-            _isAllParametrsEnablePrevious = false;
-            return;
-        }
-
-        _isAllParametrsEnablePrevious = _isAllParametrsEnable;
-        _isAllParametrsEnable = focus;
-        ToggleAllParametrs(focus);
+        ToggleActive(focus, ref _isAllParametrsEnable, ref _isAllParametrsEnablePrevious, () => ToggleAllParametrs(_isAllParametrsEnable));
     }
 }

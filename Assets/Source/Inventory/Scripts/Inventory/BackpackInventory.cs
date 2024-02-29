@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BackpackInventory : InventoryHolder
 {
@@ -8,28 +8,28 @@ public class BackpackInventory : InventoryHolder
 
     private bool _isEnable = false;
 
-    public event UnityAction<InventorySystem, int> OnDinamicDisplayInventory;
+    public event Action<InventorySystem, int> OnDinamicDisplayInventory;
 
     public bool IsEnable => _isEnable;
 
     private void OnEnable()
     {
-        _clothesSlotsHandler.OnInteractionBackpack += Show;
-        _clothesSlotsHandler.OnRemoveBackpack += Show;
-        _clothesSlotsHandler.OnRemoveBackpack += RemoveAllItems;
+        _clothesSlotsHandler.OnBackpackInteractioned += Show;
+        _clothesSlotsHandler.OnBackpackRemoved += Show;
+        _clothesSlotsHandler.OnBackpackRemoved += RemoveAllItems;
 
-        SaveGame.OnSaveGame += SaveInventory;
-        SaveGame.OnLoadData += LoadInventory;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
     }
 
     private void OnDisable()
     {
-        _clothesSlotsHandler.OnInteractionBackpack -= Show;
-        _clothesSlotsHandler.OnRemoveBackpack -= Show;
-        _clothesSlotsHandler.OnRemoveBackpack -= RemoveAllItems;
+        _clothesSlotsHandler.OnBackpackInteractioned -= Show;
+        _clothesSlotsHandler.OnBackpackRemoved -= Show;
+        _clothesSlotsHandler.OnBackpackRemoved -= RemoveAllItems;
 
-        SaveGame.OnSaveGame -= SaveInventory;
-        SaveGame.OnLoadData -= LoadInventory;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
     }
 
     public void Show()
@@ -47,25 +47,24 @@ public class BackpackInventory : InventoryHolder
                 {
                     _inventoryOperator.InstantiateItem(slot.ItemData, slot.Durability);
                 }
-                PrimaryInventorySystem.RemoveItemsInventory(slot, slot.Size);
+                PrimaryInventorySystem.RemoveSlot(slot, slot.Size);
             }
         }
     }
 
-    protected override void SaveInventory()
+    protected override void Save()
     {
         InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
         ES3.Save(SaveLoadConstants.BackpackInventory, saveData);
     }
 
-    protected override void LoadInventory()
+    protected override void Load()
     {
         if (ES3.KeyExists(SaveLoadConstants.BackpackInventory))
         {
             InventorySaveData saveData = ES3.Load<InventorySaveData>(SaveLoadConstants.BackpackInventory);
             PrimaryInventorySystem = saveData.InventorySystem;
-
-            base.LoadInventory();
+            base.Load();
         }
     }
 }

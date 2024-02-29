@@ -9,25 +9,22 @@ public class ChestView : MonoBehaviour
 
     [SerializeField] private TMP_Text _labelText;
     [SerializeField] private TextTable _textTable;
-    
-    private const string _bonusChestNameTextTable = "BonusСhest";
-    private const string _survivalChesNameTextTable = "Chest";
    
     private void OnEnable()
     {
-        _handler.OnChestTypeChanged += ChangeChestType;
+        _handler.OnChestTypeChanged += ChangeType;
     }
 
     private void OnDisable()
     {
-        _handler.OnChestTypeChanged -= ChangeChestType;
+        _handler.OnChestTypeChanged -= ChangeType;
     }
 
-    private void ChangeChestType(ChestType type)
+    private void ChangeType(ChestType type)
     {
         if (type == ChestType.BonusChest)
-            _labelText.text = _textTable.GetFieldTextForLanguage(_bonusChestNameTextTable,Localization.language);
+            _labelText.text = _textTable.GetFieldTextForLanguage(GameConstants.BonusChest,Localization.language);
         else if(type == ChestType.SurvivalChest)
-            _labelText.text =  _textTable.GetFieldTextForLanguage(_survivalChesNameTextTable,Localization.language);
+            _labelText.text =  _textTable.GetFieldTextForLanguage(GameConstants.Chest, Localization.language);
     }
 }

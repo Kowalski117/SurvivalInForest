@@ -1,95 +1,85 @@
-using UnityEngine;
-using UnityEngine.Events;
+using System;
 
-public class InteractionPlayerInput : MonoBehaviour
+public class InteractionPlayerInput : PlayerInputAction
 {
-    private PlayerInput _playerInput;
     private bool _isEnable = true;
 
-    public event UnityAction OnInteractedConstruction;
-    public event UnityAction OnAddedFire;
-    public event UnityAction OnPickUp;
-    public event UnityAction<bool> OnAttack;
-    public event UnityAction OnUse;
-    public event UnityAction OnAim;
-    public event UnityAction OnOpenNote;
+    public event Action OnConstructionInteracted;
+    public event Action OnFireAdded;
+    public event Action OnPickedUp;
+    public event Action<bool> OnAttacked;
+    public event Action OnUsed;
+    public event Action OnAimed;
+    public event Action OnNoteOpened;
 
-
-    private void Awake()
+    protected override void OnEnable()
     {
-        _playerInput = new PlayerInput();
+        base.OnEnable();
+
+        PlayerInput.Player.InteractionConstruction.performed += ctx => InteractConstruction();
+        PlayerInput.Player.AddFire.performed += ctx => AddFire();
+        PlayerInput.Player.PickUp.performed += ctx => PickUp();
+        PlayerInput.Player.OpenNote.performed += ctx => OpenNote();
+        PlayerInput.WeaponSystem.Attack.performed += ctx => Attack(PlayerInput.WeaponSystem.Attack.IsPressed());
+        PlayerInput.WeaponSystem.Use.performed += ctx => Use();
+        PlayerInput.WeaponSystem.Aim.performed += ctx => Aim();
     }
 
-    private void OnEnable()
+    protected override void OnDisable()
     {
-        _playerInput.Enable();
-        _playerInput.Player.InteractionConstruction.performed += ctx => InteractedConstruction();
-        _playerInput.Player.AddFire.performed += ctx => AddFire();
-        _playerInput.Player.PickUp.performed += ctx => PickUp();
-        _playerInput.Player.OpenNote.performed += ctx => OpenNote();
-        _playerInput.WeaponSystem.Attack.performed += ctx => Attack(_playerInput.WeaponSystem.Attack.IsPressed());
-        _playerInput.WeaponSystem.Use.performed += ctx => Use();
-        _playerInput.WeaponSystem.Aim.performed += ctx => Aim();
+        PlayerInput.Player.InteractionConstruction.performed -= ctx => InteractConstruction();
+        PlayerInput.Player.AddFire.performed -= ctx => AddFire();
+        PlayerInput.Player.PickUp.performed -= ctx => PickUp();
+        PlayerInput.Player.OpenNote.performed -= ctx => OpenNote();
+        PlayerInput.WeaponSystem.Attack.performed -= ctx => Attack(PlayerInput.WeaponSystem.Attack.IsPressed());
+        PlayerInput.WeaponSystem.Use.performed -= ctx => Use();
+        PlayerInput.WeaponSystem.Aim.performed -= ctx => Aim();
+        
+        base.OnDisable();
     }
 
-    private void OnDisable()
-    {
-        _playerInput.Player.InteractionConstruction.performed -= ctx => InteractedConstruction();
-        _playerInput.Player.AddFire.performed -= ctx => AddFire();
-        _playerInput.Player.PickUp.performed -= ctx => PickUp();
-        _playerInput.Player.OpenNote.performed -= ctx => OpenNote();
-        _playerInput.WeaponSystem.Attack.performed -= ctx => Attack(_playerInput.WeaponSystem.Attack.IsPressed());
-        _playerInput.WeaponSystem.Use.performed -= ctx => Use();
-        _playerInput.WeaponSystem.Aim.performed -= ctx => Aim();
-        _playerInput.Disable();
-    }
-
-    public void InteractedConstruction()
+    public void InteractConstruction()
     {
         if(_isEnable)
-            OnInteractedConstruction?.Invoke();
+            OnConstructionInteracted?.Invoke();
     }
 
     public void AddFire()
     {
         if (_isEnable)
-            OnAddedFire?.Invoke();
+            OnFireAdded?.Invoke();
     }
 
     public void OpenNote()
     {
         if (_isEnable)
-            OnOpenNote?.Invoke();
+            OnNoteOpened?.Invoke();
     }
 
     private void PickUp()
     {
         if (_isEnable)
-            OnPickUp?.Invoke();
+            OnPickedUp?.Invoke();
     }
 
     public void Attack(bool isPressed)
     {
         if (_isEnable)
-        {
-            OnAttack?.Invoke(isPressed);
-        }
+            OnAttacked?.Invoke(isPressed);
         else
-        {
-            OnAttack?.Invoke(false);
-        }
+            OnAttacked?.Invoke(false);
     }
 
     public void Use()
     {
         if (_isEnable)
-            OnUse?.Invoke();
+            OnUsed?.Invoke();
     }
 
     public void Aim()
     {
         if (_isEnable)
-            OnAim?.Invoke();
+            OnAimed?.Invoke();
     }
 
     public void SetEnable(bool enable)

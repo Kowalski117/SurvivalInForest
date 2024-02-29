@@ -1,13 +1,13 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(CraftBuildSlotView))]
 public class CrafBuildSlot : CraftSlot
 {
     private CraftBuildSlotView _slotView;
 
-    public static UnityAction OnCraftSlotUpdate;
-    public static UnityAction<BuildingRecipe> OnCreateRecipeButtonClick;
+    public static Action OnCraftSlotUpdated;
+    public static Action<BuildingRecipe> OnCreatedRecipeButton;
 
     private void Awake()
     {
@@ -16,17 +16,17 @@ public class CrafBuildSlot : CraftSlot
 
     private void OnEnable()
     {
-        _slotView.OnCreateRecipeButtonClick += CraftingItem;
+        _slotView.OnCreatedRecipeButtonClick += CraftingItem;
     }
 
     private void OnDisable()
     {
-        _slotView.OnCreateRecipeButtonClick -= CraftingItem;
+        _slotView.OnCreatedRecipeButtonClick -= CraftingItem;
     }
 
     private void CraftingItem(BuildingRecipe craftRecipe)
     {
-        OnCraftSlotUpdate?.Invoke();
-        OnCreateRecipeButtonClick?.Invoke(craftRecipe);
+        OnCraftSlotUpdated?.Invoke();
+        OnCreatedRecipeButton?.Invoke(craftRecipe);
     }
 }

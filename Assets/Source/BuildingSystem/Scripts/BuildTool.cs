@@ -1,23 +1,20 @@
-using PixelCrushers.QuestMachine;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
+using System;
 
-public class BuildTool : MonoBehaviour
+[RequireComponent(typeof(PixelCrushers.QuestMachine.QuestControl))]
+public class BuildTool : Raycast
 {
-    [SerializeField] private PlayerHealth _playerHealth;
-    [SerializeField] private SaveBuildingHandler _baseHandler;
-    [SerializeField] private PlayerAnimatorHandler _playerAnimation;
-    [SerializeField] private DelayWindow _loadingWindow;
-    [SerializeField] private PlayerInventoryHolder _inventoryHolder;
-    [SerializeField] private PlayerHandler _playerInputHandler;
-    [SerializeField] private float _rotateSnapAngle = 45f;
-    [SerializeField] private float _rayDistance;
     [SerializeField] private LayerMask _buildModeLayerMask;
     [SerializeField] private LayerMask _furnitureModeLayerMask;
     [SerializeField] private LayerMask _deleteModeLayerMask;
-    [SerializeField] private int _foundationConnectionLayer;
-    [SerializeField] private Transform _rayOrigin;
+    [SerializeField] private float _rotateSnapAngle = 45f;
+
+    [SerializeField] private PlayerHealth _playerHealth;
+    [SerializeField] private SaveBuildingHandler _baseHandler;
+    [SerializeField] private PlayerAnimatorHandler _playerAnimation;
+    [SerializeField] private DelayHandler _loadingWindow;
+    [SerializeField] private PlayerInventoryHolder _inventoryHolder;
+    [SerializeField] private PlayerHandler _playerInputHandler;
     [SerializeField] private Material _buildingMatPositive;
     [SerializeField] private Material _buildingMatNegative;
     [SerializeField] private Transform _containerBuildings;
@@ -25,50 +22,49 @@ public class BuildTool : MonoBehaviour
 
     private bool _deleteModeEnabled;
     private bool _isMovedBuild = false;
-    private Camera _camera;
     private BuildingRecipe _recipe;
     private Building _spawnBuilding;
     private Building _targetBuilding;
     private Quaternion _lastRotation;
     private FoundationConnection _currentFoundationConnection;
-    private QuestControl _questControl;
+    private PixelCrushers.QuestMachine.QuestControl _questControl;
 
     private float _radiusSpawn = 2f;
     private float _spawnPointUp = 0.5f;
 
-    public event UnityAction OnCreateBuilding;
-    public event UnityAction OnCompletedBuilding;
-    public event UnityAction OnDestroyBuilding;
-    public event UnityAction<bool> OnDeleteModeChanged;
+    public event Action OnBuildingCreated;
+    public event Action OnBuildingCompleted;
+    public event Action OnBuildingDestroyed;
+    public event Action<bool> OnDeleteModeChanged;
 
     public bool IsMoveBuild => _isMovedBuild;
 
-    private void Awake()
+    protected override void Awake()
     {
-        _camera = Camera.main;
-        _questControl = GetComponent<QuestControl>();
+        base.Awake();
+        _questControl = GetComponent<PixelCrushers.QuestMachine.QuestControl>();
     }
 
     private void OnEnable()
     {
-        CrafBuildSlot.OnCreateRecipeButtonClick += ChoosePart;
+        CrafBuildSlot.OnCreatedRecipeButton += ChoosePart;
 
-        _playerInputHandler.BuildPlayerInput.OnPutBuilding += PutBuilding;
-        _playerInputHandler.BuildPlayerInput.OnRotateBuilding += RotateBuilding;
-        _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding += DeleteMobeBuilding;
-        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += DeleteBuildingMode;
+        _playerInputHandler.BuildPlayerInput.OnBuildingPutted += PutBuilding;
+        _playerInputHandler.BuildPlayerInput.OnBuildingRotated += RotateBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteModeBuildingToggled += DeleteMobeBuilding;
+        _playerInputHandler.BuildPlayerInput.OnBuildingDeleted += DeleteBuildingMode;
 
         _playerHealth.OnRevived += DeleteBuilding;
     }
 
     private void OnDisable()
     {
-        CrafBuildSlot.OnCreateRecipeButtonClick -= ChoosePart;
+        CrafBuildSlot.OnCreatedRecipeButton -= ChoosePart;
 
-        _playerInputHandler.BuildPlayerInput.OnPutBuilding -= PutBuilding;
-        _playerInputHandler.BuildPlayerInput.OnRotateBuilding -= RotateBuilding;
-        _playerInputHandler.BuildPlayerInput.OnDeleteModeBuilding -= DeleteMobeBuilding;
-        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= DeleteBuildingMode;
+        _playerInputHandler.BuildPlayerInput.OnBuildingPutted -= PutBuilding;
+        _playerInputHandler.BuildPlayerInput.OnBuildingRotated -= RotateBuilding;
+        _playerInputHandler.BuildPlayerInput.OnDeleteModeBuildingToggled -= DeleteMobeBuilding;
+        _playerInputHandler.BuildPlayerInput.OnBuildingDeleted -= DeleteBuildingMode;
 
         _playerHealth.OnRevived -= DeleteBuilding;
     }
@@ -100,14 +96,8 @@ public class BuildTool : MonoBehaviour
             Destroy(_spawnBuilding.gameObject);
             _spawnBuilding = null;
             _isMovedBuild = false;
-            OnDestroyBuilding?.Invoke();
+            OnBuildingDestroyed?.Invoke();
         }
-    }
-
-    private bool IsRayHittingSomething(LayerMask layerMask, out RaycastHit hitInfo)
-    {
-        var ray = new Ray(_rayOrigin.position, _camera.transform.forward * _rayDistance);
-        return Physics.Raycast(ray, out hitInfo, _rayDistance, layerMask);
     }
 
     private void DeleteModeLogic()
@@ -130,9 +120,7 @@ public class BuildTool : MonoBehaviour
         }
 
         if (detectedBuilding == _targetBuilding && !_targetBuilding.FlaggedForDelete)
-        {
             _targetBuilding.FlagForDelete(_buildingMatNegative);
-        }
     }
 
     private void DeleteBuildingMode()
@@ -143,6 +131,7 @@ public class BuildTool : MonoBehaviour
             {
                 SpawnItem(item.ItemRequired.ItemPrefab, _radiusSpawn, _spawnPointUp, item.AmountRequured);
             }
+
             Destroy(_targetBuilding.gameObject);
             _targetBuilding = null;
         }
@@ -180,45 +169,33 @@ public class BuildTool : MonoBehaviour
                         _spawnBuilding.transform.position = hitInfo.collider.transform.position;
                 }
                 else
-                {
                     _spawnBuilding.transform.position = hitInfo.point;
-                }
             }
         }
         else
         {
             if (IsRayHittingSomething(_furnitureModeLayerMask, out RaycastHit hit))
-            {
                 _spawnBuilding.transform.position = hit.point;
-            }
         }
     }
 
     private void PutBuilding()
     {
         if (_spawnBuilding != null && !_spawnBuilding.IsOverlapping)
-        {
-            //_playerInputHandler.ToggleAllInput(false);
-            _loadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.BuildingData.DisplayName, ActionType.CraftBuild);
-            _loadingWindow.OnLoadingComplete += OnLoadingComplete;
-        }
+            _loadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.BuildingData.DisplayName, ActionType.CraftBuild, () => FinishComplete());
     }
 
-    private void OnLoadingComplete()
+    private void FinishComplete()
     {
-        OnCompletedBuilding?.Invoke();
-        CraftingItem(_recipe);
-        _spawnBuilding.PlaceBuilding();
+        OnBuildingCompleted?.Invoke();
+        Crafting(_recipe);
+        _spawnBuilding.Place();
         _baseHandler.AddId(_spawnBuilding.UniqueID);
         _spawnBuilding = null;
         _playerAnimation.TurnOffAnimations();
         _selectionCollider.enabled = true;
         _isMovedBuild = false;
         _questControl.SendToMessageSystem(MessageConstants.Build + _recipe.BuildingData.Name);
-        
-        //_playerInputHandler.ToggleBuildPlayerInput(true);
-
-        _loadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
     private void RotateBuilding()
@@ -237,13 +214,13 @@ public class BuildTool : MonoBehaviour
         _isMovedBuild = false;
     }
 
-    private void CraftingItem(BuildingRecipe craftRecipe)
+    private void Crafting(BuildingRecipe craftRecipe)
     {
         if (_inventoryHolder.CheckIfCanCraft(craftRecipe))
         {
             foreach (var ingredient in craftRecipe.CraftingIngridients)
             {
-                _inventoryHolder.RemoveInventory(ingredient.ItemRequired, ingredient.AmountRequured);
+                _inventoryHolder.RemoveItem(ingredient.ItemRequired, ingredient.AmountRequured);
             }
         }
     }
@@ -267,7 +244,7 @@ public class BuildTool : MonoBehaviour
         _spawnBuilding = Instantiate(_recipe.BuildingData.Prefab, _containerBuildings);
         _spawnBuilding.Init(_recipe);
         _spawnBuilding.transform.rotation = _lastRotation;
-        OnCreateBuilding?.Invoke();
+        OnBuildingCreated?.Invoke();
         _playerAnimation.Build();
         _selectionCollider.enabled = false;
         _isMovedBuild = true;
@@ -279,7 +256,7 @@ public class BuildTool : MonoBehaviour
         {
             for (int i = 0; i < count; i++)
             {
-                Vector3 position = (_targetBuilding.transform.position + Random.insideUnitSphere * radius);
+                Vector3 position = (_targetBuilding.transform.position + UnityEngine.Random.insideUnitSphere * radius);
                 SpawnLoots.Spawn(itemPickUp, position, _targetBuilding.transform, false, spawnPointUp, false);
             }
         }

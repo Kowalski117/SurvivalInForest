@@ -1,38 +1,33 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class InventoryPlayerInput : MonoBehaviour
+public class InventoryPlayerInput : PlayerInputAction
 {
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private ManualWorkbench _manualWorkbench;
 
-    private PlayerInput _playerInput;
+    public event Action<InventorySystem, int> OnInventorySwitched;
+    public event Action<CraftingÑategory> OnCraftPlayerWindowToggled;
+    public event Action OnInventoryToggled;
 
-    public event UnityAction<InventorySystem, int> SwitchInventory;
-    public event UnityAction<CraftingÑategory> OnCraftPlayerWindow;
-    public event UnityAction OnToggleInventory;
-
-    private void Awake()
+    protected override void OnEnable()
     {
-        _playerInput = new PlayerInput();
+        base.OnEnable();
+
+        PlayerInput.Player.Inventory.performed += ctx => Toggle();
     }
 
-    private void OnEnable()
+    protected override void OnDisable()
     {
-        _playerInput.Enable();
-        _playerInput.Player.Inventory.performed += ctx => ToggleInventory();
+        PlayerInput.Player.Inventory.performed -= ctx => Toggle();
+
+        base.OnDisable();
     }
 
-    private void OnDisable()
+    public void Toggle() 
     {
-        _playerInput.Player.Inventory.performed -= ctx => ToggleInventory();
-        _playerInput.Disable();
-    }
-
-    public void ToggleInventory() 
-    {
-        OnToggleInventory?.Invoke();
-        SwitchInventory?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
-        OnCraftPlayerWindow?.Invoke(_manualWorkbench.CraftingÑategory);
+        OnInventoryToggled?.Invoke();
+        OnInventorySwitched?.Invoke(_inventoryHolder.InventorySystem, _inventoryHolder.Offset);
+        OnCraftPlayerWindowToggled?.Invoke(_manualWorkbench.CraftingÑategory);
     }
 }

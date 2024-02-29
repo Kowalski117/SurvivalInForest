@@ -1,5 +1,6 @@
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StaminaAttribute : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class StaminaAttribute : MonoBehaviour
 
     protected float _currentValue;
     private float _currentDelayCounter;
+
+    public event UnityAction<float> OnValueChanged;
 
     public float ValuePercent => _currentValue / _maxValue;
     public bool IsNotEmpty => _currentValue > 0;
@@ -29,11 +32,12 @@ public class StaminaAttribute : MonoBehaviour
     private void Start()
     {
         _currentValue = _maxValue;
+        OnValueChanged?.Invoke(ValuePercent);
     }
 
-    public void DecreaseStaminaValue()
+    public void DecreaseValue()
     {
-        if (_firstPersonController.IsComing && _playerInput.move != Vector2.zero)
+        if (_firstPersonController.IsComing && _playerInput.Move != Vector2.zero)
         {
             if(_currentValue > 0)
                 _currentValue -= _valueDeplerionRate * Time.deltaTime;
@@ -42,8 +46,7 @@ public class StaminaAttribute : MonoBehaviour
 
             _currentDelayCounter = 0;
         }
-
-        if(!_firstPersonController.IsComing && _currentValue < _maxValue)
+        else if(!_firstPersonController.IsComing && _currentValue < _maxValue)
         {
             if (_currentDelayCounter < _rechargeDelay)
                 _currentDelayCounter += Time.deltaTime;
@@ -55,9 +58,11 @@ public class StaminaAttribute : MonoBehaviour
                     _currentValue = _maxValue;
             }
         }
+
+        OnValueChanged?.Invoke(ValuePercent);
     }
 
-    public void AddMaxValueStamina(float value)
+    public void AddMaxValue(float value)
     {
         MaxValue += value;
     }

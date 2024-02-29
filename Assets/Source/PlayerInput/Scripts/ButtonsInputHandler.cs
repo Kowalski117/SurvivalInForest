@@ -7,7 +7,7 @@ public class ButtonsInputHandler : MonoBehaviour
     [SerializeField] protected ManualWorkbench ManualWorkbench;
     [SerializeField] protected ExchangeHandler ExchangeHandler;
     [SerializeField] protected ChestHandler ChestHandler;
-    [SerializeField] protected Interactor Interactor;
+    [SerializeField] protected InteractorConstruction Interactor;
 
     [SerializeField] private AnimationUI _interactedConstructionButton;
     [SerializeField] private AnimationUI _addFireButton;
@@ -25,10 +25,10 @@ public class ButtonsInputHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        HotbarDisplay.OnItemSwitched += ToggleButtons;
-        BuildTool.OnCreateBuilding += EnableConstructionMode;
-        BuildTool.OnCompletedBuilding += TurnOffConstructionMode;
-        BuildTool.OnDestroyBuilding += TurnOffConstructionMode;
+        HotbarDisplay.OnItemSwitched += Toggle;
+        BuildTool.OnBuildingCreated += EnableConstructionMode;
+        BuildTool.OnBuildingCompleted += TurnOffConstructionMode;
+        BuildTool.OnBuildingDestroyed += TurnOffConstructionMode;
         BuildTool.OnDeleteModeChanged += ToggleDestroyBuildingMode;
 
         ManualWorkbench.OnInteractionStarted += EnableIntractableButton;
@@ -45,10 +45,10 @@ public class ButtonsInputHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        HotbarDisplay.OnItemSwitched -= ToggleButtons;
-        BuildTool.OnCreateBuilding -= EnableConstructionMode;
-        BuildTool.OnCompletedBuilding -= TurnOffConstructionMode;
-        BuildTool.OnDestroyBuilding -= TurnOffConstructionMode;
+        HotbarDisplay.OnItemSwitched -= Toggle;
+        BuildTool.OnBuildingCreated -= EnableConstructionMode;
+        BuildTool.OnBuildingCompleted -= TurnOffConstructionMode;
+        BuildTool.OnBuildingDestroyed -= TurnOffConstructionMode;
         BuildTool.OnDeleteModeChanged -= ToggleDestroyBuildingMode;
 
         ManualWorkbench.OnInteractionStarted -= EnableIntractableButton;
@@ -65,14 +65,14 @@ public class ButtonsInputHandler : MonoBehaviour
 
     protected virtual void ClearAll()
     {
-        _start—onversationButton.CloseAnimation();
-        _toggleIntaractableButton.CloseAnimation();
-        _interactedConstructionButton.CloseAnimation();
-        _addFireButton.CloseAnimation();
-        _useItemButton.CloseAnimation();
+        _start—onversationButton.Close();
+        _toggleIntaractableButton.Close();
+        _interactedConstructionButton.Close();
+        _addFireButton.Close();
+        _useItemButton.Close();
     }
 
-    protected virtual void ToggleButtons(InventorySlotUI inventorySlotUI)
+    protected virtual void Toggle(InventorySlotUI inventorySlotUI)
     {
         CurrentSlot = inventorySlotUI;
 
@@ -89,18 +89,18 @@ public class ButtonsInputHandler : MonoBehaviour
 
         if (IsBuilding)
         {
-            _interactedConstructionButton.CloseAnimation();
-            _toggleIntaractableButton.CloseAnimation();
-            _start—onversationButton.CloseAnimation();
-            _addFireButton.CloseAnimation();
-            _useItemButton.CloseAnimation();
+            _interactedConstructionButton.Close();
+            _toggleIntaractableButton.Close();
+            _start—onversationButton.Close();
+            _addFireButton.Close();
+            _useItemButton.Close();
         }
     }
 
     protected virtual void TurnOffConstructionMode()
     {
         IsBuilding = false;
-        ToggleButtons(CurrentSlot);
+        Toggle(CurrentSlot);
     }
 
     private void EnableIntractableButton()
@@ -108,7 +108,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _toggleIntaractableButton.OpenAnimation();
+        _toggleIntaractableButton.Open();
     }
 
     private void TurnOffIntractableButton()
@@ -116,7 +116,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _toggleIntaractableButton.CloseAnimation();
+        _toggleIntaractableButton.Close();
     }
 
     private void EnableIntractableNPSButton()
@@ -124,7 +124,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _start—onversationButton.OpenAnimation();
+        _start—onversationButton.Open();
     }
 
     private void TurnOffIntractableNPSButton()
@@ -132,7 +132,7 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _start—onversationButton.CloseAnimation();
+        _start—onversationButton.Close();
     }
 
     private void EnableIntractableConstructionButton()
@@ -141,7 +141,7 @@ public class ButtonsInputHandler : MonoBehaviour
             return;
 
         if (Interactor.CurrentFire == null && Interactor.CurrentGardenBed == null)
-            _interactedConstructionButton.OpenAnimation();
+            _interactedConstructionButton.Open();
 
         ToggleAddFireButton(CurrentSlot);
         ToggleUseItemButton(CurrentSlot);
@@ -152,9 +152,9 @@ public class ButtonsInputHandler : MonoBehaviour
         if (IsBuilding)
             return;
 
-        _interactedConstructionButton.CloseAnimation();
-        _addFireButton.CloseAnimation();
-        _useItemButton.CloseAnimation();
+        _interactedConstructionButton.Close();
+        _addFireButton.Close();
+        _useItemButton.Close();
     }
 
     private void ToggleUseItemButton(InventorySlotUI inventorySlotUI)
@@ -163,9 +163,9 @@ public class ButtonsInputHandler : MonoBehaviour
             return;
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData is SeedItemData seedItemData)
-            _useItemButton.OpenAnimation();
+            _useItemButton.Open();
         else
-            _useItemButton.CloseAnimation();
+            _useItemButton.Close();
     }
 
     private void ToggleAddFireButton(InventorySlotUI inventorySlotUI)
@@ -174,22 +174,20 @@ public class ButtonsInputHandler : MonoBehaviour
             return;
 
         if (inventorySlotUI.AssignedInventorySlot.ItemData && inventorySlotUI.AssignedInventorySlot.ItemData.GorenjeTime > 0)
-            _addFireButton.OpenAnimation();
+            _addFireButton.Open();
         else
-            _addFireButton.CloseAnimation();
+            _addFireButton.Close();
     }
 
     protected virtual void ToggleDestroyBuildingMode(bool isActive)
     {
         if (isActive)
         {
-            _interactedConstructionButton.CloseAnimation();
-            _toggleIntaractableButton.CloseAnimation();
-            _start—onversationButton.CloseAnimation();
+            _interactedConstructionButton.Close();
+            _toggleIntaractableButton.Close();
+            _start—onversationButton.Close();
         }
         else
-        {
-            ToggleButtons(CurrentSlot);
-        }
+            Toggle(CurrentSlot);
     }
 }

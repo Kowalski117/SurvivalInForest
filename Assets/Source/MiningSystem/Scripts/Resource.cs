@@ -10,7 +10,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
 {
     [SerializeField] private float _maxHealth = 100;
     [SerializeField] private ToolType _extractionType;
-    [SerializeField] private float _disappearanceTime = 10;
+    [SerializeField] private float _disappearanceDelay = 5;
     [SerializeField] private List<ItemPickUp> _loots;
     [SerializeField] private ParticleSystem _damageDoneParticle;
     [SerializeField] private AudioClip[] _damageDoneAudioClips;
@@ -23,7 +23,8 @@ public abstract class Resource : MonoBehaviour, IDamagable
     private float _radiusSpawnLoots = 1;
     private float _spawnLootUp = 1;
     private bool _isDead;
-    private float _divider = 2;
+
+    private WaitForSeconds _disappearanceWait;
 
     public event Action Died;
     public event Action Disappeared;
@@ -39,6 +40,7 @@ public abstract class Resource : MonoBehaviour, IDamagable
     {
         Rigidbody = GetComponent<Rigidbody>();
         Сollider = GetComponent<Collider>();
+        _disappearanceWait = new WaitForSeconds(_disappearanceDelay);
     }
 
     public virtual void OnEnable()
@@ -48,12 +50,13 @@ public abstract class Resource : MonoBehaviour, IDamagable
 
     public virtual void TakeDamage(float damage, float overTimeDamage)
     {
-        _curenntHealth -= (int) damage;
-
-        if (_curenntHealth <= 0 & _isDead == false)
+        if(_curenntHealth - (int)damage <= 0)
         {
-            Die();
+            if(_isDead == false)
+                Die();
         }
+        else
+            _curenntHealth -= (int)damage;
     }
 
     public virtual void Die()
@@ -87,25 +90,27 @@ public abstract class Resource : MonoBehaviour, IDamagable
         Сollider.enabled = true;
     }
 
-    protected void DiedEvent()
+    public virtual IEnumerator Precipice()
+    {
+        DieEvent();
+        yield return _disappearanceWait;
+
+        Сollider.enabled = false;
+        yield return _disappearanceWait;
+
+        Rigidbody.isKinematic = true;
+        gameObject.SetActive(false);
+        DisappeareEvent();
+    }
+
+    protected void DieEvent()
     {
         Died?.Invoke();
     }
 
-    protected void DisappearedEvent()
+    protected void DisappeareEvent()
     {
         _isDead = false;
         Disappeared?.Invoke();
-    }
-
-    public virtual IEnumerator Precipice()
-    {
-        DiedEvent();
-        yield return new WaitForSeconds(_disappearanceTime / _divider);
-        Сollider.enabled = false;
-        yield return new WaitForSeconds(_disappearanceTime / _divider);
-        Rigidbody.isKinematic = true;
-        gameObject.SetActive(false);
-        DisappearedEvent();
     }
 }

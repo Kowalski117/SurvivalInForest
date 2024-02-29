@@ -12,33 +12,33 @@ public class ArrowView : MonoBehaviour
 
     private void OnEnable()
     {
-        _bow.OnInitialized += EnableArrow;
-        _bow.OnCleared += TurnOffArrow;
-        _playerInventoryHolder.OnUpdateItemSlot += UpdateArrowAmount;
-        _itemDataMouse.OnUpdatedSlots += UpdateArrowAmount; 
+        _bow.OnInitialized += Enable;
+        _bow.OnCleared += TurnOff;
+        _playerInventoryHolder.OnItemSlotUpdated += UpdateAmount;
+        _itemDataMouse.OnUpdatedSlots += UpdateAmount; 
     }
 
     private void OnDisable()
     {
-        _bow.OnInitialized -= EnableArrow;
-        _bow.OnCleared -= TurnOffArrow;
-        _playerInventoryHolder.OnUpdateItemSlot -= UpdateArrowAmount;
-        _itemDataMouse.OnUpdatedSlots -= UpdateArrowAmount;
+        _bow.OnInitialized -= Enable;
+        _bow.OnCleared -= TurnOff;
+        _playerInventoryHolder.OnItemSlotUpdated -= UpdateAmount;
+        _itemDataMouse.OnUpdatedSlots -= UpdateAmount;
     }
 
-    private void UpdateArrowAmount()
+    private void UpdateAmount()
     {
         if(_playerInventoryHolder.InventorySystem.GetItemCount(_arrowItemData) <= 0)
             _arrowTransform.gameObject.SetActive(false);
     }
 
-    private void TurnOffArrow()
+    private void TurnOff()
     {
         _isActive = false;
         _arrowTransform.gameObject.SetActive(_isActive);
     }
 
-    private void EnableArrow()
+    private void Enable()
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(_arrowItemData) > 0)
         {
@@ -46,5 +46,4 @@ public class ArrowView : MonoBehaviour
             _arrowTransform.gameObject.SetActive(_isActive);
         }   
     }
-
 }

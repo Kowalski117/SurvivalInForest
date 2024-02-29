@@ -19,6 +19,7 @@ public class GeneralSettings : MonoBehaviour
 
     [SerializeField] private SettingScreen _screen;
     [SerializeField] private PlayerHandler _playerInputHandler;
+    [SerializeField] private InteractorItem _interactionItem;
     [SerializeField] private LocalizationHandler _localizationHandler;
     [SerializeField] private IL3DN_Wind _wind;
     [SerializeField] private Water _water;
@@ -35,7 +36,7 @@ public class GeneralSettings : MonoBehaviour
 
     private void OnEnable()
     {
-        _screen.OnCloseScreen += Save;
+        _screen.OnScreenClosed += Save;
         _sensitivitySlider.onValueChanged.AddListener(ChangeSensitivity);
         _tipsInput.onValueChanged.AddListener(ChangeActiveTipsInput);
         _automaticCollectionOfItems.onValueChanged.AddListener(ChangeAutomaticCollection);
@@ -50,7 +51,7 @@ public class GeneralSettings : MonoBehaviour
 
     private void OnDisable()
     {
-        _screen.OnCloseScreen -= Save;
+        _screen.OnScreenClosed -= Save;
         _sensitivitySlider.onValueChanged.RemoveListener(ChangeSensitivity);
         _tipsInput.onValueChanged.RemoveListener(ChangeActiveTipsInput);
         _automaticCollectionOfItems.onValueChanged.RemoveListener(ChangeAutomaticCollection);
@@ -72,19 +73,19 @@ public class GeneralSettings : MonoBehaviour
     private void ChangeAutomaticCollection(bool value)
     {
         if (_playerInputHandler)
-            _playerInputHandler.Interactor.UpdateIsKeyPickUp(value);
+            _interactionItem.UpdateKeyPickUp(value);
     }
 
     private void ChangeLiftingAreaLarger(bool value)
     {
         if (_playerInputHandler)
-            _playerInputHandler.Interactor.SetLiftingArea(false);
+            _interactionItem.SetLiftingArea(false);
     }
 
     private void ChangeLiftingAreaReduce(bool value)
     {
         if (_playerInputHandler)
-            _playerInputHandler.Interactor.SetLiftingArea(true);
+            _interactionItem.SetLiftingArea(true);
     }
 
     private void ChangeActiveTipsInput(bool value)

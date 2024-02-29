@@ -9,14 +9,14 @@ public abstract class SaveHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnLoadData += LoadBase;
-        SaveGame.OnSaveGame += SaveBase;
+        SavingGame.OnGameLoaded += LoadBase;
+        SavingGame.OnGameSaved += SaveBase;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnLoadData -= LoadBase;
-        SaveGame.OnSaveGame -= SaveBase;
+        SavingGame.OnGameLoaded -= LoadBase;
+        SavingGame.OnGameSaved -= SaveBase;
     }
 
     public void AddId(string id)

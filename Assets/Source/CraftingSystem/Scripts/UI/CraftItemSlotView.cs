@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Events;
 using PixelCrushers.QuestMachine;
 
 public class CraftItemSlotView : CraftSlotView
@@ -7,7 +6,7 @@ public class CraftItemSlotView : CraftSlotView
     private ItemRecipe _recipe;
     private QuestControl _questControl;
 
-    public event UnityAction<ItemRecipe, PlayerInventoryHolder> OnCreateRecipeButtonClick;
+    public event Action<ItemRecipe, PlayerInventoryHolder> OnCreatedRecipeButtonClick;
 
     public ItemRecipe Recipe => _recipe;
 
@@ -21,7 +20,7 @@ public class CraftItemSlotView : CraftSlotView
         CraftedButton.onClick.RemoveListener(OnCreateRecipeButton);
     }
 
-    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, CraftingСategory сategory, DelayWindow loadingWindow, QuestControl questControl)
+    public void Init(PlayerInventoryHolder playerInventory, ItemRecipe craftRecipe, CraftingСategory сategory, DelayHandler loadingWindow, QuestControl questControl)
     {
         CraftedTime = DateTime.MinValue;
         _recipe = craftRecipe;
@@ -31,7 +30,7 @@ public class CraftItemSlotView : CraftSlotView
         CraftedIcon.sprite = craftRecipe.CraftedItem.Icon;
         CraftedName.text = craftRecipe.CraftedItem.DisplayName;
         CraftedTime = CraftedTime + TimeSpan.FromHours(craftRecipe.CraftingTime);
-        CraftedTimeText.text = CraftedTime.ToString("HH:mm");
+        CraftedTimeText.text = CraftedTime.ToString(GameConstants.HHmm);
         _questControl = questControl;
 
         foreach (var ingridient in craftRecipe.CraftingIngridients)
@@ -47,19 +46,16 @@ public class CraftItemSlotView : CraftSlotView
         if (InventoryHolder.CheckIfCanCraft(_recipe))
         {
             if(_recipe.CraftedItem.Type == ItemType.Food)
-                LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName, ActionType.Preparing);
+                LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName, ActionType.Preparing, () => FinishComplete());
             else
-                LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName, ActionType.CraftItem);
-
-            LoadingWindow.OnLoadingComplete += OnLoadingComplete;
+                LoadingWindow.ShowLoadingWindow(_recipe.DelayCraft, _recipe.CraftingTime, _recipe.CraftedItem.DisplayName, ActionType.CraftItem, () => FinishComplete());
         }
     }
 
-    private void OnLoadingComplete()
+    private void FinishComplete()
     {
-        OnCreateRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
+        OnCreatedRecipeButtonClick?.Invoke(_recipe, InventoryHolder);
         _questControl.SendToMessageSystem(MessageConstants.Craft + _recipe.CraftedItem.Name);
-        LoadingWindow.OnLoadingComplete -= OnLoadingComplete;
     }
 
     protected override void UpdateLanguage()

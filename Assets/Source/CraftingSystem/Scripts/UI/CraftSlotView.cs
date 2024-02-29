@@ -15,7 +15,7 @@ public class CraftSlotView : MonoBehaviour
 
     protected List<IngridientSlotView> IngridientSlots = new List<IngridientSlotView>();
     protected PlayerInventoryHolder InventoryHolder;
-    protected DelayWindow LoadingWindow;
+    protected DelayHandler LoadingWindow;
     protected Crafting—ategory Crafting—ategory;
 
     protected DateTime CraftedTime;

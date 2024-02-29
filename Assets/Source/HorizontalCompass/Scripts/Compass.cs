@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Compass : MonoBehaviour
@@ -27,7 +27,7 @@ public class Compass : MonoBehaviour
     private QuestMaker _closestMarker = null;
     private float _closestDistance = float.MaxValue;
 
-    public event UnityAction<QuestMaker> OnQuestMakerAdded;
+    public event Action<QuestMaker> OnQuestMakerAdded;
 
     private void Awake()
     {
@@ -61,7 +61,7 @@ public class Compass : MonoBehaviour
         }
     }
 
-    public Vector2 GetPosOnCompass(QuestMaker questMaker)
+    public Vector2 GetPosition(QuestMaker questMaker)
     {
         Vector2 playerPosition = new Vector2(_playerTransform.position.x, _playerTransform.position.z);
         Vector2 playerForward = new Vector2(_playerTransform.forward.x, _playerTransform.forward.z);
@@ -80,11 +80,11 @@ public class Compass : MonoBehaviour
             _isAcrive = false;
         }
 
-        _coroutineUpdateMarker = StartCoroutine(UpdateMarkerCompass());
+        _coroutineUpdateMarker = StartCoroutine(UpdateMarker());
         _isAcrive = true;
     }
 
-    private IEnumerator UpdateMarkerCompass()
+    private IEnumerator UpdateMarker()
     {
         while (_isAcrive)
         {
@@ -97,7 +97,7 @@ public class Compass : MonoBehaviour
             {
                 if (marker != null)
                 {
-                    marker.Image.rectTransform.anchoredPosition = GetPosOnCompass(marker);
+                    marker.Image.rectTransform.anchoredPosition = GetPosition(marker);
 
                     float distance = Vector2.Distance(new Vector2(_playerTransform.position.x, _playerTransform.position.z), marker.Position);
 
@@ -120,9 +120,7 @@ public class Compass : MonoBehaviour
             }
 
             if (_closestMarker != null)
-            {
                 _closestMarker.Image.transform.SetAsLastSibling();
-            }
 
             yield return _waitForSeconds;
         }

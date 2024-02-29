@@ -9,7 +9,7 @@ public class InitializationSDK : MonoBehaviour
 {
     [SerializeField] private LocalizationHandler _localization;
     [SerializeField] private YandexAds _yandexAds;
-    [SerializeField] private SaveGame _saveGame;
+    [SerializeField] private SavingGame _saveGame;
 
     private string _defaultLanguage = "en";
 

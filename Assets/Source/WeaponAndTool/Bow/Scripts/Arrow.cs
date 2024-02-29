@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Arrow : MonoBehaviour
 {
     [SerializeField] private TrailRenderer _trailRenderer;
@@ -8,7 +9,7 @@ public class Arrow : MonoBehaviour
     private Rigidbody _rigidbody;
     private bool _isFlying = false;
 
-    public event Action<Arrow, Transform, Animals> OnEnteredCollider;
+    public event Action<Arrow, Transform, Animals> OnColliderEntered;
 
     public bool IsFlying => _isFlying;
 
@@ -42,7 +43,7 @@ public class Arrow : MonoBehaviour
         {
             _rigidbody.isKinematic = true;
             _isFlying = false;
-            OnEnteredCollider?.Invoke(this, collision.transform, collision.gameObject.GetComponentInParent<Animals>());
+            OnColliderEntered?.Invoke(this, collision.transform, collision.gameObject.GetComponentInParent<Animals>());
         }
     }
 }

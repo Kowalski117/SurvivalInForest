@@ -15,15 +15,10 @@ public class InventorySystem
 
     public InventorySystem(int size)
     {
-        CreateInventory(size);
+        Create(size);
     }
 
-    public void SetSlots(List<InventorySlot> inventorySlots)
-    {
-        _inventorySlots = inventorySlots;
-    }
-
-    public bool AddToInventory(InventoryItemData item, int amount, float durability)
+    public bool AddItem(InventoryItemData item, int amount, float durability)
     {
         if (ContainsItem(item, out List<InventorySlot> inventorySlots))
         {
@@ -51,15 +46,13 @@ public class InventorySystem
             if (slot.ItemData == null)
             {
                 int stackSizeToAdd = Mathf.Min(amount, item.MaxStackSize);
-                slot.UpdateInventorySlot(item, stackSizeToAdd, durability);
+                slot.UpdateItem(item, stackSizeToAdd, durability);
                 OnInventorySlotChanged?.Invoke(slot);
 
                 amount -= stackSizeToAdd;
 
                 if (amount <= 0)
-                {
                     return true;
-                }
             }
         }
 
@@ -67,7 +60,7 @@ public class InventorySystem
     }
 
 
-    public bool RemoveItemsInventory(InventoryItemData data, int amount)
+    public bool RemoveItem(InventoryItemData data, int amount)
     {
         if (ContainsItem(data, out List<InventorySlot> inventorySlots))
         {
@@ -99,7 +92,7 @@ public class InventorySystem
         return false;
     }
 
-    public bool RemoveItemsInventory(InventorySlot slot, int amount)
+    public bool RemoveSlot(InventorySlot slot, int amount)
     {
         foreach (var inventorySlot in _inventorySlots)
         {
@@ -124,6 +117,7 @@ public class InventorySystem
                 }
             }
         }
+
         return false;
     }
 
@@ -131,12 +125,6 @@ public class InventorySystem
     {
         inventorySlots = _inventorySlots.Where(i => i.ItemData == itemToAdd).ToList();
         return inventorySlots == null ? false : true;
-    }
-
-    public bool HasFreeSlot(out InventorySlot freeSlot)
-    {
-        freeSlot = _inventorySlots.FirstOrDefault(i => i.ItemData == null);
-        return freeSlot == null ? false : true;
     }
 
     public Dictionary<InventoryItemData, int> GetAllItemsHeld()
@@ -180,7 +168,7 @@ public class InventorySystem
         return _inventorySlots.Where(slot => slot.ItemData != null).ToList();
     }
 
-    private void CreateInventory(int size)
+    private void Create(int size)
     {
         _inventorySlots = new List<InventorySlot>(size);
  
