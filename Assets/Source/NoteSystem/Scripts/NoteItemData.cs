@@ -1,10 +1,12 @@
+using PixelCrushers.DialogueSystem;
+using PixelCrushers.Wrappers;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Note", order = 51)]
 public class NoteItemData : ScriptableObject
 {
-    [TextArea(4, 4)]
-    [SerializeField] private string _letter;
+    [SerializeField] private string _textTableField;
+    [SerializeField] private TextTable _textTable;
 
-    public string Letter => _letter;
+    public string Letter => _textTable.GetFieldTextForLanguage(_textTableField,Localization.language);
 }
