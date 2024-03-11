@@ -1,55 +1,49 @@
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization.Settings;
 
 public class LocalizationHandler : MonoBehaviour
 {
-    private string _currentLanguage;
-
-    private Dictionary<string, string> _language = new()
-    {
-        { "ru", "Russian" },
-        { "en", "English" },
-        { "tr", "Turkish" },
-    };
+    private int _languageIndex;
 
     public event UnityAction OnLanguageChanged;
 
-    public int CurrentLanguageIndex
+    public int CurrentLanguageIndex => _languageIndex;
+
+    private IEnumerator Start()
     {
-        get
-        {
-            int index = 0;
-            foreach (var pair in _language)
-            {
-                if (pair.Key == _currentLanguage)
-                {
-                    return index;
-                }
-                index++;
-            }
-            return -1;
-        }
+        //Debug.Log("1");
+        //if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
+        //    SetLanguageIndex(ES3.Load<int>(ConstantsSDK.LanguageIndex));
+
+        yield return new WaitForSeconds(0.6f);
+
+        if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
+            SetLanguageIndex(ES3.Load<int>(ConstantsSDK.LanguageIndex));
     }
 
     public void SetLanguageString(string value)
     {
-        if (_language.ContainsKey(value))
-            SetLanguage(value);
+        for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; i++)
+        {
+            if (LocalizationSettings.AvailableLocales.Locales[i].Formatter.ToString() == value)
+            {
+                SetLanguageIndex(i);
+                break;
+            }
+        }
     }
 
     public void SetLanguageIndex(int index)
     {
-        if (_language.Count >= index)
-            SetLanguage(_language.Keys.ElementAt(index));
-    }
-
-    private void SetLanguage(string value)
-    {
-        _currentLanguage = value;
-        OnLanguageChanged?.Invoke();
-        PlayerPrefs.SetString(ConstantsSDK.Language, _currentLanguage);
-        PixelCrushers.DialogueSystem.DialogueManager.SetLanguage(value);
+        if (LocalizationSettings.AvailableLocales.Locales.Count > index && _languageIndex != index)
+        {
+            LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
+            OnLanguageChanged?.Invoke();
+            _languageIndex = index;
+            Debug.Log(index);
+            ES3.Save(ConstantsSDK.LanguageIndex, _languageIndex);
+        }
     }
 }

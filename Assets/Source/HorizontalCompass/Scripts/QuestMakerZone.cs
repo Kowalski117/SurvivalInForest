@@ -11,20 +11,24 @@ public class QuestMakerZone : MonoBehaviour
 
     public QuestMaker[] HiddenQuestMakers => _hiddenQuestMakers;
     public QuestMaker[] OpenQuestMakers => _openQuestMakers;
+    public bool IsAddMaker => _isAddMaker;
 
     private void Awake()
     {
         _uniqueID = GetComponent<UniqueID>();
+        Load();
     }
 
     private void OnEnable()
     {
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,7 +53,6 @@ public class QuestMakerZone : MonoBehaviour
 
             _isAddMaker = true; 
             Save();
-            gameObject.SetActive(false);
         }
     }
 
@@ -61,11 +64,12 @@ public class QuestMakerZone : MonoBehaviour
     private void Load()
     {
         if (ES3.KeyExists(SaveLoadConstants.IsAddMaker + _uniqueID.Id))
-        {
             _isAddMaker = ES3.Load<bool>(SaveLoadConstants.IsAddMaker + _uniqueID.Id);
+    }
 
-            if (_isAddMaker)
-                gameObject.SetActive(false);
-        }
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.IsAddMaker + _uniqueID.Id))
+            ES3.DeleteKey(SaveLoadConstants.IsAddMaker + _uniqueID.Id);
     }
 }

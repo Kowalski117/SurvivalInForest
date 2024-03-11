@@ -1,5 +1,6 @@
 using Agava.YandexGames;
 using IL3DN;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,12 @@ public class GeneralSettings : MonoBehaviour
     private float _defoultSensitivity = 0.1f;
 
     public bool IsActiveTipsInput => _tipsInput.isOn;
+
+    private void Awake()
+    {
+        if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
+            _language.value = ES3.Load<int>(ConstantsSDK.LanguageIndex);
+    }
 
     private void Start()
     {
@@ -143,8 +150,7 @@ public class GeneralSettings : MonoBehaviour
 
     private void Load()
     {
-        if (PlayerPrefs.HasKey(ConstantsSDK.Language))
-            _localizationHandler.SetLanguageString(PlayerPrefs.GetString(ConstantsSDK.Language));
+
 
         if (!_sensitivitySlider.gameObject.activeInHierarchy)
             return;

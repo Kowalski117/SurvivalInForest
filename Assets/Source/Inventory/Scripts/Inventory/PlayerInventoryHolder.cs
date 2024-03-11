@@ -7,6 +7,7 @@ public class PlayerInventoryHolder : InventoryHolder
     [SerializeField] private BackpackInventory _backpackInventory;
     [SerializeField] private ClothesInventory _clothesInventory;
     [SerializeField] private ChestHandler _chestHandler;
+    [SerializeField] private InventoryOperator _inventoryOperator;
      
     private InventoryItemData _currentItemData;
 
@@ -23,12 +24,17 @@ public class PlayerInventoryHolder : InventoryHolder
             OnItemSlotUpdated?.Invoke();
             return true;
         }
-        return false;
+        else
+        {
+            _inventoryOperator.StartCreateItem(data, durability, amount);
+            return false;
+        }
     }
 
     public bool RemoveItem(InventoryItemData data, int amount)
     {
-        if (PrimaryInventorySystem.RemoveItem(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItem(data, amount) || _clothesInventory.InventorySystem.RemoveItem(data, amount))
+        if (PrimaryInventorySystem.RemoveItem(data, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveItem(data, amount) || 
+            _clothesInventory.InventorySystem.RemoveItem(data, amount))
         {
             OnItemDataChanged?.Invoke(data, -amount);
             OnItemSlotUpdated?.Invoke();
@@ -42,7 +48,8 @@ public class PlayerInventoryHolder : InventoryHolder
     {
         _currentItemData = slot.ItemData;
 
-        if (PrimaryInventorySystem.RemoveSlot(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveSlot(slot, amount) || _clothesInventory.InventorySystem.RemoveSlot(slot, amount) || _chestHandler.ChestInventory != null && _chestHandler.ChestInventory.InventorySystem.RemoveSlot(slot, amount))
+        if (PrimaryInventorySystem.RemoveSlot(slot, amount) || _backpackInventory.IsEnable == true && _backpackInventory.InventorySystem.RemoveSlot(slot, amount) ||
+            _clothesInventory.InventorySystem.RemoveSlot(slot, amount) || _chestHandler.ChestInventory != null && _chestHandler.ChestInventory.InventorySystem.RemoveSlot(slot, amount))
         {
             OnItemDataChanged?.Invoke(_currentItemData, -amount);
             OnItemSlotUpdated?.Invoke();
@@ -95,5 +102,11 @@ public class PlayerInventoryHolder : InventoryHolder
             PrimaryInventorySystem = saveData.InventorySystem;
             base.Load();
         }
+    }
+
+    protected override void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.PlayerInvetory))
+            ES3.DeleteKey(SaveLoadConstants.PlayerInvetory);
     }
 }

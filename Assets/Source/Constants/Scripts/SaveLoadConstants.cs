@@ -1,11 +1,11 @@
 public class SaveLoadConstants
 {
-    public const string StartLastSaveScene = "StartLastSaveScene";
-    public const string TransitionScene = "TransitionScene";
     public const string LastSceneIndex = "LastSceneIndex";
     public const string NextSceneIndex = "NextSceneIndex";
     public const string SceneIndex = "SceneIndex";
     public const string IsNewGame = "IsNewGame";
+    public const string IsResumeGame = "IsResumeGame";
+    public const string IsSceneShifted = "IsSceneShifted";
     public const string IsCutscenePlayed = "IsCutscenePlayed";
 
     public const string ResourceRevivalTime = "ResourceRevivalTime";

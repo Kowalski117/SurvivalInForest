@@ -71,6 +71,7 @@ public class RouletteScrollHandler : MonoBehaviour
 
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameSaved += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
@@ -82,6 +83,7 @@ public class RouletteScrollHandler : MonoBehaviour
 
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameSaved -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void TwistButtonClick()
@@ -213,5 +215,11 @@ public class RouletteScrollHandler : MonoBehaviour
     {
         if (ES3.KeyExists(SaveLoadConstants.IsFirstScroll))
             _isFirstScroll = ES3.Load<bool>(SaveLoadConstants.IsFirstScroll);
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.IsFirstScroll))
+            ES3.DeleteKey(SaveLoadConstants.IsFirstScroll);
     }
 }

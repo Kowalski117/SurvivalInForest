@@ -43,6 +43,7 @@ public class StoneSpawer: MonoBehaviour
 
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
@@ -51,6 +52,7 @@ public class StoneSpawer: MonoBehaviour
 
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     private void ResourceDeath()
@@ -109,9 +111,7 @@ public class StoneSpawer: MonoBehaviour
             float gameTime = PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter);
 
             if (savedTime <= gameTime)
-            {
                SpawnResourse();
-            }
             else
             {
                 _elapsedTime = savedTime - gameTime;
@@ -119,5 +119,11 @@ public class StoneSpawer: MonoBehaviour
                 StartSpawn();
             }
         }
+    }
+
+    private void Delete()
+    {
+        if (PlayerPrefs.HasKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime))
+            PlayerPrefs.DeleteKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime);
     }
 }

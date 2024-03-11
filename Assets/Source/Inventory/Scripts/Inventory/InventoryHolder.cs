@@ -10,7 +10,6 @@ public abstract class InventoryHolder : MonoBehaviour
     [SerializeField] private int _offset = 6;
 
     public event Action OnInventoryChanged;
-    public static Action<InventorySystem, int> OnDinamicInventoryDisplayRequested;
 
     public InventorySystem InventorySystem => PrimaryInventorySystem;
     public int Offset => _offset;
@@ -20,16 +19,18 @@ public abstract class InventoryHolder : MonoBehaviour
         PrimaryInventorySystem = new InventorySystem(_inventorySize);
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         SavingGame.OnGameLoaded += Load;
         SavingGame.OnGameSaved += Save;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         SavingGame.OnGameLoaded -= Load;
         SavingGame.OnGameSaved -= Save;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     protected abstract void Save();
@@ -37,6 +38,7 @@ public abstract class InventoryHolder : MonoBehaviour
     {
         OnInventoryChanged?.Invoke();
     }
+    protected abstract void Delete();
 }
 
 [System.Serializable]

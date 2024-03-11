@@ -24,7 +24,7 @@ public abstract class InventoryDisplay : MonoBehaviour
     protected virtual void OnEnable()
     {
         if (_craftingHandler != null)
-            _craftingHandler.OnSlotInventoryUpdated += UpdateSlots;
+            _craftingHandler.OnInventoryUpdated += UpdateSlots;
 
         foreach (var slot in Slots)
         {
@@ -38,7 +38,7 @@ public abstract class InventoryDisplay : MonoBehaviour
     protected virtual void OnDisable()
     {
         if (_craftingHandler != null)
-            _craftingHandler.OnSlotInventoryUpdated -= UpdateSlots;
+            _craftingHandler.OnInventoryUpdated -= UpdateSlots;
 
         foreach (var slot in Slots)
         {

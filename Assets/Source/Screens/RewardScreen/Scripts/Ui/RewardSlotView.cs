@@ -12,12 +12,19 @@ public class RewardSlotView : MonoBehaviour
     [SerializeField] private TextTable _textTable;
 
     private Color _defoultColor;
+    private int _day;
 
-    public void UpdateInfo(int day, Color color)
+    public void Init(int day, Color color)
     {
-        _dayText.text = _textTable.GetFieldTextForLanguage(GameConstants.Day, Localization.language) + " " + day.ToString();
+        _day = day;
+        _dayText.text = _textTable.GetFieldTextForLanguage(GameConstants.Day, Localization.language) + " " + _day.ToString();
         _frameImage.color = color;
         _defoultColor = _frameImage.color;
+    }
+
+    public void UpdateInfo()
+    {
+        _dayText.text = _textTable.GetFieldTextForLanguage(GameConstants.Day, Localization.language) + " " + _day.ToString();
     }
 
     public void Clear()

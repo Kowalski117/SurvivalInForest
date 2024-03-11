@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.ProBuilder.Shapes;
+using static UnityEngine.Rendering.DebugUI;
 
 public class AudioHandler : MonoBehaviour
 {
@@ -126,16 +128,41 @@ public class AudioHandler : MonoBehaviour
         PlayerPrefs.SetFloat(SettingConstants.EffectsStr, _currentValueEffects);
     }
 
-    public void FadeIn()
+    public void SetMute(bool value)
     {
-        _isMute = true;
-        _mixer.SetFloat(SettingConstants.MasterStr, ZeroVolume);
-    }
+        //if (!_isMutePrevious && !value)
+        //{
+        //    _isMutePrevious = true;
+        //    return;
+        //}
 
-    public void FadeOut()
-    {
-        _isMute = false;
-        SetAllSound(_currentValueMaster);
+        //_isMutePrevious = _isMute;
+
+        //if (value)
+        //{
+        //    _isMute = true;
+        //    _mixer.SetFloat(SettingConstants.MasterStr, ZeroVolume);
+        //}
+        //else
+        //{
+        //    _isMute = false;
+        //    SetAllSound(_currentValueMaster);
+        //}
+
+        if (_isMute != value) 
+        {
+            _isMutePrevious = _isMute;
+            _isMute = value;
+
+            if (_isMute)
+            {
+                _mixer.SetFloat(SettingConstants.MasterStr, ZeroVolume);
+            }
+            else
+            {
+                SetAllSound(_currentValueMaster);
+            }
+        }
     }
 
     private float GetValue(float value)
@@ -145,17 +172,6 @@ public class AudioHandler : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        if(_isMutePrevious && focus)
-        {
-            _isMutePrevious = false;
-            return;
-        }
-
-        _isMutePrevious = _isMute; 
-
-        if (focus)
-            FadeOut();
-        else
-            FadeIn();
+        SetMute(!focus);
     }
 }

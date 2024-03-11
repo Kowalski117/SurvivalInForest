@@ -59,4 +59,11 @@ public class ChestInventory : InventoryHolder
             }
         }
     }
+
+    protected override void Delete()
+    {
+        if (ES3.KeyExists(_uniqueId.Id))
+            ES3.DeleteKey(_uniqueId.Id);
+
+    }
 }

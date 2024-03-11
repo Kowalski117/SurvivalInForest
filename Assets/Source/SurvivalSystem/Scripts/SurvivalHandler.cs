@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SurvivalHandler : MonoBehaviour
 {
@@ -40,8 +41,9 @@ public class SurvivalHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        SavingGame.OnGameSaved += SaveSurvivalAttributes;
-        SavingGame.OnGameLoaded += LoadSurvivalAttributes;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
 
         _hotbarDisplay.OnItemClicked += Eat;
         _health.OnRevived += Reborn;
@@ -49,8 +51,9 @@ public class SurvivalHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        SavingGame.OnGameSaved -= SaveSurvivalAttributes;
-        SavingGame.OnGameLoaded -= LoadSurvivalAttributes;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
 
         _hotbarDisplay.OnItemClicked -= Eat;
         _health.OnRevived -= Reborn;
@@ -153,18 +156,31 @@ public class SurvivalHandler : MonoBehaviour
         _sleep.SetValue(_sleep.MaxValueInSeconds * _maximumDivisor / _percent);
     }
 
-    private void SaveSurvivalAttributes()
+    private void Save()
     {
         ES3.Save(SaveLoadConstants.Hunger, _hunger.CurrentAttribute);
         ES3.Save(SaveLoadConstants.Thirst, _thirst.CurrentAttribute);
         ES3.Save(SaveLoadConstants.Sleep, _sleep.CurrentAttribute);
     }
 
-    private void LoadSurvivalAttributes()
+    private void Load()
     {
-        _hunger.SetValue(ES3.Load(SaveLoadConstants.Hunger, _hunger.MaxValueInSeconds));
-        _thirst.SetValue(ES3.Load(SaveLoadConstants.Thirst, _thirst.MaxValueInSeconds));
-        _sleep.SetValue(ES3.Load(SaveLoadConstants.Sleep, _sleep.MaxValueInSeconds));
+        if (ES3.KeyExists(SaveLoadConstants.Hunger))
+        {
+            _hunger.SetValue(ES3.Load(SaveLoadConstants.Hunger, _hunger.MaxValueInSeconds));
+            _thirst.SetValue(ES3.Load(SaveLoadConstants.Thirst, _thirst.MaxValueInSeconds));
+            _sleep.SetValue(ES3.Load(SaveLoadConstants.Sleep, _sleep.MaxValueInSeconds));
+        }
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.Hunger))
+        {
+            ES3.DeleteKey(SaveLoadConstants.Hunger);
+            ES3.DeleteKey(SaveLoadConstants.Thirst);
+            ES3.DeleteKey(SaveLoadConstants.Sleep);
+        }
     }
 
     private void StartCoroutine()

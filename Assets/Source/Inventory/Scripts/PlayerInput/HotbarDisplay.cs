@@ -104,7 +104,7 @@ public class HotbarDisplay : StaticInventoryDisplay
     public void RemoveItem()
     {
         if (Slots[_currentIndex])
-            InventoryOperator.RemoveItem(Slots[_currentIndex]);
+            InventoryOperator.RemoveItems(Slots[_currentIndex], 1);
     }
 
     private void ChangeIndex(int direction)

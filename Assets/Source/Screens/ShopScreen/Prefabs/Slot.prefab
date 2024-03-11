@@ -1014,6 +1014,7 @@ GameObject:
   - component: {fileID: 2523592739380294024}
   - component: {fileID: 2523592739380294031}
   - component: {fileID: 8381777396651357255}
+  - component: {fileID: 3711622897143475848}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -1098,11 +1099,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 962a542ebb6297a42902ed60c891f23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _titleText: {fileID: 2523592739210921965}
-  _descriptionText: {fileID: 2435464994619776713}
-  _image: {fileID: 2523592739396600284}
-  _payButton: {fileID: 2765628875969815204}
-  _priceText: {fileID: 1936002345260335998}
   _slots:
   - {fileID: 9193577922498319191}
   - {fileID: 4705986134826351890}
@@ -1114,6 +1110,23 @@ MonoBehaviour:
   - {fileID: 6604043879795929596}
   _adsPoint: {fileID: 495200393953737111}
   _janPoint: {fileID: 8035652344581346989}
+--- !u!114 &3711622897143475848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523592739380294029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d957549a6d9827a49bdc2902de64c32b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _titleText: {fileID: 2523592739210921965}
+  _descriptionText: {fileID: 2435464994619776713}
+  _image: {fileID: 2523592739396600284}
+  _payButton: {fileID: 2765628875969815204}
+  _priceText: {fileID: 1936002345260335998}
 --- !u!1 &2523592739396600226
 GameObject:
   m_ObjectHideFlags: 0

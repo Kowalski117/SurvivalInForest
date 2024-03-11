@@ -39,6 +39,7 @@ public class Box : MonoBehaviour, IDamagable
     {
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
 
         _firstDamage = true;
         _isDead = false;
@@ -51,6 +52,7 @@ public class Box : MonoBehaviour, IDamagable
     {
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void Die()
@@ -95,6 +97,12 @@ public class Box : MonoBehaviour, IDamagable
             if (_currentEndurance <= 0)
                 Destroy(gameObject);
         }
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(_uniqueID.Id)) 
+            ES3.DeleteKey(_uniqueID.Id);
     }
 }
 

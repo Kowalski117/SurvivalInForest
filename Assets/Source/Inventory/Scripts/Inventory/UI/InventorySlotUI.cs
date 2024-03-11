@@ -16,9 +16,9 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     private bool _isEmpty = true;
 
-    public event UnityAction<InventorySlotUI> OnItemUpdated;
-    public event UnityAction<InventorySlot> OnItemCleared;
-    public static UnityAction<InventorySlotUI> OnItemRemoved;
+    public event Action<InventorySlotUI> OnItemUpdated;
+    public event Action<InventorySlot> OnItemCleared;
+    public event Action<InventorySlotUI, int> OnItemRemoved;
 
     public event Action<InventorySlotUI> OnItemClicked;
     public event Action<InventorySlotUI> OnItemDroppedOn;
@@ -49,7 +49,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         if(_assignedInventorySlot.ItemData.Type == _allowedItemTypes) 
             return;
         else
-            OnItemRemoved?.Invoke(this);
+            OnItemRemoved?.Invoke(this, _assignedInventorySlot.Size);
     }
 
     public void Init(InventorySlot slot)

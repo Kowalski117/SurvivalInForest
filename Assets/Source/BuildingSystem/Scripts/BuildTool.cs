@@ -15,6 +15,7 @@ public class BuildTool : Raycast
     [SerializeField] private DelayHandler _loadingWindow;
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private PlayerHandler _playerInputHandler;
+    [SerializeField] private CraftingHandler _craftingHandler;
     [SerializeField] private Material _buildingMatPositive;
     [SerializeField] private Material _buildingMatNegative;
     [SerializeField] private Transform _containerBuildings;
@@ -47,7 +48,7 @@ public class BuildTool : Raycast
 
     private void OnEnable()
     {
-        CrafBuildSlot.OnCreatedRecipeButton += ChoosePart;
+        _craftingHandler.OnBuildCreated += ChoosePart;
 
         _playerInputHandler.BuildPlayerInput.OnBuildingPutted += PutBuilding;
         _playerInputHandler.BuildPlayerInput.OnBuildingRotated += RotateBuilding;
@@ -59,7 +60,7 @@ public class BuildTool : Raycast
 
     private void OnDisable()
     {
-        CrafBuildSlot.OnCreatedRecipeButton -= ChoosePart;
+        _craftingHandler.OnBuildCreated -= ChoosePart;
 
         _playerInputHandler.BuildPlayerInput.OnBuildingPutted -= PutBuilding;
         _playerInputHandler.BuildPlayerInput.OnBuildingRotated -= RotateBuilding;

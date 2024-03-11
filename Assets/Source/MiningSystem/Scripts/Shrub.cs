@@ -34,6 +34,7 @@ public class Shrub : MonoBehaviour
     {
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
@@ -47,6 +48,7 @@ public class Shrub : MonoBehaviour
 
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     private void SpawnItem(int count)
@@ -108,5 +110,11 @@ public class Shrub : MonoBehaviour
         }
         else
             SpawnItem(_countItems);
+    }
+
+    private void Delete()
+    {
+        if (PlayerPrefs.HasKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime))
+            PlayerPrefs.DeleteKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime);
     }
 }

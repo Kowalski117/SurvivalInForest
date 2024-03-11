@@ -40,6 +40,7 @@ public class ResourceSpawner : MonoBehaviour
 
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
@@ -49,6 +50,7 @@ public class ResourceSpawner : MonoBehaviour
 
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void Update()
@@ -129,5 +131,11 @@ public class ResourceSpawner : MonoBehaviour
                 StartSpawn();
             }
         }
+    }
+
+    private void Delete()
+    {
+        if (PlayerPrefs.HasKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime))
+            PlayerPrefs.DeleteKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Xml;
 using UnityEngine;
 
 public class TradingRating : MonoBehaviour
@@ -18,12 +19,16 @@ public class TradingRating : MonoBehaviour
     {
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
+
     }
 
     private void OnDisable()
     {
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
+
     }
 
     private void AddQuestsCount()
@@ -53,7 +58,15 @@ public class TradingRating : MonoBehaviour
 
     private void Load()
     {
-        SerRating(ES3.Load<int>(SaveLoadConstants.TradingRating, _minRating));
+        if (ES3.KeyExists(SaveLoadConstants.TradingRating))
+            SerRating(ES3.Load<int>(SaveLoadConstants.TradingRating, _minRating));
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.TradingRating))
+            ES3.DeleteKey(SaveLoadConstants.TradingRating);
+
     }
 }
 

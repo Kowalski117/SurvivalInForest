@@ -91,7 +91,7 @@ public class DelayHandler : MonoBehaviour
         _playerInputHandler.TogglePersonController(true);
         _playerInputHandler.ToggleScreenPlayerInput(true);
 
-        if (actionType == ActionType.CraftItem)
+        if (actionType == ActionType.CraftItem || actionType == ActionType.Sleep)
         {
             _playerInputHandler.ToggleHotbarDisplay(false);
             _playerInputHandler.ToggleInteractionInput(false);

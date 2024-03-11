@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc840b51a5497d34a8b619c9471be47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: fa66ae54-e4b0-41ed-814b-cc9504a7e759
+  _id: c6ad1f1f-e0bd-4b37-9be5-e1f698cbc9fc
   _isGenerateAwake: 1
 --- !u!1 &6039657155452159068
 GameObject:
@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 6039657155312432108}
   - component: {fileID: 6039657155312432111}
   - component: {fileID: 4554261627232319851}
+  - component: {fileID: 6605686010157700244}
   m_Layer: 13
   m_Name: SM_Prop_Barrel_Half_01 (1)
   m_TagString: Untagged
@@ -289,3 +290,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isEnabledInitially: 0
+--- !u!114 &6605686010157700244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040906959817792810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b4e8d82d7488241960579ed6041726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "_crafting\u0421ategory": {fileID: 11400000, guid: 449aaa549f99fb042a8477d17abf2e9e, type: 2}
+  _isEnabledInitially: 0
+  _isEnabled: 0

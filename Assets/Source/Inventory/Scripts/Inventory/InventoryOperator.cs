@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InventoryOperator : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
     [SerializeField] private Transform _removeItemPoint;
     [SerializeField] private float _creationDelay = 0.2f;
+    [SerializeField] private InventorySlotUI[] _slots;
 
     private Coroutine _spawnItemCoroutine;
     private Coroutine _spawnItemsCoroutine;
     private WaitForSeconds _creationWait;
+
+    public event UnityAction OnSlotsUpdated;
 
     private void Awake()
     {
@@ -19,33 +23,26 @@ public class InventoryOperator : MonoBehaviour
 
     private void OnEnable()
     {
-        InventorySlotUI.OnItemRemoved += RemoveItems;
+        foreach (var slot in _slots)
+        {
+            slot.OnItemRemoved += RemoveItems;
+        }
     }
 
     private void OnDisable()
     {
-        InventorySlotUI.OnItemRemoved -= RemoveItems;
-    }
-
-    public void RemoveItems(InventorySlotUI inventorySlot)
-    {
-        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
+        foreach (var slot in _slots)
         {
-            StartCoroutine(CreateItemWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, inventorySlot.AssignedInventorySlot.Size));
-
-            _playerInventoryHolder.RemoveSlot(inventorySlot.AssignedInventorySlot, inventorySlot.AssignedInventorySlot.Size);
-
-            if (inventorySlot.AssignedInventorySlot.ItemData == null)
-                inventorySlot.TurnOffHighlight();
+            slot.OnItemRemoved -= RemoveItems;
         }
     }
 
-    public void RemoveItem(InventorySlotUI inventorySlot)
+    public void RemoveItems(InventorySlotUI inventorySlot, int amount)
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
-            StartCoroutine(CreateItemWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, 1));
-            _playerInventoryHolder.RemoveSlot(inventorySlot.AssignedInventorySlot, 1);
+            StartCoroutine(CreateItemWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, amount));
+            _playerInventoryHolder.RemoveSlot(inventorySlot.AssignedInventorySlot, amount);
 
             if (inventorySlot.AssignedInventorySlot.ItemData == null)
                 inventorySlot.TurnOffHighlight();

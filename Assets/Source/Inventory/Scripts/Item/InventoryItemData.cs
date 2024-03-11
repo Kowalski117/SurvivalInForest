@@ -25,7 +25,7 @@ public class InventoryItemData : ScriptableObject
     public int Id => _id;
     public string Name => _name;
     public ItemType Type => _type;
-    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_name,Localization.language);
+    public string DisplayName => _textTableDisplayName.GetFieldTextForLanguage(_name, Localization.language);
     public string Description => _textTableDescription.GetFieldTextForLanguage(_name, Localization.language);
     public Sprite Icon => _icon;
     public int MaxStackSize => _maxStackSize;

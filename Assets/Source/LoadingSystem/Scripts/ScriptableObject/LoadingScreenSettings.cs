@@ -13,7 +13,7 @@ public class LoadingScreenSettings : ScriptableObject
 
     public SceneParameters[] SceneParameters => _sceneParameters;
     public Sprite[] HintSprites => _hintSprites;
-    public string HintText => _textTableHint.GetFieldTextForLanguage(Random.Range(0,_maxLengthTextTableHint), Localization.language);
+    public string HintText => _textTableHint.GetFieldTextForLanguage(Random.Range(0,_maxLengthTextTableHint),  /*ES3.KeyExists(ConstantsSDK.Language) ? ES3.Load<string>(ConstantsSDK.Language) :*/ Localization.language);
 }
 
 [System.Serializable]
@@ -26,5 +26,5 @@ public struct SceneParameters
 
     public int SceneIndex => _sceneIndex;
     public string SceneString => _sceneString;
-    public string SceneName => _textTableName.GetFieldTextForLanguage(_sceneString, Localization.language);
+    public string SceneName => _textTableName.GetFieldTextForLanguage(_sceneString, /*ES3.KeyExists(ConstantsSDK.Language) ? ES3.Load<string>(ConstantsSDK.Language) : */Localization.language);
 }

@@ -45,15 +45,17 @@ public class SpawnPointAnimals : MonoBehaviour
     {
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        if(_currentAnimal != null)
+        if (_currentAnimal != null)
             _currentAnimal.DestroyAnimal -= DestroyAnimal;
 
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void Init(PlayerHealth playerHealth)
@@ -64,7 +66,7 @@ public class SpawnPointAnimals : MonoBehaviour
     public void Spawn(PlayerHealth playerHealth)
     {
         float secondWait = 10f;
-        
+
         if (_player == null)
             _player = playerHealth;
 
@@ -150,9 +152,9 @@ public class SpawnPointAnimals : MonoBehaviour
         {
             if (other.GetComponent<PlayerHealth>().IsRespawned)
             {
-                if(_elapsedTime <= 0)
+                if (_elapsedTime <= 0)
                 {
-                    if(_currentAnimal != null)
+                    if (_currentAnimal != null)
                         Destroy(_currentAnimal.gameObject);
 
                     Spawn(_player);
@@ -187,5 +189,11 @@ public class SpawnPointAnimals : MonoBehaviour
         }
         else
             Spawn(_player);
+    }
+
+    private void Delete()
+    {
+        if (PlayerPrefs.HasKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime))
+            PlayerPrefs.DeleteKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime);
     }
 }

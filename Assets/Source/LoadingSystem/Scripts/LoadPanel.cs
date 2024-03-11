@@ -1,3 +1,4 @@
+using PixelCrushers.DialogueSystem;
 using System;
 using System.Collections;
 using TMPro;
@@ -20,6 +21,7 @@ public class LoadPanel : MonoBehaviour
     [SerializeField] private TMP_Text _textHint;
     [SerializeField] private TMP_Text _loadBarText;
     [SerializeField] private Button _resumeButton;
+    [SerializeField] private AnimationUI _resumeAnimation;
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private GameObject _text;
     [SerializeField] private float _fadeSpeed;
@@ -36,6 +38,8 @@ public class LoadPanel : MonoBehaviour
 
     private void Start()
     {
+        //_resumeAnimation.Close();
+
         if (!_isStart)
             Load(0, null, SceneManager.GetActiveScene().buildIndex);
     }
@@ -52,7 +56,7 @@ public class LoadPanel : MonoBehaviour
 
     public void StartLoad(int index)
     {
-        ES3.Save(SaveLoadConstants.StartLastSaveScene, false);
+        ES3.Save(SaveLoadConstants.IsResumeGame, false);
         ES3.Save(SaveLoadConstants.IsNewGame, true);
         LoadScene(index);
     }
@@ -62,7 +66,7 @@ public class LoadPanel : MonoBehaviour
         if (ES3.KeyExists(SaveLoadConstants.SceneIndex))
         {
             int indexScene = ES3.Load<int>(SaveLoadConstants.SceneIndex);
-            ES3.Save(SaveLoadConstants.StartLastSaveScene, true);
+            ES3.Save(SaveLoadConstants.IsResumeGame, true);
             ES3.Save(SaveLoadConstants.IsNewGame, false);
             LoadScene(indexScene);
         }
@@ -76,7 +80,7 @@ public class LoadPanel : MonoBehaviour
 
     public void Load(float alpha, UnityAction OnFadingDone, int indexScene)
     {
-        _audioHandler.FadeIn();
+        _audioHandler.SetMute(true);
 
         if (_coroutine != null)
         {
@@ -111,11 +115,12 @@ public class LoadPanel : MonoBehaviour
             _canvasGroup.blocksRaycasts = true;
             _loadBarText.enabled = false;
             _loadBarTransform.gameObject.SetActive(false);
-            _resumeButton.gameObject.SetActive(true);
+            _resumeAnimation.Open();
         }
         else if (alpha == 1)
         {
-            _resumeButton.gameObject.SetActive(false);
+            _loadBarTransform.gameObject.SetActive(true);
+            _resumeAnimation.Close();
 
             if (_playerInputHandler != null)
                 _playerInputHandler.SetActiveCollider(false);
@@ -159,7 +164,7 @@ public class LoadPanel : MonoBehaviour
         }
 
         OnDeactivated?.Invoke();
-        _audioHandler.FadeOut();
+        _audioHandler.SetMute(false);
 
         _coroutineDeactivate = StartCoroutine(DeactivateCoroutine());
     }
@@ -182,6 +187,7 @@ public class LoadPanel : MonoBehaviour
             _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 0, Time.deltaTime * _fadeSpeed);
             yield return null;
         }
+
         _canvasGroup.alpha = 0;
         gameObject.SetActive(false);
     }

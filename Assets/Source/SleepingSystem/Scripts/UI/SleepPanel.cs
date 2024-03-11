@@ -42,13 +42,11 @@ public class SleepPanel : ScreenUI
     {
         base.ExitButtonClick();
         Toggle();
-        PlayerInputHandler.ToggleScreenPlayerInput(true);
     }
 
     private void SleepButtonClick()
     {
         Close();
-        _survivalHandler.TimeHandler.ToggleEnable(false);
         OnTimeStopped?.Invoke(false);
         _loadingWindow.ShowLoadingWindow(_delay, _survivalHandler.Sleep.MissingValue, string.Empty, ActionType.Sleep, () => FinishComplete());
     }
@@ -61,7 +59,6 @@ public class SleepPanel : ScreenUI
         _survivalHandler.Hunger.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
         _survivalHandler.Thirst.LowerValue(_survivalHandler.Sleep.MissingValue / _maximumDivisor);
 
-        PlayerInputHandler.SetActiveCollider(true);
         OnPlayerSleeped?.Invoke();
         OnTimeStopped?.Invoke(true);
         _survivalHandler.TimeHandler.ToggleEnable(true);

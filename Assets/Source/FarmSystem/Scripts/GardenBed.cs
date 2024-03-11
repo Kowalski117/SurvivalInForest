@@ -38,12 +38,14 @@ public class GardenBed : MonoBehaviour
     {
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
         SavingGame.OnGameSaved -= Save;
-        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnGameLoaded -= Load; 
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public bool StartGrowingSeed(InventoryItemData inventoryItemData, Vector3 scale = default(Vector3))
@@ -126,6 +128,12 @@ public class GardenBed : MonoBehaviour
                 _currentItem.Init(SetLootItem(_seedItem));
             }
         }
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(_uniqueID.Id + SaveLoadConstants.GardenBedSaveData))
+            ES3.DeleteKey(_uniqueID.Id + SaveLoadConstants.GardenBedSaveData);
     }
 
     private ObjectItemsData SetLootItem(SeedItemData seedItemData)

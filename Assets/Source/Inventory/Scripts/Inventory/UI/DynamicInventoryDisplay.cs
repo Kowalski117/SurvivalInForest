@@ -5,8 +5,6 @@ using UnityEngine.Events;
 
 public class DynamicInventoryDisplay : InventoryDisplay
 {
-    [SerializeField] private CanvasGroup _canvasGroup;
-    [SerializeField] private Transform _parentTransform;
     [SerializeField] private AnimationUI _animationUI;
 
     public event UnityAction<int> OnDisplayRefreshed;

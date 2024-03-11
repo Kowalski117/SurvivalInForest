@@ -97,7 +97,7 @@ public class MouseItemData : MonoBehaviour
             else
             {
                 OnItemDataChanged?.Invoke(_inventorySlotUI.AssignedInventorySlot.ItemData, -_inventorySlotUI.AssignedInventorySlot.Size);
-                _inventoryOperator.RemoveItems(_inventorySlotUI);
+                _inventoryOperator.RemoveItems(_inventorySlotUI, _inventorySlotUI.AssignedInventorySlot.Size);
             }
 
             Toggle(false);

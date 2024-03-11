@@ -206,8 +206,7 @@ public class InventoryDescription : MonoBehaviour
 
     private void DiscardItem()
     {
-        _inventoryOperator.RemoveItem(_currentSlot);
-
+        _inventoryOperator.RemoveItems(_currentSlot, 1);
         if (_currentSlot.AssignedInventorySlot.ItemData == null)
             Clear();
     }

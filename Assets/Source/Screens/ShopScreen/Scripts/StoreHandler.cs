@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ShopScreen))]
 public class StoreHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
@@ -12,10 +13,17 @@ public class StoreHandler : MonoBehaviour
     [SerializeField] private Transform _containerSlots;
     [SerializeField] private YandexAds _yandexAds;
 
+    private ShopScreen _shopScreen;
+
     public event Action<Dictionary<InventoryItemData, int>> OnBonusShown;
     public event Action OnProductBuyed;
 
     private void Awake()
+    {
+        _shopScreen = GetComponent<ShopScreen>();
+    }
+
+    private void Start()
     {
         InitSlots();
     }
@@ -26,6 +34,8 @@ public class StoreHandler : MonoBehaviour
         {
             slot.OnPayedButton += TrySellProduct;
         }
+
+        _shopScreen.OnScreenOpened += UpdateLanguage;
     }
 
     private void OnDisable()
@@ -34,6 +44,8 @@ public class StoreHandler : MonoBehaviour
         {
             slot.OnPayedButton -= TrySellProduct;
         }
+
+        _shopScreen.OnScreenOpened -= UpdateLanguage;
     }
 
     public void InitSlots()
@@ -72,5 +84,13 @@ public class StoreHandler : MonoBehaviour
         }
 
         OnBonusShown?.Invoke(products);
+    }
+
+    public void UpdateLanguage()
+    {
+        for (int i = 0; i < _storeSlots.Count; i++)
+        {
+            _storeSlots[i].UpdateLanguage();
+        }
     }
 }

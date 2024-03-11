@@ -12,21 +12,26 @@ public abstract class AnimationUI : MonoBehaviour
     [SerializeField] protected bool IsUseDelayGroup = false;
     [SerializeField] private float _delayGroup = 0.3f;
     [SerializeField] private bool _isObjectDisactiveEnd = false;
+    [SerializeField] private bool _isOpen = true;
+    [SerializeField] private bool _isActiveGroup = true;
+    [SerializeField] private bool _isObjectActiveToggle = false;
 
     protected Tween Tween;
     protected Coroutine Coroutine;
     protected WaitForSeconds DelayWait;
 
+    private WaitForSeconds _groupWait;
+    private Coroutine _groupCoroutine;
+
     private Tween _tweenGroup;
-    private bool _isActiveGroup = true;
     private bool _isActive = true;
-    private bool _isOpen = true;
 
     public bool IsOpen => _isOpen;
 
     private void Awake()
     {
         DelayWait = new WaitForSeconds(DurationAnim);
+        _groupWait = new WaitForSeconds(_delayGroup);
     }
 
     public void Open()
@@ -35,7 +40,7 @@ public abstract class AnimationUI : MonoBehaviour
             return;
 
         ClearTween();
-        ClearCoroutine();
+        ClearCoroutine(ref Coroutine);
 
         Coroutine = StartCoroutine(OpenWaitFor());
 
@@ -48,7 +53,7 @@ public abstract class AnimationUI : MonoBehaviour
             return;
 
         ClearTween();
-        ClearCoroutine();
+        ClearCoroutine(ref Coroutine);
 
         Coroutine = StartCoroutine(CloseWaitFor());
 
@@ -70,6 +75,7 @@ public abstract class AnimationUI : MonoBehaviour
         if (!CanvasGroup || isActive == _isActiveGroup)
             return;
 
+        ClearCoroutine(ref _groupCoroutine);
         _tweenGroup.Kill();
 
         _isActiveGroup = isActive;
@@ -88,6 +94,16 @@ public abstract class AnimationUI : MonoBehaviour
                 CanvasGroup.alpha = 1;
             else
                 CanvasGroup.alpha = 0;
+        }
+
+        if(_isObjectActiveToggle)
+        {
+            if (isActive)
+            {
+                CanvasGroup.gameObject.SetActive(true);
+            }
+            else
+                StartTurnOffObject();
         }
 
         if (!isActive && _isObjectDisactiveEnd)
@@ -112,21 +128,38 @@ public abstract class AnimationUI : MonoBehaviour
         }
     }
 
-    protected void ClearCoroutine()
-    {
-        if(Coroutine != null)
-        {
-            StopCoroutine(Coroutine);
-            Coroutine = null;
-        }
-    }
-
     protected void ClearTween()
     {
         if(Tween != null)
         {
             Tween.Kill();
             Tween = null;
+        }
+    }
+
+    
+
+    private void StartTurnOffObject()
+    {
+        ClearCoroutine(ref _groupCoroutine);
+
+         _groupCoroutine = StartCoroutine(TurnOffObject());
+    }
+
+    private IEnumerator TurnOffObject()
+    {
+        yield return _groupWait;
+
+        CanvasGroup.gameObject.SetActive(false);
+    }
+
+
+    private void ClearCoroutine(ref Coroutine coroutine)
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
         }
     }
 }

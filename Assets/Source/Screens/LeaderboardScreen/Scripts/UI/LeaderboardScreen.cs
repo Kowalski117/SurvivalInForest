@@ -16,11 +16,11 @@ public class LeaderboardScreen : ScreenUI
         {
             PlayerAccount.RequestPersonalProfileDataPermission();
             _leaderboard.Fill();
-            OpenScreen();
+            Open();
             //SaveGame.GetCloudSaveData();
         }
         else
-            _authorizationPanel.OpenScreen();
+            _authorizationPanel.Close();
 #endif
     }
 

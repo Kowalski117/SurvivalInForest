@@ -26,12 +26,14 @@ public class SleepHandler : MonoBehaviour
     {
         SavingGame.OnGameSaved += Save;
         SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
         SavingGame.OnGameSaved -= Save;
         SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void SetPoint(Transform point)
@@ -52,6 +54,12 @@ public class SleepHandler : MonoBehaviour
             _sleepPointSaveData = ES3.Load<SpawnPointSaveData>(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex);
             return;
         }
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex))
+            ES3.DeleteKey(SaveLoadConstants.SpawnPosition + SceneManager.GetActiveScene().buildIndex);
     }
 }
 

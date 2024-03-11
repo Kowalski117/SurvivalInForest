@@ -12,24 +12,20 @@ public class BackpackInventory : InventoryHolder
 
     public bool IsEnable => _isEnable;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         _clothesSlotsHandler.OnBackpackInteractioned += Show;
         _clothesSlotsHandler.OnBackpackRemoved += Show;
         _clothesSlotsHandler.OnBackpackRemoved += RemoveAllItems;
-
-        SavingGame.OnGameSaved += Save;
-        SavingGame.OnGameLoaded += Load;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _clothesSlotsHandler.OnBackpackInteractioned -= Show;
         _clothesSlotsHandler.OnBackpackRemoved -= Show;
         _clothesSlotsHandler.OnBackpackRemoved -= RemoveAllItems;
-
-        SavingGame.OnGameSaved -= Save;
-        SavingGame.OnGameLoaded -= Load;
     }
 
     public void Show()
@@ -66,5 +62,11 @@ public class BackpackInventory : InventoryHolder
             PrimaryInventorySystem = saveData.InventorySystem;
             base.Load();
         }
+    }
+
+    protected override void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.BackpackInventory))
+            ES3.DeleteKey(SaveLoadConstants.BackpackInventory);
     }
 }

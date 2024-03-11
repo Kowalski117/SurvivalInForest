@@ -10,8 +10,6 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private MainClock _timeHandler;
     [SerializeField] private LeaderboardView _leaderboardView;
 
-    private int _maxDay;
-
     private readonly List<LeaderboardPlayer> _leaderboardPlayers = new();
 
     private void OnEnable()
@@ -34,10 +32,11 @@ public class Leaderboard : MonoBehaviour
 
         Agava.YandexGames.Leaderboard.GetPlayerEntry(LeaderboardName, result =>
         {
+            Debug.Log(result.score);
+            Debug.Log(score);
+
             if(result.score > score)
                 Agava.YandexGames.Leaderboard.SetScore(LeaderboardName, score);
-
-            _maxDay = result.score;
         });
 #endif
     }
@@ -57,6 +56,7 @@ public class Leaderboard : MonoBehaviour
                 var rank = result.entries[i].rank;
                 var score = result.entries[i].score;
                 var name = result.entries[i].player.publicName;
+                var icon = result.entries[i].player.profilePicture;
 
                 if (string.IsNullOrEmpty(name))
                     name = AnonymousName;

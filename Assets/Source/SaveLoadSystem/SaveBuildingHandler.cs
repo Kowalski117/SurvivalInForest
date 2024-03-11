@@ -7,12 +7,12 @@ public class SaveBuildingHandler : SaveHandler
 
     private Building _currentBuilding;
 
-    protected override void SaveBase()
+    protected override void Save()
     {
         ES3.Save(SaveLoadConstants.IdsBuildings, Ids);
     }
 
-    protected override void LoadBase()
+    protected override void Load()
     {
         if (ES3.KeyExists(SaveLoadConstants.IdsBuildings)) 
         {
@@ -38,5 +38,11 @@ public class SaveBuildingHandler : SaveHandler
                 }
             }
         }
+    }
+
+    protected override void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.IdsBuildings))
+            ES3.DeleteKey(SaveLoadConstants.IdsBuildings);
     }
 }

@@ -21,10 +21,11 @@ public class SavingGame : MonoBehaviour
 
     public static event Action OnGameSaved;
     public static event Action OnGameLoaded;
+    public static event Action OnSaveDeleted;
 
     private void Start()
     {
-        if(_isSurvivalScene)
+        if (_isSurvivalScene)
             StartCoroutine(StartLoad());
     }
 
@@ -66,13 +67,11 @@ public class SavingGame : MonoBehaviour
     public static void Load()
     {
         OnGameLoaded?.Invoke();
-        ES3.Save(SaveLoadConstants.TransitionScene, false);
     }
 
     public static void Delete()
     {
-        ES3.DeleteFile();
-        PlayerPrefs.DeleteAll();
+        OnSaveDeleted?.Invoke();
     }
 
     public void GetCloudSaveData()
@@ -116,23 +115,13 @@ public class SavingGame : MonoBehaviour
         }
     }
 
-    private void OnErrorLoad(string message)
-    {
-        Debug.Log("ύμμμ");
-    }
-
     private IEnumerator StartLoad()
     {
         yield return new WaitForSeconds(_delay);
 
         if (ES3.KeyExists(SaveLoadConstants.IsNewGame) && ES3.Load<bool>(SaveLoadConstants.IsNewGame) == true)
-        {
             Delete();
-            ES3.Save(SaveLoadConstants.IsCutscenePlayed, true);
-            StartCoroutine(WaitForLoad(0.5f));
-        }
 
-        if (ES3.KeyExists(SaveLoadConstants.StartLastSaveScene) && ES3.Load<bool>(SaveLoadConstants.StartLastSaveScene) == true || ES3.KeyExists(SaveLoadConstants.TransitionScene) && ES3.Load<bool>(SaveLoadConstants.TransitionScene) == true)
-            StartCoroutine(WaitForLoad(0.5f));
+        StartCoroutine(WaitForLoad(_delay));
     }
 }

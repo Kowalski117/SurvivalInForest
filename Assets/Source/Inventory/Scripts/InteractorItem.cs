@@ -78,7 +78,8 @@ public class InteractorItem : Raycast
 
     private void HandleInteraction()
     {
-        if ((IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo) || _itemsPickUp.Count > 0 && _isLargeLiftingArea) && !_inventoryHandler.IsInventoryOpen)
+        if ((IsRayHittingSomething(_interactionItemLayer, out RaycastHit hitInfo) || _itemsPickUp.Count > 0 
+            && _isLargeLiftingArea) && !_inventoryHandler.IsInventoryOpen)
         {
             if (_isStartingPick && !_isInventoryFull)
             {
@@ -117,9 +118,7 @@ public class InteractorItem : Raycast
     private void HandleInventoryFull()
     {
         if (_isInventoryFull)
-        {
             ResetLookTimer();
-        }
     }
 
     private void ResetLookTimer()
@@ -151,11 +150,7 @@ public class InteractorItem : Raycast
 
         if (_currentItemPickUp != null)
         {
-            if (!_playerInventoryHolder.AddItem(_currentItemPickUp.ItemData, _addAmount, _currentItemPickUp.Durability))
-            {
-                _inventoryOperator.StartCreateItem(_currentItemPickUp.ItemData, _currentItemPickUp.ItemData.Durability, _addAmount);
-                _isInventoryFull = true;
-            }
+            _playerInventoryHolder.AddItem(_currentItemPickUp.ItemData, _addAmount, _currentItemPickUp.Durability);
 
             if (_itemsPickUp.Contains(_currentItemPickUp))
             {
@@ -177,8 +172,7 @@ public class InteractorItem : Raycast
             {
                 for (var i = 0; i < inventoryData.Amount; i++)
                 {
-                    if (!_playerInventoryHolder.AddItem(inventoryData.ItemData, _addAmount, inventoryData.ItemData.Durability))
-                        _inventoryOperator.StartCreateItem(inventoryData.ItemData, inventoryData.ItemData.Durability, _addAmount);
+                    _playerInventoryHolder.AddItem(inventoryData.ItemData, _addAmount, inventoryData.ItemData.Durability);
                 }
             }
 

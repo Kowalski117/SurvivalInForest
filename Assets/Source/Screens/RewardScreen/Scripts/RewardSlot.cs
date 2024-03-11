@@ -21,7 +21,12 @@ public class RewardSlot : MonoBehaviour
         _isEmpty = false;
         _slot.AssignedInventorySlot.AssignItem(dayReward.Slot.ItemData, dayReward.Slot.Amount, dayReward.Slot.ItemData.Durability);
         _slot.UpdateItem();
-        _view.UpdateInfo(day, dayReward.BackgroundColor);
+        _view.Init(day, dayReward.BackgroundColor);
+    }
+
+    public void UpdateLanguage()
+    {
+        _view.UpdateInfo();
     }
 
     public void Take()

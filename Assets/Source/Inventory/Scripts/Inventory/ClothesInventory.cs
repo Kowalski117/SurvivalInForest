@@ -15,4 +15,10 @@ public class ClothesInventory : InventoryHolder
             base.Load();
         }
     }
+
+    protected override void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.ÑlothesInventory))
+            ES3.DeleteKey(SaveLoadConstants.ÑlothesInventory);
+    }
 }

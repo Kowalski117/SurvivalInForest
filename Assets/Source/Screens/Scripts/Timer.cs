@@ -32,13 +32,23 @@ public class Timer : MonoBehaviour
             if (value != null)
                 PlayerPrefs.SetString(SaveLoadConstants.LastClaimTime + _uniqueId.Id, value.ToString());
             else
-                PlayerPrefs.DeleteKey(SaveLoadConstants.LastClaimTime + _uniqueId.Id);
+                Delete();
         }
     }
 
     private void Awake()
     {
         _uniqueId = GetComponent<UniqueID>();
+    }
+
+    private void OnEnable()
+    {
+        SavingGame.OnSaveDeleted += Delete;
+    }
+
+    private void OnDisable()
+    {
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void UpdateRewardsUI()
@@ -97,5 +107,11 @@ public class Timer : MonoBehaviour
     public void Clear()
     {
         LastClaimTime = null;
+    }
+
+    private void Delete()
+    {
+        if(PlayerPrefs.HasKey(SaveLoadConstants.LastClaimTime + _uniqueId.Id))
+            PlayerPrefs.DeleteKey(SaveLoadConstants.LastClaimTime + _uniqueId.Id);
     }
 }

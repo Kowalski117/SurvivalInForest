@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(DailyRewardsScreen))]
 public class RewardHandler : MonoBehaviour
@@ -11,6 +12,7 @@ public class RewardHandler : MonoBehaviour
     [SerializeField] private RewardSlot[] _rewardSlots;
     [SerializeField] private DayRewardsData _dayRewardsData;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
+    [SerializeField] private Button _buttonGet;
     [SerializeField] private Timer _timer;
 
     private DailyRewardsScreen _dailyRewardsScreen;
@@ -36,18 +38,26 @@ public class RewardHandler : MonoBehaviour
         CreateSlots();
         StartCoroutine();
         SlotsUpdate(_currentStreak);
+
+        _timer.IsCheckState();
+        if (!_timer.IsClaimReward)
+            _buttonGet.enabled = false;
     }
 
     private void OnEnable()
     {
         _dailyRewardsScreen.OnScreenOpened += StartCoroutine;
         _dailyRewardsScreen.OnScreenClosed += StopCoroutine;
+
+        _timer.OnTimerExpired += ExpireTimer;
     }
 
     private void OnDisable()
     {
         _dailyRewardsScreen.OnScreenOpened -= StartCoroutine;
         _dailyRewardsScreen.OnScreenClosed -= StopCoroutine;
+
+        _timer.OnTimerExpired -= ExpireTimer;
     }
 
     public void Claim()
@@ -62,6 +72,7 @@ public class RewardHandler : MonoBehaviour
 
         _timer.SetLastClaimTime();
         _currentStreak = (_currentStreak + 1) % _dayRewardsData.DayRewards.Length;
+        _buttonGet.enabled = false;
 
         VerifyState();
     }
@@ -92,6 +103,8 @@ public class RewardHandler : MonoBehaviour
         }
 
         _claimCoroutine = StartCoroutine(UpdateState());
+
+        UpdateLanguage();
     }
 
     private void CreateSlots()
@@ -156,5 +169,18 @@ public class RewardHandler : MonoBehaviour
         {
             slot.Clear();
         } 
+    }
+
+    private void UpdateLanguage()
+    {
+        foreach (var slot in _rewardSlots)
+        {
+            slot.UpdateLanguage();
+        }
+    }
+
+    private void ExpireTimer()
+    {
+        _buttonGet.enabled = true;
     }
 }

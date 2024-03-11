@@ -49,6 +49,8 @@ public class Fire : MonoBehaviour
         _building.OnCompletedBuild += StartFire;
 
         SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
@@ -58,6 +60,8 @@ public class Fire : MonoBehaviour
         _building.OnCompletedBuild -= StartFire;
 
         SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     private void Update()
@@ -103,7 +107,10 @@ public class Fire : MonoBehaviour
             _audioSource.Stop();
 
             if (_isRemoveAfterFire)
+            {
+                Delete();
                 Destroy(gameObject);
+            }
         }
     }
 
@@ -174,6 +181,12 @@ public class Fire : MonoBehaviour
             _currentTime = fireSaveData.CurrentTime;
             EnableParticle();
         }
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(_uniqueId.Id + SaveLoadConstants.FireSaveData))
+            ES3.DeleteKey(_uniqueId.Id + SaveLoadConstants.FireSaveData);
     }
 }
 

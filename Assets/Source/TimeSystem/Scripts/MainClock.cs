@@ -37,14 +37,16 @@ public class MainClock : MonoBehaviour
 
     private void OnEnable()
     {
-        SavingGame.OnGameSaved += SaveTime;
-        SavingGame.OnGameLoaded += LoadTime;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        SavingGame.OnGameSaved -= SaveTime;
-        SavingGame.OnGameLoaded -= LoadTime;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void AddTimeInSeconds(float time)
@@ -85,14 +87,21 @@ public class MainClock : MonoBehaviour
             _timeMultiplier = 60;
     }
 
-    private void SaveTime()
+    private void Save()
     {
         ES3.Save(SaveLoadConstants.Time, _currentTime);
     }
 
-    private void LoadTime()
+    private void Load()
     {
-        _currentTime = ES3.Load<DateTime>(SaveLoadConstants.Time, DateTime.Now.Date + TimeSpan.FromHours(_startHour));
+        if(ES3.KeyExists(SaveLoadConstants.Time))
+           _currentTime = ES3.Load<DateTime>(SaveLoadConstants.Time, DateTime.Now.Date + TimeSpan.FromHours(_startHour));
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.Time))
+            ES3.DeleteKey(SaveLoadConstants.Time);
     }
 }
 

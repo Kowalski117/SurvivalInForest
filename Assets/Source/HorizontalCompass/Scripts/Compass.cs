@@ -28,11 +28,10 @@ public class Compass : MonoBehaviour
     private float _closestDistance = float.MaxValue;
 
     public event Action<QuestMaker> OnQuestMakerAdded;
+    public event Action<QuestMaker> OnQuestMakerRemoved;
 
     private void Awake()
     {
-        _compassUnit = _compassImage.rectTransform.rect.width / _rotationNumber;
-
         foreach (var maker in _openQuestMakers)
         {
             AddQuestMarket(maker);
@@ -41,6 +40,10 @@ public class Compass : MonoBehaviour
 
     private void Start()
     {
+        _compassUnit = _compassImage.rectTransform.rect.width / _rotationNumber;
+
+
+
         StartCoroutine();
     }
 
@@ -56,6 +59,7 @@ public class Compass : MonoBehaviour
     {
         if (_questMakers.Contains(questMaker))
         {
+            OnQuestMakerRemoved?.Invoke(questMaker);
             _questMakers.Remove(questMaker);
             Destroy(questMaker.Image.gameObject);
         }

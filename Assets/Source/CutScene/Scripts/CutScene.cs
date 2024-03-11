@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityPlayerPrefs;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -58,6 +59,7 @@ public class CutScene : MonoBehaviour
 
     private IEnumerator FillAlpha()
     {
+        Save();
         _tween.Kill();
         _tween = _canvasGroup.DOFade(1, _fadeDelay);
 
@@ -70,6 +72,11 @@ public class CutScene : MonoBehaviour
     {
         _playableDirector.Play();
         OnStart?.Invoke();
+    }
+
+    private void Save()
+    {
+        ES3.Save(SaveLoadConstants.IsCutscenePlayed, true);
     }
 
     private void OnApplicationFocus(bool focus)
