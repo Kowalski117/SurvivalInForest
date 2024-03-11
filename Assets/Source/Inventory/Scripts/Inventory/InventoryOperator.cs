@@ -1,78 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InventoryOperator : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
     [SerializeField] private Transform _removeItemPoint;
     [SerializeField] private float _creationDelay = 0.2f;
+    [SerializeField] private InventorySlotUI[] _slots;
 
-    private Coroutine _coroutine;
+    private Coroutine _spawnItemCoroutine;
+    private Coroutine _spawnItemsCoroutine;
+    private WaitForSeconds _creationWait;
+
+    public event UnityAction OnSlotsUpdated;
+
+    private void Awake()
+    {
+        _creationWait = new WaitForSeconds(_creationDelay);
+    }
 
     private void OnEnable()
     {
-        InventorySlotUI.OnItemRemove += RemoveItems;
+        foreach (var slot in _slots)
+        {
+            slot.OnItemRemoved += RemoveItems;
+        }
     }
 
     private void OnDisable()
     {
-        InventorySlotUI.OnItemRemove -= RemoveItems;
+        foreach (var slot in _slots)
+        {
+            slot.OnItemRemoved -= RemoveItems;
+        }
     }
 
-    public void RemoveItems(InventorySlotUI inventorySlot)
+    public void RemoveItems(InventorySlotUI inventorySlot, int amount)
     {
         if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
         {
-            StartCoroutine(CreateItemsWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, inventorySlot.AssignedInventorySlot.Size));
-
-            _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, inventorySlot.AssignedInventorySlot.Size);
+            StartCoroutine(CreateItemWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, amount));
+            _playerInventoryHolder.RemoveSlot(inventorySlot.AssignedInventorySlot, amount);
 
             if (inventorySlot.AssignedInventorySlot.ItemData == null)
                 inventorySlot.TurnOffHighlight();
         }
     }
 
-    public void RemoveItem(InventorySlotUI inventorySlot)
+    public void StartCreateItem(InventoryItemData itemData, float durability, int itemCount)
     {
-        if (_playerInventoryHolder.InventorySystem.GetItemCount(inventorySlot.AssignedInventorySlot.ItemData) >= 0)
+        if(_spawnItemCoroutine != null)
         {
-            StartCoroutine(CreateItemsWithDelay(inventorySlot.AssignedInventorySlot.ItemData, inventorySlot.AssignedInventorySlot.Durability, 1));
-            _playerInventoryHolder.RemoveInventory(inventorySlot.AssignedInventorySlot, 1);
-
-            if (inventorySlot.AssignedInventorySlot.ItemData == null)
-                inventorySlot.TurnOffHighlight();
-        }
-    }
-
-    public void StartCreateItems(InventoryItemData itemData, float durability, int itemCount)
-    {
-        if(_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
+            StopCoroutine(_spawnItemCoroutine);
+            _spawnItemCoroutine = null;
         }
 
-        /*_coroutine =*/ StartCoroutine(CreateItemsWithDelay(itemData, durability, itemCount)); 
+        _spawnItemCoroutine = StartCoroutine(CreateItemWithDelay(itemData, durability, itemCount)); 
     }
 
     public void StartCreateItems(List<InventorySlot> itemData)
     {
-        if (_coroutine != null)
+        if (_spawnItemsCoroutine != null)
         {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
+            StopCoroutine(_spawnItemsCoroutine);
+            _spawnItemsCoroutine = null;
         }
 
-        /*_coroutine =*/ StartCoroutine(CreateItemsWithDelay(itemData));
+        _spawnItemsCoroutine = StartCoroutine(CreateItemsWithDelay(itemData));
     }
 
-    private IEnumerator CreateItemsWithDelay(InventoryItemData itemData, float durability, int itemCount)
+    private IEnumerator CreateItemWithDelay(InventoryItemData itemData, float durability, int itemCount)
     {
         for (int i = 0; i < itemCount; i++)
         {
             InstantiateItem(itemData, durability);
-            yield return new WaitForSeconds(_creationDelay);
+            yield return _creationWait;
         }
     }
 
@@ -80,7 +84,7 @@ public class InventoryOperator : MonoBehaviour
     {
         for (int i = 0; i < itemData.Count; i++)
         {
-            StartCreateItems(itemData[i].ItemData, itemData[i].Durability, itemData[i].Size);
+            StartCreateItem(itemData[i].ItemData, itemData[i].Durability, itemData[i].Size);
             yield return new WaitForSeconds(_creationDelay * itemData[i].Size);
         }
     }

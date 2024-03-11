@@ -1,5 +1,6 @@
+using System;
+using System.Xml;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class TradingRating : MonoBehaviour
 {
@@ -10,20 +11,24 @@ public class TradingRating : MonoBehaviour
     private int _maxRating = 3;
     private int _minRating = 1;
 
-    public event UnityAction<int> OnRatingChanged;
+    public event Action<int> OnRatingChanged;
 
     public int CurrentRating => _currentRating;
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
+
     }
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
+
     }
 
     private void AddQuestsCount()
@@ -53,7 +58,15 @@ public class TradingRating : MonoBehaviour
 
     private void Load()
     {
-        SerRating(ES3.Load<int>(SaveLoadConstants.TradingRating, _minRating));
+        if (ES3.KeyExists(SaveLoadConstants.TradingRating))
+            SerRating(ES3.Load<int>(SaveLoadConstants.TradingRating, _minRating));
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.TradingRating))
+            ES3.DeleteKey(SaveLoadConstants.TradingRating);
+
     }
 }
 

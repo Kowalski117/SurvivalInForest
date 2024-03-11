@@ -12,7 +12,7 @@ public class FishingRodItemData : ToolItemData
 }
 
 [System.Serializable]
-public class FishingRodExtraction
+public struct FishingRodExtraction
 {
     [SerializeField] private InventoryItemData _inventoryItemData;
     [SerializeField] private float _chance;

@@ -14,8 +14,8 @@ public class MainClock : MonoBehaviour
 
     private bool _isEnable = false;
 
-    public event Action<DateTime> OnTimeUpdate;
-    public event Action<int> OnDayUpdate;
+    public event Action<DateTime> OnTimeUpdated;
+    public event Action<int> OnDayUpdated;
 
     public float TimeMultiplier => _timeMultiplier;
     public float CurrentHurts => _currentTime.Hour;
@@ -26,7 +26,7 @@ public class MainClock : MonoBehaviour
     private void Start()
     {
         _currentTime = DateTime.Now.Date + TimeSpan.FromHours(_startHour);
-        OnDayUpdate?.Invoke(_dayCounter);
+        OnDayUpdated?.Invoke(_dayCounter);
     }
 
     private void Update()
@@ -37,26 +37,28 @@ public class MainClock : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += SaveTime;
-        SaveGame.OnLoadData += LoadTime;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= SaveTime;
-        SaveGame.OnLoadData -= LoadTime;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
-    public void AddTime(float time)
+    public void AddTimeInSeconds(float time)
     {
         _currentTime = _currentTime.AddSeconds(time);
-        OnTimeUpdate?.Invoke(_currentTime);
+        OnTimeUpdated?.Invoke(_currentTime);
     }
 
     public void AddTimeInHours(float time)
     {
         _currentTime = _currentTime.AddHours(time);
-        OnTimeUpdate?.Invoke(_currentTime);
+        OnTimeUpdated?.Invoke(_currentTime);
     }
 
     public void ToggleEnable(bool isActive)
@@ -67,13 +69,13 @@ public class MainClock : MonoBehaviour
     private void UpdateTimeDay()
     {
         _currentTime = _currentTime.AddSeconds(Time.deltaTime * _timeMultiplier);
-        OnTimeUpdate?.Invoke(_currentTime);
+        OnTimeUpdated?.Invoke(_currentTime);
 
         if (_currentTime.Date > _lastDayUpdate.Date)
         {
             _lastDayUpdate = _currentTime;
             _dayCounter++;
-            OnDayUpdate?.Invoke(_dayCounter);
+            OnDayUpdated?.Invoke(_dayCounter);
         }
     }
 
@@ -85,14 +87,21 @@ public class MainClock : MonoBehaviour
             _timeMultiplier = 60;
     }
 
-    private void SaveTime()
+    private void Save()
     {
         ES3.Save(SaveLoadConstants.Time, _currentTime);
     }
 
-    private void LoadTime()
+    private void Load()
     {
-        _currentTime = ES3.Load<DateTime>(SaveLoadConstants.Time, DateTime.Now.Date + TimeSpan.FromHours(_startHour));
+        if(ES3.KeyExists(SaveLoadConstants.Time))
+           _currentTime = ES3.Load<DateTime>(SaveLoadConstants.Time, DateTime.Now.Date + TimeSpan.FromHours(_startHour));
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.Time))
+            ES3.DeleteKey(SaveLoadConstants.Time);
     }
 }
 

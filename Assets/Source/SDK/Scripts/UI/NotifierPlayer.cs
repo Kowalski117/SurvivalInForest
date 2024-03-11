@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NotifierPlayer : MonoBehaviour
 {
-    [SerializeField] SaveGame _saveGame;
+    [SerializeField] SavingGame _saveGame;
     [SerializeField] private TMP_Text _textTimer;
     [SerializeField] private AnimationUI _animationUI;
 
@@ -11,19 +11,19 @@ public class NotifierPlayer : MonoBehaviour
 
     private void Awake()
     {
-        _animationUI.CloseAnimation();
+        _animationUI.Close();
     }
 
     private void OnEnable()
     {
-        _saveGame.OnNotifyPlayer += UpdateTimer;
-        _saveGame.OnCloseNotifierPlayer += CloseTimer;
+        _saveGame.OnNotifyedPlayer += UpdateTimer;
+        _saveGame.OnClosedNotifierPlayer += CloseTimer;
     }
 
     private void OnDisable()
     {
-        _saveGame.OnNotifyPlayer -= UpdateTimer;
-        _saveGame.OnCloseNotifierPlayer -= CloseTimer;
+        _saveGame.OnNotifyedPlayer -= UpdateTimer;
+        _saveGame.OnClosedNotifierPlayer -= CloseTimer;
     }
 
     private void Update()
@@ -40,7 +40,7 @@ public class NotifierPlayer : MonoBehaviour
         if (!_animationUI.IsOpen)
         {
             _animationUI.SetActivePanel(true);
-            _animationUI.OpenAnimation();
+            _animationUI.Open();
             _timer = time;
         }
     }
@@ -48,6 +48,6 @@ public class NotifierPlayer : MonoBehaviour
     private void CloseTimer()
     {
         if (_animationUI.IsOpen)
-            _animationUI.CloseAnimation();
+            _animationUI.Close();
     }
 }

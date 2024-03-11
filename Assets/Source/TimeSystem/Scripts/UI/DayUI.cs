@@ -8,12 +8,12 @@ public class DayUI : MonoBehaviour
 
     private void OnEnable()
     {
-        _timeHandler.OnDayUpdate += UpdateDay;
+        _timeHandler.OnDayUpdated += UpdateDay;
     }
 
     private void OnDisable()
     {
-        _timeHandler.OnDayUpdate -= UpdateDay;
+        _timeHandler.OnDayUpdated -= UpdateDay;
     }
 
     private void UpdateDay(int day)

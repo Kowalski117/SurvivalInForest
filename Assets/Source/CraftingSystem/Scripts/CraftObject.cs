@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class CraftObject : MonoBehaviour
 {
     [SerializeField] private CraftingÑategory _craftingÑategory;
@@ -10,7 +11,6 @@ public class CraftObject : MonoBehaviour
     private BoxCollider _boxCollider;
     private Fire _fire;
 
-    public bool IsEnabledInitially => _isEnabledInitially;
     public CraftingÑategory CraftingÑategory => _craftingÑategory;
     public bool IsEnabled => _isEnabled;
 
@@ -21,40 +21,28 @@ public class CraftObject : MonoBehaviour
         _fire = GetComponent<Fire>();
 
         if (_building != null)
-        {
             _boxCollider.enabled = false;
-        }
 
         if (_isEnabledInitially)
-        {
             _boxCollider.enabled = true;
-        }
     }
 
     private void OnEnable()
     {
         if(_building != null )
-        {
             _building.OnCompletedBuild += EnableCollider;
-        }
 
         if (_fire != null)
-        {
             _fire.OnToggledFire += ToggleEnable;
-        }
     }
 
     private void OnDisable()
     {
         if (_building != null)
-        {
             _building.OnCompletedBuild -= EnableCollider;
-        }
 
         if (_fire != null)
-        {
             _fire.OnToggledFire -= ToggleEnable;
-        }
     }
 
     public void TurnOff()

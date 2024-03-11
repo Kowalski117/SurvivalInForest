@@ -21,12 +21,12 @@ public class CraftingCategoryButton : MonoBehaviour
 
     private void OnEnable()
     {
-        _button.onClick.AddListener(OpenCategory);
+        _button.onClick.AddListener(Open);
     }
     
     private void OnDisable()
     {
-        _button.onClick.RemoveListener(OpenCategory);
+        _button.onClick.RemoveListener(Open);
     }
 
     public void ToggleButton(bool isActive)
@@ -43,7 +43,7 @@ public class CraftingCategoryButton : MonoBehaviour
         }
     }
 
-    private void OpenCategory()
+    private void Open()
     {
         _craftingHandler.SwitchCraftingCategory(_itemType);
     }

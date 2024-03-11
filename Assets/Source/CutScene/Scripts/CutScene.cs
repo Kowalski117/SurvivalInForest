@@ -1,3 +1,5 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityPlayerPrefs;
+using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -6,12 +8,16 @@ using UnityEngine.SceneManagement;
 
 public class CutScene : MonoBehaviour
 {
+    private const int Delay = 3;
+
     [SerializeField] private LoadPanel _loadPanel;
     [SerializeField] private PlayableDirector _playableDirector;
     [SerializeField] private CanvasGroup _canvasGroup;
-    [SerializeField] private float _fadeSpeed;
+    [SerializeField] private float _fadeDelay = 2;
 
-    private int _waitForFadeTime = 3;
+    private Tween _tween;
+    private Coroutine _coroutine;
+    private WaitForSeconds _delayWait = new WaitForSeconds(Delay);
 
     public event Action OnStart;
     public event Action OnScip;
@@ -40,21 +46,25 @@ public class CutScene : MonoBehaviour
         OnFinish?.Invoke();
     }
 
-    public void StartCoroutine()
+    private void StartCoroutine()
     {
-        StartCoroutine(FillAlpha());
+        if(_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _coroutine = StartCoroutine(FillAlpha());
     }
 
     private IEnumerator FillAlpha()
     {
-        while (_canvasGroup.alpha != 1)
-        {
-            _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 1, Time.deltaTime * _fadeSpeed);
-            yield return null;
-        }
-        _canvasGroup.alpha = 1;
+        Save();
+        _tween.Kill();
+        _tween = _canvasGroup.DOFade(1, _fadeDelay);
 
-        yield return new WaitForSeconds(_waitForFadeTime);
+        yield return _delayWait;
+
         _loadPanel.StartLoad(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -62,6 +72,11 @@ public class CutScene : MonoBehaviour
     {
         _playableDirector.Play();
         OnStart?.Invoke();
+    }
+
+    private void Save()
+    {
+        ES3.Save(SaveLoadConstants.IsCutscenePlayed, true);
     }
 
     private void OnApplicationFocus(bool focus)

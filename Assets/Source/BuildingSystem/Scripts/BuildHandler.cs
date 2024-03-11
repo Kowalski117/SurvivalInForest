@@ -10,18 +10,18 @@ public class BuildHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding += EnableWindows;
-        _buildTool.OnCreateBuilding += TurnOffWindows;
-        _buildTool.OnCompletedBuilding += EnableWindows;
-        _buildTool.OnDestroyBuilding += UnplugWindow;
+        _playerInputHandler.BuildPlayerInput.OnBuildingDeleted += EnableWindows;
+        _buildTool.OnBuildingCreated += TurnOffWindows;
+        _buildTool.OnBuildingCompleted += EnableWindows;
+        _buildTool.OnBuildingDestroyed += UnplugWindow;
     }
 
     private void OnDisable()
     {
-        _playerInputHandler.BuildPlayerInput.OnDeleteBuilding -= EnableWindows;
-        _buildTool.OnCreateBuilding -= TurnOffWindows;
-        _buildTool.OnCompletedBuilding -= EnableWindows;
-        _buildTool.OnDestroyBuilding -= UnplugWindow;
+        _playerInputHandler.BuildPlayerInput.OnBuildingDeleted -= EnableWindows;
+        _buildTool.OnBuildingCreated -= TurnOffWindows;
+        _buildTool.OnBuildingCompleted -= EnableWindows;
+        _buildTool.OnBuildingDestroyed -= UnplugWindow;
     }
 
     private void TurnOffWindows()
@@ -31,9 +31,7 @@ public class BuildHandler : MonoBehaviour
         if (_isTurnOffWindows)
         {
             _inventoryHandler.TurnOffDisplayInventory();
-            //_playerInputHandler.ToggleBuildPlayerInput(true);
             _playerInputHandler.ToggleInteractionInput(false);
-            //_playerInputHandler.SetCursorVisible(false); //вот ту тпоходу дич
         }
     }
 
@@ -46,7 +44,6 @@ public class BuildHandler : MonoBehaviour
     {
         if (_isTurnOffWindows)
         {
-            //_playerInputHandler.ToggleBuildPlayerInput(false);
             _playerInputHandler.ToggleInteractionInput(true);
             _isTurnOffWindows = false;
         }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(CanvasScaler))]
 public class UIScaler : MonoBehaviour
 {
     [SerializeField] private float _minMatch = 0.4f;
@@ -8,6 +9,7 @@ public class UIScaler : MonoBehaviour
     [SerializeField] private float _aspectRatioThreshold = 16f / 9f;
 
     private CanvasScaler _canvasScaler;
+    private Vector2 _fullHD = new Vector2(1920, 1080);
 
     private void Awake()
     {
@@ -16,7 +18,7 @@ public class UIScaler : MonoBehaviour
 
     private void Start()
     {
-        _canvasScaler.referenceResolution = new Vector2(1920, 1080);
+        _canvasScaler.referenceResolution = _fullHD;
         _canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
     }
 

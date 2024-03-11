@@ -6,8 +6,9 @@ public class GardenBed : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private SeedItemData _seedItem;
+    [SerializeField] private AllSeeds _allSeeds;
 
-    private ObjectPickUp _currentItem;
+    private BeingLiftedObject _currentItem;
     private UniqueID _uniqueID;
 
     private InventoryItemData _currentItemData;
@@ -22,29 +23,34 @@ public class GardenBed : MonoBehaviour
             _uniqueID = GetComponentInParent<UniqueID>();
     }
 
+    private void Start()
+    {
+        Load();
+    }
+
     private void Update()
     {
         if (_isPlantGrows)
-        {
             _elapsedTime += Time.deltaTime;
-        }
     }
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load; 
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public bool StartGrowingSeed(InventoryItemData inventoryItemData, Vector3 scale = default(Vector3))
     {
-        if(_currentItem == null && inventoryItemData != null && inventoryItemData is SeedItemData seedItemData)
+        if (_currentItem == null && inventoryItemData != null && inventoryItemData is SeedItemData seedItemData)
         {
             _currentItemData = inventoryItemData;
             _currentItem = Instantiate(seedItemData.ObjectPickUp, _spawnPoint.position, Quaternion.identity, transform);
@@ -54,6 +60,7 @@ public class GardenBed : MonoBehaviour
             StartCoroutine(SpawnOverTime(seedItemData.GrowthTime - _elapsedTime));
             return true;
         }
+
         return false;
     }
 
@@ -90,7 +97,11 @@ public class GardenBed : MonoBehaviour
 
             if(gardenBedSaveData.CurrentItemDataId != 0)
             {
-                _currentItemData = SaveItemHandler.GetItem(gardenBedSaveData.CurrentItemDataId);
+                foreach (var item in _allSeeds.Items)
+                {
+                    if(item.Id == gardenBedSaveData.CurrentItemDataId)
+                        _currentItemData = item;
+                }
 
                 _elapsedTime = gardenBedSaveData.ElapsedTime;
 
@@ -117,6 +128,12 @@ public class GardenBed : MonoBehaviour
                 _currentItem.Init(SetLootItem(_seedItem));
             }
         }
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(_uniqueID.Id + SaveLoadConstants.GardenBedSaveData))
+            ES3.DeleteKey(_uniqueID.Id + SaveLoadConstants.GardenBedSaveData);
     }
 
     private ObjectItemsData SetLootItem(SeedItemData seedItemData)

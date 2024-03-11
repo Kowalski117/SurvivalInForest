@@ -10,7 +10,7 @@ public class BackpackInventoryView : MonoBehaviour
 
     private void Start()
     {
-        _miniBackpackDisplay.gameObject.SetActive(false);
+        _miniBackpackDisplay.Close();
     }
 
     private void OnEnable()
@@ -29,12 +29,12 @@ public class BackpackInventoryView : MonoBehaviour
 
         if (_isOpenBackpack)
         {
-            _miniBackpackDisplay.gameObject.SetActive(true);
-            _miniBackpackDisplay.RefreshDynamicInventory(inventoryDisplay, offset);
+            _miniBackpackDisplay.Open();
+            _miniBackpackDisplay.Refresh(inventoryDisplay, offset);
         }
         else
         {
-            _miniBackpackDisplay.gameObject.SetActive(false);
+            _miniBackpackDisplay.Close();
         }
     }
 }

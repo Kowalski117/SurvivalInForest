@@ -6,14 +6,16 @@ public class GameTimeСounter : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     private void Update()
@@ -29,6 +31,13 @@ public class GameTimeСounter : MonoBehaviour
 
     private void Load()
     {
-        _timeCounter = PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter);
+        if(PlayerPrefs.HasKey(SaveLoadConstants.GameTimeCounter))
+            _timeCounter = PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter);
+    }
+
+    private void Delete()
+    {
+        if (PlayerPrefs.HasKey(SaveLoadConstants.GameTimeCounter))
+            PlayerPrefs.DeleteKey(SaveLoadConstants.GameTimeCounter);
     }
 }

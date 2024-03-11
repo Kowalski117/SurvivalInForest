@@ -13,7 +13,6 @@ public class SurvivalAttribute : MonoBehaviour
 
     private float _maxValue => MaxValue * _hourInSeconds;
     public float CurrentAttribute => CurrentValue;
-    public float CurrentValueAttribute => CurrentValue * _hourInSeconds;
     public float MaxValueInSeconds => _maxValue;
     public float MaxValueInHours => MaxValue;
     public float MissingValue => (_maxValue - CurrentValue) / _hourInSeconds;
@@ -27,20 +26,22 @@ public class SurvivalAttribute : MonoBehaviour
 
     public void ReplenishValue(float value)
     {
-        CurrentValue += value * _hourInSeconds;
+        float addedValue = value * _hourInSeconds;
 
-        if (CurrentValue > _maxValue)
+        if (CurrentValue + addedValue > _maxValue)
             CurrentValue = _maxValue;
+        else
+            CurrentValue += addedValue;
 
         OnValueChanged?.Invoke(ValuePercent);
     }
 
     public void LowerValue(float value)
     {
-        CurrentValue -= value;
-
-        if (CurrentValue <= 0)
+        if (CurrentValue - value <= 0)
             CurrentValue = 0;
+        else
+            CurrentValue -= value;
 
         OnValueChanged?.Invoke(ValuePercent);
     }

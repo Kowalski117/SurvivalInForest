@@ -10,7 +10,7 @@ public class ColorRotation : FoodEffect
 
     private float _startTime;
 
-    protected override IEnumerator RotateColors(float duration)
+    protected override IEnumerator Rotate(float duration)
     {
         _startTime = Time.time;
         _targetImage.enabled = true;

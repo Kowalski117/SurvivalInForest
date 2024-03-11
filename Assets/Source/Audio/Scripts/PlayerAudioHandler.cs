@@ -4,6 +4,8 @@ using IL3DN;
 
 public class PlayerAudioHandler : MonoBehaviour
 {
+    private const float DamageClipDelay = 3f;
+
     [SerializeField] private AudioSource _audioSourceForSteps;
     [SerializeField] private AudioSource _audioSourceAllClips;
 
@@ -24,16 +26,15 @@ public class PlayerAudioHandler : MonoBehaviour
     private AudioClip _jumpSoundOverride;
     private AudioClip _landSoundOverride;
     private Coroutine _coroutine;
+    private WaitForSeconds _damageClipWait = new WaitForSeconds(DamageClipDelay);
+
     private bool _isInSpecialSurface;
     private bool _isFootstepPlaying = false;
     private bool _isJumping = false;
     private float _longDelay = 0.5f;
     private float _shortDelay = 0.25f;
-    private float _damageClipDelay = 3f;
     private bool _isEnable;
     private bool _isDamageSoundPlaying = false;
-
-    public AudioClip PickUpClip => _pickUpClip;
 
     private void Awake()
     {
@@ -77,7 +78,7 @@ public class PlayerAudioHandler : MonoBehaviour
         }
     }
 
-    public void PlayItemPickUpClip()
+    public void PlayPickUpClip()
     {
         PlayOneShot(_pickUpClip);
     }
@@ -135,7 +136,7 @@ public class PlayerAudioHandler : MonoBehaviour
         }
     }
 
-    public void PlayFootStepAudio(bool isSprint, bool isStealth)
+    public void PlayFootStepSound(bool isSprint, bool isStealth)
     {
         if (!_isFootstepPlaying && _isEnable)
         {
@@ -190,7 +191,7 @@ public class PlayerAudioHandler : MonoBehaviour
 
     private IEnumerator WaitForDamageSoundToFinish()
     {
-        yield return new WaitForSeconds(_damageClipDelay);
+        yield return _damageClipWait;
 
         _isDamageSoundPlaying = false;
     }
@@ -216,9 +217,7 @@ public class PlayerAudioHandler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out IL3DN_ChangeWalkingSound soundScript))
-        {
+        if (other.GetComponent<IL3DN_ChangeWalkingSound>())
             _isInSpecialSurface = false;
-        }
     }
 }

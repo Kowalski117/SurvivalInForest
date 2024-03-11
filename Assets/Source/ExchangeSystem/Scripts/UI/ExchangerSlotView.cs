@@ -1,8 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
-using static PixelCrushers.QuestMachine.Demo.DemoInventory;
 
 public class ExchangerSlotView : MonoBehaviour
 {
@@ -22,7 +21,7 @@ public class ExchangerSlotView : MonoBehaviour
     private int _amount = 1;
     private int _index = 1;
 
-    public event UnityAction OnExchanged;
+    public event Action OnExchanged;
 
     public bool IsEmpty { get; private set; } = true;
 
@@ -47,10 +46,10 @@ public class ExchangerSlotView : MonoBehaviour
         _rating = tradingRating;
         IsEmpty = false;
         InitItemsToExchange(_itemSlot);
-        UpdateSlot();
+        UpdateAll();
     }
 
-    public void UpdateSlot()
+    public void UpdateAll()
     {
         UpdateExchangedItems();
         UpdateAmount();
@@ -61,9 +60,9 @@ public class ExchangerSlotView : MonoBehaviour
     {
         foreach (var itemToExchange in _currentItemToExchange.Items)
         {
-            if (_inventoryHolder.RemoveInventory(itemToExchange.ItemData, itemToExchange.Amount * _amount))
+            if (_inventoryHolder.RemoveItem(itemToExchange.ItemData, itemToExchange.Amount * _amount))
             {
-                _inventoryHolder.AddToInventory(_currentItemToReceive.ItemData, _currentItemToReceive.Amount * _amount, _currentItemToReceive.ItemData.Durability);
+                _inventoryHolder.AddItem(_currentItemToReceive.ItemData, _currentItemToReceive.Amount * _amount, _currentItemToReceive.ItemData.Durability);
                 _amount = _index;
                 UpdateAmount();
                 OnExchanged?.Invoke();
@@ -74,8 +73,8 @@ public class ExchangerSlotView : MonoBehaviour
 
     private void InitItemsToExchange(ExchangerItemData item)
     {
-        _currentItemToExchange = item.ItemsToExchange[Random.Range(0, item.ItemsToExchange.Length)];
-        _currentItemToReceive = item.ItemsToReceive[Random.Range(0, item.ItemsToReceive.Length)];
+        _currentItemToExchange = item.ItemsToExchange[UnityEngine.Random.Range(0, item.ItemsToExchange.Length)];
+        _currentItemToReceive = item.ItemsToReceive[UnityEngine.Random.Range(0, item.ItemsToReceive.Length)];
     }
 
     private void AddAmount()
@@ -121,12 +120,8 @@ public class ExchangerSlotView : MonoBehaviour
         _ratingText.text = _itemSlot.Rating.ToString();
 
         if(_itemSlot.Rating > _rating.CurrentRating)
-        {
             _ratingPanel.gameObject.SetActive(true);
-        }
         else
-        {
             _ratingPanel.gameObject.SetActive(false);
-        }
     }
 }

@@ -10,6 +10,6 @@ public class Stone : Resource
     {
         gameObject.SetActive(false);
         SpawnLoot();
-        DiedEvent();
+        DieEvent();
     }
 }

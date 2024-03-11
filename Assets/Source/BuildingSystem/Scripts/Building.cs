@@ -1,9 +1,11 @@
 using IL3DN;
+using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(UniqueID))]
 public class Building : MonoBehaviour
 {
     [SerializeField] private int _defoultLayerInt = 12;
@@ -21,7 +23,7 @@ public class Building : MonoBehaviour
     private UniqueID _uniqueID;
     private FoundationConnection[] _foundationConnections;
 
-    public event UnityAction OnCompletedBuild;
+    public event Action OnCompletedBuild;
 
     public string UniqueID =>  _uniqueID.Id;
     public BuildingRecipe BuildingRecipe => _buildingRecipe;
@@ -58,7 +60,7 @@ public class Building : MonoBehaviour
             _uniqueID.Generate();
     }
 
-    public void PlaceBuilding()
+    public void Place()
     {
         _boxCollider.enabled = true;
 
@@ -119,7 +121,7 @@ public class Building : MonoBehaviour
     {
         if (!_isPlace)
         {
-            if (!other.GetComponent<SpawnPointAnimals>() && !other.GetComponent<PointOffComponentsAnimal>() && !other.GetComponent<IL3DN_ChangeWalkingSound>() && !other.GetComponent<FoundationConnection>() && !other.GetComponent<AudioTrigger>() && !other.GetComponent<Interactor>())
+            if (!other.GetComponent<SpawnPointAnimals>() && !other.GetComponent<PointOffComponentsAnimal>() && !other.GetComponent<IL3DN_ChangeWalkingSound>() && !other.GetComponent<FoundationConnection>() && !other.GetComponent<AudioTrigger>() && !other.GetComponent<InteractorConstruction>())
                 _isOverlapping = true;
         }
     }
@@ -130,7 +132,7 @@ public class Building : MonoBehaviour
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class BuildingSaveData
 {
     [SerializeField] private string _buildingName;

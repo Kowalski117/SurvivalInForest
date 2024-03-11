@@ -9,7 +9,7 @@ public class DayRewardsData : ScriptableObject
 }
 
 [System.Serializable]
-public class DayReward 
+public struct DayReward 
 {
     [SerializeField] private InventoryItem _slot;
     [SerializeField] private Color _background—olor;

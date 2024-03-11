@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class DoorAudioHandler: MonoBehaviour
 {
     [SerializeField] private AudioClip _openDoor;
@@ -18,14 +19,14 @@ public class DoorAudioHandler: MonoBehaviour
 
     private void OnEnable()
     {
-        _doorRotate.OnOpenDoor += PlayOpenDoorSound;
-        _doorRotate.OnCloseDoor += PlayCloseDoorSound;
+        _doorRotate.OnOpened += PlayOpenDoorSound;
+        _doorRotate.OnClosed += PlayCloseDoorSound;
     }
 
     private void OnDisable()
     {
-        _doorRotate.OnOpenDoor += PlayOpenDoorSound;
-        _doorRotate.OnCloseDoor -= PlayCloseDoorSound;
+        _doorRotate.OnOpened += PlayOpenDoorSound;
+        _doorRotate.OnClosed -= PlayCloseDoorSound;
     }
 
     private void PlayOpenDoorSound()

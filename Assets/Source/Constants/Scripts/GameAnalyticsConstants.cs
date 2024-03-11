@@ -37,5 +37,4 @@ public class GameAnalyticsConstants : MonoBehaviour
 
     public const string CatchFish = "CatchFish";
     public const string PlantedSeed = "PlantedSeed";
-
 }

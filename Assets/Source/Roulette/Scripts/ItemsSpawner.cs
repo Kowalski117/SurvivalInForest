@@ -8,10 +8,10 @@ public class ItemsSpawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnItems();
+        Spawn();
     }
 
-    public void SpawnItems()
+    public void Spawn()
     {
         for (int i = 0; i < _rouletteSlot.Length; i++)
         {

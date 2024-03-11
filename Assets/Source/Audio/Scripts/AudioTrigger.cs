@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class AudioTrigger : MonoBehaviour
 {
+    private const float Delay = 180f; 
+
     private AudioTriggerHandler _audioTriggerHandler;
     private AudioSource _source;
-    private bool _isActive = true;
-    private float _delay = 180f;
-    private WaitForSeconds _waitForSeconds;
+    private WaitForSeconds _delayWait = new WaitForSeconds(Delay);
     private Coroutine _coroutine;
+
+    private bool _isActive = true;
 
     private void Awake()
     {
@@ -39,9 +42,8 @@ public class AudioTrigger : MonoBehaviour
     private IEnumerator WaitUntilRestarting()
     {
         _isActive = false;
-        _waitForSeconds =  new WaitForSeconds(_delay);
 
-        yield return _waitForSeconds;
+        yield return _delayWait;
 
         _isActive = true;
     }

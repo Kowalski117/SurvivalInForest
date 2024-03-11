@@ -407,6 +407,7 @@ GameObject:
   - component: {fileID: 3965448996027058488}
   - component: {fileID: 3965448996027058439}
   - component: {fileID: 8056767416706764513}
+  - component: {fileID: 8932464864996463702}
   m_Layer: 6
   m_Name: Harvest_Cucumbers
   m_TagString: Untagged
@@ -506,7 +507,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3967422729379406564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2f4dcf3adb585c4786f47e5c7880f3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 04630148b7d88634dba6441b1ef65e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _layerMask: 6
@@ -542,3 +543,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8932464864996463702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3967422729379406564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf49fa7d2bedb4f8487164550982e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

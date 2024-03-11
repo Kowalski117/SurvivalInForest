@@ -1,21 +1,24 @@
 public class ClothesInventory : InventoryHolder
 {
-    private string _clothesInventory = "ClothesInventory";
-
-    protected override void SaveInventory()
+    protected override void Save()
     {
         InventorySaveData saveData = new InventorySaveData(PrimaryInventorySystem, PrimaryInventorySystem.InventorySlots);
-        ES3.Save(_clothesInventory, saveData);
+        ES3.Save(SaveLoadConstants.ÑlothesInventory, saveData);
     }
 
-    protected override void LoadInventory()
+    protected override void Load()
     {
-        if (ES3.KeyExists(_clothesInventory))
+        if (ES3.KeyExists(SaveLoadConstants.ÑlothesInventory))
         {
-            InventorySaveData saveData = ES3.Load<InventorySaveData>(_clothesInventory);
+            InventorySaveData saveData = ES3.Load<InventorySaveData>(SaveLoadConstants.ÑlothesInventory);
             PrimaryInventorySystem = saveData.InventorySystem;
-
-            base.LoadInventory();
+            base.Load();
         }
+    }
+
+    protected override void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.ÑlothesInventory))
+            ES3.DeleteKey(SaveLoadConstants.ÑlothesInventory);
     }
 }

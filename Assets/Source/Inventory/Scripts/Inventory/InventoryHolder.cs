@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 [System.Serializable]
 public abstract class InventoryHolder : MonoBehaviour
@@ -9,8 +9,7 @@ public abstract class InventoryHolder : MonoBehaviour
     [SerializeField] protected InventorySystem PrimaryInventorySystem;
     [SerializeField] private int _offset = 6;
 
-    public event UnityAction OnInventoryChanged;
-    public static UnityAction<InventorySystem, int> OnDinamicInventoryDisplayRequested;
+    public event Action OnInventoryChanged;
 
     public InventorySystem InventorySystem => PrimaryInventorySystem;
     public int Offset => _offset;
@@ -20,23 +19,26 @@ public abstract class InventoryHolder : MonoBehaviour
         PrimaryInventorySystem = new InventorySystem(_inventorySize);
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
-        SaveGame.OnLoadData += LoadInventory;
-        SaveGame.OnSaveGame += SaveInventory;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
-        SaveGame.OnLoadData -= LoadInventory;
-        SaveGame.OnSaveGame -= SaveInventory;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
-    protected abstract void SaveInventory();
-    protected virtual void LoadInventory()
+    protected abstract void Save();
+    protected virtual void Load()
     {
         OnInventoryChanged?.Invoke();
     }
+    protected abstract void Delete();
 }
 
 [System.Serializable]
@@ -44,20 +46,14 @@ public struct InventorySaveData
 {
     [SerializeField] private InventorySystem _inventorySystem;
     [SerializeField] private List<InventorySlot> _inventorySlots;
-    //[SerializeField] private Vector3 _position;
-    //[SerializeField] private Quaternion _rotation;
 
     public InventorySystem InventorySystem => _inventorySystem;
     public List<InventorySlot> InventorySlots => _inventorySlots;
-    //public Vector3 Position => _position;
-    //public Quaternion Rotation => _rotation;
 
-    public InventorySaveData(InventorySystem inventorySystem, List<InventorySlot> inventorySlots/*, Vector3 position, Quaternion rotation*/)
+    public InventorySaveData(InventorySystem inventorySystem, List<InventorySlot> inventorySlots)
     {
         _inventorySystem = inventorySystem;
         _inventorySlots = inventorySlots;
-        //_position = position;
-        //_rotation = rotation;
     }
 }
 

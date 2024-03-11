@@ -1,26 +1,23 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DelayIcon : MonoBehaviour
 {
-    [SerializeField] private Interactor _interactor;
+    [SerializeField] private InteractorItem _interactorItem;
     [SerializeField] private Image _delayIcon;
-    [SerializeField] private TMP_Text _nameItemText;
 
     private void OnEnable()
     {
-        _interactor.OnTimeUpdate += UpdateFillAmount;
+        _interactorItem.OnTimeUpdated += UpdateFillAmount;
     }
 
     private void OnDisable()
     {
-        _interactor.OnTimeUpdate -= UpdateFillAmount;
+        _interactorItem.OnTimeUpdated -= UpdateFillAmount;
     }
 
-    private void UpdateFillAmount(float amount, string name)
+    private void UpdateFillAmount(float amount)
     {
         _delayIcon.fillAmount = amount;
-        _nameItemText.text = name;
     }
 }

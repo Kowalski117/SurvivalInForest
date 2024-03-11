@@ -1,6 +1,8 @@
 using StarterAssets;
 using UnityEngine;
 
+[RequireComponent(typeof(FirstPersonController))]
+[RequireComponent(typeof(SurvivalHandler))]
 public class FallDamage : MonoBehaviour
 {
     private FirstPersonController _firstPersonController;
@@ -36,10 +38,10 @@ public class FallDamage : MonoBehaviour
                     {
                         float normalizedTime = Mathf.InverseLerp(_minDropTimer, _maxDropTimer, _dropTimer);
                         float currentDamage = Mathf.Lerp(_minDamage, _maxDamage, normalizedTime);
-                        _survivalHandler.PlayerHealth.LowerHealth(currentDamage);
+                        _survivalHandler.PlayerHealth.Lower(currentDamage);
                     }
                     else if(_dropTimer > _maxDropTimer)
-                        _survivalHandler.PlayerHealth.LowerHealth(_maxDamage);
+                        _survivalHandler.PlayerHealth.Lower(_maxDamage);
                 }
 
                 _dropTimer = 0;

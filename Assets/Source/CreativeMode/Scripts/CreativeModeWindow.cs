@@ -9,6 +9,7 @@ public class CreativeModeWindow : MonoBehaviour
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
     [SerializeField] private PlayerHandler _inputHandler;
     [SerializeField] private UIInventoryHandler _inventoryUI;
+    [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private List<InventoryItemData> _itemDataBase;
     [SerializeField] private ItemButton _itemButtonPrefab;
     [SerializeField] private Transform _window;
@@ -142,6 +143,6 @@ public class CreativeModeWindow : MonoBehaviour
 
     private void ToggleGodMode(bool value)
     {
-        _inputHandler.PlayerHealth.SetGodMode(value);
+        _playerHealth.SetGodMode(value);
     }
 }

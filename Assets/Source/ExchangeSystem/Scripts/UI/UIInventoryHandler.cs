@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class UIInventoryHandler : MonoBehaviour
 {
@@ -16,7 +16,7 @@ public class UIInventoryHandler : MonoBehaviour
     private bool _isInventoryOpen = false;
     private bool _isChestOpen = false;
 
-    public event UnityAction OnInventoryClosed;
+    public event Action OnInventoryClosed;
 
     public bool IsInventoryOpen => _isInventoryOpen;
     public bool IsChestOpen => _isChestOpen;
@@ -34,13 +34,13 @@ public class UIInventoryHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInputHandler.InventoryPlayerInput.SwitchInventory += DisplayPlayerInventory;
+        _playerInputHandler.InventoryPlayerInput.OnInventorySwitched += DisplayPlayerInventory;
         _playerHealth.OnDied += TurnOffDisplayInventory;
     }
 
     private void OnDisable()
     {
-        _playerInputHandler.InventoryPlayerInput.SwitchInventory -= DisplayPlayerInventory;
+        _playerInputHandler.InventoryPlayerInput.OnInventorySwitched -= DisplayPlayerInventory;
         _playerHealth.OnDied -= TurnOffDisplayInventory;
     }
 
@@ -55,7 +55,7 @@ public class UIInventoryHandler : MonoBehaviour
             if(_isInventoryOpen)
                 _chestInventoryPanel.Open();
 
-            _chestInventoryPanel.RefreshDynamicInventory(chestInventory.InventorySystem, offset);
+            _chestInventoryPanel.Refresh(chestInventory.InventorySystem, offset);
         }
         else
         {
@@ -72,12 +72,12 @@ public class UIInventoryHandler : MonoBehaviour
         {
             _playerBackpackPanel.Open();
             _playerInputHandler.SetCursorVisible(true);
-            _playerBackpackPanel.RefreshDynamicInventory(inventoryDisplay, offset);
+            _playerBackpackPanel.Refresh(inventoryDisplay, offset);
             _playerInputHandler.ToggleHotbarDisplay(false);
             _playerInputHandler.ToggleInteractionInput(false);
             _buildTool.DeleteBuilding();
             _buildTool.SetDeleteModeEnabled(false);
-            _playerClothesPanel.RefreshDynamicInventory(_clothesInventory.InventorySystem, 0);
+            _playerClothesPanel.Refresh(_clothesInventory.InventorySystem, 0);
         }
         else
         {
@@ -95,6 +95,6 @@ public class UIInventoryHandler : MonoBehaviour
     public void TurnOffDisplayInventory()
     {
         if(_isInventoryOpen)
-            _playerInputHandler.InventoryPlayerInput.ToggleInventory();
+            _playerInputHandler.InventoryPlayerInput.Toggle();
     }
 }

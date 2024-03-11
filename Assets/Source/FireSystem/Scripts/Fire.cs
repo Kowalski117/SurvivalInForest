@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
 public class Fire : MonoBehaviour
@@ -23,8 +22,8 @@ public class Fire : MonoBehaviour
     private bool _isEnable = true;
     private UniqueID _uniqueId;
 
-    public event UnityAction<DateTime> OnCompletionTimeUpdate;
-    public event UnityAction<bool> OnToggledFire;
+    public event Action<DateTime> OnCompletionTimeUpdate;
+    public event Action<bool> OnToggledFire;
 
     public bool IsFire => _isFire;
 
@@ -45,20 +44,24 @@ public class Fire : MonoBehaviour
 
     private void OnEnable()
     {
-        SleepPanel.OnStoppedTime += ToggleEnable;
-        SleepPanel.OnSubtractTime += ReduceTime;
+        SleepPanel.OnTimeStopped += ToggleEnable;
+        SleepPanel.OnTimeSubtracted += ReduceTime;
         _building.OnCompletedBuild += StartFire;
 
-        SaveGame.OnSaveGame += Save;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        SleepPanel.OnStoppedTime -= ToggleEnable;
-        SleepPanel.OnSubtractTime -= ReduceTime;
+        SleepPanel.OnTimeStopped -= ToggleEnable;
+        SleepPanel.OnTimeSubtracted -= ReduceTime;
         _building.OnCompletedBuild -= StartFire;
 
-        SaveGame.OnSaveGame -= Save;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     private void Update()
@@ -69,7 +72,7 @@ public class Fire : MonoBehaviour
         }
     }
 
-    public bool AddFire(InventorySlot slot)
+    public bool AddSlot(InventorySlot slot)
     {
         if (slot.ItemData != null && slot.ItemData.GorenjeTime > 0 && slot.Size > 0)
         {
@@ -104,7 +107,10 @@ public class Fire : MonoBehaviour
             _audioSource.Stop();
 
             if (_isRemoveAfterFire)
+            {
+                Delete();
                 Destroy(gameObject);
+            }
         }
     }
 
@@ -148,12 +154,11 @@ public class Fire : MonoBehaviour
             OnCompletionTimeUpdate?.Invoke(_currentTime);
 
             if (!_isFire)
-            {
                 EnableParticle();
-            }
 
             return true;
         }
+
         return false;
     }
 
@@ -178,12 +183,10 @@ public class Fire : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void Delete()
     {
-        if (collision.collider.GetComponent<PlayerHealth>())
-        {
-            Debug.Log("гори");
-        }
+        if (ES3.KeyExists(_uniqueId.Id + SaveLoadConstants.FireSaveData))
+            ES3.DeleteKey(_uniqueId.Id + SaveLoadConstants.FireSaveData);
     }
 }
 

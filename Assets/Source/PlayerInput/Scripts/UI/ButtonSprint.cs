@@ -8,7 +8,7 @@ public class ButtonSprint : MonoBehaviour
 
     private void Awake()
     {
-        _barStamina.CloseAnimation();
+        _barStamina.Close();
     }
 
     private void OnEnable()
@@ -24,8 +24,8 @@ public class ButtonSprint : MonoBehaviour
     private void ToggleActiveBar()
     {
         if (_barStamina.IsOpen)
-            _barStamina.CloseAnimation();
+            _barStamina.Close();
         else
-            _barStamina.OpenAnimation();
+            _barStamina.Open();
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animals))]
 public class InfoAnimal : MonoBehaviour
 {
     private Animals _animals;
@@ -18,15 +19,15 @@ public class InfoAnimal : MonoBehaviour
 
     private void OnEnable()
     {
-        _animals.Died += EnableInfoObject;
+        _animals.Died += EnableObject;
     }
 
     private void OnDisable()
     {
-        _animals.Died -= EnableInfoObject;
+        _animals.Died -= EnableObject;
     }
 
-    private void EnableInfoObject()
+    private void EnableObject()
     {
         for (int i = 0; i < _infoObjects.Length; i++)
         {

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 public class ChangingInventory : MonoBehaviour
 {
@@ -12,8 +11,6 @@ public class ChangingInventory : MonoBehaviour
 
     private Queue<NotificationData> _notificationQueue = new Queue<NotificationData>();
     private List<ViewInventoryNotifier> _usedViews = new List<ViewInventoryNotifier>();
-
-    private Coroutine _coroutine;
 
     private void Awake()
     {

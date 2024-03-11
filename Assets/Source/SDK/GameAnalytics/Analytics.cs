@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(GameAnalyticsEvent))]
 public class Analytics : MonoBehaviour
 {
     protected GameAnalyticsEvent GameAnalytics;

@@ -12,8 +12,6 @@ public class ItemView : MonoBehaviour
 
     private ExchangedItem _exchangedItem;
 
-    public ExchangedItem ExchangedItem => _exchangedItem;
-
     public void Init(ExchangedItem item, PlayerInventoryHolder playerInventoryHolder)
     {
         if (item.ItemData)
@@ -24,17 +22,13 @@ public class ItemView : MonoBehaviour
             UpdateAmount(playerInventoryHolder, _exchangedItem.Amount);
         }
         else
-        {
             Clear();
-        }
     }
 
     public void UpdateAmount(PlayerInventoryHolder playerInventory, int amount)
     {
         if(_isReceiveSlot)
-        {
             _itemAmount.text = amount.ToString();
-        }
         else
         {
             _itemAmount.text = $"{playerInventory.InventorySystem.GetItemCount(_exchangedItem.ItemData)}/{amount}";

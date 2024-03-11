@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.ProBuilder.Shapes;
+using static UnityEngine.Rendering.DebugUI;
 
 public class AudioHandler : MonoBehaviour
 {
-    private const float _zeroVolume = -80f;
-    private const float _defoultValue = 0.8f;
+    private const float ZeroVolume = -80f;
+    private const float DefaultValue = 0.8f; 
+    private const float _startDelay = 1f;
 
     [SerializeField] private AudioMixer _mixer;
     [SerializeField] private SettingScreen _settingScreen;
@@ -15,6 +18,8 @@ public class AudioHandler : MonoBehaviour
     private bool _isMuteEffects = false;
     private bool _isMute = false;
     private bool _isMutePrevious = false;
+
+    private WaitForSeconds _startWait = new WaitForSeconds(_startDelay);
 
     private float _currentValueMaster;
     private float _currentValueMusic;
@@ -30,13 +35,13 @@ public class AudioHandler : MonoBehaviour
     private void OnEnable()
     {
         if(_settingScreen)
-            _settingScreen.OnCloseScreen += Save;
+            _settingScreen.OnScreenClosed += Save;
     }
 
     private void OnDisable()
     {
         if (_settingScreen)
-            _settingScreen.OnCloseScreen -= Save;
+            _settingScreen.OnScreenClosed -= Save;
     }
 
     private void Awake()
@@ -47,11 +52,13 @@ public class AudioHandler : MonoBehaviour
     public IEnumerator Load()
     {
         _currentValueMaster = PlayerPrefs.HasKey(SettingConstants.MasterStr) ? PlayerPrefs.GetFloat(SettingConstants.MasterStr) : 1;
-        _currentValueMusic = PlayerPrefs.HasKey(SettingConstants.MusicStr) ? PlayerPrefs.GetFloat(SettingConstants.MusicStr) : _defoultValue;
-        _currentValueEffects = PlayerPrefs.HasKey(SettingConstants.EffectsStr) ? PlayerPrefs.GetFloat(SettingConstants.EffectsStr) : _defoultValue;
+        _currentValueMusic = PlayerPrefs.HasKey(SettingConstants.MusicStr) ? PlayerPrefs.GetFloat(SettingConstants.MusicStr) : DefaultValue;
+        _currentValueEffects = PlayerPrefs.HasKey(SettingConstants.EffectsStr) ? PlayerPrefs.GetFloat(SettingConstants.EffectsStr) : DefaultValue;
         _isMuteAllSound = (PlayerPrefs.GetFloat(SettingConstants.MasterStr + SettingConstants.BoolStr) == 1) ? true : false;
         _isMuteMusic = (PlayerPrefs.GetFloat(SettingConstants.MusicStr + SettingConstants.BoolStr) == 1) ? true : false;
-        yield return _isMuteEffects = (PlayerPrefs.GetFloat(SettingConstants.EffectsStr + SettingConstants.BoolStr) == 1) ? true : false;
+         _isMuteEffects = (PlayerPrefs.GetFloat(SettingConstants.EffectsStr + SettingConstants.BoolStr) == 1) ? true : false;
+
+        yield return _startWait;
 
         if (!_isMute) 
             SetAllSound(_currentValueMaster);
@@ -67,21 +74,21 @@ public class AudioHandler : MonoBehaviour
     public void OnOffAllSound()
     {
         _isMuteAllSound = !_isMuteAllSound;
-        _mixer.SetFloat(SettingConstants.MasterStr, _isMuteAllSound ? _zeroVolume : GetValue(_currentValueMaster));
+        _mixer.SetFloat(SettingConstants.MasterStr, _isMuteAllSound ? ZeroVolume : GetValue(_currentValueMaster));
         PlayerPrefs.SetFloat(SettingConstants.MasterStr + SettingConstants.BoolStr, _isMuteAllSound ? 1 : 0);
     }
 
     public void OnOffMusic()
     {
         _isMuteMusic = !_isMuteMusic;
-        _mixer.SetFloat(SettingConstants.MusicStr, _isMuteMusic ? _zeroVolume : GetValue(_currentValueMusic));
+        _mixer.SetFloat(SettingConstants.MusicStr, _isMuteMusic ? ZeroVolume : GetValue(_currentValueMusic));
         PlayerPrefs.SetFloat(SettingConstants.MusicStr + SettingConstants.BoolStr, _isMuteMusic ? 1 : 0);
     }
 
     public void OnOffEffects()
     {
         _isMuteEffects = !_isMuteEffects;
-        _mixer.SetFloat(SettingConstants.EffectsStr, _isMuteEffects ? _zeroVolume : GetValue(_currentValueEffects));
+        _mixer.SetFloat(SettingConstants.EffectsStr, _isMuteEffects ? ZeroVolume : GetValue(_currentValueEffects));
         PlayerPrefs.SetFloat(SettingConstants.EffectsStr + SettingConstants.BoolStr, _isMuteEffects ? 1 : 0);
     }
 
@@ -92,7 +99,7 @@ public class AudioHandler : MonoBehaviour
         if(!_isMuteAllSound) 
             _mixer.SetFloat(SettingConstants.MasterStr, GetValue(value));
         else
-            _mixer.SetFloat(SettingConstants.MasterStr,  _zeroVolume);
+            _mixer.SetFloat(SettingConstants.MasterStr,  ZeroVolume);
 
         PlayerPrefs.SetFloat(SettingConstants.MasterStr, value);
     }
@@ -104,7 +111,7 @@ public class AudioHandler : MonoBehaviour
         if (!_isMuteMusic)
             _mixer.SetFloat(SettingConstants.MusicStr, GetValue(value));
         else
-            _mixer.SetFloat(SettingConstants.MusicStr, _zeroVolume);
+            _mixer.SetFloat(SettingConstants.MusicStr, ZeroVolume);
 
         PlayerPrefs.SetFloat(SettingConstants.MusicStr, _currentValueMusic);
     }
@@ -116,41 +123,55 @@ public class AudioHandler : MonoBehaviour
         if (!_isMuteEffects)
             _mixer.SetFloat(SettingConstants.EffectsStr, GetValue(value));
         else
-            _mixer.SetFloat(SettingConstants.EffectsStr, _zeroVolume);
+            _mixer.SetFloat(SettingConstants.EffectsStr, ZeroVolume);
 
         PlayerPrefs.SetFloat(SettingConstants.EffectsStr, _currentValueEffects);
     }
 
-    public void FadeIn()
+    public void SetMute(bool value)
     {
-        _isMute = true;
-        _mixer.SetFloat(SettingConstants.MasterStr, _zeroVolume);
-    }
+        //if (!_isMutePrevious && !value)
+        //{
+        //    _isMutePrevious = true;
+        //    return;
+        //}
 
-    public void FadeOut()
-    {
-        _isMute = false;
-        SetAllSound(_currentValueMaster);
+        //_isMutePrevious = _isMute;
+
+        //if (value)
+        //{
+        //    _isMute = true;
+        //    _mixer.SetFloat(SettingConstants.MasterStr, ZeroVolume);
+        //}
+        //else
+        //{
+        //    _isMute = false;
+        //    SetAllSound(_currentValueMaster);
+        //}
+
+        if (_isMute != value) 
+        {
+            _isMutePrevious = _isMute;
+            _isMute = value;
+
+            if (_isMute)
+            {
+                _mixer.SetFloat(SettingConstants.MasterStr, ZeroVolume);
+            }
+            else
+            {
+                SetAllSound(_currentValueMaster);
+            }
+        }
     }
 
     private float GetValue(float value)
     {
-        return Mathf.Lerp(_zeroVolume, 0, value);
+        return Mathf.Lerp(ZeroVolume, 0, value);
     }
 
     private void OnApplicationFocus(bool focus)
     {
-        if(_isMutePrevious && focus)
-        {
-            _isMutePrevious = false;
-            return;
-        }
-
-        _isMutePrevious = _isMute; 
-
-        if (focus)
-            FadeOut();
-        else
-            FadeIn();
+        SetMute(!focus);
     }
 }

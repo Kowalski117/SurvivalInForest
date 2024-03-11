@@ -1,8 +1,9 @@
 using UnityEngine;
 
+[RequireComponent (typeof(InventorySlotUI))]
 public class ClothingSlot : MonoBehaviour
 {
-    [SerializeField] private PlayerInteraction _playerInteraction;
+    [SerializeField] private PlayerEquipmentHandler _playerEquipmentHandler;
     [SerializeField] private PlayerHealth _playerHealth;
 
     private InventorySlotUI _inventorySlotUI;
@@ -15,13 +16,13 @@ public class ClothingSlot : MonoBehaviour
 
     private void OnEnable()
     {
-        _inventorySlotUI.OnItemUpdate += UpdateCurrentSlot;
+        _inventorySlotUI.OnItemUpdated += UpdateItem;
         _playerHealth.OnEnemyDamageDone += TakeDamage;
     }
 
     private void OnDisable()
     {
-        _inventorySlotUI.OnItemUpdate -= UpdateCurrentSlot;
+        _inventorySlotUI.OnItemUpdated -= UpdateItem;
         _playerHealth.OnEnemyDamageDone -= TakeDamage;
     }
 
@@ -29,8 +30,8 @@ public class ClothingSlot : MonoBehaviour
     {
         if (_clothesItemData != null && _clothesItemData.TypeOfClothingUse == TypeOfClothingUse.AmountOfTime)
         {
-            _playerInteraction.UpdateDurabilityWithGameTime(_inventorySlotUI.AssignedInventorySlot);
-            DeselectSlot();
+            _playerEquipmentHandler.UpdateDurabilityWithGameTime(_inventorySlotUI.AssignedInventorySlot);
+            Deselect();
         }
     }
 
@@ -38,12 +39,12 @@ public class ClothingSlot : MonoBehaviour
     {
         if (_clothesItemData != null && _clothesItemData.TypeOfClothingUse == TypeOfClothingUse.AmountOfDamage)
         {
-            _playerInteraction.UpdateDurabilityItem(_inventorySlotUI.AssignedInventorySlot);
-            DeselectSlot();
+            _playerEquipmentHandler.UpdateDurabilityItem(_inventorySlotUI.AssignedInventorySlot);
+            Deselect();
         }
     }
 
-    private void UpdateCurrentSlot(InventorySlotUI inventorySlotUI)
+    private void UpdateItem(InventorySlotUI inventorySlotUI)
     {
         if (inventorySlotUI.AssignedInventorySlot.ItemData != null)
         {
@@ -51,15 +52,12 @@ public class ClothingSlot : MonoBehaviour
                 _clothesItemData = clothesItemData; 
         }
         else
-        {
             _clothesItemData = null;
-        }
     }
 
-    private void DeselectSlot()
+    private void Deselect()
     {
         if (_inventorySlotUI.AssignedInventorySlot.Durability <= 0)
             _inventorySlotUI.TurnOffHighlight();
-        
     }
 }

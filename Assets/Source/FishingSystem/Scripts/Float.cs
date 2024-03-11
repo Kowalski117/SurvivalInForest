@@ -1,10 +1,16 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Float : MonoBehaviour
 {
+    private const float TimeBeforeFishEscapes = 1f;
+    private const float AnimationDuration = 2f;
+    private const float ReturnDelay = 1f;
+    private const int NumberOfRepetitions = -1;
+
     [SerializeField] private FishingRod _fishingRod;
     [SerializeField] private ParticleSystem _startInWaterParticle;
     [SerializeField] private ParticleSystem _waterParticle;
@@ -14,21 +20,20 @@ public class Float : MonoBehaviour
     private Vector3 _initialPosition;
     private Vector3 _positionInWater;
     private Quaternion _initialRotation;
-    private Tween _fishingTween;
-    private Coroutine _fishingCoroutine;
-    private bool _isFishOnHook = false;
     private Vector2 _randomTime;
+    private bool _isFishOnHook = false;
     private InventoryItemData _currentExtraction;
 
     private Vector3 _calmWaterOffset = new Vector3(0, -0.15f, 0);
     private Vector2 _fishOnHookOffset = new Vector2(0.4f, 1f);
-    private float _timeBeforeFishEscapes = 0.6f;
-    private float _animationDuration = 2f;
-    private float _returnDelay = 1f;
-    private int _numberOfRepetitions = -1;
 
-    public event UnityAction<InventoryItemData> FishCaught;
-    public event UnityAction FishMissed;
+    private Tween _fishingTween;
+    private Coroutine _fishingCoroutine;
+    private WaitForSeconds _escapesWait = new WaitForSeconds(TimeBeforeFishEscapes);
+    private WaitForSeconds _returnWait = new WaitForSeconds(ReturnDelay);
+
+    public event Action<InventoryItemData> FishCaught;
+    public event Action FishMissed;
 
     private void Awake()
     {
@@ -56,10 +61,7 @@ public class Float : MonoBehaviour
     {
         _rigidbody.isKinematic = true;
 
-        if (_fishingCoroutine != null)
-        {
-            StopCoroutine(_fishingCoroutine);
-        }
+        ClearFishingCoroutine();
 
         transform.parent = parent;
 
@@ -74,7 +76,8 @@ public class Float : MonoBehaviour
 
         ClearTween();
         if (transform.position != _initialPosition)
-            _fishingTween = transform.DOLocalMove(_initialPosition, _returnDelay);
+            _fishingTween = transform.DOLocalMove(_initialPosition, ReturnDelay);
+
         transform.localRotation = _initialRotation;
 
         if (_isFishOnHook)
@@ -87,33 +90,27 @@ public class Float : MonoBehaviour
         _currentExtraction = null;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void StartFishingOverTime()
     {
-        if (other.TryGetComponent(out Water water))
-        {
-            SetPositionParticle(_startInWaterParticle, null, transform.position);
-            _rigidbody.isKinematic = true;
-            StartFishingOverTime();
-            _startInWaterParticle.gameObject.SetActive(true);
-            _startInWaterParticle.Play();
-        }
+        ClearFishingCoroutine();
+
+        _fishingCoroutine = StartCoroutine(FishingOverTime());
     }
 
-    private void StartFishingOverTime()
+    private void ClearFishingCoroutine()
     {
         if (_fishingCoroutine != null)
         {
             StopCoroutine(_fishingCoroutine);
+            _fishingCoroutine = null;
         }
-
-        _fishingCoroutine = StartCoroutine(FishingOverTime());
     }
 
     private IEnumerator FishingOverTime()
     {
         ClearTween();
         _positionInWater = transform.position;
-        _fishingTween = transform.DOMove(_positionInWater + _calmWaterOffset, _animationDuration).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
+        _fishingTween = transform.DOMove(_positionInWater + _calmWaterOffset, AnimationDuration).SetLoops(NumberOfRepetitions, LoopType.Yoyo);
 
         _waterParticle.gameObject.SetActive(true);
         _waterParticle.Play();
@@ -128,17 +125,17 @@ public class Float : MonoBehaviour
         _splashingFishParticle.Play();
 
         ClearTween();
-        _fishingTween = transform.DOMove(_positionInWater - GetRandomOffset(_fishOnHookOffset), _timeBeforeFishEscapes).SetLoops(_numberOfRepetitions, LoopType.Yoyo);
+        _fishingTween = transform.DOMove(_positionInWater - GetRandomOffset(_fishOnHookOffset), TimeBeforeFishEscapes).SetLoops(NumberOfRepetitions, LoopType.Yoyo);
         _isFishOnHook = true;
 
-        yield return new WaitForSeconds(_timeBeforeFishEscapes);
+        yield return _escapesWait;
 
         _splashingFishParticle.Stop();
         ClearTween();
-        _fishingTween = transform.DOMove(new Vector3(transform.position.x, _positionInWater.y, transform.position.z), _returnDelay);
+        _fishingTween = transform.DOMove(new Vector3(transform.position.x, _positionInWater.y, transform.position.z), ReturnDelay);
         _isFishOnHook = false;
 
-        yield return new WaitForSeconds(_returnDelay);
+        yield return _returnWait;
 
         ReturnToRod(_fishingRod.transform);
         FishMissed?.Invoke();
@@ -155,7 +152,7 @@ public class Float : MonoBehaviour
 
     private float GetRandomNumber(float min, float max)
     {
-        return Random.Range(min, max);
+        return UnityEngine.Random.Range(min, max);
     }
 
     private Vector3 GetRandomOffset(Vector2 range)
@@ -167,5 +164,17 @@ public class Float : MonoBehaviour
     {
         particleSystem.gameObject.transform.parent = parent;
         particleSystem.gameObject.transform.position = new Vector3(position.x, position.y + 0.15f, position.z);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Water>())
+        {
+            SetPositionParticle(_startInWaterParticle, null, transform.position);
+            _rigidbody.isKinematic = true;
+            StartFishingOverTime();
+            _startInWaterParticle.gameObject.SetActive(true);
+            _startInWaterParticle.Play();
+        }
     }
 }

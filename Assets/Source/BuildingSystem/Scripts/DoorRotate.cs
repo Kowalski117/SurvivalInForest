@@ -1,28 +1,28 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class DoorRotate : MonoBehaviour
 {
-    [SerializeField] private Transform _doorRotate;
+    [SerializeField] private Transform _doorTransform;
     [SerializeField] private float _offsetY;
 
     private float _delay = 0.75f;
 
-    public event UnityAction OnOpenDoor;
-    public event UnityAction<float> OnCloseDoor;
+    public event Action OnOpened;
+    public event Action<float> OnClosed;
 
-    public void RotateDoor(float offsetY)
+    public void Rotate(float offsetY)
     {
-        _doorRotate.DOLocalRotate(new Vector3(_doorRotate.rotation.x, offsetY, _doorRotate.rotation.y), _delay);
+        _doorTransform.DOLocalRotate(new Vector3(_doorTransform.rotation.x, offsetY, _doorTransform.rotation.y), _delay);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.GetComponent<PlayerHealth>() != null)
         {
-            RotateDoor(_offsetY);
-            OnOpenDoor?.Invoke();
+            Rotate(_offsetY);
+            OnOpened?.Invoke();
         }
     }
 
@@ -30,8 +30,8 @@ public class DoorRotate : MonoBehaviour
     {
         if (other.GetComponent<PlayerHealth>() != null)
         {
-            RotateDoor(0);
-            OnCloseDoor?.Invoke(_delay);
+            Rotate(0);
+            OnClosed?.Invoke(_delay);
         }
     }
 }

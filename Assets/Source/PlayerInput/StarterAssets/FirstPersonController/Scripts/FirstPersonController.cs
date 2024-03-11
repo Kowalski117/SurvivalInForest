@@ -187,12 +187,12 @@ namespace StarterAssets
 
         private void CameraRotation()
         {
-            if (_input.look.sqrMagnitude >= _threshold)
+            if (_input.Look.sqrMagnitude >= _threshold)
             {
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-                _cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
-                _rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
+                _cinemachineTargetPitch += _input.Look.y * RotationSpeed * deltaTimeMultiplier;
+                _rotationVelocity = _input.Look.x * RotationSpeed * deltaTimeMultiplier;
 
                 _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
@@ -206,7 +206,7 @@ namespace StarterAssets
         {
             if (_isGrounded && _isEnable)
             {
-                _audioHandler.PlayLandingSound(_input.jump);
+                _audioHandler.PlayLandingSound(_input.Jump);
                 _fallTimeoutDelta = FallTimeout;
 
                 if (_verticalVelocity < 0.0f)
@@ -214,7 +214,7 @@ namespace StarterAssets
                     _verticalVelocity = -2f;
                 }
 
-                if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+                if (_input.Jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
                 }
@@ -226,14 +226,14 @@ namespace StarterAssets
             }
             else
             {
-                _audioHandler.PlayJumpSound(_input.jump);
+                _audioHandler.PlayJumpSound(_input.Jump);
                 _jumpTimeoutDelta = JumpTimeout;
 
                 if (_fallTimeoutDelta >= 0.0f)
                 {
                     _fallTimeoutDelta -= Time.deltaTime;
                 }
-                _input.jump = false;
+                _input.JumpInput(false);
             }
 
             if (_verticalVelocity < _terminalVelocity)
@@ -244,14 +244,14 @@ namespace StarterAssets
 
         private void Move()
         {
-            float targetSpeed = _input.sprint && !_isInWater && _survivalHandler.Stamina.IsNotEmpty ? SprintSpeed : MoveSpeed;
+            float targetSpeed = _input.Sprint && !_isInWater && _survivalHandler.Stamina.IsNotEmpty ? SprintSpeed : MoveSpeed;
 
-            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+            if (_input.Move == Vector2.zero) targetSpeed = 0.0f;
 
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
             float speedOffset = 0.1f;
-            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+            float inputMagnitude = _input.IsAnalogMovement ? _input.Move.magnitude : 1f;
 
             if (!_isSquatting)
             {
@@ -267,26 +267,26 @@ namespace StarterAssets
                 }
             }
 
-            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            Vector3 inputDirection = new Vector3(_input.Move.x, 0.0f, _input.Move.y).normalized;
 
-            if (_input.move != Vector2.zero)
+            if (_input.Move != Vector2.zero)
             {
-                inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
-                _audioHandler.PlayFootStepAudio(targetSpeed == SprintSpeed, _input.stealth);
+                inputDirection = transform.right * _input.Move.x + transform.forward * _input.Move.y;
+                _audioHandler.PlayFootStepSound(targetSpeed == SprintSpeed, _input.Stealth);
             }
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         }
 
         private void Stealth()
         {
-            if (_input.stealth && !_isSquatting)
+            if (_input.Stealth && !_isSquatting)
             {
                 _isSquatting = true;
                 _speed = SquatSpeed;
                 CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, SquatHeight, CinemachineCameraTarget.transform.localPosition.z);
             }
 
-            if (!_input.stealth && _isSquatting)
+            if (!_input.Stealth && _isSquatting)
             {
                 SetDefoultStealth();
             }
@@ -295,7 +295,7 @@ namespace StarterAssets
         private void SetDefoultStealth()
         {
             _isSquatting = false;
-            _speed = _input.sprint ? SprintSpeed : MoveSpeed;
+            _speed = _input.Sprint ? SprintSpeed : MoveSpeed;
             CinemachineCameraTarget.transform.localPosition = new Vector3(CinemachineCameraTarget.transform.localPosition.x, DefaultHeight, CinemachineCameraTarget.transform.localPosition.z);
         }
 

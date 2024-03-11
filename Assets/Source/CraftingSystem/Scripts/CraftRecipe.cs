@@ -24,12 +24,6 @@ public struct CraftingIngridient
 
     public InventoryItemData ItemRequired => _itemRequired;
     public int AmountRequured => _amountRequured;
-
-    public CraftingIngridient(InventoryItemData itemRequired, int amountRequured)
-    {
-        _itemRequired = itemRequired;
-        _amountRequured = amountRequured;
-    }
 }
 
 public enum CraftingType
@@ -41,4 +35,5 @@ public enum CraftingType
     Food,
     Decor,
     InteractBuilding,
+    Seed
 }

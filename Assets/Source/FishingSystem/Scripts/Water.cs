@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent (typeof(MeshRenderer))]
 public class Water : MonoBehaviour 
 {
     [SerializeField] private Material _lowMaterial;

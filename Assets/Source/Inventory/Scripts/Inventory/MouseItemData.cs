@@ -11,7 +11,6 @@ public class MouseItemData : MonoBehaviour
     [SerializeField] private InventoryOperator _inventoryOperator;
     [SerializeField] private Canvas _canvas;
 
-    private string _invetoryTag = "Inventory";
     private bool _isUpdateSlot = false;
     private float _delay = 0.05f;
     private Coroutine _coroutine;
@@ -38,29 +37,27 @@ public class MouseItemData : MonoBehaviour
     private void Update()
     {
         if (_inventorySlotUI.AssignedInventorySlot.ItemData != null && _isUpdateSlot)
-        {
             transform.position = Mouse.current.position.ReadValue();
-        }
     }
 
-    public void CleanSlot()
+    public void Clear()
     {
         _previousSlot = null;
         _currentItemData = null;
         _isUpdateSlot = false;
-        _inventorySlotUI.CleanSlot();
+        _inventorySlotUI.Clear();
         OnUpdatedSlots?.Invoke();
     }
 
-    public void UpdateMouseSlot(InventorySlot inventorySlot)
+    public void UpdateSlot(InventorySlot inventorySlot)
     {
         _isUpdateSlot = true;
         _inventorySlotUI.AssignedInventorySlot.AssignItem(inventorySlot);
-        UpdateMouseSlot();
+        UpdateSlot();
         OnUpdatedSlots?.Invoke();
     }
 
-    public void UpdateCurrentInventorySlot(InventorySlotUI inventorySlot)
+    public void UpdateSlotUI(InventorySlotUI inventorySlot)
     {
         _previousSlot = inventorySlot;
         _previousSlot.TurnOffHighlight();
@@ -73,9 +70,9 @@ public class MouseItemData : MonoBehaviour
             _previousSlot.TurnOffHighlight();
     }
 
-    public void UpdateMouseSlot()
+    public void UpdateSlot()
     {
-        _inventorySlotUI.UpdateUiSlot();
+        _inventorySlotUI.UpdateItem();
     }
 
     public void Toggle(bool toggle)
@@ -92,19 +89,19 @@ public class MouseItemData : MonoBehaviour
     {
         if (_inventorySlotUI.AssignedInventorySlot.ItemData != null && _previousSlot != null)
         {
-            if (IsPointerOverUIObject(_invetoryTag))
+            if (IsPointerOverUIObject(GameConstants.Invetory))
             {
                 _previousSlot.AssignedInventorySlot.AssignItem(_inventorySlotUI.AssignedInventorySlot);
-                _previousSlot.UpdateUiSlot();
+                _previousSlot.UpdateItem();
             }
             else
             {
                 OnItemDataChanged?.Invoke(_inventorySlotUI.AssignedInventorySlot.ItemData, -_inventorySlotUI.AssignedInventorySlot.Size);
-                _inventoryOperator.RemoveItems(_inventorySlotUI);
+                _inventoryOperator.RemoveItems(_inventorySlotUI, _inventorySlotUI.AssignedInventorySlot.Size);
             }
 
             Toggle(false);
-            CleanSlot();
+            Clear();
         }
     }
 
@@ -118,9 +115,7 @@ public class MouseItemData : MonoBehaviour
         foreach (RaycastResult raycastResult in result)
         {
             if (raycastResult.gameObject.CompareTag(tagToCheck))
-            {
                 return true;
-            }
         }
 
         return false;

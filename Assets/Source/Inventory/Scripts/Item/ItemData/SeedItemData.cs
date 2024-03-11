@@ -5,11 +5,11 @@ using UnityEngine;
 public class SeedItemData : InventoryItemData
 {
     [SerializeField] private float _growthTime;
-    [SerializeField] private ObjectPickUp _objectPickUp;
+    [SerializeField] private BeingLiftedObject _objectPickUp;
     [SerializeField] private ObjectItemsData[] _lootItems;
 
     public float GrowthTime => _growthTime;
-    public ObjectPickUp ObjectPickUp => _objectPickUp;
+    public BeingLiftedObject ObjectPickUp => _objectPickUp;
     public ObjectItemsData[] LootItems => _lootItems;
 }
 

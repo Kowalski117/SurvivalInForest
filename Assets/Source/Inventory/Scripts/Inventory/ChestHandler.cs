@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ChestHandler : Raycast
 {
@@ -11,9 +10,9 @@ public class ChestHandler : Raycast
     private ChestInventory _chestInventory;
     private bool _isRay = false;
 
-    public event UnityAction OnInteractionStarted;
-    public event UnityAction OnInteractionFinished;
-    public event UnityAction<ChestType> OnChestTypeChanged;
+    public event Action OnInteractionStarted;
+    public event Action OnInteractionFinished;
+    public event Action<ChestType> OnChestTypeChanged;
 
     public ChestInventory ChestInventory => _chestInventory;
 
@@ -26,18 +25,18 @@ public class ChestHandler : Raycast
                 if(chestInventory != _chestInventory)
                 {
                     _isRay = true;
-                    OpenChest(chestInventory);
+                    Open(chestInventory);
                 }
             }
         }
         else if(_isRay) 
         {
             _isRay = false;
-            CloseChest();
+            Close();
         }
     }
 
-    public void OpenChest(ChestInventory chestInventory)
+    public void Open(ChestInventory chestInventory)
     {
         if (chestInventory && _inventoryHandler && !_inventoryHandler.IsChestOpen)
         {
@@ -49,7 +48,7 @@ public class ChestHandler : Raycast
         }
     }
 
-    public void CloseChest()
+    public void Close()
     {
         if (_chestInventory != null && _inventoryHandler.IsChestOpen)
         {

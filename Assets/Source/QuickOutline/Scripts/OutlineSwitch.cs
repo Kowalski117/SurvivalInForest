@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(OutlineObject))]
 public class OutlineSwitch : MonoBehaviour
 {
     private OutlineObject _outline;
@@ -14,15 +15,15 @@ public class OutlineSwitch : MonoBehaviour
 
     private void OnEnable()
     {
-        _building.OnCompletedBuild += EnableOutline;
+        _building.OnCompletedBuild += Enable;
     }
 
     private void OnDisable()
     {
-        _building.OnCompletedBuild -= EnableOutline;
+        _building.OnCompletedBuild -= Enable;
     }
 
-    private void EnableOutline()
+    private void Enable()
     {
         _outline.enabled = true;
     }

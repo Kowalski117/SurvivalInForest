@@ -15,7 +15,7 @@ public class ItemAnimator : MonoBehaviour
 
     public void ToggleLayer(bool isActive)
     {
-        ToggleAnimator(isActive);
+        Toggle(isActive);
         ToggleItem(isActive);
 
         if (isActive) 
@@ -24,7 +24,7 @@ public class ItemAnimator : MonoBehaviour
             _animatorHand.SetLayerWeight(_indexLayer, 0);
     }
 
-    public void ToggleAnimator(bool isActive)
+    public void Toggle(bool isActive)
     {
         _animatorHand.gameObject.SetActive(isActive);
     }

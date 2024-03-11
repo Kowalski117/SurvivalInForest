@@ -30,7 +30,7 @@ public class YandexAds : MonoBehaviour
 
     public void OnAdOpen()
     {
-        _audioHandler.FadeIn();
+        _audioHandler.SetMute(true);
 
         if (_playerInputHandler)
         {
@@ -44,7 +44,7 @@ public class YandexAds : MonoBehaviour
     public void OnAdClose()
     {
         Time.timeScale = 1;
-        _audioHandler.FadeOut();
+        _audioHandler.SetMute(false);
         if (_playerInputHandler)
         {
             _playerInputHandler.ToggleAllParametrs(true);

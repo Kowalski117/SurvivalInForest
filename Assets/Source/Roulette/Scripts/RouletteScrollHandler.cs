@@ -1,12 +1,17 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ItemsSpawner))]
 public class RouletteScrollHandler : MonoBehaviour
 {
+    private const float WaitingTime = 1f;
+    private const float Delay = 9;
+    private const float MinDelay = 0.5f;
+
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private PlayerInventoryHolder _playerInventoryHolder;
     [SerializeField] private PlayerHandler _playerHandler;
@@ -23,16 +28,19 @@ public class RouletteScrollHandler : MonoBehaviour
     private Tween _tween;
     private Coroutine _twistCoroutine;
     private Coroutine _claimCoroutine;
+
     private float _minPosition = 0.501f;
     private float _maxPosition = 0.509f;
     private float _defoultPosition = 0.50505f;
-    private float _delay = 10f;
-    private float _minDelay = 0.5f;
     private bool _isFirstScroll = true;
     private bool _isScroll = false;
 
-    public event UnityAction OnScroll;
-    public event UnityAction<Dictionary<InventoryItemData, int>> OnBonusShown;
+    private WaitForSeconds _waitingTimeYield = new WaitForSeconds(WaitingTime);
+    private WaitForSeconds _delayYield = new WaitForSeconds(Delay);
+    private WaitForSeconds _minDelayYield = new WaitForSeconds(MinDelay);
+
+    public event Action OnScrolling;
+    public event Action<Dictionary<InventoryItemData, int>> OnBonusShown;
 
     private void Awake()
     {
@@ -48,30 +56,34 @@ public class RouletteScrollHandler : MonoBehaviour
 
     private void Start()
     {
+        _timer.IsCheckState();
+
         if (!_timer.IsClaimReward)
             _buttonScroll.enabled = false;
     }
 
     private void OnEnable()
     {
-        _screen.OnOpenScreen += StartCoroutine;
-        _screen.OnCloseScreen += StopCoroutine;
+        _screen.OnScreenOpened += StartCoroutine;
+        _screen.OnScreenClosed += StopCoroutine;
 
         _timer.OnTimerExpired += ExpireTimer;
 
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnSaveGame += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameSaved += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        _screen.OnOpenScreen -= StartCoroutine;
-        _screen.OnCloseScreen -= StopCoroutine;
+        _screen.OnScreenOpened -= StartCoroutine;
+        _screen.OnScreenClosed -= StopCoroutine;
 
         _timer.OnTimerExpired -= ExpireTimer;
 
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnSaveGame -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameSaved -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void TwistButtonClick()
@@ -128,16 +140,16 @@ public class RouletteScrollHandler : MonoBehaviour
             _claimCoroutine = null;
         }
 
-        _claimCoroutine = StartCoroutine(RewardsStateUpdate());
+        _claimCoroutine = StartCoroutine(UpdateState());
 
         if(!_isScroll)
             _container.localPosition = Vector2.zero;
     }
 
-    private IEnumerator RewardsStateUpdate()
+    private IEnumerator UpdateState()
     {
-        UpdateRewardsState();
-        yield return new WaitForSeconds(1f);
+        VerifyState();
+        yield return _waitingTimeYield;
 
         StartCoroutine();
     }
@@ -148,7 +160,7 @@ public class RouletteScrollHandler : MonoBehaviour
         _buttonScroll.enabled = true;
     }
 
-    private void UpdateRewardsState()
+    private void VerifyState()
     {
         _timer.IsCheckState();
         _timer.UpdateRewardsUI();
@@ -158,20 +170,22 @@ public class RouletteScrollHandler : MonoBehaviour
     {
         _playerHandler.ToggleScreenPlayerInput(false);
         _isScroll = true;
-        _spawner.SpawnItems();
+        _spawner.Spawn();
         yield return _scrollRect.normalizedPosition = Vector2.zero;
 
-        float position = Random.Range(_minPosition, _maxPosition);
-       _tween = _scrollRect.DOHorizontalNormalizedPos(position, _delay).SetEase(Ease.OutQuint);
-        yield return new WaitForSeconds(_delay - _minDelay - _minDelay);
+        float position = UnityEngine.Random.Range(_minPosition, _maxPosition);
+       _tween = _scrollRect.DOHorizontalNormalizedPos(position, Delay).SetEase(Ease.OutQuint);
+        yield return _delayYield;
+
         _tween.Kill();
+
         if (position % 1 != 0) 
         {
-            yield return new WaitForSeconds(_minDelay);
-            _tween = _scrollRect.DOHorizontalNormalizedPos(_defoultPosition, _minDelay);
+            yield return _minDelayYield;
+            _tween = _scrollRect.DOHorizontalNormalizedPos(_defoultPosition, MinDelay);
         }
 
-        yield return new WaitForSeconds(_minDelay);
+        yield return _minDelayYield;
 
         AddItem();
         _timer.SetLastClaimTime();
@@ -179,7 +193,7 @@ public class RouletteScrollHandler : MonoBehaviour
         _closeScreen.enabled = true;
 
         _playerHandler.ToggleScreenPlayerInput(true);
-        OnScroll?.Invoke();
+        OnScrolling?.Invoke();
         _isScroll = false;
         _revardImage.Close();
     }
@@ -200,8 +214,12 @@ public class RouletteScrollHandler : MonoBehaviour
     private void Load()
     {
         if (ES3.KeyExists(SaveLoadConstants.IsFirstScroll))
-        {
             _isFirstScroll = ES3.Load<bool>(SaveLoadConstants.IsFirstScroll);
-        }
+    }
+
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.IsFirstScroll))
+            ES3.DeleteKey(SaveLoadConstants.IsFirstScroll);
     }
 }

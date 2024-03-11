@@ -43,17 +43,19 @@ public class SpawnPointAnimals : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
     {
-        if(_currentAnimal != null)
+        if (_currentAnimal != null)
             _currentAnimal.DestroyAnimal -= DestroyAnimal;
 
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     public void Init(PlayerHealth playerHealth)
@@ -64,22 +66,16 @@ public class SpawnPointAnimals : MonoBehaviour
     public void Spawn(PlayerHealth playerHealth)
     {
         float secondWait = 10f;
-        
+
         if (_player == null)
-        {
             _player = playerHealth;
-        }
 
         float distance = (transform.position - _player.transform.position).magnitude;
 
         if (distance > _distanceToPlayer)
-        {
             SpawnAnimal();
-        }
         else
-        {
             StartCoroutine(Wait(secondWait));
-        }
     }
 
     private void SpawnAnimal()
@@ -104,26 +100,18 @@ public class SpawnPointAnimals : MonoBehaviour
                 range = Random.Range(0, 2);
 
                 if (range == 0)
-                {
                     currentAnimalsPrefab = _deer;
-                }
                 else
-                {
                     currentAnimalsPrefab = _rabbit;
-                }
 
                 break;
             case TypeAnimals.Enemy:
                 range = Random.Range(0, 2);
 
                 if (range == 0)
-                {
                     currentAnimalsPrefab = _wolf;
-                }
                 else
-                {
                     currentAnimalsPrefab = _bear;
-                }
 
                 break;
         }
@@ -142,13 +130,9 @@ public class SpawnPointAnimals : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (_animals == TypeAnimals.Bear || _animals == TypeAnimals.Wolf || _animals == TypeAnimals.Enemy)
-        {
             Gizmos.color = Color.red;
-        }
         else
-        {
             Gizmos.color = Color.green;
-        }
 
         Gizmos.DrawWireSphere(transform.position, _distanceToPlayer);
     }
@@ -168,10 +152,11 @@ public class SpawnPointAnimals : MonoBehaviour
         {
             if (other.GetComponent<PlayerHealth>().IsRespawned)
             {
-                if(_elapsedTime <= 0)
+                if (_elapsedTime <= 0)
                 {
-                    if(_currentAnimal != null)
+                    if (_currentAnimal != null)
                         Destroy(_currentAnimal.gameObject);
+
                     Spawn(_player);
                 }
             }
@@ -195,9 +180,7 @@ public class SpawnPointAnimals : MonoBehaviour
             float gameTime = PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter);
 
             if (savedTime <= gameTime)
-            {
                 Spawn(_player);
-            }
             else
             {
                 _elapsedTime = savedTime - gameTime;
@@ -205,8 +188,12 @@ public class SpawnPointAnimals : MonoBehaviour
             }
         }
         else
-        {
             Spawn(_player);
-        }
+    }
+
+    private void Delete()
+    {
+        if (PlayerPrefs.HasKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime))
+            PlayerPrefs.DeleteKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime);
     }
 }

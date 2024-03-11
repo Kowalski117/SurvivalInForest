@@ -4,19 +4,20 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(UniqueID))]
 public class Shrub : MonoBehaviour
 {
+    private const float RadiusSpawn = 0.5f;
+    private const float SpawnPointUp = 0.5f;
+
     [SerializeField] private ItemPickUp _item;
     [SerializeField] private int _countItems;
     [SerializeField] private float _timeRespawnItem;
 
-    private const float _radiusSpawn= 0.5f;
-    private const float _spawnPointUp= 0.5f;
-
     private UniqueID _uniqueID;
     private float _elapsedTime;
     private bool _isReborn = false;
-    private int _currentCountItem=0;
+    private int _currentCountItem = 0;
 
     private void Awake()
     {
@@ -31,8 +32,9 @@ public class Shrub : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += Save;
-        SaveGame.OnLoadData += Load;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
     }
 
     private void OnDisable()
@@ -44,17 +46,19 @@ public class Shrub : MonoBehaviour
             listChildren[i].DestroyItem -= DestroyItem;
         }
 
-        SaveGame.OnSaveGame -= Save;
-        SaveGame.OnLoadData -= Load;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
     }
 
     private void SpawnItem(int count)
     {
         ItemPickUp itemPickUp;
+
         for (int i = 0; i < count; i++)
         {
-            Vector3 position = (transform.position + Random.insideUnitSphere * _radiusSpawn);
-            itemPickUp = SpawnLoots.Spawn(_item,position,transform,true,_spawnPointUp,true);
+            Vector3 position = (transform.position + Random.insideUnitSphere * RadiusSpawn);
+            itemPickUp = SpawnLoots.Spawn(_item,position,transform,true,SpawnPointUp,true);
             itemPickUp.DestroyItem += DestroyItem;
         }
     }
@@ -74,6 +78,7 @@ public class Shrub : MonoBehaviour
     {
         _isReborn = true;
         yield return new WaitForSeconds(_timeRespawnItem - _elapsedTime);
+
         _elapsedTime = 0;
        SpawnItem(_countItems);
         _isReborn = false;
@@ -84,7 +89,6 @@ public class Shrub : MonoBehaviour
         if (_isReborn)
         {
             PlayerPrefs.SetFloat(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime, PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter) + _elapsedTime);
-            Debug.Log(PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter) + _elapsedTime);
             PlayerPrefs.Save();
         }
     }
@@ -97,9 +101,7 @@ public class Shrub : MonoBehaviour
             float gameTime = PlayerPrefs.GetFloat(SaveLoadConstants.GameTimeCounter);
 
             if (savedTime <= gameTime)
-            {
                 SpawnItem(_countItems);
-            }
             else
             {
                 _elapsedTime = savedTime - gameTime;
@@ -107,8 +109,12 @@ public class Shrub : MonoBehaviour
             }
         }
         else
-        {
             SpawnItem(_countItems);
-        }
+    }
+
+    private void Delete()
+    {
+        if (PlayerPrefs.HasKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime))
+            PlayerPrefs.DeleteKey(_uniqueID.Id + SaveLoadConstants.ResourceRevivalTime);
     }
 }

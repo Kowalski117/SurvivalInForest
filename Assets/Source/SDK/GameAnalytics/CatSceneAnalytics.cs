@@ -1,3 +1,6 @@
+using UnityEngine;
+
+[RequireComponent(typeof(CutScene))]
 public class CatSceneAnalytics : Analytics
 {
     private CutScene _cutScene;

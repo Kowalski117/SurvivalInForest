@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent (typeof(Collider))]
 public class FoundationConnection : MonoBehaviour
 {
     [SerializeField] private Transform _pointPlaceFloor;
@@ -19,10 +20,4 @@ public class FoundationConnection : MonoBehaviour
     {
         _collider.enabled = false;
     }
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.gameObject.layer != 7 || !other.GetComponent<Building>())
-    //        TurnOffCollider();
-    //}
 }

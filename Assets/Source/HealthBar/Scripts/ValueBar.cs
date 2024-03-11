@@ -1,11 +1,10 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class ValueBar : MonoBehaviour
 {
-    [SerializeField] private PlayerInteraction _playerInteraction;
+    [SerializeField] private TargetInteractionHandler _playerInteraction;
     [SerializeField] private PlayerHealth _playerHealth;
     [SerializeField] private Image _bar;
     [SerializeField] private Image _ground;
@@ -17,25 +16,25 @@ public class ValueBar : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInteraction.OnEnableBarValue += EnableBar;
-        _playerInteraction.OnTurnOffBarValue += TurnOffBar;
-        _playerInteraction.OnValueChanged += UpdateBar;
+        _playerInteraction.OnEnableBarValue += Enable;
+        _playerInteraction.OnTurnOffBarValue += TurnOff;
+        _playerInteraction.OnValueChanged += UpdateValue;
 
-        _playerHealth.OnDied += TurnOffBar;
-        _playerHealth.OnRevived += TurnOffBar;
+        _playerHealth.OnDied += TurnOff;
+        _playerHealth.OnRevived += TurnOff;
     }
 
     private void OnDisable()
     {
-        _playerInteraction.OnEnableBarValue -= EnableBar;
-        _playerInteraction.OnTurnOffBarValue -= TurnOffBar;
-        _playerInteraction.OnValueChanged -= UpdateBar;
+        _playerInteraction.OnEnableBarValue -= Enable;
+        _playerInteraction.OnTurnOffBarValue -= TurnOff;
+        _playerInteraction.OnValueChanged -= UpdateValue;
 
-        _playerHealth.OnDied -= TurnOffBar;
-        _playerHealth.OnRevived -= TurnOffBar;
+        _playerHealth.OnDied -= TurnOff;
+        _playerHealth.OnRevived -= TurnOff;
     }
 
-    public void UpdateBar(float value)
+    public void UpdateValue(float value)
     {
         if(value >= 0)
             _valueText.text = value.ToString();
@@ -44,24 +43,24 @@ public class ValueBar : MonoBehaviour
 
         if(_bar.fillAmount <= 0)
         {
-            TurnOffBar();
+            TurnOff();
         }
     }
 
-    public void EnableBar(float maxValue, float currentCalue)
+    public void Enable(float maxValue, float currentCalue)
     {
         if (!_playerHealth.IsDied)
         {
             _maxValue = maxValue;
             _currenValue = currentCalue;
-            _animationUI.OpenAnimation();
+            _animationUI.Open();
 
-            UpdateBar(_currenValue);
+            UpdateValue(_currenValue);
         }
     }
 
-    public void TurnOffBar()
+    public void TurnOff()
     {
-        _animationUI.CloseAnimation();
+        _animationUI.Close();
     }
 }

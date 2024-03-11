@@ -14,15 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneParameters:
   - _sceneIndex: 1
+    _sceneString: MainMenu
     _sceneName: "\u0413\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E"
+    _textTableName: {fileID: 0}
   - _sceneIndex: 2
+    _sceneString: CatScene
     _sceneName: "\u0422\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439
       \u043B\u0435\u0441"
+    _textTableName: {fileID: 0}
   - _sceneIndex: 3
+    _sceneString: Forest
     _sceneName: "\u0422\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439
       \u043B\u0435\u0441"
+    _textTableName: {fileID: 0}
   - _sceneIndex: 4
+    _sceneString: Cave
     _sceneName: "\u0428\u0430\u0445\u0442\u0430"
+    _textTableName: {fileID: 0}
   _hintSprites:
   - {fileID: 21300000, guid: f7785293eb1b5d14b970b9adb728cbc6, type: 3}
   - {fileID: 21300000, guid: 29b21ddac1a08794d88c88e4a3608cd5, type: 3}
@@ -31,13 +39,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 03fdcff1cfaab1a42937944cca470c26, type: 3}
   - {fileID: 21300000, guid: 7ed6c7b560aaef147a39f5da5c230af9, type: 3}
   - {fileID: 21300000, guid: 9a4da906688cbf147ac693f33573d8e5, type: 3}
-  _hintTexts:
-  - "\u0427\u0442\u043E\u0431\u044B \u043D\u0435 \u0443\u043C\u0435\u0440\u0435\u0440\u044C,
-    \u041D\u0423\u0416\u041D\u041E \u041A\u0423\u0428\u0410\u0422\u042C \u0418 \u0421\u041F\u0410\u0422\u042C"
-  - "\u041A\u0430\u043C\u0435\u043D\u044C \u0440\u0443\u043A\u043E\u0439 \u043D\u0435
-    \u0441\u043B\u043E\u043C\u0430\u0442\u044C!"
-  - "\u0414\u0435\u0440\u0435\u0432\u043E \u0440\u0443\u043A\u043E\u0439 \u043D\u0435
-    \u0441\u043B\u043E\u043C\u0430\u0442\u044C!"
-  - "\u0427\u0442\u043E\u0431\u044B \u043D\u043E\u0447\u044C\u044E \u0441\u0442\u0430\u043B\u043E
-    \u0441\u0432\u0435\u0442\u043B\u0435\u0439, \u0441\u043E\u0437\u0434\u0430\u0439
-    \u0444\u0430\u043A\u0435\u043B \u0438\u043B\u0438 \u043A\u043E\u0441\u0442\u0451\u0440"
+  _textTableHint: {fileID: 11400000, guid: ee39596ce0af86c48aca324fa2658862, type: 2}
+  _maxLengthTextTableHint: 23

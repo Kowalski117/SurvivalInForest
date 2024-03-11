@@ -15,15 +15,15 @@ public class PlatformHandler : MonoBehaviour
     {
         if (Application.isMobilePlatform)
         {
-            _mobileHUD.OpenAnimation();
-            _desktopHUD.CloseAnimation();
+            _mobileHUD.Open();
+            _desktopHUD.Close();
         }
         else
         {
-            _mobileHUD.CloseAnimation();
+            _mobileHUD.Close();
 
             if(_settings.IsActiveTipsInput)
-                _desktopHUD.OpenAnimation();
+                _desktopHUD.Open();
         }
     }
 }

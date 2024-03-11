@@ -7,7 +7,7 @@ public class ScaleAnimation : AnimationUI
     [SerializeField] private Vector3 _scaleMin;
     [SerializeField] private Vector3 _scaleMax = Vector3.one;
 
-    protected override IEnumerator Open()
+    protected override IEnumerator OpenWaitFor()
     {
         if (Children.Length > 0)
         {
@@ -24,17 +24,17 @@ public class ScaleAnimation : AnimationUI
         Tween = Panel.DOScale(_scaleMax, DurationAnim);
 
         if (IsStartingInOrder)
-            yield return Delay = new WaitForSeconds(DurationAnim);
+            yield return DelayWait;
 
         SetChildren(true);
     }
 
-    protected override IEnumerator Close()
+    protected override IEnumerator CloseWaitFor()
     {
         SetChildren(false);
 
         if(IsStartingInOrder)
-            yield return Delay = new WaitForSeconds(DurationAnim);
+            yield return DelayWait;
 
         ClearTween();
 
@@ -42,7 +42,7 @@ public class ScaleAnimation : AnimationUI
         Tween = Panel.DOScale(_scaleMin, DurationAnim);
 
         if(!IsUseDelayGroup)
-            yield return Delay = new WaitForSeconds(DurationAnim);
+            yield return DelayWait;
 
         SetCanvasGroup(false);
     }

@@ -1,11 +1,11 @@
 public class SaveLoadConstants
 {
-    public const string StartLastSaveScene = "StartLastSaveScene";
-    public const string TransitionScene = "TransitionScene";
     public const string LastSceneIndex = "LastSceneIndex";
     public const string NextSceneIndex = "NextSceneIndex";
     public const string SceneIndex = "SceneIndex";
     public const string IsNewGame = "IsNewGame";
+    public const string IsResumeGame = "IsResumeGame";
+    public const string IsSceneShifted = "IsSceneShifted";
     public const string IsCutscenePlayed = "IsCutscenePlayed";
 
     public const string ResourceRevivalTime = "ResourceRevivalTime";
@@ -13,6 +13,7 @@ public class SaveLoadConstants
 
     public const string PlayerSaveData = "PlayerSaveData";
     public const string BackpackInventory = "BackpackInventory";
+    public const string ÑlothesInventory = "ClothesInventory";
     public const string PlayerInvetory = "PlayerInventory";
     public const string SpawnPosition = "SpawnPosition";
     public const string GardenBedSaveData = "GardenBed";

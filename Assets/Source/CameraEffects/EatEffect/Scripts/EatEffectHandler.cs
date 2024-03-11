@@ -9,17 +9,17 @@ public class EatEffectHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _survivalHandler.OnEatFoodEffect += PlayEatEffect;
+        _survivalHandler.OnEatFoodEffectPlaying += Play;
     }
 
     private void OnDisable()
     {
-        _survivalHandler.OnEatFoodEffect -= PlayEatEffect;
+        _survivalHandler.OnEatFoodEffectPlaying -= Play;
     }
 
-    private void PlayEatEffect(FoodItemData foodItemData)
+    private void Play(FoodItemData foodItemData)
     {
         if(foodItemData.FoodTypeEffect == FoodTypeEffect.ColorRotation)
-            _colorRotation.StartEffect(_duration);
+            _colorRotation.StartRotate(_duration);
     }
 }

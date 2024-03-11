@@ -6,6 +6,7 @@ public class OutlineSelection : Raycast
     [SerializeField] private Color _outlineColor;
     [SerializeField] private LayerMask _outlineLayerMask;
     [SerializeField] private bool _isTrigger = true;
+
     private OutlineObject _previousOutline;
 
     void Update()
@@ -53,9 +54,7 @@ public class OutlineSelection : Raycast
         if (_isTrigger)
         {
             if (other.TryGetComponent(out OutlineObject outline))
-            {
                 outline.OutlineWidth = 0;
-            }
         }
     }
 }

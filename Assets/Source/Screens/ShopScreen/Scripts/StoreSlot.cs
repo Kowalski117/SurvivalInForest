@@ -1,43 +1,40 @@
-using TMPro;
+using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(StoreSlotView))]
 public class StoreSlot : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _titleText;
-    [SerializeField] private TMP_Text _descriptionText;
-    [SerializeField] private Image _image;
-    [SerializeField] private Button _payButton;
-    [SerializeField] private TMP_Text _priceText;
     [SerializeField] private ProductSlotView[] _slots;
     [SerializeField] private GameObject _adsPoint;
     [SerializeField] private GameObject _janPoint;
 
+    private StoreSlotView _view;
     private StoreSlotData _slotData;
 
-    public event UnityAction<StoreSlot> OnPayButton;
+    public event Action<StoreSlot> OnPayedButton;
 
     public StoreSlotData StoreSlotData => _slotData;
 
+    private void Awake()
+    {
+        _view = GetComponent<StoreSlotView>();
+    }
+
     private void OnEnable()
     {
-        _payButton.onClick.AddListener(PayButtonClick);
+        _view.OnPayedButton += Pay;
     }
 
     private void OnDisable()
     {
-        _payButton.onClick.RemoveListener(PayButtonClick);
+        _view.OnPayedButton -= Pay;
     }
 
     public void Init(StoreSlotData storeSlot)
     {
         _slotData = storeSlot;
+        _view.Init(_slotData);
 
-        _titleText.text = _slotData.Name;
-        _descriptionText.text = _slotData.Description;
-        _image.sprite = _slotData.Sprite;
-        _priceText.text = _slotData.Price.ToString();
         CreateProducts(_slotData);
 
         if (_slotData.IsOpenAds)
@@ -69,14 +66,17 @@ public class StoreSlot : MonoBehaviour
         foreach (var slot in _slots)
         {
             if (!slot.IsBusy)
-            {
                 slot.gameObject.SetActive(false);
-            }
         }
     }
 
-    public void PayButtonClick()
+    public void UpdateLanguage()
     {
-        OnPayButton?.Invoke(this);
+        _view.Init(_slotData);
+    }
+
+    private void Pay()
+    {
+        OnPayedButton?.Invoke(this);
     }
 }

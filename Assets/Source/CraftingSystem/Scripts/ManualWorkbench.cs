@@ -7,13 +7,11 @@ public class ManualWorkbench : Raycast
     [SerializeField] private CraftingÑategory _craftingÑategory;
     [SerializeField] private LayerMask _layerMask;
 
-    private CraftObject _craftObject;
     private CraftingÑategory _currentCraftingÑategory;
 
     public event Action OnInteractionStarted;
     public event Action OnInteractionFinished;
 
-    public CraftingHandler CraftingHandler => _craftingHandler;
     public CraftingÑategory CraftingÑategory => _craftingÑategory;
 
     private void Update()
@@ -23,18 +21,14 @@ public class ManualWorkbench : Raycast
             if (hitInfo.collider.TryGetComponent(out CraftObject craftObject) && _currentCraftingÑategory == null && craftObject.IsEnabled)
             {
                 _currentCraftingÑategory = craftObject.CraftingÑategory;
-                _craftingHandler.DisplayCraftWindow(craftObject.CraftingÑategory);
+                _craftingHandler.SetCategory(craftObject.CraftingÑategory);
                 OnInteractionStarted?.Invoke();
             }
             else if(craftObject && !craftObject.IsEnabled)
-            {
                 ResetCraft();
-            }
         }
         else
-        {
             ResetCraft();
-        }
     }
 
     private void ResetCraft()
@@ -42,7 +36,7 @@ public class ManualWorkbench : Raycast
         if (_currentCraftingÑategory != null)
         {
             _currentCraftingÑategory = null;
-            _craftingHandler.DisplayCraftWindow(_craftingÑategory);
+            _craftingHandler.SetCategory(_craftingÑategory);
             OnInteractionFinished?.Invoke();
         }
     }

@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SurvivalHandler : MonoBehaviour
 {
+    private const float Delay = 1;
+
     [SerializeField] private HotbarDisplay _hotbarDisplay;
     [SerializeField] private PlayerInventoryHolder _playerInventory;
     [SerializeField] private PlayerHealth _health;
@@ -19,13 +22,15 @@ public class SurvivalHandler : MonoBehaviour
 
     private float _lookTimer = 0;
     private int _addAmount = 1;
-    private Coroutine _eatCoroutine;
     private bool _isEating = false;
     private bool _isEnable = false;
     private float _maximumDivisor = 30;
     private int _percent = 100;
 
-    public event Action<FoodItemData> OnEatFoodEffect;
+    private Coroutine _eatCoroutine;
+    private WaitForSeconds _waitForSeconds = new WaitForSeconds(Delay);
+
+    public event Action<FoodItemData> OnEatFoodEffectPlaying;
 
     public PlayerHealth PlayerHealth => _health;
     public SurvivalAttribute Hunger => _hunger;
@@ -36,8 +41,9 @@ public class SurvivalHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveGame.OnSaveGame += SaveSurvivalAttributes;
-        SaveGame.OnLoadData += LoadSurvivalAttributes;
+        SavingGame.OnGameSaved += Save;
+        SavingGame.OnGameLoaded += Load;
+        SavingGame.OnSaveDeleted += Delete;
 
         _hotbarDisplay.OnItemClicked += Eat;
         _health.OnRevived += Reborn;
@@ -45,8 +51,9 @@ public class SurvivalHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        SaveGame.OnSaveGame -= SaveSurvivalAttributes;
-        SaveGame.OnLoadData -= LoadSurvivalAttributes;
+        SavingGame.OnGameSaved -= Save;
+        SavingGame.OnGameLoaded -= Load;
+        SavingGame.OnSaveDeleted -= Delete;
 
         _hotbarDisplay.OnItemClicked -= Eat;
         _health.OnRevived -= Reborn;
@@ -57,7 +64,7 @@ public class SurvivalHandler : MonoBehaviour
         if (_health.IsGodMode)
             return;
 
-        _stamina.DecreaseStaminaValue();
+        _stamina.DecreaseValue();
 
         if (_health.HealthPercent > 0 && _isEnable)
             HandleTimeUpdate();
@@ -68,7 +75,7 @@ public class SurvivalHandler : MonoBehaviour
 
             if (_lookTimer >= _liftingDelay)
             {
-                _health.LowerHealth(_healthDamage);
+                _health.Lower(_healthDamage);
                 _lookTimer = 0;
             }
 
@@ -79,7 +86,7 @@ public class SurvivalHandler : MonoBehaviour
             if (_health.HealthPercent > 0)
             {
                 _health.SetCanRestoreHealth(true);
-                _health.RestoringHealth();
+                _health.Restoring();
             }
             else
                 _health.SetCanRestoreHealth(false);
@@ -95,32 +102,32 @@ public class SurvivalHandler : MonoBehaviour
             _hunger.ReplenishValue(foodItemData.AmountSatiety);
             _thirst.ReplenishValue(foodItemData.AmountWater);
             _sleep.ReplenishValue(foodItemData.AmountSleep);
-            _health.ReplenishHealth(foodItemData.AmountHealth);
+            _health.Replenish(foodItemData.AmountHealth);
                 
             if(foodItemData.FoodTypeEffect != FoodTypeEffect.None)
-                OnEatFoodEffect?.Invoke(foodItemData);
+                OnEatFoodEffectPlaying?.Invoke(foodItemData);
 
             if (slot.Durability > 0)
             {
-                slot.LowerStrength(1);
+                slot.LowerStrength(_addAmount);
 
                 if (slot.Durability <= 0)
                 {
                     if (foodItemData.EmptyDishes != null)
-                        _playerInventory.AddToInventory(foodItemData.EmptyDishes, _addAmount);
+                        _playerInventory.AddItem(foodItemData.EmptyDishes, _addAmount);
 
-                    _playerInventory.RemoveInventory(slot, _addAmount);
+                    _playerInventory.RemoveSlot(slot, _addAmount);
                 }
             }
             else
             {
                 if (foodItemData.EmptyDishes != null)
-                    _playerInventory.AddToInventory(foodItemData.EmptyDishes, _addAmount);
+                    _playerInventory.AddItem(foodItemData.EmptyDishes, _addAmount);
 
-                _playerInventory.RemoveInventory(slot, _addAmount);
+                _playerInventory.RemoveSlot(slot, _addAmount);
             }
 
-            StartCoroutine(_addAmount);
+            StartCoroutine();
         }
     }
 
@@ -149,21 +156,34 @@ public class SurvivalHandler : MonoBehaviour
         _sleep.SetValue(_sleep.MaxValueInSeconds * _maximumDivisor / _percent);
     }
 
-    private void SaveSurvivalAttributes()
+    private void Save()
     {
         ES3.Save(SaveLoadConstants.Hunger, _hunger.CurrentAttribute);
         ES3.Save(SaveLoadConstants.Thirst, _thirst.CurrentAttribute);
         ES3.Save(SaveLoadConstants.Sleep, _sleep.CurrentAttribute);
     }
 
-    private void LoadSurvivalAttributes()
+    private void Load()
     {
-        _hunger.SetValue(ES3.Load<float>(SaveLoadConstants.Hunger, _hunger.MaxValueInSeconds));
-        _thirst.SetValue(ES3.Load<float>(SaveLoadConstants.Thirst, _thirst.MaxValueInSeconds));
-        _sleep.SetValue(ES3.Load<float>(SaveLoadConstants.Sleep, _sleep.MaxValueInSeconds));
+        if (ES3.KeyExists(SaveLoadConstants.Hunger))
+        {
+            _hunger.SetValue(ES3.Load(SaveLoadConstants.Hunger, _hunger.MaxValueInSeconds));
+            _thirst.SetValue(ES3.Load(SaveLoadConstants.Thirst, _thirst.MaxValueInSeconds));
+            _sleep.SetValue(ES3.Load(SaveLoadConstants.Sleep, _sleep.MaxValueInSeconds));
+        }
     }
 
-    private void StartCoroutine(float duration)
+    private void Delete()
+    {
+        if (ES3.KeyExists(SaveLoadConstants.Hunger))
+        {
+            ES3.DeleteKey(SaveLoadConstants.Hunger);
+            ES3.DeleteKey(SaveLoadConstants.Thirst);
+            ES3.DeleteKey(SaveLoadConstants.Sleep);
+        }
+    }
+
+    private void StartCoroutine()
     {
         if (_eatCoroutine != null)
         {
@@ -171,12 +191,12 @@ public class SurvivalHandler : MonoBehaviour
             _eatCoroutine = null;
         }
 
-        _eatCoroutine = StartCoroutine(WaitForEatToFinish(duration));
+        _eatCoroutine = StartCoroutine(WaitForEatToFinish());
     }
 
-    private IEnumerator WaitForEatToFinish(float duration)
+    private IEnumerator WaitForEatToFinish()
     {
-        yield return new WaitForSeconds(duration);
+        yield return _waitForSeconds;
 
         _isEating = false;
     }

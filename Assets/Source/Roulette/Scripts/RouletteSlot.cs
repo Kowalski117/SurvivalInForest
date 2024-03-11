@@ -12,11 +12,11 @@ public class RouletteSlot : MonoBehaviour
     public void Init(InventoryItem inventoryItemData)
     {
         InventorySlotUI.AssignedInventorySlot.AssignItem(inventoryItemData.ItemData, inventoryItemData.Amount, inventoryItemData.ItemData.Durability);
-        InventorySlotUI.UpdateUiSlot();
+        InventorySlotUI.UpdateItem();
     }
 
     public void Clear()
     {
-        InventorySlotUI.CleanSlot();
+        InventorySlotUI.Clear();
     }
 }

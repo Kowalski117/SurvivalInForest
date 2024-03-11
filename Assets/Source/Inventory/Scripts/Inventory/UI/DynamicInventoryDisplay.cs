@@ -5,8 +5,6 @@ using UnityEngine.Events;
 
 public class DynamicInventoryDisplay : InventoryDisplay
 {
-    [SerializeField] private CanvasGroup _canvasGroup;
-    [SerializeField] private Transform _parentTransform;
     [SerializeField] private AnimationUI _animationUI;
 
     public event UnityAction<int> OnDisplayRefreshed;
@@ -31,19 +29,15 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     public void Open()
     {
-        //_canvasGroup.alpha = 1;
-        //_canvasGroup.blocksRaycasts = true;
-        _animationUI.OpenAnimation();
+        _animationUI.Open();
     }
 
     public void Close()
     {
-        //_canvasGroup.alpha = 0;
-        //_canvasGroup.blocksRaycasts = false;
-        _animationUI.CloseAnimation();
+        _animationUI.Close();
     }
 
-    public void RefreshDynamicInventory(InventorySystem inventoryToSystem, int offSet)
+    public void Refresh(InventorySystem inventoryToSystem, int offSet)
     {
         ClearSlots();
         _inventorySystem = inventoryToSystem;
@@ -52,10 +46,10 @@ public class DynamicInventoryDisplay : InventoryDisplay
             _inventorySystem.OnInventorySlotChanged += UpdateSlot;
 
         OnDisplayRefreshed?.Invoke(_inventorySystem.InventorySize);
-        AssingSlot(inventoryToSystem, offSet);
+        AssingSlots(inventoryToSystem, offSet);
     }
 
-    public override void AssingSlot(InventorySystem inventoryToDisplay, int offSet)
+    public override void AssingSlots(InventorySystem inventoryToDisplay, int offSet)
     {
         slotDictionary = new Dictionary<InventorySlotUI, InventorySlot>();
 
@@ -70,17 +64,9 @@ public class DynamicInventoryDisplay : InventoryDisplay
                 slotDictionary.Add(viewSlot, inventoryToDisplay.InventorySlots[i + offSet]);
                 viewSlot.gameObject.SetActive(true);
                 viewSlot.Init(inventoryToDisplay.InventorySlots[i + offSet]);
-                viewSlot.UpdateUiSlot();
-
-                Slots[i].OnItemClicked += HandleItemSelection;
-                Slots[i].OnItemBeginDrag += HandleBeginDrag;
-                Slots[i].OnItemDroppedOn += HandleSwap;
-                Slots[i].OnItemEndDrag += HandleEndDrag;
             }
             else
-            {
                 Slots[i].gameObject.SetActive(false);
-            }
         }
     }
 
@@ -91,19 +77,15 @@ public class DynamicInventoryDisplay : InventoryDisplay
             slot.gameObject.SetActive(false);
         }
 
-        if (slotDictionary != null)
-            slotDictionary.Clear();
+        slotDictionary?.Clear();
     }
 
     public override void HandleSwap(InventorySlotUI inventorySlotUI)
     {
         int index = Array.IndexOf(Slots, inventorySlotUI);
 
-
         if (index == -1)
-        {
             return;
-        }
 ;
         SlotClicked(inventorySlotUI);
         HandleItemSelection(inventorySlotUI);

@@ -8,7 +8,7 @@ public class ScreenAnimation : MonoBehaviour
     {
         foreach (var animation in _animationUIs)
         {
-            animation.OpenAnimation();
+            animation.Open();
         }
     }
 
@@ -16,7 +16,7 @@ public class ScreenAnimation : MonoBehaviour
     {
         foreach (var animation in _animationUIs)
         {
-            animation.CloseAnimation();
+            animation.Close();
         }
     }
 }

@@ -3,13 +3,15 @@ using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GameAnalyticsSDK;
+using System.Collections.Generic;
+using UnityEngine.Localization.Settings;
 //using CrazyGames;
 
 public class InitializationSDK : MonoBehaviour
 {
     [SerializeField] private LocalizationHandler _localization;
     [SerializeField] private YandexAds _yandexAds;
-    [SerializeField] private SaveGame _saveGame;
+    [SerializeField] private SavingGame _saveGame;
 
     private string _defaultLanguage = "en";
 
@@ -29,18 +31,21 @@ public class InitializationSDK : MonoBehaviour
 #if YANDEX_GAMES && UNITY_WEBGL && !UNITY_EDITOR
         yield return YandexGamesSdk.Initialize(OnInitializedYG);
 #endif
-//#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
-//        yield return CrazySDK.Instance.IsInitialized;
-//        OnInitializedCG();
-//#endif
+        //#if CRAZY_GAMES && UNITY_WEBGL && !UNITY_EDITOR
+        //        yield return CrazySDK.Instance.IsInitialized;
+        //        OnInitializedCG();
+        //#endif
     }
 
     private void OnInitializedYG()
     {
-        if (PlayerPrefs.HasKey(ConstantsSDK.Language))
-            _localization.SetLanguageString(PlayerPrefs.GetString(ConstantsSDK.Language));
+        if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
+            _localization.SetLanguageIndex(ES3.Load<int>(ConstantsSDK.LanguageIndex));
         else
+        {
             _localization.SetLanguageString(YandexGamesSdk.Environment.i18n.lang);
+            ES3.Save(ConstantsSDK.Language, YandexGamesSdk.Environment.i18n.lang);
+        }
 
         if (PlayerAccount.IsAuthorized)
             _saveGame.GetCloudSaveData();
@@ -50,10 +55,13 @@ public class InitializationSDK : MonoBehaviour
 
     private void OnInitializedCG()
     {
-        if (PlayerPrefs.HasKey(ConstantsSDK.Language))
-            _localization.SetLanguageString(PlayerPrefs.GetString(ConstantsSDK.Language));
+        if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
+            _localization.SetLanguageIndex(ES3.Load<int>(ConstantsSDK.LanguageIndex));
         else
+        {
             _localization.SetLanguageString(_defaultLanguage);
+            ES3.Save(ConstantsSDK.Language, _defaultLanguage);
+        }
 
         SwitchScene();
     }
