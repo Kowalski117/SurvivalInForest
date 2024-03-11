@@ -11,7 +11,6 @@ public class CraftObject : MonoBehaviour
     private BoxCollider _boxCollider;
     private Fire _fire;
 
-    public bool IsEnabledInitially => _isEnabledInitially;
     public CraftingÑategory CraftingÑategory => _craftingÑategory;
     public bool IsEnabled => _isEnabled;
 

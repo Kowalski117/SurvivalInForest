@@ -7,7 +7,6 @@ public class ManualWorkbench : Raycast
     [SerializeField] private CraftingÑategory _craftingÑategory;
     [SerializeField] private LayerMask _layerMask;
 
-    private CraftObject _craftObject;
     private CraftingÑategory _currentCraftingÑategory;
 
     public event Action OnInteractionStarted;

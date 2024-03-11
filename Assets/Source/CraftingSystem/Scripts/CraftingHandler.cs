@@ -7,6 +7,7 @@ using UnityEngine;
 public class CraftingHandler : MonoBehaviour
 {
     [SerializeField] private PlayerInventoryHolder _inventoryHolder;
+    [SerializeField] private MouseItemData _mouseItemData;
     [SerializeField] private ManualWorkbench _manualWorkbench;
     [SerializeField] private InventoryPlayerInput _inventoryPlayerInput;
     [SerializeField] private BuildTool _buildTool;
@@ -15,8 +16,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private Transform _containerForSlots;
     [SerializeField] private Transform _craftingWindow;
     [SerializeField] private TMP_Text _nameCategory;
-    [SerializeField] private CraftItemSlotView _craftItemSlotPrefab;
-    [SerializeField] private CraftBuildSlotView _craftBuildSlotPrefab;
+    [SerializeField] private CraftSlotView[] _craftSlotView;
     [SerializeField] private CraftingCategoryButton[] _craftingCategoryButtons;
     [SerializeField] private Color _selectColor;
     [SerializeField] private Color _defoultColor;
@@ -27,8 +27,9 @@ public class CraftingHandler : MonoBehaviour
     private CraftingСategory _currentCategory;
     private bool _isCraftPlayerOpen = false;
 
-    public event Action OnSlotInventoryUpdated;
+    public event Action OnInventoryUpdated;
     public event Action OnItemCrafted;
+    public event Action<BuildingRecipe> OnBuildCreated;
 
     private void Awake()
     {
@@ -39,26 +40,35 @@ public class CraftingHandler : MonoBehaviour
     {
         _inventoryPlayerInput.OnCraftPlayerWindowToggled += ToggleCraftWindow;
         _buildTool.OnBuildingCompleted += UpdateSlot;
-        CraftItemSlot.OnCraftSlotUpdate += UpdateSlot;
-        CraftItemSlot.OnCraftSlotUpdate += CraftItem;
-        CrafBuildSlot.OnCraftSlotUpdated += UpdateSlot;
-
         _inventoryHolder.OnItemSlotUpdated += UpdateSlot;
+        _mouseItemData.OnUpdatedSlots += UpdateSlot;
+
+        foreach (var slot in _craftSlotView)
+        {
+            slot.OnCreatedRecipeButtonClick += CraftItem;
+        }
     }
 
     private void OnDisable()
     {
         _inventoryPlayerInput.OnCraftPlayerWindowToggled -= ToggleCraftWindow;
         _buildTool.OnBuildingCompleted -= UpdateSlot;
-        CraftItemSlot.OnCraftSlotUpdate -= UpdateSlot;
-        CraftItemSlot.OnCraftSlotUpdate -= CraftItem;
-        CrafBuildSlot.OnCraftSlotUpdated -= UpdateSlot;
-        
         _inventoryHolder.OnItemSlotUpdated -= UpdateSlot;
+        _mouseItemData.OnUpdatedSlots -= UpdateSlot;
+
+        foreach (var slot in _craftSlotView)
+        {
+            slot.OnCreatedRecipeButtonClick -= CraftItem;
+        }
     }
 
     private void Start()
     {
+        foreach (var item in _craftSlotView)
+        {
+            item.gameObject.SetActive(false);
+        }
+
         foreach (var craftingCategory in _craftingСategories)
         {
             CreateCraftSlots(craftingCategory);
@@ -76,25 +86,19 @@ public class CraftingHandler : MonoBehaviour
     {
         foreach(var recipe in craftingCategory.Recipes)
         {
-            if(recipe is ItemRecipe itemRecipe)
+            foreach (var slot in _craftSlotView)
             {
-                CraftSlotView currentRecipe = Instantiate(_craftItemSlotPrefab, _containerForSlots);
-
-                if (currentRecipe is CraftItemSlotView itemSlotView)
-                    itemSlotView.Init(_inventoryHolder, itemRecipe, craftingCategory, _loadingWindow, _questControl);
-
-                _craftSlots.Add(currentRecipe);
-            }
-            else if (recipe is BuildingRecipe buildRecipe)
-            {
-                CraftSlotView currentRecipe = Instantiate(_craftBuildSlotPrefab, _containerForSlots);
-
-                if (currentRecipe is CraftBuildSlotView buildSlotView)
-                    buildSlotView.Init(_inventoryHolder, buildRecipe, craftingCategory, _loadingWindow);
-
-                _craftSlots.Add(currentRecipe);
+                if (slot.IsEmpty)
+                {
+                    slot.gameObject.SetActive(true);
+                    slot.Init(_inventoryHolder, recipe, craftingCategory);
+                    _craftSlots.Add(slot);
+                    break;
+                }
             }
         }
+
+        UpdateSlot();
     }
 
     public void UpdateSlot()
@@ -104,7 +108,7 @@ public class CraftingHandler : MonoBehaviour
             slot.UpdateRecipe();
         }
 
-        OnSlotInventoryUpdated?.Invoke();
+        OnInventoryUpdated?.Invoke();
     }
 
     public void SwitchCraftingCategory(CraftingType itemType)
@@ -119,12 +123,10 @@ public class CraftingHandler : MonoBehaviour
 
         foreach (var slot in _craftSlots)
         {
-            if (slot is CraftItemSlotView itemSlotView && itemSlotView.Recipe.CraftingType == itemType && _currentCategory == slot.Category)
-                slot.OpenForCrafting();
-            else if (slot is CraftBuildSlotView buildSlotView && buildSlotView.Recipe.CraftingType == itemType && _currentCategory == slot.Category)
-                slot.OpenForCrafting();
+            if (slot.Recipe.CraftingType == itemType && _currentCategory == slot.Category)
+                slot.gameObject.SetActive(true);
             else
-                slot.CloseForCrafting();
+                slot.gameObject.SetActive(false);
         }
     }
 
@@ -149,19 +151,14 @@ public class CraftingHandler : MonoBehaviour
         {
             bool slotIsRelevant = false;
 
-            if (slot is CraftItemSlotView itemSlotView && _currentCategory == slot.Category && activeCraftingTypes.Contains(itemSlotView.Recipe.CraftingType))
+            if (_currentCategory == slot.Category && activeCraftingTypes.Contains(slot.Recipe.CraftingType))
             {
-                itemSlotView.OpenForCrafting();
-                slotIsRelevant = true;
-            }
-            else if (slot is CraftBuildSlotView buildSlotView && _currentCategory == slot.Category &&  activeCraftingTypes.Contains(buildSlotView.Recipe.CraftingType))
-            {
-                buildSlotView.OpenForCrafting();
+                slot.gameObject.SetActive(true);
                 slotIsRelevant = true;
             }
 
             if (!slotIsRelevant)
-                slot.CloseForCrafting();
+                slot.gameObject.SetActive(false);
         }
 
         foreach (var button in _craftingCategoryButtons)
@@ -181,8 +178,38 @@ public class CraftingHandler : MonoBehaviour
             UpdateSlot();
     }
 
-    private void CraftItem()
+    private void CraftItem(CraftRecipe craftRecipe)
     {
         OnItemCrafted?.Invoke();
+
+        if (_inventoryHolder.CheckIfCanCraft(craftRecipe))
+        {
+            if (craftRecipe is ItemRecipe itemRecipe)
+            {
+                if (itemRecipe.CraftedItem.Type == ItemType.Food)
+                    _loadingWindow.ShowLoadingWindow(itemRecipe.DelayCraft, itemRecipe.CraftingTime, itemRecipe.CraftedItem.DisplayName, ActionType.Preparing, () => FinishComplete(itemRecipe));
+                else
+                    _loadingWindow.ShowLoadingWindow(itemRecipe.DelayCraft, itemRecipe.CraftingTime, itemRecipe.CraftedItem.DisplayName, ActionType.CraftItem, () => FinishComplete(itemRecipe));
+            }
+            else if(craftRecipe is BuildingRecipe buildingRecipe)
+                OnBuildCreated?.Invoke(buildingRecipe);
+
+            UpdateSlot();
+        }
+    }
+
+    private void FinishComplete(ItemRecipe itemRecipe)
+    {
+        if (_inventoryHolder.CheckIfCanCraft(itemRecipe))
+        {
+            foreach (var ingredient in itemRecipe.CraftingIngridients)
+            {
+                _inventoryHolder.RemoveItem(ingredient.ItemRequired, ingredient.AmountRequured);
+            }
+
+            _inventoryHolder.AddItem(itemRecipe.CraftedItem, itemRecipe.CraftingAmount, itemRecipe.CraftedItem.Durability);
+        }
+
+        _questControl.SendToMessageSystem(MessageConstants.Craft + itemRecipe.CraftedItem.Name);
     }
 }

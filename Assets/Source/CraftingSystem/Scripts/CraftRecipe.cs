@@ -35,4 +35,5 @@ public enum CraftingType
     Food,
     Decor,
     InteractBuilding,
+    Seed
 }

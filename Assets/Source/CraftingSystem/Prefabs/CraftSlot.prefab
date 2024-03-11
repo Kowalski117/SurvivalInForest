@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 8077631259219781974}
   - component: {fileID: 9016348827972483237}
   m_Layer: 5
-  m_Name: CraftingButton (1)
+  m_Name: 'CraftingButton '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +363,7 @@ GameObject:
   - component: {fileID: 7076488360608505653}
   - component: {fileID: 8368862379089121681}
   m_Layer: 5
-  m_Name: Recipe (1)
+  m_Name: RecipeContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 316700274365920941}
   - component: {fileID: 1030153187230665864}
   m_Layer: 5
-  m_Name: CraftedImage (1)
+  m_Name: 'CraftedImage '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,7 +519,7 @@ GameObject:
   - component: {fileID: 5768158757154394790}
   - component: {fileID: 6185698392311151038}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -615,10 +615,9 @@ GameObject:
   - component: {fileID: 5236127489880737139}
   - component: {fileID: 5236127489880737137}
   - component: {fileID: 5236127489880737138}
-  - component: {fileID: 1105954314463199698}
-  - component: {fileID: 4703113042431630835}
+  - component: {fileID: 6294730822573967257}
   m_Layer: 5
-  m_Name: CraftBuildSlot
+  m_Name: CraftSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -687,7 +686,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1105954314463199698
+--- !u!114 &6294730822573967257
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -696,27 +695,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5236127489880737148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f88860e1074946549828caa7ba88d68a, type: 3}
+  m_Script: {fileID: 11500000, guid: b97eebe3234e05049bbb892903d0e6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CraftedIcon: {fileID: 3787792717288342191}
-  CraftedName: {fileID: 5708955515696001983}
-  CraftedTimeText: {fileID: 6073424812074555922}
-  SlotIngridientPrefab: {fileID: 3076235167267609850, guid: 80b8f3df733368e4da9656650dfe4257, type: 3}
-  IngridientsContainer: {fileID: 2037020457920505772}
-  CraftedButton: {fileID: 8077631259219781974}
---- !u!114 &4703113042431630835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5236127489880737148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 218e50bf4228b2f4a91bd25541b6e5c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _icon: {fileID: 3787792717288342191}
+  _name: {fileID: 5708955515696001983}
+  _timeText: {fileID: 6073424812074555922}
+  _slotIngridientPrefab: {fileID: 3076235167267609850, guid: 80b8f3df733368e4da9656650dfe4257, type: 3}
+  _ingridientsContainer: {fileID: 2037020457920505772}
+  _craftedButton: {fileID: 8077631259219781974}
 --- !u!1 &6442221377054773855
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,7 +792,7 @@ GameObject:
   - component: {fileID: 4120071651531641802}
   - component: {fileID: 5708955515696001983}
   m_Layer: 5
-  m_Name: CraftedName (1)
+  m_Name: 'CraftedName '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
