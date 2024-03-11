@@ -893,15 +893,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 74766642427550001, guid: ab41e12e3193e5241a054da74ad6cee7, type: 3}
   m_PrefabInstance: {fileID: 8818220887151280630}
   m_PrefabAsset: {fileID: 0}
---- !u!225 &174788709 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 6511080264347485730, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
-  m_PrefabInstance: {fileID: 456237565}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &178373821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1633872098456797128, guid: 681cbb809427f574a9f0d40322b45c90, type: 3}
   m_PrefabInstance: {fileID: 8818220887780752380}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &190495184 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 264023849340379222, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
+  m_PrefabInstance: {fileID: 456237565}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &193039194
 GameObject:
@@ -3454,7 +3454,7 @@ PrefabInstance:
     - target: {fileID: 279466769, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
       propertyPath: CanvasGroup
       value: 
-      objectReference: {fileID: 174788709}
+      objectReference: {fileID: 987150128}
     - target: {fileID: 279466769, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
       propertyPath: IsUseDelayGroup
       value: 0
@@ -3663,6 +3663,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3827883270346169460, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3982918388143663655, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3855,6 +3859,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6511080264347485729, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
+      propertyPath: _isOpenMainMenu
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511080264347485729, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
+      propertyPath: _panelsGame.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511080264347485729, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
+      propertyPath: _panelsGame.Array.data[5]
+      value: 
+      objectReference: {fileID: 190495184}
     - target: {fileID: 6511080264347485730, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
       propertyPath: m_Alpha
       value: 0
@@ -4061,6 +4077,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8001223703972572471, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077206240029257174, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8425125300303678293, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
@@ -7200,6 +7220,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7768601906473230819, guid: 0f2120e89197acc47bfde23175d19f26, type: 3}
   m_PrefabInstance: {fileID: 8818220887980513013}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &987150128 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5307686303864450954, guid: 678cb090daa9e1d4d9649b6c57b46b96, type: 3}
+  m_PrefabInstance: {fileID: 456237565}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &988344520 stripped
 Transform:
