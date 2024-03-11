@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class InfoObject : MonoBehaviour
 {
-    [SerializeField] private InfoObjectData _infoObjectSO;
+    [SerializeField] private TutorialDataObject _infoObjectSO;
 
     private bool _isActive = true;
 
-    public InfoObjectData InfoObjectSO => _infoObjectSO;
+    public TutorialDataObject InfoObjectSO => _infoObjectSO;
     public bool IsActive => _isActive;
 
     public void SetActive(bool isActive)

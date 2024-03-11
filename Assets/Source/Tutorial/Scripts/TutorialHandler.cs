@@ -1,12 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorialHandler : Raycast
 {
     [SerializeField] private InfoScreen _infoScreen;
-    [SerializeField] private InfoObjectData[] _infoObjects;
+    [SerializeField] private TutorialDataObject[] _infoObjects;
     [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private GameObject _button;
 
     private InfoObject _infoObject;
+    private List<TutorialDetail> _currentDetails = new List<TutorialDetail>();
+
+    private int _minCount = 1;
 
     protected override void Awake()
     {
@@ -16,11 +21,15 @@ public class TutorialHandler : Raycast
     private void OnEnable()
     {
         SavingGame.OnGameLoaded += InitInfoObjects;
+        SavingGame.OnSaveDeleted += Delete;
+        _infoScreen.OnButtonResumed += ReplaceDelail;
     }
 
     private void OnDisable()
     {
         SavingGame.OnGameLoaded -= InitInfoObjects;
+        SavingGame.OnSaveDeleted -= Delete;
+        _infoScreen.OnButtonResumed -= ReplaceDelail;
     }
 
     private void Update()
@@ -38,6 +47,20 @@ public class TutorialHandler : Raycast
             }
         }
     }
+    public void UpdateInfo(TutorialDataObject info)
+    {
+        if (!info.IsDone)
+        {
+            foreach (var detail in info.Details)
+            {
+                _currentDetails.Add(detail);
+            }
+
+            info.SetIsDone(true);
+            _infoScreen.Toggle();
+            ReplaceDelail();
+        }
+    }
 
     private void CheckObject(GameObject gameObject)
     {
@@ -48,12 +71,26 @@ public class TutorialHandler : Raycast
                 if (infoObject.InfoObjectSO == info && !info.IsDone && infoObject.IsActive)
                 {
                     _infoObject = infoObject;
-                    _infoScreen.Init(info.Name, info.Description, info.Sprite);
-                    _infoScreen.Toggle();
-                    info.SetIsDone(true);
+
+                    UpdateInfo(_infoObject.InfoObjectSO);
                 }
             }
         }
+    }
+
+
+    private void ReplaceDelail()
+    {
+        if(_currentDetails.Count > 0)
+        {
+            _infoScreen.Init(_currentDetails[0].Name, _currentDetails[0].Description, _currentDetails[0].Sprite);
+            _currentDetails.RemoveAt(0);
+        }
+
+        if(_currentDetails.Count >= _minCount)
+            _button.SetActive(true);
+        else
+            _button.SetActive(false);   
     }
 
     private void InitInfoObjects()
@@ -61,6 +98,14 @@ public class TutorialHandler : Raycast
         foreach (var obj in _infoObjects)
         {
             obj.Init();
+        }
+    }
+
+    private void Delete()
+    {
+        foreach (var obj in _infoObjects)
+        {
+            obj.Delete();
         }
     }
 }
