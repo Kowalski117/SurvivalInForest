@@ -11,13 +11,13 @@ public class LocalizationHandler : MonoBehaviour
 
     public int CurrentLanguageIndex => _languageIndex;
 
-    private IEnumerator Start()
+    private void Start()
     {
-        //Debug.Log("1");
-        //if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
-        //    SetLanguageIndex(ES3.Load<int>(ConstantsSDK.LanguageIndex));
+        ////Debug.Log("1");
+        ////if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
+        ////    SetLanguageIndex(ES3.Load<int>(ConstantsSDK.LanguageIndex));
 
-        yield return new WaitForSeconds(0.6f);
+        //yield return new WaitForSeconds(0.6f);
 
         if (ES3.KeyExists(ConstantsSDK.LanguageIndex))
             SetLanguageIndex(ES3.Load<int>(ConstantsSDK.LanguageIndex));
